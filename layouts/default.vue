@@ -1,12 +1,12 @@
 <template>
   <div class="layout">
-    <AppHeader />
+    <!-- <AppHeader />
     <StickyHeader />
-    <MobileMenu />
+    <MobileMenu /> -->
     <main class="border-t border-solid border-[var(--main-accent)]">
       <slot />
     </main>
-    <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
+    <!-- <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
       {{ tooltipMessage }}
     </Tooltips>
     <Modal @tooltip="tooltip">
@@ -20,20 +20,20 @@
       </template>
     </Modal>
     <Chat />
-    <AppFooter />
+    <AppFooter /> -->
   </div>
 </template>
 
 <script setup>
-  import Modal from "~/components/Modals/Modal.vue";
-  import Tooltips from "~/components/shared/Tooltips.vue";
-  import { useModalStore, useAuthStore } from "#imports";
+  // import Modal from "~/components/Modals/Modal.vue";
+  // import Tooltips from "~/components/shared/Tooltips.vue";
+  // import { useModalStore, useAuthStore } from "#imports";
   import { onMounted } from "vue";
 
-  const modalStore = useModalStore();
-  const authStore = useAuthStore();
-  const currentModal = computed(() => modalStore.currentModal);
-  const modalProps = computed(() => modalStore.modalProps);
+  // const modalStore = useModalStore();
+  // const authStore = useAuthStore();
+  // const currentModal = computed(() => modalStore.currentModal);
+  // const modalProps = computed(() => modalStore.modalProps);
 
   const showTooltip = ref(false);
   const tooltipStatus = ref("");
@@ -51,9 +51,9 @@
     }, 3000);
   };
 
-  onMounted(() => {
-    authStore.fetchUser();
-  })
+  // onMounted(() => {
+  //   authStore.fetchUser();
+  // })
 </script>
 
 <style scoped>

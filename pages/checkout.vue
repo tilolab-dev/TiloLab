@@ -1402,7 +1402,7 @@
 
 <script setup>
 import { ref, watch, computed, onMounted } from "vue";
-import { useCartStore, useAuthStore } from "#imports";
+// import { useCartStore, useAuthStore } from "#imports";
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
 import { navigateTo } from "nuxt/app";
@@ -1458,8 +1458,8 @@ const postomatList = ref([]);
 const postAddressList = ref([]);
 const preventReloadBox = ref(false);
 
-const cartStore = useCartStore();
-const authStore = useAuthStore();
+// const cartStore = useCartStore();
+// const authStore = useAuthStore();
 
 const getFormattedHours = (h) => (h < 10 ? "0" + h : h);
 const getFormattedMonth = (m) => (m < 10 ? "0" + m : m);
@@ -1573,7 +1573,6 @@ const processCheckout = async () => {
     return;
   }
 
-  // validation contact info
   if (!authStore.user || contactInfoState.value) {
     if (!name.value || !surname.value || !familyName.value || !email.value || !phone.value) {
     tooltip({

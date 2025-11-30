@@ -13,6 +13,18 @@ export default defineNuxtConfig({
       api_base_url: process.env.API_BASE_URL,
 
     }
+  },
+  css: [
+    '~/style/default.css',
+    '~/style/index.scss',
+    '~/style/variables.scss',
+    '~/style/mixins.scss'
+  ],
+  alias: {
+   '@components': '/components',
+    '@utils': '/utils',
+    '@store': '/store',
+    '@helpers': '/helpers'
   }
 
 })
