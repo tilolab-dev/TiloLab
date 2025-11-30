@@ -3,7 +3,10 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   nitro: {
-    compressPublicAssets: true
+    compressPublicAssets: true,
+  },
+  build: {
+    transpile: ['@supabase/supabase-js']
   },
   runtimeConfig: {
     api_secret_path: process.env.API_SECRET_PATH,
@@ -25,6 +28,7 @@ export default defineNuxtConfig({
     '@utils': '/utils',
     '@store': '/store',
     '@helpers': '/helpers'
-  }
+  },
+  modules: ['@pinia/nuxt', '@nuxt/image']
 
 })
