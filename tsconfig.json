@@ -17,12 +17,28 @@
 //     }
 //   }
 // }
+// {
+//   "extends": "./.nuxt/tsconfig.json",
+//   "compilerOptions": {
+//     "paths": {
+//       "~/*": ["./*"],
+//       "@/*": ["./*"]
+//     }
+//   }
+// }
 {
-  "extends": "./.nuxt/tsconfig.json",
+   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
+    "types": [
+      "@types/node",
+      "vite/client"
+    ],
+    "moduleResolution": "Node",
+    "baseUrl": "./",
     "paths": {
-      "~/*": ["./*"],
-      "@/*": ["./*"]
+      "@utils/*": ["./utils/*"],
+      "@/*": ["./*"],
+      "~/*": ["./*"]
     }
   }
 }
