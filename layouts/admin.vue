@@ -1,35 +1,32 @@
 <template>
-  <div
-    class="m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500 dark:bg-[var(--dark-component-color)] dark:text-slate-400"
-  >
-    <div class="absolute w-full bg-[var(--primary-color)] dark:bg-[var(--main-dark-color)] min-h-72"></div>
-
+  <div class="admin_layout">
+    <div class="admin_head_bg"></div>
     <aside
-      class="fixed inset-y-0 gap-10 flex flex-col justify-between items-center w-full h-auto p-0 my-4 overflow-y-scroll antialiased transition-transform duration-200 -translate-x-full bg-white dark:bg-[var(--dark-grey)] border-0 dark:border dark:border-[var(--dark-border-color)] shadow-xl dark:shadow-none dark:bg-slate-850 max-w-64 ease-nav-brand z-990 xl:ml-6 rounded-2xl xl:left-0 xl:translate-x-0"
+      class="admin_sidebar"
       :aria-expanded="isSidebarOpen"
       :class="{
         '-translate-x-full z-50': !isSidebarOpen,
         'translate-x-4 z-50': isSidebarOpen,
       }"
     >
-      <div>
-        <div class="h-19">
+      <div class="sidebar_main">
+        <div class="sidebar_top">
           <div
-            class="px-2 py-6 m-0 text-sm whitespace-nowrap text-slate-700 flex justify-center items-center gap-2"
+            class="sidebar_top_content"
             target="_blank"
           >
-            <img
+            <!-- <img
               src="../public//img/only-dog.png"
               class="h-auto w-[40px] transition-all duration-200 dark:inline ease-nav-brand bg-[var(--light-color)] p-1 rounded-lg"
               alt="main_logo"
-            />
-            <div class="title-wrapper ml-1 flex items-baseline flex-col">
+            /> -->
+            <div class="title_wrapper">
               <span
-                class="font-semibold transition-all duration-200 ease-nav-brand"
+                class="title_accent"
               >
                 Панель керування
               </span>
-              <span> https://www.korzinka.in.ua </span>
+              <span> https://www.tilo-lab.com.ua </span>
             </div>
           </div>
         </div>
@@ -39,272 +36,82 @@
         />
 
         <div
-          class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full py-2"
+          class="sidebar_links"
         >
-          <ul class="flex flex-col pl-0 mb-0">
+          <ul class="sidebar_links_wrapper">
             <li
-              class="mt-0.5 w-full"
-              @click="closeSidebar(), (activePage = 'index')"
+              class="sidebar_links_item"
+              v-for="item in firstLinks"
+              :key="item.id"
+              @click="closeSidebar(), (activePage = item.activePage)"
             >
-              <NuxtLink to="/admin/">
+              <NuxtLink :to="item.linkPath">
                 <div
-                  class="py-[0.675rem] bg-blue-500/13 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 transition-colors"
+                  class="item_wrapper"
                   :class="{
                     'text-white bg-[var(--primary-color)]':
-                      activePage === 'index',
+                      activePage === item.activePage,
                   }"
                 >
                   <div
-                    class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-1.5"
+                    class="image_content"
                   >
-                    <img src="@/public/img/icons/house.png" alt="option" />
+                    <!-- <img src="@/public/img/icons/house.png" alt="option" /> -->
                   </div>
                   <span
-                    class="ml-1 duration-300 opacity-100 pointer-events-none ease"
+                    class="text_content"
                   >
-                    Головна
+                    {{ item.title }}
                   </span>
                 </div>
               </NuxtLink>
             </li>
 
-            <li
-              class="mt-0.5 w-full"
-              @click="closeSidebar(), (activePage = 'analytics')"
-            >
-              <NuxtLink to="/admin/analytics">
-                <div
-                  class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700"
-                  :class="{
-                    'text-white bg-[var(--primary-color)]':
-                      activePage === 'analytics',
-                  }"
-                >
-                  <div
-                    class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-1.5"
-                  >
-                    <img src="@/public/img/icons/analysis.png" alt="option" />
-                  </div>
-                  <span
-                    class="ml-1 duration-300 opacity-100 pointer-events-none ease"
-                  >
-                    Аналітика
-                  </span>
-                </div>
-              </NuxtLink>
-            </li>
-
-            <li
-              class="mt-0.5 w-full"
-              @click="closeSidebar(), (activePage = 'buyers')"
-            >
-              <NuxtLink to="/admin/buyers">
-                <div
-                  class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700"
-                  :class="{
-                    'text-white bg-[var(--primary-color)]':
-                      activePage === 'buyers',
-                  }"
-                >
-                  <div
-                    class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center fill-current stroke-0 text-center xl:p-1.5"
-                  >
-                    <img src="@/public/img/icons/buying.png" alt="option" />
-                  </div>
-                  <span
-                    class="ml-1 duration-300 opacity-100 pointer-events-none ease"
-                  >
-                    Покупці
-                  </span>
-                </div>
-              </NuxtLink>
-            </li>
-
-            <li
-              class="mt-0.5 w-full"
-              @click="closeSidebar(), (activePage = 'notifications')"
-            >
-              <NuxtLink to="/admin/notifications">
-                <div
-                  class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700"
-                  :class="{
-                    'text-white bg-[var(--primary-color)]':
-                      activePage === 'notifications',
-                  }"
-                >
-                  <div
-                    class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-1.5"
-                  >
-                    <img
-                      src="@/public/img/icons/notification.png"
-                      alt="option"
-                    />
-                  </div>
-                  <span
-                    class="ml-1 duration-300 opacity-100 pointer-events-none ease"
-                  >
-                    Повідомлення
-                  </span>
-                </div>
-              </NuxtLink>
-            </li>
-
-            <li
-              class="mt-0.5 w-full"
-              @click="closeSidebar(), (activePage = 'orders')"
-            >
-              <NuxtLink to="/admin/orders">
-                <div
-                  class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700"
-                  :class="{
-                    'text-white bg-[var(--primary-color)]':
-                      activePage === 'orders',
-                  }"
-                >
-                  <div
-                    class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-1.5"
-                  >
-                    <img src="@/public/img/icons/order.png" alt="option" />
-                  </div>
-                  <span
-                    class="ml-1 duration-300 opacity-100 pointer-events-none ease"
-                  >
-                    Замовлення
-                  </span>
-                </div>
-              </NuxtLink>
-            </li>
-
-            <li class="w-full mt-4">
-              <h6 class="pl-6 ml-2 text-xs font-bold leading-tight uppercase">
+            <li class="divider_item">
+              <h6 class="divider_item_text">
                 Account pages
               </h6>
             </li>
 
             <li
-              class="mt-0.5 w-full"
-              @click="closeSidebar(), (activePage = 'payment')"
+              class="sidebar_links_item"
+              v-for="item in remainingLinks"
+              :key="item.id"
+              @click="closeSidebar(), (activePage = item.activePage)"
             >
-              <NuxtLink to="/admin/payment">
+              <NuxtLink :to="item.linkPath">
                 <div
-                  class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700"
+                  class="item_wrapper"
                   :class="{
                     'text-white bg-[var(--primary-color)]':
-                      activePage === 'payment',
+                      activePage === item.activePage,
                   }"
                 >
                   <div
-                    class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-1.5"
+                    class="image_content"
                   >
-                    <img
-                      src="@/public/img/icons/cash-payment.png"
-                      alt="option"
-                    />
+                    <!-- <img src="@/public/img/icons/house.png" alt="option" /> -->
                   </div>
                   <span
-                    class="ml-1 duration-300 opacity-100 pointer-events-none ease"
+                    class="text_content"
                   >
-                    Оплата
+                    {{ item.title }}
                   </span>
                 </div>
               </NuxtLink>
             </li>
 
-            <li
-              class="mt-0.5 w-full"
-              @click="closeSidebar(), (activePage = 'products')"
-            >
-              <NuxtLink to="/admin/products">
-                <div
-                  class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700"
-                  :class="{
-                    'text-white bg-[var(--primary-color)]':
-                      activePage === 'products',
-                  }"
-                >
-                  <div
-                    class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-1.5"
-                  >
-                    <img src="@/public/img/icons/cubes.png" alt="option" />
-                  </div>
-                  <span
-                    class="ml-1 duration-300 opacity-100 pointer-events-none ease"
-                  >
-                    Товари
-                  </span>
-                </div>
-              </NuxtLink>
-            </li>
-
-            <li
-              class="mt-0.5 w-full"
-              @click="closeSidebar(), (activePage = 'settings')"
-            >
-              <NuxtLink to="/admin/settings">
-                <div
-                  class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700"
-                  :class="{
-                    'text-white bg-[var(--primary-color)]':
-                      activePage === 'settings',
-                  }"
-                >
-                  <div
-                    class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-1.5"
-                  >
-                    <img src="@/public/img/icons/setting.png" alt="option" />
-                  </div>
-                  <span
-                    class="ml-1 duration-300 opacity-100 pointer-events-none ease"
-                  >
-                    Налаштування
-                  </span>
-                </div>
-              </NuxtLink>
-            </li>
+         
           </ul>
         </div>
       </div>
 
-      <div class="mx-4 pb-14">
-        <!-- load phantom colors for card after: -->
-        <p
-          class="invisible hidden text-blue-500 bg-gray-500/30 after:bg-gradient-to-tl after:from-zinc-800 after:to-zinc-700 dark:bg-gradient-to-tl dark:from-slate-750 dark:to-gray-850"
-        ></p>
-        <div
-          class="relative flex flex-col min-w-0 break-words bg-transparent border-0 shadow-none rounded-2xl bg-clip-border"
-          sidenav-card
-        >
-          <!-- <img class="w-1/2 mx-auto" src="./assets/img/illustrations/icon-documentation.svg" alt="sidebar illustrations" /> -->
-          <div class="flex-auto w-full p-4 pt-0 text-center">
-            <div class="transition-all duration-200 ease-nav-brand">
-              <h6 class="mb-0 dark:text-white text-slate-700">Need help?</h6>
-              <p
-                class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60"
-              >
-                Please check our docs
-              </p>
-            </div>
-          </div>
-        </div>
-        <a
-          href="https://www.creative-tim.com/learning-lab/tailwind/html/quick-start/argon-dashboard/"
-          target="_blank"
-          class="inline-block w-full px-8 py-2 mb-4 text-xs font-bold leading-normal text-center text-white capitalize transition-all ease-in rounded-lg shadow-md bg-slate-700 bg-150 hover:shadow-xs hover:-translate-y-px"
-          >Documentation</a
-        >
-        <!-- pro btn  -->
-        <a
-          class="inline-block w-full px-8 py-2 text-xs font-bold leading-normal text-center text-white align-middle transition-all ease-in bg-blue-500 border-0 rounded-lg shadow-md select-none bg-150 bg-x-25 hover:shadow-xs hover:-translate-y-px"
-          href="https://www.creative-tim.com/product/argon-dashboard-pro-tailwind?ref=sidebarfree"
-          target="_blank"
-          >Upgrade to pro</a
-        >
-      </div>
+
     </aside>
 
     <!-- <main class="page-layout"> -->
     <main
-      class="relative h-full transition-all duration-200 ease-in-out xl:ml-72 rounded-xl"
+      class="admin_content"
     >
       <!-- <div class="mobile-burger py-2 ">
           <button 
@@ -327,10 +134,10 @@
 
       <!-- :tooltipProps="tooltipProps"  -->
     </main>
-    <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
+    <!-- <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
       {{ tooltipMessage }}
-    </Tooltips>
-    <Modal @tooltip="tooltip">
+    </Tooltips> -->
+    <!-- <Modal @tooltip="tooltip">
       <template #default="{ openModal, closeModal }">
         <component
           :is="currentModal"
@@ -339,15 +146,78 @@
           :closeModal="closeModal"
         />
       </template>
-    </Modal>
+    </Modal> -->
   </div>
 </template>
 
 <script setup>
 import { computed, toRefs, watch, ref, onMounted } from "vue";
-import Modal from "~/components/Modals/Modal.vue";
-import Tooltips from "~/components/shared/Tooltips.vue";
-import { useModalStore, useIndexStore } from "#imports";
+// import Modal from "~/components/Modals/Modal.vue";
+// import Tooltips from "~/components/shared/Tooltips.vue";
+// import { useModalStore, useIndexStore } from "#imports";
+
+
+const linksData = ref([
+  {
+    id: 1,
+    activePage: "index",
+    title: "Головна",
+    linkPath: "/admin",
+    imgPath: "/img/icons/home.png",
+  },
+  {
+    id: 2,
+    activePage: "analytics",
+    title: "Аналітика",
+    linkPath: "/admin/analytics",
+    imgPath: "/img/icons/analytics.png",
+  },
+  {
+    id: 3,
+    activePage: "buyers",
+    title: "Покупці",
+    linkPath: "/admin/buyers",
+    imgPath: "/img/icons/buyers.png",
+  },
+  {
+    id: 4,
+    activePage: "notifications",
+    title: "Повідомлення",
+    linkPath: "/admin/notifications",
+    imgPath: "/img/icons/notification.png",
+  },
+  {
+    id: 5,
+    activePage: "orders",
+    title: "Замовлення",
+    linkPath: "/admin/orders",
+    imgPath: "/img/icons/order.png",
+  },
+  {
+    id: 6,
+    activePage: "payment",
+    title: "Оплата",
+    linkPath: "/admin/payment",
+    imgPath: "/img/icons/cash-payment.png",
+  },
+  {
+    id: 7,
+    activePage: "products",
+    title: "Товари",
+    linkPath: "/admin/products",
+    imgPath: "/img/icons/products.png",
+  },
+  {
+    id: 8,
+    activePage: "settings",
+    title: "Налаштування",
+    linkPath: "/admin/settings",
+    imgPath: "/img/icons/setting.png",
+  },
+]);
+
+const firstLinks = computed(() => linksData.value.slice(0, 4))
+const remainingLinks = computed(() => linksData.value.slice(4))
 
 const showTooltip = ref(false);
 const tooltipStatus = ref("");
@@ -355,18 +225,18 @@ const tooltipMessage = ref("");
 const isSidebarOpen = ref(false);
 const activePage = ref("index");
 
-const modalStore = useModalStore();
-const indexStore = useIndexStore();
-const currentModal = computed(() => modalStore.currentModal);
-const modalProps = computed(() => modalStore.modalProps);
+// const modalStore = useModalStore();
+// const indexStore = useIndexStore();
+// const currentModal = computed(() => modalStore.currentModal);
+// const modalProps = computed(() => modalStore.modalProps);
 
-const burgerBtn = computed(() => indexStore.adminBurgerBtn);
+// const burgerBtn = computed(() => indexStore.adminBurgerBtn);
 
-watch(burgerBtn, () => {
-  burgerBtn.value
-    ? (isSidebarOpen.value = true)
-    : (isSidebarOpen.value = false);
-});
+// watch(burgerBtn, () => {
+//   burgerBtn.value
+//     ? (isSidebarOpen.value = true)
+//     : (isSidebarOpen.value = false);
+// });
 
 const tooltip = (obj) => {
   const { status, message } = obj;
@@ -392,137 +262,202 @@ const closeSidebar = () => {
 </script>
 
 <style lang="scss">
-.admin-layout {
-  display: flex;
 
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
 
-  .sidebar {
-    background: var(--dark-color);
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 250px;
-    z-index: 100;
+  .admin_layout{
+     margin: 0;
+    font-family: var(--font-sans, ui-sans-serif, system-ui);
+    font-size: 1rem; 
+    -webkit-font-smoothing: antialiased;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #f9fafb;
+    color: #64748b;
+
+      // Dark mode
+    //   @media (prefers-color-scheme: dark) {
+    //     background-color: var(--dark-component-color);
+    //     color: #94a3b8;
+    // }
   }
-  .sidebar-wrapper {
-    width: 100%;
-    height: 100%;
-    position: sticky;
-    overflow-y: auto;
 
-    .title-section {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 1em;
-      color: var(--light-color);
+  .admin_head_bg{
 
-      img {
-        width: 5vw;
-        margin: 1em;
-        background: var(--light-color);
-        border-radius: 30%;
-      }
-      h1 {
-        font-size: 1.5rem;
-      }
-      span {
-        margin-top: 10px;
-        font-size: 0.8rem;
-      }
-    }
-    .list-options {
-      // padding: 1em;
-      position: relative;
-      img {
-        width: 2vw;
-      }
-      li {
-        position: relative;
-        padding: 0.8em 0.7em 0.8em;
-        margin-left: 10px;
-        margin-right: 5px;
-        margin-block: 5px;
-        border-radius: 20px;
-        cursor: pointer;
-        transition: all ease 0.3s;
-        color: var(--light-color);
-        font-size: 1rem;
-        a {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          gap: 1em;
-        }
-        .label {
-          background: #ff1744;
-          position: absolute;
-          transform: translateY(-50%);
-          top: 50%;
-          right: 2%;
-          padding: 2px 5px;
-          border-radius: 30%;
-          font-weight: 600;
-          font-size: 1.1rem;
-        }
-      }
-      li:hover {
-        background: rgba(255, 255, 255, 0.1);
-        transition: all ease 0.3s;
-        // border-left: 5px solid white;
-      }
-      li:hover:before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -3%;
-        width: 5px;
-        height: 100%;
-        // transform: translate(-50%, -50%);
-        // border-radius: 50%;
-        background: var(--secondary-color);
-        pointer-events: none;
-      }
-    }
-    .exit-btn {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      position: relative;
       position: absolute;
-      bottom: 0;
-      width: -webkit-fill-available;
-      gap: 1em;
-      padding: 0.8em 0.7em 0.8em;
-      margin-left: 10px;
-      margin-right: 15px;
-      margin-block: 5px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all ease 0.3s;
-      color: var(--light-color);
-      font-size: 1rem;
-      img {
-        width: 2vw;
+      width: 100%;
+      background-color: lightgray;
+      min-height: 18rem;
+
+      // @media (prefers-color-scheme: dark) {
+      //   background-color: var(--main-dark-color);
+      // }
+
+  }
+
+  .admin_sidebar{
+
+    position: fixed;
+    inset-block: 0;
+    gap: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    margin-block: 1rem;
+    overflow-y: scroll;
+    -webkit-font-smoothing: antialiased;
+    transition: transform 200ms;
+    transform: translateX(-100%);
+    background-color: #ffffff;
+    border: 0;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    max-width: 16rem;
+    transition-timing-function: var(--ease-nav-brand);
+    z-index: 990;
+    border-radius: 1rem;
+
+    // @media (prefers-color-scheme: dark) {
+    //   background-color: var(--dark-grey);
+    //   border: 1px solid var(--dark-border-color);
+    //   box-shadow: none;
+    //   background-color: #0f172a;
+    // }
+
+    @media (min-width: 1280px) {
+      margin-left: 1.5rem;
+      left: 0;
+      transform: translateX(0);
+    }
+
+    .sidebar_main{
+      width: 100%;
+      height: auto;
+    }
+
+    .sidebar_top{
+      height: 5rem;
+
+      &_content{
+        padding-inline: 0.5rem;
+        padding-block: 1.5rem;
+        margin: 0;
+        font-size: 0.875rem;
+        white-space: nowrap;
+        color: #334155;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+
+        .title_wrapper{
+          margin-left: 0.25rem;
+          display: flex;
+          flex-direction: column;
+          align-items: baseline;
+
+          .title_accent{
+            font-weight: 600;
+            transition: all 200ms;
+            transition-timing-function: var(--ease-nav-brand);
+          }
+
+        }
       }
     }
-    .exit-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      transition: all ease 0.3s;
-      // border-left: 5px solid white;
+
+    .sidebar_links{
+      display: block;
+      align-items: center;
+      width: auto;
+      max-height: 100vh;
+      overflow: auto;
+      height: var(--h-sidenav);
+      flex-grow: 1;
+      flex-basis: 100%;
+      padding-block: 0.5rem;
+
+      &_wrapper{
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+        margin-bottom: 0;
+      }
+
+      &_item{
+        margin-top: 0.125rem;
+        width: 100%;
+      }
+
+      .divider_item{
+        width: 100%;
+        margin-top: 1rem;
+        &_text{
+          padding-left: 1.5rem;
+          margin-left: 0.5rem;
+          font-size: 0.75rem;
+          font-weight: 700;
+          line-height: 1.25;
+          text-transform: uppercase;
+        }
+      }
+
+      .item_wrapper{
+        padding-block: 0.675rem;
+        // background-color: rgba(59, 130, 246, 0.13);
+        font-size: 0.875rem;
+        transition-timing-function: var(--ease-nav-brand);
+        margin-block: 0;
+        margin-inline: 0.5rem;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        border-radius: 0.5rem;
+        padding-inline: 1rem;
+        font-weight: 600;
+        color: #334155;
+        transition-property: color;
+      }
+
+      .image_content{
+        margin-right: 0.5rem;
+        display: flex;
+        height: 2rem;
+        width: 2rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+        background-position: center;
+        stroke: 0;
+        text-align: center;
+
+        @media (min-width: 1280px) {
+          padding: 0.375rem;
+        }
+      }
+
+      .text_content{
+        margin-left: 0.25rem;
+        transition-duration: 300ms;
+        opacity: 1;
+        pointer-events: none;
+        transition-timing-function: ease;
+      }
+    }
+
+  }
+
+  .admin_content{
+    position: relative;
+    height: 100%;
+    transition: all 200ms ease-in-out;
+    border-radius: 0.75rem;
+
+    @media (min-width: 1280px) {
+      margin-left: 18rem;
     }
   }
-}
-.page-layout {
-  background: var(--bg-color);
-  height: 100vh;
-  margin-left: 250px;
-  flex-grow: 1;
-  overflow: auto;
-}
 </style>
