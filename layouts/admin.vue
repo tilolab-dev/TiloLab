@@ -137,7 +137,7 @@
     <!-- <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
       {{ tooltipMessage }}
     </Tooltips> -->
-    <!-- <Modal @tooltip="tooltip">
+    <Modal @tooltip="tooltip">
       <template #default="{ openModal, closeModal }">
         <component
           :is="currentModal"
@@ -146,15 +146,17 @@
           :closeModal="closeModal"
         />
       </template>
-    </Modal> -->
+    </Modal>
   </div>
 </template>
 
 <script setup>
 import { computed, toRefs, watch, ref, onMounted } from "vue";
-// import Modal from "~/components/Modals/Modal.vue";
+import Modal from "~/components/Modals/Modal.vue";
 // import Tooltips from "~/components/shared/Tooltips.vue";
-// import { useModalStore, useIndexStore } from "#imports";
+import { useModalStore } from "@/store/modal-store";
+  // useIndexStore 
+
 
 
 const linksData = ref([
@@ -225,10 +227,10 @@ const tooltipMessage = ref("");
 const isSidebarOpen = ref(false);
 const activePage = ref("index");
 
-// const modalStore = useModalStore();
+const modalStore = useModalStore();
 // const indexStore = useIndexStore();
-// const currentModal = computed(() => modalStore.currentModal);
-// const modalProps = computed(() => modalStore.modalProps);
+const currentModal = computed(() => modalStore.currentModal);
+const modalProps = computed(() => modalStore.modalProps);
 
 // const burgerBtn = computed(() => indexStore.adminBurgerBtn);
 

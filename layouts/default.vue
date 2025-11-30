@@ -8,8 +8,10 @@
     </main>
     <!-- <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
       {{ tooltipMessage }}
-    </Tooltips>
-    <Modal @tooltip="tooltip">
+    </Tooltips> -->
+    <!-- <Modal @tooltip="tooltip"> -->
+
+    <Modal>
       <template #default="{ openModal, closeModal }">
         <component
           :is="currentModal"
@@ -19,21 +21,22 @@
         />
       </template>
     </Modal>
-    <Chat />
+    <!-- <Chat />
     <AppFooter /> -->
   </div>
 </template>
 
 <script setup>
-  // import Modal from "~/components/Modals/Modal.vue";
+  import Modal from "~/components/Modals/Modal.vue";
   // import Tooltips from "~/components/shared/Tooltips.vue";
-  // import { useModalStore, useAuthStore } from "#imports";
+  import { useModalStore } from "@/store/modal-store"; 
+  import { useAuthStore } from "@/store/auth-store";
   import { onMounted } from "vue";
 
-  // const modalStore = useModalStore();
-  // const authStore = useAuthStore();
-  // const currentModal = computed(() => modalStore.currentModal);
-  // const modalProps = computed(() => modalStore.modalProps);
+  const modalStore = useModalStore();
+  const authStore = useAuthStore();
+  const currentModal = computed(() => modalStore.currentModal);
+  const modalProps = computed(() => modalStore.modalProps);
 
   const showTooltip = ref(false);
   const tooltipStatus = ref("");
