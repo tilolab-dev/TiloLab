@@ -109,7 +109,7 @@
               </div>
               <!-- @click="showCategory('showAll')" -->
 
-              <span 
+              <span
                 class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-medium text-lg"
               >Всі товари</span>
             </li>
@@ -338,7 +338,7 @@ onMounted(() => {
   border-radius: 25%;
   position: relative;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2),
-     -5px -5px 10px rgba(255, 255, 255, 0.2); 
+     -5px -5px 10px rgba(255, 255, 255, 0.2);
 
   img {
     width: 100%;
