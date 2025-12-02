@@ -78,13 +78,19 @@ const openModal = (modalName, props = {}) => {
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   z-index: 1000;
+  overflow-y: scroll;
+  padding-block: 5vh;
 }
 .modal-content {
   background: white;
   /* padding: 20px; */
   border-radius: 10px;
   overflow-x: hidden;
+  height: 100%;
+  min-height: 500px;
+  position: relative;
+  overflow: hidden;
 }
 </style>

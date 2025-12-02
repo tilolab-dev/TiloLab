@@ -1,12 +1,14 @@
-import supabase from '../../../../utils/supabase'
-import prisma from '../../../../prisma/prisma'
+import supabase from '@/utils/supabase'
+import { prisma } from '@/prisma/prisma'
 import { readMultipartFormData } from 'h3';
 
 
 async function sendVerifyPass(event: any) {
     try {
-        
+        console.log('enter')
         const data = await readMultipartFormData(event);
+
+        console.log(data, 'data');
 
         if (!data) {
             return {
@@ -15,12 +17,16 @@ async function sendVerifyPass(event: any) {
             }
         }
         const email = JSON.parse(data?.[0]?.data?.toString() ?? '{}').mail
+
+        console.log(email, 'email');
       
         const checkEmailExist = await prisma.user.findUnique({
             where: {
                 email: email
             }
         })
+
+        console.log(checkEmailExist, 'checkEmailExist');
 
         if (checkEmailExist) {
             return {

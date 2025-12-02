@@ -1,0 +1,305 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma/client"
+}
+
+// generator client {
+//   provider = "prisma-client"
+//   output   = "./generated"
+// }
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Admin {
+  id               Int               @id @default(autoincrement())
+  name             String
+  visits           Int               @default(0) // текущие
+  sales            Int               @default(0)
+  avgCheck         Int               @default(0)
+  popularProducts  PopularProduct[]
+  promotedProducts PromotedProduct[]
+  metrics          AdminMetric[]
+}
+
+model AdminMetric {
+  id             Int      @id @default(autoincrement())
+  date           DateTime @default(now())
+  visits         Int
+  sales          Int
+  avgCheck       Int
+  yearSales      Int
+  allEarning     Int
+  users          Int
+  allClients     Int
+  allOrders      Int
+  lastOrders     Boolean
+  activity       Boolean
+  productRate    Boolean
+  activeOrders   Boolean
+  orderGeography Boolean
+  returnCancel   Boolean
+  periods        Boolean
+  userMetrics    Boolean
+  sellMetrics    Boolean
+  sellOrder      Boolean
+  adminId        Int
+  admin          Admin    @relation(fields: [adminId], references: [id])
+}
+
+model Category {
+  id            Int                   @id @default(autoincrement())
+  group         String                @unique
+  listPosition  Int                   @default(0)
+  visible       Boolean
+  categoryImg   String
+  parentId      Int?
+  parent        Category?             @relation("CategoryParent", fields: [parentId], references: [id], onDelete: Cascade)
+  subcategories Category[]            @relation("CategoryParent")
+  translations  CategoryTranslation[]
+  products      Product[]
+
+  @@index([parentId])
+}
+
+model CategoryTranslation {
+  id          Int      @id @default(autoincrement())
+  categoryId  Int
+  language    String
+  title       String
+  description String?
+  groupText   String
+  Category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId])
+  @@index([language])
+}
+
+model Product {
+  id                Int                  @id @default(autoincrement())
+  categoryId        Int
+  visible           Boolean
+  img               ProductImg[]
+  price             Float?
+  stockState        Boolean
+  stockValue        Int?                 @default(0)
+  discountPercent   Int?
+  wholesalePrice    Int?
+  counterQuantity   Int?                 @default(1)
+  packageType       String
+  wholesaleOnly     Boolean?
+  wholesaleFrom     Int?
+  productSize       String
+  productWeight     String
+  productDensity    String
+  productCapacity   String
+  packageQuantity   String
+  groupPackQuantity String
+  options           ProductOptions[]
+  translations      ProductTranslation[]
+  popularProducts   PopularProduct[]
+  promotedProducts  PromotedProduct[]
+  category          Category             @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  orderItems        OrderItem[]
+
+  @@index([categoryId])
+  @@index([price])
+}
+
+model ProductOptions {
+  id           Int                         @id @default(autoincrement())
+  optionId     Int
+  optionImg    String
+  optionPrice  Float?
+  translations ProductOptionsTranslation[]
+  Product      Product                     @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  @@index([optionId])
+}
+
+model ProductImg {
+  id      Int     @id @default(autoincrement())
+  imgId   Int
+  path    String
+  Product Product @relation(fields: [imgId], references: [id], onDelete: Cascade)
+
+  @@index([imgId])
+}
+
+model ProductTranslation {
+  id                   Int     @id @default(autoincrement())
+  productId            Int
+  language             String
+  title                String
+  productDescription   String?
+  wholesaleDescription String?
+  productColor         String
+  groupPackage         String
+  productMaterial      String
+  Product              Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([language])
+}
+
+model ProductOptionsTranslation {
+  id         Int            @id @default(autoincrement())
+  optionId   Int
+  language   String
+  optionInfo String
+  Option     ProductOptions @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  @@index([optionId])
+  @@index([language])
+}
+
+model PopularProduct {
+  id        Int     @id @default(autoincrement())
+  admin     Admin   @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  adminId   Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+
+  addedAt DateTime @default(now())
+}
+
+model PromotedProduct {
+  id        Int     @id @default(autoincrement())
+  admin     Admin   @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  adminId   Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+
+  addedAt DateTime @default(now())
+}
+
+model User {
+  id             Int            @id @default(autoincrement())
+  username       String?        @unique
+  userSurname    String?
+  userAvatar     String?
+  userFamily     String?
+  email          String?        @unique
+  phoneNumber    String?
+  password       String?
+  createdAt      DateTime       @default(now())
+  role           String         @default("guest")
+  orders         Order[]
+  adresses       Adress[]
+  notifications  Notification[]
+  settings       UserSetting[]
+  telegramId     String?        @unique
+  telegramChatId String?        @unique
+  telegramRole   TgRoles?       @default(CLIENT)
+
+  @@index([phoneNumber])
+}
+
+model Adress {
+  id          Int     @id @default(autoincrement())
+  userId      Int
+  street      String
+  city        String
+  country     String
+  homeAdress  String
+  postCompany String
+  postOffice  String
+  postomat    String
+  postalCode  String?
+  postIndex   String
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model UserSetting {
+  id      Int    @id @default(autoincrement())
+  userId  Int
+  setting String
+  value   String
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  message   String
+  isReaded  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+enum TgRoles {
+  GUEST
+  ADMIN
+  CLIENT
+}
+
+model Order {
+  id            String        @id @default(uuid())
+  userId        Int?
+  user          User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  status        OrderStatus   @default(PENDING)
+  createdAt     DateTime      @default(now())
+  paymentMethod String?
+  totalPrice    Int
+  shippingInfo  ShippingInfo?
+  orderItems    OrderItem[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   String
+  productId Int
+  quantity  Int     @default(1)
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model ShippingInfo {
+  id             Int     @id @default(autoincrement())
+  orderId        String  @unique
+  recipient      String
+  phoneNumber    String
+  deliveryMethod String?
+  postCompany    String?
+  postOffice     String?
+  postomat       String?
+  city           String
+  address        String?
+  country        String
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([city])
+  @@index([country])
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
+model News {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  visible   Boolean
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

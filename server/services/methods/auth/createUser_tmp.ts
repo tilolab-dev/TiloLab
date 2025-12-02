@@ -1,5 +1,5 @@
 import { readMultipartFormData } from "h3";
-import prisma from '../../../../prisma/prisma';
+import { prisma } from '@/prisma/prisma';
 import bcrypt from "bcrypt";
 
 async function createUser(event: any) {
