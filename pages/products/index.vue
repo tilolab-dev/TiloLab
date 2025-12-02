@@ -1,40 +1,49 @@
 <template>
   <div class="section page products-section">
     <!-- <main v-if="activeCategory.length" class="flex-grow p-1 mt-5"> -->
-    <main class="flex-grow p-1 mt-5" v-if="loader">
+    <main class="flex-grow p-1 mt-5" v-if="!loader">
+        <!-- v-for="(item, index) in fetchedAllProducts" -->
+        <!-- v-for="(item, index) in 1" -->
+
+
       <div
-        v-for="(item, index) in fetchedAllProducts"
-        :key="index"
         class="group-title mb-3"
       >
+        <!-- :key="index" -->
+
 
         <h2
           class="text-2xl font-bold text-[var(--dark-color)] dark:text-[var(--dark-font-color)] mb-4 z-10 relative"
-          v-if="categoryTitles[index]"
         >
+          <!-- v-if="categoryTitles[index]" -->
 
-          {{ item.translations.find((t) => t.language === $i18n.locale).title  }}
+
+          <!-- {{ item.translations.find((t) => t.language === $i18n.locale).title  }} -->
         </h2>
 
         <div class="cards-content">
           <!-- grid grid-cols-1  2xl:grid-cols-3 sm:grid-cols-2 gap-4 mt-4 -->
+
+            <!-- v-for="(product, productIndex) in item.products" -->
+
           <div
-            v-for="(product, productIndex) in item.products"
+            v-for="(product, productIndex) in 6"
             :key="productIndex"
-            class="card-wrapper w-fit"
+            class="card-wrapper"
           >
             <!-- bg-gray-200 h-fit rounded-xl border-1px border-[var(--dark-color)] -->
 
             <!-- {{console.log(product, 'product') }} -->
             <div
-              class="h-full"
+              class="inner_card"
             >
             <!-- :to="`/products/${item.group
                 .replaceAll(' ', '-')
                 .toLowerCase()}/${product.id}`"
               @click="selectProduct(product.product)" -->
               <!-- {{ console.log(item.group, product.id) }} -->
-              <!-- <ItemCard :product="product" /> -->
+              <ItemCard />
+              <!-- :product="product"  -->
             </div>
             
           </div>
@@ -44,12 +53,12 @@
         class="button-wrapper my-10 flex items-center justify-center"
         v-if="showMoreBtn"
       >
-        <ShadowBtn
+        <!-- <ShadowBtn
           @click="getOffsetProducts"
         >
           {{ $t('products-page.loadMoreBtn') }}
 
-        </ShadowBtn>
+        </ShadowBtn> -->
       </div>
       
     </main>
@@ -59,7 +68,7 @@
           <h2
           class="text-2xl font-bold text-[var(--dark-color)] dark:text-[var(--dark-font-color)] mb-4 z-10 relative"
         >
-          {{ $t('products-page.loadState') }}
+          <!-- {{ $t('products-page.loadState') }} -->
         </h2>
         </client-only>
        
@@ -89,7 +98,7 @@
 import { onMounted, ref } from "vue";
 
 // import { useI18n } from "vue-i18n";
-// import ItemCard from "@/components/ItemCard.vue";
+import ItemCard from "@/components/ItemCard.vue";
 // import SkeletonItemCard from "~/components/SkeletonItemCard.vue";
 // import ShadowBtn from "~/components/shared/ShadowBtn.vue";
 
@@ -98,7 +107,7 @@ const showMoreBtn = ref(false);
 const categoryTitles = ref([]);
 const offset = ref(0);
 
-const { locale } = useI18n()
+// const { locale } = useI18n()
 
 const loader = ref(false);
 
@@ -173,6 +182,10 @@ definePageMeta({
 
   .card-wrapper {
     width: calc(50% - 5px);
+    .inner_card{
+      height: 100%;
+    }
+
     @media screen and (max-width: 1024px) {
       width: calc(33.3% - 7px);
     }
