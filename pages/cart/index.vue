@@ -1,12 +1,11 @@
 <template>
-  <div>
     <section class="py-8 antialiased md:py-10 max-md:mt-6">
     <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
       <h2 class="text-xl font-semibold text-[var(--dark-color)] dark:text-[var(--dark-font-color)] sm:text-2xl mb-4">
-        {{ $t("cart.title") }}
+        <!-- {{ $t("cart.title") }} -->
       </h2>
       <p class="text-xl font-sm text-[var(--dark-color)] dark:text-[var(--dark-font-color)] sm:text-2xl">
-        {{ $t("cart.description") }}
+        <!-- {{ $t("cart.description") }} -->
       </p>
 
       <div class="mt-4 sm:mt-6 md:gap-6 lg:flex lg:items-start xl:gap-8">
@@ -152,7 +151,7 @@
             <h3
               class="text-2xl font-semibold text-gray-900 dark:text-[var(--dark-font-color)]"
             >
-              {{ $t("cart.also-buy") }}
+              <!-- {{ $t("cart.also-buy") }} -->
             </h3>
             <div
               class="mt-6 grid grid-cols-3 max-xl:grid-cols-2 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 gap-4 sm:mt-8"
@@ -434,7 +433,7 @@
               class="text-xl font-semibold text-gray-900 dark:text-[var(--dark-font-color)]"
             >
               <!-- Підсумок замовлення -->
-              {{ $t("cart.summary.title") }}
+              <!-- {{ $t("cart.summary.title") }} -->
             </p>
 
             <div class="space-y-4">
@@ -444,7 +443,7 @@
                     class="text-base font-normal text-gray-500 dark:text-gray-500"
                   >
                     <!-- Повна ціна -->
-                    {{ $t("cart.summary.full-price") }}
+                    <!-- {{ $t("cart.summary.full-price") }} -->
                   </dt>
                   <dd
                     class="text-base font-medium text-gray-900 dark:text-[var(--dark-font-color)]"
@@ -458,7 +457,7 @@
                     class="text-base font-normal text-gray-500 dark:text-gray-500"
                   >
                     <!-- Скидка -->
-                    {{ $t("cart.summary.discount") }}
+                    <!-- {{ $t("cart.summary.discount") }} -->
                   </dt>
                   <dd class="text-base font-medium text-green-700">-₴ 0</dd>
                 </dl>
@@ -472,7 +471,7 @@
                   class="text-base font-bold dark:text-[var(--dark-font-color)] text-[var(--primary-color)]"
                 >
                   <!-- Всього -->
-                  {{ $t("cart.summary.total") }}
+                  <!-- {{ $t("cart.summary.total") }} -->
                 </dt>
                 <dd
                   class="text-base font-bold text-gray-900 dark:text-[var(--dark-font-color)]"
@@ -487,7 +486,7 @@
               class="process-order flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-[var(--dark-color)] hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
             >
               <!-- Перейти до оформлення замовлення -->
-              {{ $t("cart.summary.place-order") }}
+              <!-- {{ $t("cart.summary.place-order") }} -->
             </NuxtLink>
 
             <div class="flex items-center justify-center gap-2">
@@ -497,7 +496,7 @@
                 class="inline-flex items-center justify-center py-2 rounded-md gap-2 text-sm text-white font-medium text-primary-700 bg-[var(--dark-color)] w-full"
               >
                 <!-- Повернутись в Магазин -->
-                {{ $t("cart.summary.go-back") }}
+                <!-- {{ $t("cart.summary.go-back") }} -->
                 <svg
                   class="h-5 w-5"
                   aria-hidden="true"
@@ -521,7 +520,6 @@
     </div>
   </section>
     
-  </div>
  
   
 </template>
@@ -613,28 +611,37 @@
 
 <style lang="scss" scoped>
 
-  @use ".//styles/mixins.scss" as mixins;
-
-    .go-back-btn{
-      @include mixins.cardShadow;
-    }
+  .cart_section{
+    
+  }
 
 
-    .process-order{
-      @include mixins.cardShadow;
-      border-radius: 0.375rem;
-      padding: unset;
-      padding-block: 1rem;
-      cursor: pointer;
-    }
 
-    .dark .process-order{
-      box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.3), -6px -6px 20px rgba(0, 0, 0, 0.4);
 
-    }
 
-    .dark .go-back-btn{
-      box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.3), -6px -6px 20px rgba(0, 0, 0, 0.4);
-    }
+
+  // @use ".//styles/mixins.scss" as mixins;
+
+    // .go-back-btn{
+    //   @include mixins.cardShadow;
+    // }
+
+
+    // .process-order{
+    //   // @include mixins.cardShadow;
+    //   border-radius: 0.375rem;
+    //   padding: unset;
+    //   padding-block: 1rem;
+    //   cursor: pointer;
+    // }
+
+    // .dark .process-order{
+    //   box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.3), -6px -6px 20px rgba(0, 0, 0, 0.4);
+
+    // }
+
+    // .dark .go-back-btn{
+    //   box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.3), -6px -6px 20px rgba(0, 0, 0, 0.4);
+    // }
 
 </style>
