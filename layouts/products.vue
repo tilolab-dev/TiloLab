@@ -95,7 +95,7 @@
         class="products-main grid grid-cols-[1fr_3fr] gap-5 w-[92vw] mx-auto"
       >
         <!-- SIDEBAR -->
-        <div 
+        <div
           class="categories border-r-[1px] border-[#d9dbe0] dark:border-[var(--dark-border-color)] pr-4 py-2"
           :class="{'active-mobile-categories': mobileCategoryState}"
         >
@@ -105,20 +105,20 @@
 
             >
               <div class="icon">
-                <img src="/public/img/icons/products.png" alt="products" />
+                <!-- <img src="/public/images/" alt="products" /> -->
               </div>
               <!-- @click="showCategory('showAll')" -->
 
-              <span 
+              <span
                 class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-medium text-lg"
               >Всі товари</span>
             </li>
             <li>
               <div class="icon">
-                <img
+                <!-- <img
                   src="/public/img/icons/product-category.png"
                   alt="products"
-                />
+                /> -->
               </div>
               <span
                 class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-medium text-lg"
@@ -291,15 +291,15 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-
-import { useModalStore, useIndexStore } from "#imports";
+import { useModalStore } from "@/store/modal-store";
+// import { useIndexStore } from "@/store/index-store";
 
 import Modal from "@/components/Modals/Modal.vue";
-import LinkBlock from "@/components/shared/LinkBlock.vue";
-import SvgIcon from "@/components/shared/SvgIcon.vue";
-import KorzinkaBg from "@/components/KorzinkaBg.vue";
-import ItemCard from "@/components/ItemCard.vue";
-import DashBurger from "~/components/shared/DashBurger.vue";
+// import LinkBlock from "@/components/shared/LinkBlock.vue";
+// import SvgIcon from "@/components/shared/SvgIcon.vue";
+// import KorzinkaBg from "@/components/KorzinkaBg.vue";
+// import ItemCard from "@/components/ItemCard.vue";
+// import DashBurger from "~/components/shared/DashBurger.vue";
 
 const modalStore = useModalStore();
 const indexStore = useIndexStore();
@@ -379,7 +379,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@use ".//styles/mixins.scss" as mixins;
+@use "@/style/mixins.scss" as mixins;
 
 @include mixins.mobileBar(1024px);
 .layout {
@@ -424,7 +424,7 @@ main {
   border-radius: 25%;
   position: relative;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2),
-     -5px -5px 10px rgba(255, 255, 255, 0.2); 
+     -5px -5px 10px rgba(255, 255, 255, 0.2);
 
   img {
     width: 100%;

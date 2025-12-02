@@ -1,0 +1,20 @@
+// Basic shared mixins for the project
+
+// subtle card shadow
+@mixin cardShadow {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+// mobileBar helper: toggles .mobile-bar visibility based on breakpoint
+// Usage: @include mixins.mobileBar(1024px);
+@mixin mobileBar($breakpoint) {
+  .mobile-bar {
+    display: none;
+  }
+
+  @media (max-width: $breakpoint) {
+    .mobile-bar {
+      display: block;
+    }
+  }
+}
