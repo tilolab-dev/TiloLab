@@ -116,23 +116,24 @@
             
             <li v-for="(category, index) in fetchedAllCategories" :key="index"
               @click="mobileCategory()"
+              class=""
             >
               <NuxtLink
                 :to="`/products/${category.group
                   .replaceAll(' ', '-')
                   .toLowerCase()}`"
-                class="flex justify-start gap-2 items-center"
+                class="category_element flex justify-start gap-2 items-center"
               >
                 <div class="icon">
                   <img :src="category.categoryImg" alt="icon" />
                 </div>
-                <!-- <span
+                <span
                   class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-medium text-lg"
                 >{{
                   category.translations.find(
-                    (tr) => tr.language === $i18n.locale
+                    (tr) => tr.language === 'uk'
                   ).title
-                }}</span> -->
+                }}</span>
               </NuxtLink>
             </li>
 
@@ -166,6 +167,7 @@ import { ref, computed, onMounted } from "vue";
 
 
 import { useModalStore } from "@/store/modal-store";
+import { useIndexStore } from "@/store/index-store";
 
 
 import Modal from "@/components/Modals/Modal.vue";
@@ -177,7 +179,7 @@ import BreadCrumbs from "@/components/shared/BreadCrumbs.vue";
 // import DashBurger from "~/components/shared/DashBurger.vue";
 
 const modalStore = useModalStore();
-// const indexStore = useIndexStore();
+const indexStore = useIndexStore();
 const currentModal = computed(() => modalStore.currentModal);
 const modalProps = computed(() => modalStore.modalProps);
 
@@ -185,8 +187,8 @@ const fetchedProducts = ref([]);
 
 const fetchedAllCategories = ref([]);
 
-// const fetchCategory = computed(() => indexStore.fetchedCategories);
-// fetchedAllCategories.value = fetchCategory.value;
+const fetchCategory = computed(() => indexStore.fetchedCategories);
+fetchedAllCategories.value = fetchCategory.value;
 
 const categories = ref(true);
 const filters = ref(true);
@@ -318,6 +320,18 @@ onMounted(() => {
 
     ul{
       margin-top: 1rem;
+      .category_element{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        img{
+          width: 150px;
+          height: 150px;
+          object-fit: contain;
+          padding: 0
+        }
+      }
     }
 
   }

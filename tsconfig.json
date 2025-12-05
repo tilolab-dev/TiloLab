@@ -1,31 +1,4 @@
-// {
- 
-//   "extends": "./.nuxt/tsconfig.json",
-//   "compilerOptions": {
-//     "types": [],
-//     "moduleResolution": "Node",
-//     "baseUrl": "./",
-//     "paths": {
-//       // "@utils/*": ["./utils/*"],
-//       "@utils/*": ["./utils/*"],
-//       "@/*": ["src/*"],
-//       "~/*": ["./*"],
-//       "#app": [".nuxt/types/app/index.d.ts"],
-//       "#imports": [".nuxt/types/app/imports.d.ts"],
-//       "#components": [".nuxt/types/app/components.d.ts"],
-//       // "#imports/*": ["src/*"]
-//     }
-//   }
-// }
-// {
-//   "extends": "./.nuxt/tsconfig.json",
-//   "compilerOptions": {
-//     "paths": {
-//       "~/*": ["./*"],
-//       "@/*": ["./*"]
-//     }
-//   }
-// }
+
 {
    "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
