@@ -1,24 +1,36 @@
 import { readMultipartFormData } from "h3";
 import supabase from '@/utils/supabase'
-import { prisma } from '@/prisma/prisma'
+import { prisma } from '@/prisma/prisma';
+
+type Translation = {
+  language: string;
+  title: string;
+  description: string;
+};
 
 async function addCategory(event: any) {
 
-    const formData = await readMultipartFormData(event);
+    const body = await readBody<{
+        group: string,
+        visible: boolean,
+        translations: Translation[],
+        categoryImg: string
 
-    if (!formData) {
+
+    }>(event);
+
+    if (!body) {
         return { message: 'No data received!' };
     }
 
-    // return formData
+    const { group, visible, translations, categoryImg } = body;
 
-    const textField = formData.find((field) => field.name === 'data');
-
-    if (!textField) {
-        return {message: 'No category data found'}
+    if (!group || !visible || !translations || !categoryImg) {
+        return { 
+            statusCode: 400,
+            message: 'All fields are required!' 
+        };
     }
-
-    const productData = JSON.parse(textField.data.toString());
 
     const lastCategory = await prisma.category.findFirst({
         orderBy: { listPosition: 'desc' },
@@ -26,37 +38,40 @@ async function addCategory(event: any) {
 
     const newListPosition = lastCategory ? lastCategory.listPosition + 1 : 1;
 
-
     try {
 
         const newCategory = await prisma.category.create({
             data: {
-                group: productData.group,
+                group: group,
                 listPosition: newListPosition,
-                visible: productData.visible,
+                visible: visible,
                 translations: {
-                    create: productData.translations.map((translation: any) => ({
+                    create: translations.map((translation: any) => ({
                         language: translation.language,
                         title: translation.title,
                         groupText: translation.description,
+                        description: translation.description
                     }))
                 },
-                categoryImg: productData.categoryImg
+                categoryImg: categoryImg
             }
         })
 
         return {
+            statusCode: 200,
             tooltipStatus: 'success',
             message: 'Категорія створена успішно',
             category: newCategory
         }
         
     } catch (error) {
+        console.error(error);
         return {
+            statusCode: 500,
             message: `Something went wrong, ${error}`
+            
         }
     }
-
 }
 
 export default addCategory;

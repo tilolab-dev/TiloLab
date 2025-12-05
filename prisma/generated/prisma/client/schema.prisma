@@ -3,11 +3,6 @@ generator client {
   output   = "./generated/prisma/client"
 }
 
-// generator client {
-//   provider = "prisma-client"
-//   output   = "./generated"
-// }
-
 datasource db {
   provider = "postgresql"
 }
@@ -53,7 +48,7 @@ model Category {
   group         String                @unique
   listPosition  Int                   @default(0)
   visible       Boolean
-  categoryImg   String
+  categoryImg   String?
   parentId      Int?
   parent        Category?             @relation("CategoryParent", fields: [parentId], references: [id], onDelete: Cascade)
   subcategories Category[]            @relation("CategoryParent")
@@ -69,7 +64,7 @@ model CategoryTranslation {
   language    String
   title       String
   description String?
-  groupText   String
+  groupText   String?
   Category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@index([categoryId])
