@@ -18,189 +18,17 @@
             </NuxtLink>
           </div>
 
-          <div class="product-card" v-for="(product, idx) in cartProducts" :key="idx">
-            <div class="product-row">
-              <div class="product-thumb">
-                <img :src="product.img[0].path" alt="image" />
-              </div>
-
-              <div class="product-info">
-                <h4 class="product-title">
-                  {{product.translations.find((t) => t.language === $i18n.locale).title}}
-                </h4>
-                <p class="product-desc">
-                  {{product.translations.find((t) => t.language === $i18n.locale).productDescription}}
-                </p>
-              </div>
-
-              <div class="controls">
-                <label class="sr-only">Choose quantity:</label>
-                <div class="quantity">
-                  <button @click="updateQuantity('-', product)" class="btn btn-square">-</button>
-                  <input type="text" class="quantity-input" :value="product.quantityProducts" required />
-                  <button @click="updateQuantity('+', product)" class="btn btn-square">+</button>
-
-                  <div class="quantity-meta">
-                    <div class="quantity-label">Кількість товару</div>
-                    <div class="package-label">{{product.translations.find((t) => t.language ===
-                      $i18n.locale).groupPackage }}</div>
-                  </div>
-                </div>
-
-                <div class="actions">
-                  <button @click="removeProduct(product)" class="btn btn-danger">Видалити</button>
-                  <div class="price">{{ product.totalPrice }} грн</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="also-buy">
-          <h3 class="also-buy-title"><!-- {{ $t("cart.also-buy") }} --></h3>
-          <div class="cards-grid">
+          <div
+            v-for="(product, productIndex) in 6"
+            :key="productIndex"
+            class="card-wrapper"
+          >
             <div
-              class="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[var(--main-accent)] dark:bg-[var(--dark-accent-color)]">
-              <div class="overflow-hidden rounded">
-                <img class="mx-auto h-44 w-44 dark:hidden" src="../../public//icon-pack/bag-icons/stratch.png"
-                  alt="image" />
-              </div>
-              <div>
-                <a href="#"
-                  class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">ТОВАР</a>
-                <p class="mt-2 text-base font-normal text-gray-500 dark:text-gray-400">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Reiciendis, odit?
-                </p>
-              </div>
-              <div>
-                <p class="text-lg font-bold text-gray-900 dark:text-white">
-                  <span class="line-through"> $399,99 </span>
-                </p>
-                <p class="text-lg font-bold leading-tight text-red-600 dark:text-red-500">
-                  $299
-                </p>
-              </div>
-              <div class="mt-6 flex items-center gap-2.5">
-                <button data-tooltip-target="favourites-tooltip-1" type="button"
-                  class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white p-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-[var(--dark-accent-color)] dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
-                  <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"></path>
-                  </svg>
-                </button>
-                <div id="favourites-tooltip-1" role="tooltip"
-                  class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
-                  Add to favourites
-                  <div class="tooltip-arrow" data-popper-arrow></div>
-                </div>
-                <button type="button"
-                  class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                  <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4" />
-                  </svg>
-                  Add to cart
-                </button>
-              </div>
+              class="inner_card"
+            >
+              <ItemCard />
             </div>
-            <div
-              class="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[var(--main-accent)] dark:bg-[var(--dark-accent-color)]">
-              <a href="#" class="overflow-hidden rounded">
-                <img class="mx-auto h-44 w-44 dark:hidden" src="../../public/icon-pack/bag-icons/comservBag.png"
-                  alt="image" />
-              </a>
-              <div>
-                <a href="#"
-                  class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">ТОВАР</a>
-                <p class="mt-2 text-base font-normal text-gray-500 dark:text-gray-400">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                </p>
-              </div>
-              <div>
-                <p class="text-lg font-bold text-gray-900 dark:text-white">
-                  <span class="line-through"> $799,99 </span>
-                </p>
-                <p class="text-lg font-bold leading-tight text-red-600 dark:text-red-500">
-                  $499
-                </p>
-              </div>
-              <div class="mt-6 flex items-center gap-2.5">
-                <button data-tooltip-target="favourites-tooltip-2" type="button"
-                  class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white p-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-[var(--dark-accent-color)] dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
-                  <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"></path>
-                  </svg>
-                </button>
-                <div id="favourites-tooltip-2" role="tooltip"
-                  class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
-                  Add to favourites
-                  <div class="tooltip-arrow" data-popper-arrow></div>
-                </div>
-                <button type="button"
-                  class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                  <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4" />
-                  </svg>
-                  Add to cart
-                </button>
-              </div>
-            </div>
-            <div
-              class="space-y-6 overflow-hidden rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-[var(--main-accent)] dark:bg-[var(--dark-accent-color)]">
-              <a href="#" class="overflow-hidden rounded">
-                <!-- <img class="mx-auto h-44 w-44 dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/apple-watch-light.svg" alt="imac image" />
-                <img class="mx-auto hidden h-44 w-44 dark:block" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/apple-watch-dark.svg" alt="imac image" /> -->
-                <img class="mx-auto h-44 w-44 dark:hidden" src="../../public/icon-pack/bag-icons/cute-bag.png"
-                  alt="imac image" />
-              </a>
-              <div>
-                <a href="#"
-                  class="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white">ТОВАР</a>
-                <p class="mt-2 text-base font-normal text-gray-500 dark:text-gray-400">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                </p>
-              </div>
-              <div>
-                <p class="text-lg font-bold text-gray-900 dark:text-white">
-                  <span class="line-through"> $1799,99 </span>
-                </p>
-                <p class="text-lg font-bold leading-tight text-red-600 dark:text-red-500">
-                  $1199
-                </p>
-              </div>
-              <div class="mt-6 flex items-center gap-2.5">
-                <button data-tooltip-target="favourites-tooltip-3" type="button"
-                  class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white p-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-[var(--dark-accent-color)] dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
-                  <svg class="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 6C6.5 1 1 8 5.8 13l6.2 7 6.2-7C23 8 17.5 1 12 6Z"></path>
-                  </svg>
-                </button>
-                <div id="favourites-tooltip-3" role="tooltip"
-                  class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700">
-                  Add to favourites
-                  <div class="tooltip-arrow" data-popper-arrow></div>
-                </div>
 
-                <button type="button"
-                  class="inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                  <svg class="-ms-2 me-2 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7h-1M8 7h-.688M13 5v4m-2-2h4" />
-                  </svg>
-                  Add to cart
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -241,6 +69,24 @@
           </div>
         </div>
       </aside>
+    </div>
+
+    <div class="also-buy">
+      <h3 class="also-buy-title">Also buy</h3>
+      <div class="cards-grid">
+        <div
+          v-for="(product, productIndex) in 3"
+          :key="productIndex"
+          class="card-wrapper"
+        >
+          <div
+            class="inner_card"
+          >
+            <ItemCard />
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
 </section>
