@@ -1,16 +1,17 @@
 import { toRaw } from "vue";
 
 export const useFileUpload = (emit: any) => {
-    const handleFileUpload = (event: any, type: any, state: any, length?: number) => {
+    const handleFileUpload = (event: any, type: any, state: any, length?: any) => {
       
       const accessedFormat = ["svg", "png"];
       const files = Array.from(event.target.files);
 
       if (files.length + length > 5) {
-        emit("tooltip", {
-            status: "error",
-            message: "Максимальна кількість файлів 5",
-        });
+        alert("Максимальна кількість файлів 5");
+        // emit("tooltip", {
+        //     status: "error",
+        //     message: "Максимальна кількість файлів 5",
+        // });
         return;
       }
 
@@ -32,10 +33,11 @@ export const useFileUpload = (emit: any) => {
 
         const fileExtension = file.name.split(".").pop().toLowerCase();
         if (!accessedFormat.includes(fileExtension)) {
-          emit("tooltip", {
-            status: "error",
-            message: "Файл повинен бути формату .svg .png",
-          });
+          alert("Файл повинен бути формату .svg .png");
+          // emit("tooltip", {
+          //   status: "error",
+          //   message: "Файл повинен бути формату .svg .png",
+          // });
           return;
         }
 

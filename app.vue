@@ -5,5 +5,6 @@
   </div> -->
   <NuxtLayout>
     <NuxtPage />
+    <SharedIconLibrary />
   </NuxtLayout>
 </template>
