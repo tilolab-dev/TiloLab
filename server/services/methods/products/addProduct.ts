@@ -3,58 +3,133 @@ import path from "path";
 import { prisma } from '@/prisma/prisma';
 import supabase from '@/utils/supabase'
 
-
+interface IOptions {
+    optionImg: string,
+    optionPrice: number,
+    translations: {
+        language: string,
+        title: string,
+        description: string,
+        productColor: string,
+        productMaterial: string,
+    }
+}
 
 async function addProduct(event: any) {
+
+    const body = await readBody<{
+        categoryId: number,
+        visibility: boolean,
+        img: string[] ,
+        productPrice: number,
+        stockState: boolean,
+        stockValue: number,
+        discountPercent: number,
+        productSize: string,
+        translations: any
+        options: IOptions[]
+    }>(event);
+
+    console.log(body, 'body');
+    // return;
+
+      if (!body) {
+        return { 
+            statusCode: 400,
+            message: 'No data received!' 
+        };
+    }
+
+    const { categoryId, visibility, productPrice, stockState, stockValue, discountPercent, productSize, translations } = body;
+
+    if (
+        categoryId === undefined ||
+        !visibility ||
+        productPrice === undefined ||
+        stockValue === undefined ||
+        stockState === undefined ||
+        discountPercent === undefined ||
+        !productSize || 
+        !translations ||
+        typeof visibility !== "boolean" ||
+        typeof stockState !== "boolean"
+    ) {
+
+        // if (categoryId === undefined) {
+        //     console.log('categoryId is undefined');
+        // }
+        // if (productPrice === undefined) {
+        //     console.log('productPrice is undefined');
+        // }
+        // if (stockValue === undefined) {
+        //     console.log('stockValue is undefined');
+        // }
+        // if (discountPercent === undefined) {
+        //     console.log('discountPercent is undefined');
+        // }
+        // if (!productSize) {
+        //     console.log('productSize is undefined');
+        // }
+        // if (!translations) {
+        //     console.log('translations is undefined');
+        // }
+        // if (typeof visibility !== "boolean") {
+        //     console.log('visibility is not a boolean');
+        // }
+        // if (typeof stockState !== "boolean") {
+        //     console.log('stockState is not a boolean');
+        // }
+
+
+        return { 
+            statusCode: 400,
+            message: 'Missing required fields!' 
+        };
+    }
+
+
+
+
+
+
+
     try{
 
 
-        const formData = await readMultipartFormData(event);
+        // const formData = await readMultipartFormData(event);
 
-        if (!formData) {
-            return { message: 'No data received!' };
-        }
+        // if (!formData) {
+        //     return { message: 'No data received!' };
+        // }
 
 
-        const textField = formData.find((field) => field.name === 'data');
+        // const textField = formData.find((field) => field.name === 'data');
 
-        if (!textField) {
-            return {message: 'No product data found'}
-        }
+        // if (!textField) {
+        //     return {message: 'No product data found'}
+        // }
 
-        const productData = JSON.parse(textField.data.toString());
+        // const productData = JSON.parse(textField.data.toString());
 
         // console.log(productData)
 // return
         const newProduct = await prisma.product.create({
             data: {
-                categoryId: Number(productData.category),
-                visible: Boolean(productData.visibility),
-                price: Number(productData.price),
-                stockState: Boolean(productData.stockState),
-                stockValue: Number(productData.stockValue),
-                discountPercent: Number(productData.discountPersent),
-                wholesalePrice: Number(productData.wholesalePrice),
-                wholesaleFrom: Number(productData.wholesaleFrom),
-                counterQuantity: Number(productData.counterQuantity),
-                packageType: String(productData.packageType),
-                wholesaleOnly: Boolean(productData.wholesaleOnly),
-                productSize: String(productData.productSize),
-                productWeight: String(productData.productWeight),
-                productDensity: String(productData.productDensity),
-                productCapacity: String(productData.productCapacity),
-                packageQuantity: String(productData.productQuantity),
-                groupPackQuantity: String(productData.productGroupQuantity),
+                categoryId: Number(body.categoryId),
+                visible: Boolean(body.visibility),
+                productPrice: Number(body.productPrice),
+                stockState: Boolean(body.stockState),
+                stockValue: Number(body.stockValue),
+                discountPercent: Number(body.discountPercent),
+                productSize: String(body.productSize),
 
                 translations: {
                     
-                    create: productData.translations.map((t: any) => ({
+                    create: body.translations.map((t: any) => ({
                         language: t.language,
                         title: t.title,
                         productDescription: t.description,
-                        wholesaleDescription: t.wholesaleDescription,
                         productColor: t.productColor,
-                        groupPackage: t.groupPackage,
                         productMaterial: t.productMaterial,
 
                     })),
@@ -62,14 +137,14 @@ async function addProduct(event: any) {
                 },
 
                 img: {
-                    create: productData.img.map((imgPath: string) => ({
+                    create: body.img.map((imgPath: string) => ({
                         path: imgPath,
                     }))
                 },
 
                 options: {
 
-                    create: productData.options.map((option: any) => (
+                    create: body.options.map((option: any) => (
                         {
                         
                         optionImg: option.fileImg[0],
@@ -79,6 +154,9 @@ async function addProduct(event: any) {
                             create: option.translations.map((tr: any) => ({
                                 language: tr.language,
                                 optionInfo: tr.optionInfo,
+                                productDescription: tr.description,
+                                productColor: tr.productColor,
+                                productMaterial: tr.productMaterial
                             })),
                         }
                     }
@@ -88,10 +166,13 @@ async function addProduct(event: any) {
             }
         })
 
-        // console.log(newProduct, 'log product')
+
+
+        console.log(newProduct, 'log product')
 
         return {
             // data: jsonData
+            statusCode: 200,
             message: 'Product created successfully',
             product: newProduct,
         }
@@ -120,6 +201,7 @@ async function addProduct(event: any) {
 
     } catch (error) {
         return {
+            statusCode: 500,
             message: `${error} something went wrong` 
         }
     }

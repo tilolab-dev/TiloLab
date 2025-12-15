@@ -1,6 +1,6 @@
 <template>
     <section>
-        HELLO WORLD
+        <!-- HELLO WORLD -->
 
         <button
             class="auth-btn"

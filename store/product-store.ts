@@ -8,7 +8,7 @@ export const useProductStore = defineStore('product', {
         setSelectedProducts(products: any) {
             this.selectedProducts = products;
 
-            console.log(this.selectedProducts);
+            console.log(this.selectedProducts, 'from store');
         },
     },
 })

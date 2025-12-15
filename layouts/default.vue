@@ -1,8 +1,9 @@
 <template>
   <div class="layout">
     <!-- <AppHeader />
-    <StickyHeader />
     <MobileMenu /> -->
+    <StickyHeader />
+
     <main class="border-t border-solid border-[var(--main-accent)]">
       <slot />
     </main>
@@ -22,12 +23,14 @@
       </template>
     </Modal>
     <!-- <Chat />
-    <AppFooter /> -->
+     -->
+    <AppFooter />
   </div>
 </template>
 
 <script setup>
   import Modal from "~/components/Modals/Modal.vue";
+  import StickyHeader from "@/components/StickyHeader.vue";
   // import Tooltips from "~/components/shared/Tooltips.vue";
   import { useModalStore } from "@/store/modal-store"; 
   import { useAuthStore } from "@/store/auth-store";
@@ -61,13 +64,11 @@
 
 <style scoped>
 
-.dark .layout{
-  background-color: var(--dark-component-color);
-}
 .layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: var(--bg-color);
 }
 main {
   flex: 1;

@@ -12,29 +12,47 @@ const getCategoryWithProducts = async (id: number) => {
     //     }
     // })
     try {
-        const category = await prisma.category.findUnique({
+
+        const products = await prisma.product.findMany({
             where: {
-                id: id
+                categoryId: id
             },
             include: {
-                subcategories: true,
-                translations: true,
-                products: {
+                img: true,
+                options: {
                     include: {
-                        img: true,
-                        options: {
-                            include: {
-                                translations: true,
-                            }
-                        },
-                        translations: true
+                        translations: true,
                     }
                 },
-            },
+                translations: true
+            }
         })
 
+
+
+        // const category = await prisma.category.findUnique({
+        //     where: {
+        //         id: id
+        //     },
+        //     include: {
+        //         subcategories: true,
+        //         translations: true,
+        //         products: {
+        //             include: {
+        //                 img: true,
+        //                 options: {
+        //                     include: {
+        //                         translations: true,
+        //                     }
+        //                 },
+        //                 translations: true
+        //             }
+        //         },
+        //     },
+        // })
+
         return {
-            data: category,
+            data: products,
             message: 'Getting data was successfully'
         }
 
