@@ -61,9 +61,15 @@
     min-height: 100vh;
     height: 100%;
     font-size: 1rem;
-    background-color: #ffffff;
+    background: var(--bg-color);
     color: #000000;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
   }
   

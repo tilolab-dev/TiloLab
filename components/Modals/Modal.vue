@@ -1,6 +1,6 @@
 <template>
     <div v-if="isVisible" class="modal-overlay" @click.self="closeModal">
-      <div class="modal-content max-h-[100vh] overflow-y-auto">
+      <!-- <div class="modal-content max-h-[100vh] overflow-y-auto"> -->
         <slot :openModal="openModal" :closeModal="closeModal" />
         <component
           v-if="currentModal"
@@ -10,7 +10,7 @@
           :closeModal="closeModal"
           @tooltip="tooltip"
         />
-      </div>
+      <!-- </div> -->
       <!-- v-bind="{...modalProps}" -->
     </div>
   </template>
@@ -84,17 +84,23 @@ const openModal = (modalName, props = {}) => {
   overflow-y: scroll;
   padding-top: 300px;
 }
-.modal-content {
-  position: fixed;
+/* .modal-content { */
+
+  /* width: 100%; */
+  /* height: 100%; */
+
+
+  
+  /* position: fixed;
   top: 30%;
   transform: translateY(-50%);
-  background: white;
+  background: white; */
   /* padding: 20px; */
-  border-radius: 10px;
+  /* border-radius: 10px;
   overflow-x: hidden;
-  height: fit-content;
+  height: fit-content; */
   /* min-height: 500px; */
-  position: relative;
-  overflow: hidden;
-}
+  /* position: relative;
+  overflow: hidden; */
+/* } */
 </style>

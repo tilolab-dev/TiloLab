@@ -12,7 +12,7 @@
             to="/" 
             class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-normal text-base leading-relaxed"
         > 
-            Головна 
+            Головна /
         </NuxtLink>
         <!-- <SvgIcon 
             name="arrow-right" 
@@ -23,7 +23,10 @@
         <span
             class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-normal text-base leading-relaxed"
         >
-            {{ pageName }}
+
+            <slot>
+
+            </slot>
         </span>
     </div>
     
@@ -37,29 +40,22 @@
     // import SvgIcon from '@/components/shared/SvgIcon.vue';
     // import SvgIcon from './SvgIcon.vue';
     // import { useThemeStore } from "../../stores/theme-store";
-    import { onMounted, watch } from "vue";
+    // import { onMounted, watch } from "vue";
 
     // const themeStore = useThemeStore();
-    const isClient = ref(false);
+    // const isClient = ref(false);
 
     // const iconFill = computed(() => {
     // if (!isClient.value) return "";
     // return themeStore.darkMode
     // });
 
-    onMounted(() => {
-    isClient.value = true;
-    });
+    // onMounted(() => {
+    // isClient.value = true;
+    // });
 
     // const localePath = useLocalePath();
 
-
-    defineProps({
-        pageName: {
-            type: String,
-            required: true
-        },
-    })
 
 
 </script>
@@ -76,9 +72,12 @@
         align-items: center;
         margin-block: 1rem;
         gap: 7px;
-        // a{
+        color: white;
+        a{
+            color: white;
+            font-weight: 500;
             // @include mixins.descriptionText(500, var(--dark-color));
-        // }
+        }
         // span {
             // @include mixins.descriptionText(400, var(--dark-color));
         // }
