@@ -1,7 +1,7 @@
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "./generated/prisma/client"
+  provider = "prisma-client"
+  output   = "./generated/prisma"
 }
 
 
@@ -82,22 +82,22 @@ model Product {
   id                 Int                  @id @default(autoincrement())
   categoryId         Int                  
   visible            Boolean              
-  img                ProductImg[]         
-  price              Float?               
+  img                ProductImg[]                    
   stockState         Boolean              
   stockValue         Int?                 @default(0)
   discountPercent    Int?                 
-  wholesalePrice     Int?                 
-  counterQuantity    Int?                 @default(1)
-  packageType        String               
-  wholesaleOnly      Boolean?             
-  wholesaleFrom      Int?                 
+  // wholesalePrice     Int?                 
+  // counterQuantity    Int?                 @default(1)
+  // packageType        String               
+  // wholesaleOnly      Boolean?             
+  // wholesaleFrom      Int?   
+  productPrice       Float          
   productSize        String
-  productWeight      String
-  productDensity     String
-  productCapacity    String
-  packageQuantity    String
-  groupPackQuantity  String
+  // productWeight      String
+  // productDensity     String
+  // productCapacity    String
+  // packageQuantity    String
+  // groupPackQuantity  String
   options            ProductOptions[]     
   translations       ProductTranslation[] 
    popularProducts    PopularProduct[]
@@ -106,7 +106,7 @@ model Product {
   orderItems        OrderItem[]
 
   @@index([categoryId])
-  @@index([price])
+  @@index([productSize])
 }
 
 model ProductOptions {
@@ -135,9 +135,9 @@ model ProductTranslation {
   language           String   
   title              String   
   productDescription String?  
-  wholesaleDescription String?
+  // wholesaleDescription String?
   productColor       String    
-  groupPackage       String
+  // groupPackage       String
   productMaterial    String
   Product            Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 

@@ -1,114 +1,102 @@
 <template>
-  <div class="add_category">
-    <div class="top_row flex justify-between items-center">
-      <h2>Додати категорію</h2>
-      <button @click="modalStore.closeModal">
-        <SvgIcon name="close-btn" size="micro" fill="var(--dark-color)" />
-      </button>
-    </div>
-    <div class="main_modal flex flex-col gap-2 mt-5">
-      <div class="add_icon">
-        <span class="default_text"> Іконка категорії (не обов'язково) </span>
-        <div class="icon_wrapper">
-          <div class="label_wrapper">
-            <label for="file_out" class="icon-label">
-              <span> Оберіть файл </span>
+  <div class="add_category_content">
+    <div class="add_category">
+      <div class="top_row flex justify-between items-center">
+        <h2>Додати категорію</h2>
+        <button @click="modalStore.closeModal">
+          <SvgIcon name="close-btn" size="micro" fill="var(--dark-color)" />
+        </button>
+      </div>
+      <div class="main_modal flex flex-col gap-2 mt-5">
+        <div class="add_icon">
+          <span class="default_text"> Іконка категорії (не обов'язково) </span>
+          <div class="icon_wrapper">
+            <div class="label_wrapper">
+              <label for="file_out" class="icon-label">
+                <span> Оберіть файл </span>
+                <SvgIcon
+                  name="download-btn"
+                  size="micro"
+                  fill="rgb(79, 79, 79)"
+                />
+              </label>
+              <input
+                type="file"
+                ref="fileInput"
+                id="file_out"
+                class="icon-file"
+                @change="handleFileUpload"
+              />
+            </div>
+            <div class="icon_preview">
               <SvgIcon
-                name="download-btn"
-                size="micro"
+                v-if="!fileReady"
+                name="default-picture"
+                size="big"
                 fill="rgb(79, 79, 79)"
               />
-            </label>
-            <input
-              type="file"
-              ref="fileInput"
-              id="file_out"
-              class="icon-file"
-              @change="handleFileUpload"
-            />
-          </div>
-          <div class="icon_preview">
-            <SvgIcon
-              v-if="!fileReady"
-              name="default-picture"
-              size="big"
-              fill="rgb(79, 79, 79)"
-            />
-            <img
-              v-if="fileReady"
-              :src="filePreview"
-              alt="Preview"
-              class="h-10 w-10 object-cover"
-            />
-          </div>
+              <img
+                v-if="fileReady"
+                :src="filePreview"
+                alt="Preview"
+                class="h-10 w-10 object-cover"
+              />
+            </div>
 
-          <span
-            v-if="!fileReady"
-            class="file_note "
-          >
-            ( Файл повинен бути формату .svg .png ) 
-          </span>
-          <span
-            v-if="fileReady"
-            class="file_ready"
-          >
-            Файл готовий для завантаження
-          </span>
+            <span v-if="!fileReady" class="file_note">
+              ( Файл повинен бути формату .svg .png )
+            </span>
+            <span v-if="fileReady" class="file_ready">
+              Файл готовий для завантаження
+            </span>
+          </div>
         </div>
-      </div>
-      <div
-        class="category-name-wrap"
-      >
-        <div class="add-description ">
+        <div class="category-name-wrap">
+          <div class="add-description">
+            <span class="default_text"> Назва категорії (українською) </span>
+
+            <input
+              v-model="categoryNameUk"
+              class=""
+              type="text"
+              placeholder="Введіть назву категорії"
+            />
+          </div>
+        </div>
+        <div class="category_description flex flex-col gap-2 mt-5">
+          <span class="default_text text-[var(--dark-color)] font-sm text-base">
+            Опис категорії (українською)
+          </span>
+          <textarea
+            class="border border-solid border-[var(--dark-color)] resize-none rounded-lg p-2"
+            placeholder="Введіть опис категорії"
+            v-model="categoryTextUk"
+            name="textUk"
+            id=""
+            rows="3"
+          />
+        </div>
+
+        <div class="checkbox_wrapper flex flex-col">
           <span
-            class="default_text "
+            class="default_text text-[var(--dark-color)] font-sm text-base pb-2"
           >
-            Назва категорії (українською)
+            Показувати групу на сайті? (опціонально)
           </span>
 
           <input
-            v-model="categoryNameUk"
-            class=""
-            type="text"
-            placeholder="Введіть назву категорії"
+            v-model="categoryVisible"
+            class="checkbox_input"
+            type="checkbox"
           />
         </div>
       </div>
-      <div class="category_description flex flex-col gap-2 mt-5">
-        <span class="default_text text-[var(--dark-color)] font-sm text-base">
-          Опис категорії (українською)
-        </span>
-        <textarea
-          class="border border-solid border-[var(--dark-color)] resize-none rounded-lg p-2"
-          placeholder="Введіть опис категорії"
-          v-model="categoryTextUk"
-          name="textUk"
-          id=""
-          rows="3"
-        />
+      <div class="button-group flex justify-end items-center gap-2 w-full">
+        <button @click="testAlertHandler">Test Alert</button>
+        <button @click="getData">get cat</button>
+        <button @click="shareData">Скасувати</button>
+        <button class="addItem" @click="addNewCategory">Додати</button>
       </div>
-
-      <div class="checkbox_wrapper flex flex-col">
-        <span
-          class="default_text text-[var(--dark-color)] font-sm text-base pb-2"
-        >
-          Показувати групу на сайті? (опціонально)
-        </span>
-
-        <input
-          v-model="categoryVisible"
-          class="checkbox_input"
-          type="checkbox"
-        />
-      </div>
-    </div>
-    <div class="button-group flex justify-end items-center gap-2 w-full">
-        <button @click="testAlertHandler">
-            Test Alert
-        </button>
-      <button @click="getData">get cat</button>
-      <button @click="shareData">Скасувати</button>
-      <button class="addItem" @click="addNewCategory">Додати</button>
     </div>
   </div>
 </template>
@@ -118,7 +106,7 @@ import { ref, defineEmits } from "vue";
 import { useModalStore } from "@/store/modal-store";
 import { useFetch, useAsyncData } from "nuxt/app";
 
-import SvgIcon from '@/components/shared/SvgIcon.vue';
+import SvgIcon from "@/components/shared/SvgIcon.vue";
 
 const modalStore = useModalStore();
 const emit = defineEmits();
@@ -193,76 +181,74 @@ const sendData = () => {
 };
 
 const testAlertHandler = () => {
-  alert( "Категорія успішно додана");
-}
-
+  alert("Категорія успішно додана");
+};
 
 const addNewCategory = () => {
-//   if (
-//     categoryNameUk.value.length < 1 &&
-//     categoryNameEn.value.length < 1 &&
-//     categoryNameRu.value.length < 1
-//   ) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Заповніть всі поля",
-//     });
-//     return;
-//   } else if (categoryNameUk.value.length < 1) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Заповніть назву категорії Українською",
-//     });
-//     return;
-//   } else if (categoryNameEn.value.length < 1) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Заповніть назву категорії Англійською",
-//     });
-//     return;
-//   } else if (categoryNameRu.value.length < 1) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Заповніть назву категорії Російською",
-//     });
-//     return;
-//   } else if (!file.value) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Оберіть іконку для обраної категорії",
-//     });
-//     return;
-//   } else if (categoryTextUk.value.length < 1) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Заповніть опис категорії Українською",
-//     });
-//     return;
-//   } else if (categoryTextEn.value.length < 1) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Заповніть опис категорії Англійською",
-//     });
-//     return;
-//   } else if (categoryTextRu.value.length < 1) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Заповніть опис категорії Російською",
-//     });
-//     return;
-//   } else if (!file.value) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Оберіть іконку для обраної категорії",
-//     });
-//     return;
-//   }
+  //   if (
+  //     categoryNameUk.value.length < 1 &&
+  //     categoryNameEn.value.length < 1 &&
+  //     categoryNameRu.value.length < 1
+  //   ) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Заповніть всі поля",
+  //     });
+  //     return;
+  //   } else if (categoryNameUk.value.length < 1) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Заповніть назву категорії Українською",
+  //     });
+  //     return;
+  //   } else if (categoryNameEn.value.length < 1) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Заповніть назву категорії Англійською",
+  //     });
+  //     return;
+  //   } else if (categoryNameRu.value.length < 1) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Заповніть назву категорії Російською",
+  //     });
+  //     return;
+  //   } else if (!file.value) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Оберіть іконку для обраної категорії",
+  //     });
+  //     return;
+  //   } else if (categoryTextUk.value.length < 1) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Заповніть опис категорії Українською",
+  //     });
+  //     return;
+  //   } else if (categoryTextEn.value.length < 1) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Заповніть опис категорії Англійською",
+  //     });
+  //     return;
+  //   } else if (categoryTextRu.value.length < 1) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Заповніть опис категорії Російською",
+  //     });
+  //     return;
+  //   } else if (!file.value) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Оберіть іконку для обраної категорії",
+  //     });
+  //     return;
+  //   }
 
   const translitString = transliterate(categoryNameUk.value);
   const categoryName = translitString.trim().replaceAll(" ", "-").toLowerCase();
 
-
-//   console.log(categoryName, "categoryName");
+  //   console.log(categoryName, "categoryName");
 
   const uploadCategoryFile = async () => {
     const formData = new FormData();
@@ -278,7 +264,7 @@ const addNewCategory = () => {
         return response.data[0].filePath;
       } else {
         alert("Помилка при завантаженні іконки категорії");
-        //  alert("tooltip", 
+        //  alert("tooltip",
         // emit("tooltip", {
         //   status: "error",
         //   message: "Помилка при завантаженні іконки категорії",
@@ -322,16 +308,16 @@ const addNewCategory = () => {
       const response = await $fetch("/api/category", {
         method: "POST",
         body: {
-            group: translitString,
-            visible: categoryVisible.value,
-            translations: [
-                {
-                    language: "uk",
-                    title: categoryNameUk.value,
-                    description: categoryTextUk.value,
-                },
-            ],
-            categoryImg: categoryIconPath,
+          group: translitString,
+          visible: categoryVisible.value,
+          translations: [
+            {
+              language: "uk",
+              title: categoryNameUk.value,
+              description: categoryTextUk.value,
+            },
+          ],
+          categoryImg: categoryIconPath,
         },
       });
 
@@ -347,25 +333,23 @@ const addNewCategory = () => {
 
       console.log(categoryIconPath, "categoryIconPath");
 
-
-
-    //   if (!categoryIconPath) {
-    //     alert("Файл не был загружен, попробуйте снова");
-    //     // emit("tooltip", {
-    //     //   status: "error",
-    //     //   message: "Файл не был загружен, попробуйте снова",
-    //     // });
-    //     return;
-    //   }
+      //   if (!categoryIconPath) {
+      //     alert("Файл не был загружен, попробуйте снова");
+      //     // emit("tooltip", {
+      //     //   status: "error",
+      //     //   message: "Файл не был загружен, попробуйте снова",
+      //     // });
+      //     return;
+      //   }
       const resultUpload = await uploadData(categoryIconPath);
 
       console.log(resultUpload, "resultUpload");
 
       alert("Категорія успішно додана");
-    //   emit("tooltip", {
-    //     status: "success",
-    //     message: "Категорія успішно додана",
-    //   });
+      //   emit("tooltip", {
+      //     status: "success",
+      //     message: "Категорія успішно додана",
+      //   });
       resetForm();
       // resetTextFields();
     } catch (error) {
@@ -452,6 +436,19 @@ const getData = async () => {
 </script>
 
 <style scoped lang="scss">
+.add_category_content {
+  position: fixed;
+  top: 30%;
+  transform: translateY(-50%);
+  background: white;
+  /* padding: 20px; */
+  border-radius: 10px;
+  overflow-x: hidden;
+  height: fit-content;
+  /* min-height: 500px; */
+  position: relative;
+  overflow: hidden;
+}
 .add_category {
   position: relative;
   width: 100%;
@@ -465,14 +462,14 @@ const getData = async () => {
     font-weight: 700;
   }
 
-input {
+  input {
     border: 1px solid rgb(79, 79, 79);
     border-radius: 10px;
     padding: 5px 10px;
     width: 100%;
     color: darkgrey;
     margin-top: 10px;
-}
+  }
 
   textarea {
     border: 1px solid rgb(79, 79, 79);
@@ -492,8 +489,6 @@ input {
     flex-direction: column;
     gap: 10px;
     margin-top: 20px;
-
-   
   }
   .default_text {
     font-size: 1rem;
@@ -505,17 +500,17 @@ input {
     display: grid;
     grid-template-columns: 4fr 1fr;
     padding-top: 0.5rem;
-    .icon_preview{
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    .icon_preview {
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-        img{
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            transform: translateY(-15px);
-        }
+      img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        transform: translateY(-15px);
+      }
     }
   }
   .label_wrapper {
@@ -541,7 +536,7 @@ input {
     }
   }
 
-  .file_note{
+  .file_note {
     margin-top: 0.35rem;
     font-weight: 300;
     font-size: 0.8rem;
@@ -553,21 +548,19 @@ input {
     flex-direction: column;
     gap: 10px;
     margin-top: 20px;
-
-    
   }
 
-  .checkbox_wrapper{
+  .checkbox_wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     gap: 10px;
 
-    .checkbox_input{
-        width: fit-content;
+    .checkbox_input {
+      width: fit-content;
     }
-}   
+  }
 
   .button-group {
     display: flex;
