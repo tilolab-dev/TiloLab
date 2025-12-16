@@ -645,7 +645,7 @@
               <span class="text-gray-900 dark:text-white">
                 Вибрати іншого отримувача
               </span>
-              <ToggleBtn @click="toggleContactInfo" />
+              <!-- <ToggleBtn @click="toggleContactInfo" /> -->
             </div>
           </div>
 
@@ -653,7 +653,7 @@
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
               Спосіб доставки
             </h3>
-            <DeliverySelector v-model="deliveryMethod"/>
+            <!-- <DeliverySelector v-model="deliveryMethod"/> -->
 
             <!-- <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
               <label
@@ -851,7 +851,7 @@
               <span class="text-gray-900 dark:text-white">
                 Додати новий спосіб отримання
               </span>
-              <ToggleBtn @click="toggleContactInfo" />
+              <!-- <ToggleBtn @click="toggleContactInfo" /> -->
             </div>
            
           </div>
@@ -1057,7 +1057,7 @@
               <span class="text-gray-900 dark:text-white">
                 Зберегти спосіб отримання
               </span>
-              <ToggleBtn @click="toggleContactInfo" />
+              <!-- <ToggleBtn @click="toggleContactInfo" /> -->
             </div>
           </div>
           <!-- UKRPOSTA -->
@@ -1154,7 +1154,7 @@
               <span class="text-gray-900 dark:text-white">
                 Зберегти спосіб отримання
               </span>
-              <ToggleBtn @click="toggleContactInfo" />
+              <!-- <ToggleBtn @click="toggleContactInfo" /> -->
             </div>
           </div>
 
@@ -1394,9 +1394,9 @@
         </div>
       </div>
     </form>
-    <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
+    <!-- <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
       {{ tooltipMessage }}
-    </Tooltips>
+    </Tooltips> -->
   </section>
 </template>
 
@@ -1406,9 +1406,9 @@ import { ref, watch, computed, onMounted } from "vue";
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
 import { navigateTo } from "nuxt/app";
-import ToggleBtn from "@/components/shared/ToggleBtn.vue";
-import Tooltips from "@/components/shared/Tooltips.vue";
-import DeliverySelector from "~/components/DeliverySelector.vue";
+// import ToggleBtn from "@/components/shared/ToggleBtn.vue";
+// import Tooltips from "@/components/shared/Tooltips.vue";
+// import DeliverySelector from "~/components/DeliverySelector.vue";
 
 
 const cityRef = ref("");
@@ -1483,11 +1483,11 @@ const { status, message } = obj;
   tooltipStatus.value = status;
   tooltipMessage.value = message;
   showTooltip.value = true;
-  setTimeout(() => {
-    showTooltip.value = false;
-    tooltipStatus.value = "";
-    tooltipMessage.value = "";
-  }, 3000);
+  // setTimeout(() => {
+  //   showTooltip.value = false;
+  //   tooltipStatus.value = "";
+  //   tooltipMessage.value = "";
+  // }, 3000);
 };
 
 const clearForm = () => {
