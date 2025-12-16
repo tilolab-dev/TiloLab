@@ -69,7 +69,9 @@
                             </div>
 
                             <div class="cart_btn">
-                                <button>
+                                <button
+                                    @click="cartStore.addProduct(productStore.selectedProducts)"
+                                >
                                     Додати в кошик
                                 </button>
                             </div>
@@ -154,6 +156,7 @@
 <script setup>
     import {ref} from 'vue';
     import { useProductStore } from '@/store/product-store';
+    import { useCartStore } from '@/store/cart-store';
 
     // components
 
@@ -161,6 +164,7 @@
     import SvgIcon from '@/components/shared/SvgIcon.vue';
 
     const productStore = useProductStore();
+    const cartStore = useCartStore();
     const loadState = ref(true);
 
     const route = useRoute();
@@ -379,9 +383,18 @@
                     height: 100%;
                     background: var(--btn-color);
                     border: 2px solid var(--border-color);
+                    transition: all ease 0.3s;
+                    cursor: pointer;
                     border-radius: 8px;
                     padding-block: 1rem;
                     font-size: 1.5rem;
+
+                    @media screen and (min-width: 1024px) {
+                        &:hover {
+                            background: var(--btn-color-hover);
+                            transition: all ease 0.3s;
+                        }
+                    }
                 }
             }
 
