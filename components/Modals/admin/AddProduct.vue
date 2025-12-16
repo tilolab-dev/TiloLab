@@ -281,7 +281,7 @@
                     <div
                       class="preview"
                     >
-                      <img
+                      <!-- <img
                         v-if="optionFileState.optionFiles.value.length === 0"
                         class="file-preview w-5"
                         src="../../../public/img/bag.png"
@@ -292,7 +292,7 @@
                         :src="optionFileState.optionFilesPreview.value[0]"
                         alt="preview"
                         class="w-5"
-                      />
+                      /> -->
                     </div>
 
                     <input
