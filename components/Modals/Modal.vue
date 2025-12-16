@@ -24,6 +24,8 @@ import { useModalStore } from '@/store/modal-store';
 // import ProductToCart from './ProductToCart.vue';
 import AuthModal from './AuthModal.vue';
 // import ChangeUserData from './ChangeUserData.vue';
+import CartModal from './CartModal.vue';
+import WishlistModal from '../WishlistModal.vue';
 
 // ADMIN
 
@@ -41,8 +43,8 @@ const modalProps = computed(() => modalStore.modalProps);
 const emit = defineEmits(['addNewItem', 'tooltip']);
 
 const modalComponents = {
-//   LangModal,
-//   ThemeModal,
+  CartModal,
+  WishlistModal,
   AddProduct,
   AddCategory,
   DeleteCategory,
@@ -77,6 +79,8 @@ const openModal = (modalName, props = {}) => {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  transition: all ease 0.3s;
   display: flex;
   justify-content: center;
   align-items: stretch;

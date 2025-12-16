@@ -257,7 +257,9 @@
 import { computed, toRefs, watch, ref, onMounted } from "vue";
 import Modal from "~/components/Modals/Modal.vue";
 import Tooltips from "~/components/shared/Tooltips.vue";
-import { useModalStore, useIndexStore, useAuthStore } from "#imports";
+import { useModalStore } from "@/store/modal-store";
+import { useIndexStore } from "@/store/index-store";
+import { useAuthStore } from "@/store/auth-store";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
 
 
