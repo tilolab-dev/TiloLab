@@ -44,8 +44,16 @@
             <button>
               <SvgIcon name="header-heart" size="big" fill="white" />
             </button>
-            <button>
+            <button
+              @click="modalStore.showModal('CartModal')"
+            >
               <SvgIcon name="header-shop-icon" size="big" fill="white" />
+              <div 
+                class="quantity_label"
+                v-if="cartStore.cart.length !== 0"
+              >
+                {{ cartStore.cart.length }}
+              </div>
             </button>
           </div>
         </div>
@@ -82,6 +90,7 @@ import { ref, onMounted } from "vue";
 
 import { useModalStore } from "@/store/modal-store";
 import { useIndexStore } from "@/store/index-store";
+import { useCartStore } from "@/store/cart-store";
 
 import SvgIcon from "./shared/SvgIcon.vue";
 import Loader from "./shared/Loader.vue";
@@ -90,6 +99,7 @@ const catalogBtnState = ref(false);
 
 const modalStore = useModalStore();
 const indexStore = useIndexStore();
+const cartStore = useCartStore();
 
 const loaderState = ref(false);
 
@@ -97,7 +107,6 @@ const fetchCategories = computed(() => indexStore.fetchedCategories);
 
 watch(fetchCategories, (newValue) => {
 
-  console.log(newValue, 'newValue');
   loaderState.value = newValue.length > 0;
 }, { immediate: true })
 
@@ -233,6 +242,7 @@ watch(fetchCategories, (newValue) => {
     gap: 1rem;
     button {
       cursor: pointer;
+      position: relative;
 
       svg{
         transition: all ease 0.3s;
@@ -244,6 +254,20 @@ watch(fetchCategories, (newValue) => {
           transition: all ease 0.3s;
         }
       }
+    }
+    .quantity_label {
+
+      color: white;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--accent-color);
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      transform: translate(60%, -40%)
+
+
     }
   }
 }
