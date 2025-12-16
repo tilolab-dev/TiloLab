@@ -105,10 +105,10 @@
                       <div
                         class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-1.5"
                       >
-                        <img
+                        <!-- <img
                           src="@/public/img/icons/notification.png"
                           alt="option"
-                        />
+                        /> -->
                       </div>
                       <span
                         class="ml-1 duration-300 opacity-100 pointer-events-none ease"
@@ -134,7 +134,7 @@
                       <div
                         class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-1.5"
                       >
-                        <img src="@/public/img/icons/order.png" alt="option" />
+                        <!-- <img src="@/public/img/icons/order.png" alt="option" /> -->
                       </div>
                       <span
                         class="ml-1 duration-300 opacity-100 pointer-events-none ease"
@@ -160,10 +160,10 @@
                       <div
                         class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-1.5"
                       >
-                        <img
+                        <!-- <img
                           src="@/public/img/icons/setting.png"
                           alt="option"
-                        />
+                        /> -->
                       </div>
                       <span
                         class="ml-1 duration-300 opacity-100 pointer-events-none ease"
@@ -212,11 +212,11 @@
                 class="flex items-center justify-start gap-5 w-full px-8 py-2 my-2 text-xs font-bold leading-normal text-center text-white capitalize transition-all ease-in rounded-lg shadow-md bg-slate-700 bg-150 hover:shadow-xs hover:-translate-y-px"
                 @click="authStore.logout()"
               >
-                <img
+                <!-- <img
                   src=" @/public/img/icons/exit.png"
                   alt="exit"
                   class="w-5 h-5"
-                />
+                /> -->
                 Exit
               </button>
             </NuxtLink>
