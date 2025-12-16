@@ -79,7 +79,7 @@
                       <div
                         class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-1.5"
                       >
-                        <img src="@/public/img/icons/house.png" alt="option" />
+                        <!-- <img src="@/public/img/icons/house.png" alt="option" /> -->
                       </div>
                       <span
                         class="ml-1 duration-300 opacity-100 pointer-events-none ease"
