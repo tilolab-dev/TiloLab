@@ -16,7 +16,7 @@
   </template>
 
 <script setup>
-import { defineEmits, defineProps, toRefs} from 'vue';
+import {  toRefs} from 'vue';
 import { useModalStore } from '@/store/modal-store';
 
 // import LangModal from '~/components/Modals/LangModal.vue';
