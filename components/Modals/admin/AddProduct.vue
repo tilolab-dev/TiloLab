@@ -407,7 +407,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, onMounted, toRaw } from "vue";
+import { ref, onMounted, toRaw } from "vue";
 
 // import bagImg from '@/public/img/bag.png';
 

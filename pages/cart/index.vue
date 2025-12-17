@@ -3,9 +3,11 @@
   <div class="container">
     <h2 class="heading">
       <!-- {{ $t("cart.title") }} -->
+        Кошик
     </h2>
     <p class="description">
       <!-- {{ $t("cart.description") }} -->
+        Ваш кошик - зручне місце для вибору та оформлення покупок. Ми цінуємо ваш час та прагнемо зробити процес максимально простим та комфортним.
     </p>
 
     <div class="layout">
@@ -26,7 +28,7 @@
             <div
               class="inner_card"
             >
-              <ItemCard />
+              <!-- <ItemCard /> -->
             </div>
 
           </div>
@@ -35,32 +37,33 @@
 
       <aside class="summary-column">
         <div class="summary-panel">
-          <p class="summary-title"><!-- {{ $t("cart.summary.title") }} --></p>
+          <p class="summary-title"><!-- {{ $t("cart.summary.title") }} --> Підсумок замовлення</p>
 
           <div class="summary-body">
             <div class="summary-row">
-              <dt class="muted"><!-- {{ $t("cart.summary.full-price") }} --></dt>
+              <dt class="muted"><!-- {{ $t("cart.summary.full-price") }} --> Повна ціна</dt>
               <dd class="muted-value">₴ 0</dd>
             </div>
 
             <div class="summary-row">
-              <dt class="muted"><!-- {{ $t("cart.summary.discount") }} --></dt>
+              <dt class="muted"><!-- {{ $t("cart.summary.discount") }} --> Знижка</dt>
               <dd class="discount-value">-₴ 0</dd>
             </div>
 
             <div class="summary-total">
-              <dt class="total-label"><!-- {{ $t("cart.summary.total") }} --></dt>
+              <dt class="total-label"><!-- {{ $t("cart.summary.total") }} --> Всього</dt>
               <dd class="total-value">₴ {{ totalPrice }}</dd>
             </div>
           </div>
 
           <NuxtLink @click="goToCheckout" class="btn btn-primary process-order">
-            <!-- {{ $t("cart.summary.place-order") }} -->
+            <!-- {{ $t("cart.summary.place-order") }} --> Оформити замовлення 
           </NuxtLink>
 
           <div class="summary-actions">
             <NuxtLink to="/products" class="btn btn-dark">
               <!-- {{ $t("cart.summary.go-back") }} -->
+                Повернутись в Магазин
               <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M19 12H5m14 0-4 4m4-4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                   stroke-linejoin="round" />
@@ -82,7 +85,7 @@
           <div
             class="inner_card"
           >
-            <ItemCard />
+            <!-- <ItemCard /> -->
           </div>
 
         </div>
@@ -168,9 +171,9 @@ const updateQuantity = (operator, product) => {
 
 
 onMounted(() => {
-  cartProducts.value = cartStore.cart;
-  totalPrice.value = cartProducts.value.reduce((acc, product) => acc + product.totalPrice, 0);
-  console.log(cartProducts.value)
+  // cartProducts.value = cartStore.cart;
+  // totalPrice.value = cartProducts.value.reduce((acc, product) => acc + product.totalPrice, 0);
+  // console.log(cartProducts.value)
 })
 
 
@@ -197,10 +200,11 @@ onMounted(() => {
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: .25rem;
+  color: var(--text-color);
 }
 
 .description {
-  color: rgba(0, 0, 0, 0.7);
+  color: var(--text-color);
   margin-bottom: 1rem;
 }
 
@@ -371,9 +375,14 @@ onMounted(() => {
 }
 
 .btn-dark {
-  background: var(--dark-color, #111827);
-  color: #fff;
-  border: none;
+  @include mixins.transparentBtn;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  // background: var(--dark-color, #111827);
+  // color: #fff;
+  // border: none;
 }
 
 /* also buy grid */
@@ -389,11 +398,11 @@ onMounted(() => {
 
 /* summary */
 .summary-panel {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
   padding: 16px;
-  background: #fff;
+  background: var(--bg-color);
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+  color: var(--text-color);
 }
 
 .summary-title {
@@ -410,7 +419,7 @@ onMounted(() => {
 .summary-row {
   display: flex;
   justify-content: space-between;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--text-color);
 }
 
 .discount-value {
@@ -476,13 +485,17 @@ onMounted(() => {
   }
 }
 
+.also-buy-title {
+  color: var(--text-color);
+}
+
 /* reuse mixins for specific buttons */
 .go-back-btn {
-  @include mixins.cardShadow;
+  @include mixins.transparentBtn;
 }
 
 .process-order {
-  @include mixins.cardShadow;
+  @include mixins.accentBtn;
   cursor: pointer;
 }
 </style>
