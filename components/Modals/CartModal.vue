@@ -6,7 +6,7 @@
             <div class="cart_head">
         <h1>Кошик</h1>
         <button
-            @click="modalStore.closeModal"
+            @click="modalStore.closeModal()"
         >
             X
         </button>
@@ -92,9 +92,13 @@
         <button class="accent_btn">
             Оформити замовлення
         </button>
-        <button>
+        <NuxtLink 
+            to="/cart" 
+            class="cart_btn"
+            @click="modalStore.closeModal()"
+        >
             Переглянути кошик
-        </button>
+        </NuxtLink>
       </div>
 
       </div>
@@ -137,16 +141,6 @@ background: var(--bg-color);
   display: flex;
   flex-direction: column;
 }
-
-// .cart_wrapper {
-//     width: 100%;
-//     height: 100%;
-//     flex: 1;
-
-// }
-
-
-
 .cart {
   color: var(--text-color);
   display: flex;
@@ -176,6 +170,7 @@ background: var(--bg-color);
     align-items: center;
     width: 100%;
     height: fit-content;
+    z-index: 1;
 
     h1 {
         font-size: 1rem;
@@ -241,6 +236,9 @@ background: var(--bg-color);
 
         .remove_product {
             cursor: pointer;
+            width: 20px;
+            height: 20px;
+            aspect-ratio: 1 / 1;
         }
 
     }
@@ -344,21 +342,43 @@ background: var(--bg-color);
     height: fit-content;
     gap: 0.7rem;
 
-    button {
+    button, a {
         font-weight: 600;
         font-size: 0.8rem;
         padding-block: 10px;
+        transition: all ease 0.3s;
+        border: 1px solid transparent;
+        border-radius: 5px;
         cursor: pointer;
         width: 100%;
         height: 100%
 
     }
 
+    a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
     .accent_btn{
         background-color: var(--btn-color);
         border: 1px solid var(--border-color);
-        border-radius: 5px;
-       
+
+        @media screen and (min-width: 1024px) {
+            &:hover {
+                background-color: var(--btn-color-hover);
+                transition: all ease 0.3s;
+            }
+        }
+    }
+    .cart_btn{
+        @media screen and (min-width: 1024px) {
+            &:hover {
+                border: 1px solid var(--border-color);
+                transition: all ease 0.3s;
+            }
+        }
     }
 }
 </style>

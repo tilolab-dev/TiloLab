@@ -102,7 +102,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from "vue";
+import { ref } from "vue";
 import { useModalStore } from "@/store/modal-store";
 import { useFetch, useAsyncData } from "nuxt/app";
 
