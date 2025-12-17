@@ -41,9 +41,9 @@
             <button>
               <SvgIcon name="header-user-icon" size="big" fill="white" />
             </button>
-            <button>
+            <NuxtLink to="/wishlist">
               <SvgIcon name="header-heart" size="big" fill="white" />
-            </button>
+            </NuxtLink>
             <button
               @click="modalStore.showModal('CartModal')"
             >
