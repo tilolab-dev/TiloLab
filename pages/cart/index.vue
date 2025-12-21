@@ -13,7 +13,7 @@
     <div class="layout">
       <div class="products-column">
         <div class="products-list">
-          <div v-if="cartProducts.length === 0" class="empty-cart">
+          <div v-if="cartProducts?.length === 0" class="empty-cart">
             <h2 class="empty-title">Нажаль в кошику ще немає товарів!</h2>
             <NuxtLink to="/products" class="btn btn-outline go-back-btn">
               Перейти до продуктів
