@@ -107,7 +107,15 @@ const swiper = useSwiper(containerRef, {
 
 }
 
-.category_description {
+.head_title{
+    font-style: italic;
+}
+
+.head_title{
+    font-style: italic;
+}
+
+.category_description{
     color: var(--text-color);
     text-align: right;
     font-family: 'Montserrat', sans-serif;
