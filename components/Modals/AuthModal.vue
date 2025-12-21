@@ -1,5 +1,7 @@
 <template>
-  <section class="modal auth_modal">
+
+  <div class="auth_modal_content">
+     <section class="modal auth_modal">
     <div
       class="modal-wrapper"
       :class="{ login_window: loginWindow, register_window: !loginWindow }"
@@ -210,6 +212,9 @@
       </div>
     </div>
   </section>
+
+  </div>
+ 
 </template>
 
 <script setup>
@@ -528,27 +533,6 @@ const handleRegister = () => {
     mail: mail.value,
   });
 
-  // Send verify password
-
-  // const sendVerifyPass = async () => {
-
-  //     const verifyData = new FormData();
-
-  //     verifyData.append('data', JSON.stringify({
-  //         mail: mail.value,
-  //     }))
-
-  //     const processVerify = await $fetch('/api/auth?auth=sendVerifyPass', {
-  //         method: 'POST',
-  //         body: verifyData
-  //     })
-
-  //     return {
-  //         status: processVerify.status,
-  //         message: processVerify.message
-  //     }
-
-  // }
 };
 
 const handleConfirmRegister = () => {
@@ -595,6 +579,18 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
+
+  .auth_modal_content{
+     position: fixed;
+  top: 10%;
+  // transform: translateY(-30%);
+  background: white;
+    border-radius: 10px;
+  overflow-x: hidden;
+  height: fit-content;
+  margin-bottom: 50px;
+ 
+  }
 
 .modal {
   height: 100%;

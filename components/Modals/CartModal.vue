@@ -1,12 +1,13 @@
 <template>
-  <div class="cart_modal_content">
+    <div class="cart_inner_overlay" @click="closeCart">
+        <div class="cart_modal_content" ref="cartRef">
     
     <div class="cart">
         <div class="cart_top">
             <div class="cart_head">
         <h1>Кошик</h1>
         <button
-            @click="modalStore.closeModal()"
+            @click="closeCart"
         >
             X
         </button>
@@ -106,17 +107,55 @@
       
     </div>
   </div>
+
+    </div>
+  
 </template>
 
 <script setup>
+    import { ref, onMounted } from 'vue';
     import { useModalStore } from '@/store/modal-store';
     import { useCartStore } from '@/store/cart-store';
+    import gsap from 'gsap';
+
 
 
     const modalStore = useModalStore();
     const cartStore = useCartStore();
 
-    console.log(cartStore.cart, 'cart');
+    const cartRef = ref(null);
+
+
+
+    onMounted(() => {
+        gsap.fromTo(
+            cartRef.value,
+            {
+            x: '100%',
+            opacity: 0
+            },
+            {
+            x: '0%',
+            opacity: 1,
+            duration: 0.5,
+            ease: 'power3.out'
+            }
+        )
+    })
+
+    const closeCart = () => {
+        gsap.to(cartRef.value, {
+        x: '100%',
+        opacity: 0,
+        duration: 0.4,
+        ease: 'power3.in',
+        onComplete: () => {
+            modalStore.closeModal()
+        }
+    })
+    }
+
+
 
 
 
@@ -124,6 +163,15 @@
 
 <style lang="scss">
 // border-color: #302029
+
+.cart_inner_overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+    
 
 .cart_modal_content {
   width: clamp(300px, 20vw, 400px);

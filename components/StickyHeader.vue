@@ -50,7 +50,7 @@
               <SvgIcon name="header-shop-icon" size="big" fill="white" />
               <div 
                 class="quantity_label"
-                v-if="cartStore.cart.length !== 0"
+                v-if="mounted && cartStore.cart.length !== 0"
               >
                 {{ cartStore.cart.length }}
               </div>
@@ -102,18 +102,15 @@ const indexStore = useIndexStore();
 const cartStore = useCartStore();
 
 const loaderState = ref(false);
+const mounted = ref(false);
 
 const fetchCategories = computed(() => indexStore.fetchedCategories);
 
-watch(fetchCategories, (newValue) => {
 
-  loaderState.value = newValue.length > 0;
-}, { immediate: true })
-
-
-// onMounted(() => {
-//   cartStore.loadProducts();
-// });
+onMounted(() => {
+  loaderState.value = fetchCategories.value.length > 0
+  mounted.value = true
+})
 </script>
 
 <style lang="scss">

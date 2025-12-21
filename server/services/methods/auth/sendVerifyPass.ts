@@ -35,10 +35,14 @@ async function sendVerifyPass(event: any) {
             }
         }
 
+        console.log('send request')
         const { error } = await supabase.auth.signInWithOtp({ 
-            email,
+            email: email,
+            // email,
             options: { emailRedirectTo: undefined },
         })
+
+        console.log(error, 'error');
 
         if (error) {
             throw createError({ statusCode: 400, statusMessage: error.message });
