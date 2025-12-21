@@ -50,9 +50,9 @@
               <LocalSvgIcon image="cart" />
               <div 
                 class="quantity_label"
-                v-if="mounted && cartStore.cart.length !== 0"
+                v-if="mounted && cartStore?.cart?.length !== 0"
               >
-                {{ cartStore.cart.length }}
+                {{ cartStore?.cart?.length }}
               </div>
             </button>
           </div>
@@ -92,7 +92,7 @@ import { useModalStore } from "@/store/modal-store";
 import { useIndexStore } from "@/store/index-store";
 import { useCartStore } from "@/store/cart-store";
 
-import SvgIcon from "./shared/SvgIcon.vue";
+import LocalSvgIcon from "./LocalSvgIcon.vue";
 import Loader from "./shared/Loader.vue";
 
 const catalogBtnState = ref(false);
@@ -108,7 +108,7 @@ const fetchCategories = computed(() => indexStore.fetchedCategories);
 
 
 onMounted(() => {
-  loaderState.value = fetchCategories.value.length > 0
+  loaderState.value = fetchCategories?.value?.length > 0
   mounted.value = true
 })
 </script>
