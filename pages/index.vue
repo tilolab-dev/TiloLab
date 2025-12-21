@@ -1,6 +1,9 @@
 <template>
-    <section>
+    <section class="index_page">
         <!-- HELLO WORLD -->
+         <SharedTransparentBtn
+            @click="console.log('ololo')"
+         >accent btn</SharedTransparentBtn>
 
         <button
             class="auth-btn"
@@ -33,6 +36,10 @@ const modalStore = useModalStore();
 
 
 <style lang="scss">
+
+    // .index_page .accent_btn{
+    //     width: 100% ;
+    // }
 
 .auth-btn{
     position: absolute;
