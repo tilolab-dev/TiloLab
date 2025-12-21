@@ -44,6 +44,20 @@ export default defineNuxtConfig({
     '@store': '/store',
     '@helpers': '/helpers'
   },
-  modules: ['@pinia/nuxt', '@nuxt/image']
+  modules: [
+    '@pinia/nuxt',
+    '@nuxt/image',
+    ['@nuxtjs/google-fonts', {
+      families: {
+        'Montserrat': {
+          wght: [400, 500, 600],
+          ital: [500],
+        },
+        'Inter': {
+          wght: [500],
+        },
+      },
+    }],
+  ]
 
 })
