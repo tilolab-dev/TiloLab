@@ -16,6 +16,7 @@
         </button> -->
         <IndexHero/>
         <IndexCategories/>
+        <IndexPopular/>
         <IndexBanner/>
         <IndexCta/>
     </section>

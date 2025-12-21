@@ -126,6 +126,10 @@ function prevSlide() {
 
 }
 
+.head_title{
+    font-style: italic;
+}
+
 .category_description{
     color: var(--text-color);
     text-align: right;
