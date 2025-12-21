@@ -14,40 +14,40 @@
             <nav>
               <div class="nav_element">
                 Про нас
-                <SvgIcon name="header-arrow-down" size="micro" fill="white" />
+                <LocalSvgIcon image="angle-down" />
               </div>
               <div 
                 class="nav_element"
                 @click="catalogBtnState = !catalogBtnState"
               >
                 Каталог
-                <SvgIcon name="header-arrow-down" size="micro" fill="white" />
+                <LocalSvgIcon image="angle-down" />
               </div>
               <div class="nav_element">
                 FAQ
-                <SvgIcon name="header-arrow-down" size="micro" fill="white" />
+                <LocalSvgIcon image="angle-down" />
               </div>
             </nav>
 
             <div class="search_block">
               <input type="text" placeholder="Пошук..." />
               <button>
-                <SvgIcon name="header-search" size="big" fill="white" />
+                <LocalSvgIcon image="search-icon" />
               </button>
             </div>
           </div>
 
           <div class="main_header_buttons">
             <button>
-              <SvgIcon name="header-user-icon" size="big" fill="white" />
+              <LocalSvgIcon image="profile" />
             </button>
             <NuxtLink to="/wishlist">
-              <SvgIcon name="header-heart" size="big" fill="white" />
+              <LocalSvgIcon image="heart" />
             </NuxtLink>
             <button
               @click="modalStore.showModal('CartModal')"
             >
-              <SvgIcon name="header-shop-icon" size="big" fill="white" />
+              <LocalSvgIcon image="cart" />
               <div 
                 class="quantity_label"
                 v-if="mounted && cartStore.cart.length !== 0"
