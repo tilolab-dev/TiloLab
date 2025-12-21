@@ -1,7 +1,7 @@
 <template>
     <section class="index_page">
         <!-- HELLO WORLD -->
-         <SharedTransparentBtn
+         <!-- <SharedTransparentBtn
             @click="console.log('ololo')"
          >accent btn</SharedTransparentBtn>
 
@@ -13,7 +13,11 @@
             Auth modal
 
 
-        </button>
+        </button> -->
+        <IndexHero/>
+        <IndexCategories/>
+        <IndexBanner/>
+        <IndexCta/>
     </section>
 </template>
 
