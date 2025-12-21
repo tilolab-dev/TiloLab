@@ -13,11 +13,45 @@
 
         <div class="filter_category">
           <div class="filter">
-            RANGE SLIDER
+            <DoubleRange />
           </div>
           <div class="category">
-            Категорія
-            <SvgIcon name="arrow-down" size="micro" /> 
+            <button @click="toggleCategory = !toggleCategory">
+              Категорія
+              <SvgIcon name="arrow-down" size="micro" class="arrow_icon" :class="toggleCategory ? 'active_icon': ''"/> 
+
+            </button>
+          
+            <ul class="categories_wrapper" v-if="toggleCategory">
+              <li>
+                Для неї
+              </li>
+              <li>
+                Для нього
+              </li>
+              <li>
+                Для пар
+              </li>
+              <li>
+                Інтимний догляд
+              </li>
+              <li>
+                Анальний секс
+              </li>
+              <li>
+                Фалоімітатори
+              </li>
+              <li>
+                Прелюдія
+              </li>
+              <li>
+                БДСМ
+              </li>
+              <li>
+                Косметика
+              </li>
+
+            </ul>
           </div>
         </div>
         <!--MAIN -->
@@ -56,12 +90,15 @@ import { useIndexStore } from "@/store/index-store";
 import Modal from "@/components/Modals/Modal.vue";
 import BreadCrumbs from "@/components/shared/BreadCrumbs.vue";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
+import DoubleRange from "@/components/DoubleRange.vue";
 
 
 const modalStore = useModalStore();
 const indexStore = useIndexStore();
 const currentModal = computed(() => modalStore.currentModal);
 const modalProps = computed(() => modalStore.modalProps);
+
+const toggleCategory = ref(false);
 
 const fetchedProducts = ref([]);
 
@@ -177,6 +214,44 @@ onMounted(() => {
     cursor: pointer;
     font-size: 1.2rem;
     font-weight: 500;
+    position: relative;
+
+    button{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      cursor: pointer;
+    }
+    .arrow_icon{
+      transition: all ease 0.3s;
+    }
+
+    .active_icon{
+      transition: all ease 0.3s;
+      transform: rotate(180deg);
+      fill: var(--accent-color);
+
+
+    }
+  }
+
+  .categories_wrapper{
+    position: absolute;
+    width: fit-content;
+    height: auto;
+    padding: 20px;
+    background-color: var(--bg-color);
+    z-index: 21;
+    top: 50px;
+    right: 0;
+
+    li{
+      white-space: nowrap;
+      color: var(--accent-color);
+      padding-block: 5px;
+    }
+
   }
 }
 

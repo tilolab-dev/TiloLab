@@ -31,10 +31,11 @@ export default defineNuxtConfig({
     }
   },
   css: [
+    '~/style/mixins.scss',
     '~/style/default.css',
     '~/style/index.scss',
     '~/style/variables.scss',
-    '~/style/mixins.scss'
+    
   ],
   alias: {
    '@components': '/components',
