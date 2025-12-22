@@ -81,7 +81,7 @@ onMounted(async () => {
     const getProducts = await $fetch("/api/products");
 
     popularCards.value = getProducts.data;
-    popularCards.value.push(...getProducts.data);
+    // popularCards.value.push(...getProducts.data);
 
 
     console.log(getProducts, "getProducts");
