@@ -41,7 +41,17 @@
                             :key="idx"
                             class="card"
                         >
-                            Slide {{ idx + 1 }}
+                            <NuxtImg
+                                :src="slide.imgPath"
+                                :alt="`card ${idx}`"
+                                class="card_img"
+                                lazy
+                            />
+
+                            <span class="card_title">
+                                {{ slide.cardTitle }}
+                            </span>
+
                         </swiper-slide>
                     </swiper-container>
                 </ClientOnly>
@@ -56,12 +66,62 @@
 <script setup>
 // Create 10 slides
 const containerRef = ref(null)
-const slides = ref(Array.from({ length: 4 }))
+// const slides = ref(Array.from({ length: 4 }))
+
+
+const slides = ref([
+    {
+        imgPath: './images/categories/category1.webp',
+        cardTitle: 'Для неї',
+    },
+    {
+        imgPath: './images/categories/category2.webp',
+        cardTitle: 'Для нього',
+    },
+    {
+        imgPath: './images/categories/category3.webp',
+        cardTitle: 'Для пар',
+    },
+    {
+        imgPath: './images/categories/category1.webp',
+        cardTitle: 'Інтимний догляд',
+    },
+     {
+        imgPath: './images/categories/category1.webp',
+        cardTitle: 'Для неї',
+    },
+    {
+        imgPath: './images/categories/category2.webp',
+        cardTitle: 'Для нього',
+    },
+    {
+        imgPath: './images/categories/category3.webp',
+        cardTitle: 'Для пар',
+    },
+    {
+        imgPath: './images/categories/category1.webp',
+        cardTitle: 'Інтимний догляд',
+    },
+])
 
 const swiper = useSwiper(containerRef, {
   effect: 'creative',
   slidesPerView: 3,
   spaceBetween: 10,
+//   breakpoints: {
+//     480: {
+//       slidesPerView: 2,
+//       spaceBetween: 20
+//     },
+//     640: {
+//       slidesPerView: 3,
+//       spaceBetween: 30
+//     },
+//     1024: {
+//       slidesPerView: 4,
+//       spaceBetween: 40
+//     }
+//   },
   creativeEffect: {
     prev: {
       shadow: true,
@@ -75,15 +135,44 @@ const swiper = useSwiper(containerRef, {
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .index_categories {
     overflow: hidden;
-    padding-block: 118px;
+    padding-block: 109px;
+
+    @media screen and (max-width: 1024px) {
+        padding-block: 64px;
+    }
+
+    @media screen and (max-width: 768px) {
+        padding-block: 52px;
+    }
+
+    @media screen and (max-width: 480px) {
+        padding-block: 48px;
+    }
+
+    @media screen and (max-width: 375px) {
+        padding-block: 44px;
+    }
+
+
 }
 
 .categories_cards {
     overflow: visible;
-    margin-top: 22px;
+    margin-top: 32px;
+
+    @media screen and (max-width: 1024px) {
+        margin-top: 36px;
+    }
+    @media screen and (max-width: 768px) {
+        margin-top: 32px;
+    }
+    @media screen and (max-width: 480px) {
+        margin-top: 24px;
+        
+    }
 }
 
 .categories_head {
@@ -105,7 +194,28 @@ const swiper = useSwiper(containerRef, {
     letter-spacing: 0.6px;
     text-transform: uppercase;
 
+    @media screen and (max-width: 1024px) {
+        font-size: 1.75rem;
+    }
+
+    @media screen and (max-width: 480px) {
+        font-size: 1.5rem;
+    }
+    @media screen and (max-width: 375px) {
+        font-size: 1.125rem;
+    }
+
 }
+
+.right_content{
+    @media screen and (max-width: 480px) {
+        width: 100%;
+        br{
+            display: none;
+        }
+    }
+}
+
 
 .head_title{
     font-style: italic;
@@ -124,14 +234,34 @@ const swiper = useSwiper(containerRef, {
     font-weight: 500;
     line-height: 150%;
     letter-spacing: 0.36px;
+    @media screen and (max-width: 1024px) {
+        font-size: 1.0625rem;
+    }
+    @media screen and (max-width: 768px) {
+        text-align: left;
+    }
+    @media screen and (max-width: 480px) {
+        font-size: 0.875rem;
+    }
+    @media screen and (max-width: 375px) {
+        font-size: 0.75rem;
+    }
 }
-
 
 .head_content {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    gap: 50px;
     width: 100%;
+
+    @media screen and (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 16px;
+    }
 
 }
 
@@ -140,14 +270,51 @@ swiper-container::part(container) {
 }
 
 .card {
-    min-width: 280px;
-    height: 380px;
+    min-width: 392px;
+    height: 489px;
     background: #222;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 24px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+
+    img{
+        width: 100%;
+        height: 100%;
+    }
+
+    .card_title {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        font-size: 1rem;
+        background: rgba(0, 0, 0, 0.60);
+        color: var(--text-color);
+        text-align: center;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.875rem;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 150%; 
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+    }
+
+    @media screen and (max-width: 480px) {
+        min-width: 208px;
+        height: 269px;
+    }
+
+
 }
 
 .button_items {
@@ -164,6 +331,10 @@ swiper-container::part(container) {
         font-size: 1rem;
         cursor: pointer;
 
+    }
+
+    @media screen and (max-width: 1024px) {
+        display: none;
     }
 }
 </style>
