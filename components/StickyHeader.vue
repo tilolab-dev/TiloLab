@@ -159,7 +159,6 @@ onMounted(() => {
   width: 100%;
   height: auto;
   background: transparent;
-  overflow-x: hidden;
   position: relative;
   z-index: 15;
 }
@@ -441,7 +440,7 @@ onMounted(() => {
 
   display: none;
   @media screen and (max-width: 1024px) {
-      position: absolute;
+      position: fixed;
   background-color: rgba(13,11, 13, 0.9);
   backdrop-filter: blur(10px);
   transition: all ease 0.3s;
