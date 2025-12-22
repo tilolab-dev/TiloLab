@@ -159,6 +159,7 @@ onMounted(() => {
   width: 100%;
   height: auto;
   background: transparent;
+  overflow-x: hidden;
   position: relative;
   z-index: 15;
 }
