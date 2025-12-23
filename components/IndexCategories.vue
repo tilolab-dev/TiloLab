@@ -106,22 +106,20 @@ const slides = ref([
 
 const swiper = useSwiper(containerRef, {
   effect: 'creative',
-  slidesPerView: 3,
-  spaceBetween: 10,
-//   breakpoints: {
-//     480: {
-//       slidesPerView: 2,
-//       spaceBetween: 20
-//     },
-//     640: {
-//       slidesPerView: 3,
-//       spaceBetween: 30
-//     },
-//     1024: {
-//       slidesPerView: 4,
-//       spaceBetween: 40
-//     }
-//   },
+  slidesPerView: 1,
+  spaceBetween: 20,
+  breakpoints: {
+    480: {
+      slidesPerView: 2,
+    },
+    769: {
+      slidesPerView: 2.5,
+    },
+    1025: {
+      slidesPerView: 3,
+      spaceBetween: 10,
+    }
+  },
   creativeEffect: {
     prev: {
       shadow: true,
@@ -216,11 +214,6 @@ const swiper = useSwiper(containerRef, {
     }
 }
 
-
-.head_title{
-    font-style: italic;
-}
-
 .head_title{
     font-style: italic;
 }
@@ -266,12 +259,12 @@ const swiper = useSwiper(containerRef, {
 }
 
 swiper-container::part(container) {
-    overflow: visible !important;
+    @media screen and (min-width: 960px) {
+        overflow: visible !important;
+    }
 }
 
 .card {
-    min-width: 392px;
-    height: 489px;
     background: #222;
     color: white;
     display: flex;
