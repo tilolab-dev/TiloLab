@@ -16,11 +16,13 @@
                 class="nav_element"
                 @click="catalogBtnState = !catalogBtnState"
               >
-                Каталог
+                  Каталог
                 <LocalSvgIcon image="angle-down" />
               </div>
               <div class="nav_element">
-                FAQ
+                <NuxtLink to="/faq">
+                  FAQ
+                </NuxtLink>
               </div>
             </nav>
 
@@ -78,7 +80,9 @@
                 Каталог
               </li>
               <li>
-                FAQ
+                <NuxtLink to="/faq">
+                  FAQ
+                </NuxtLink>
               </li>
               <li>
                 Список бажань
