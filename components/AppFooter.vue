@@ -30,7 +30,11 @@
                     </NuxtLink>
                   </li>
                   <li>Каталог</li>
-                  <li>FAQ</li>
+                  <li>
+                    <NuxtLink to="/faq">
+                      FAQ
+                    </NuxtLink>
+                  </li>
                 </ul>
               </nav>
             </div>
