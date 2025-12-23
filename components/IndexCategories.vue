@@ -22,10 +22,10 @@
 
                         <div class="button_items">
                             <button @click="swiper.prev()">
-                                -
+                                <LocalSvgIcon image="angle-left" />
                             </button>
                             <button @click="swiper.next()">
-                                +
+                                <LocalSvgIcon image="angle-right" />
                             </button>
                         </div>
                     </div>
