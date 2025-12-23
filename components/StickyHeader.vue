@@ -9,10 +9,9 @@
 
           <div class="main_header_content">
             <nav class="desktop_navigation">
-              <div class="nav_element">
+              <NuxtLink to="/about-us" class="nav_element">
                 Про нас
-                <LocalSvgIcon image="angle-down" />
-              </div>
+              </NuxtLink>
               <div
                 class="nav_element"
                 @click="catalogBtnState = !catalogBtnState"
@@ -22,7 +21,6 @@
               </div>
               <div class="nav_element">
                 FAQ
-                <LocalSvgIcon image="angle-down" />
               </div>
             </nav>
 
@@ -72,7 +70,9 @@
           </button>
             <ul class="mobile_menu_nav">
               <li>
-                Про нас
+                <NuxtLink to="/about-us">
+                  Про нас
+                </NuxtLink>
               </li>
               <li>
                 Каталог
@@ -165,7 +165,6 @@ onMounted(() => {
 
 .top_header {
   background: var(--bg-color);
-  // border-bottom: 1px solid var(--accent-grey);
   padding: 10px 0 6px;
   transition: all ease 0.3s;
   position: relative;
