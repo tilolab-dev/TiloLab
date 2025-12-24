@@ -54,6 +54,21 @@ export default defineNuxtConfig({
         wght: [500],
       },
     },
-  }], 'nuxt-swiper']
+  }], 'nuxt-swiper'],
 
+  vite: {
+    plugins: [
+      require('vite-svg-loader')({
+        svgo: true,
+        svgoConfig: {
+          plugins: [
+            {
+              name: 'removeViewBox',
+              active: false
+            }
+          ]
+        }
+      })
+    ]
+  }
 })

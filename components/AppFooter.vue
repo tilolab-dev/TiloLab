@@ -10,12 +10,10 @@
 
             <div class="socials">
               <button>
-                <!-- <SvgIcon name="inst-icon" size="big"/> -->
-                <LocalSvgIcon image="instagram" />
+                <InstagramIcon />
               </button>
               <button>
-                <!-- <SvgIcon name="telegram-icon" size="big"/> -->
-                <LocalSvgIcon image="telegram" />
+                <TelegramIcon />
               </button>
             </div>
           </div>
@@ -86,8 +84,8 @@
 </template>
 
 <script setup>
-import SvgIcon from "./shared/SvgIcon.vue";
-import LocalSvgIcon from "./LocalSvgIcon.vue";
+import InstagramIcon from '~/assets/icons/instagram.svg'
+import TelegramIcon from '~/assets/icons/telegram.svg'
 </script>
 
 <style lang="scss">

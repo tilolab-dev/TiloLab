@@ -22,10 +22,10 @@
 
                         <div class="button_items">
                             <button @click="swiper.prev()">
-                                <LocalSvgIcon image="angle-left" />
+                                <AngleLeftIcon />
                             </button>
                             <button @click="swiper.next()">
-                                <LocalSvgIcon image="angle-right" />
+                                <AngleRightIcon />
                             </button>
                         </div>
                     </div>
@@ -64,6 +64,9 @@
 
 
 <script setup>
+import AngleLeftIcon from '~/assets/icons/angle-left.svg'
+import AngleRightIcon from '~/assets/icons/angle-right.svg'
+
 // Create 10 slides
 const containerRef = ref(null)
 // const slides = ref(Array.from({ length: 4 }))

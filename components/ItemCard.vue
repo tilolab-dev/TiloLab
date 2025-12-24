@@ -130,7 +130,7 @@ const addToCart = (event, props) => {
     color: var(--text-color);
     font-size: clamp(0.8rem, 2vw, 1.4rem);
     transition: all ease 0.3s;
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .action_label {

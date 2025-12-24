@@ -12,10 +12,10 @@
 
             <div class="button_items">
               <button @click="swiper.prev()">
-                <LocalSvgIcon image="angle-left" />
+                <AngleLeftIcon />
               </button>
               <button @click="swiper.next()">
-                <LocalSvgIcon image="angle-right" />
+                <AngleRightIcon />
               </button>
             </div>
           </div>
@@ -29,17 +29,16 @@
             <swiper-slide
               v-for="(product, i) in popularCards "
               :key="i"
-              class="card"
-
             >
-            <NuxtLink :to="`/products/${product.category.group.toLowerCase()}/${product.id}`">
+              <NuxtLink
+                :to="`/products/${product.category.group.toLowerCase()}/${product.id}`"
+                class="card"
+              >
                 <ItemCard
                   :product="product"
                   @click="productStore.setSelectedProducts(product)"
                 />
               </NuxtLink>
-
-
             </swiper-slide>
 
 
@@ -67,6 +66,9 @@
 </template>
 
 <script setup>
+import AngleLeftIcon from '~/assets/icons/angle-left.svg'
+import AngleRightIcon from '~/assets/icons/angle-right.svg'
+
 import { ref, onMounted } from "vue";
 import { useProductStore } from "@/store/product-store";
 
@@ -372,13 +374,23 @@ swiper-container::part(container) {
 .card {
     background: #222;
     color: white;
-    display: flex;
     align-items: center;
     justify-content: center;
     font-size: 24px;
     position: relative;
-    overflow: hidden;
     cursor: pointer;
+
+    .item_card{
+      display: grid;
+      grid-template-rows: 1fr 116px;
+      overflow: visible;
+
+      .description_content {
+        display: grid;
+        height: 100%;
+        grid-template-rows: 1fr auto;
+      }
+    }
 
     img{
         width: 100%;

@@ -17,7 +17,7 @@
                 @click="catalogBtnState = !catalogBtnState"
               >
                   Каталог
-                <LocalSvgIcon image="angle-down" />
+                <AngleDown />
               </div>
               <div class="nav_element">
                 <NuxtLink to="/faq">
@@ -29,23 +29,23 @@
             <div class="search_block">
               <input type="text" placeholder="Пошук..." />
               <button class="desktop_search_btn">
-                <LocalSvgIcon image="search-icon" />
+                <SearchIcon />
               </button>
               <button class="mobile_search_btn" @click="mobileSearch = !mobileSearch">
-                <LocalSvgIcon image="search-icon" />
+                <SearchIcon />
               </button>
             </div>
           </div>
 
           <div class="main_header_buttons">
             <button class="user_btn">
-              <LocalSvgIcon image="profile" />
+              <ProfileIcon />
             </button>
             <NuxtLink to="/wishlist" class="wishlist_btn">
-              <LocalSvgIcon image="heart" />
+              <HeartIcon />
             </NuxtLink>
             <button @click="modalStore.showModal('CartModal')" class="cart_btn">
-              <LocalSvgIcon image="cart" />
+              <CartIcon />
               <div
                 class="quantity_label"
                 v-if="mounted && cartStore?.cart?.length !== 0"
@@ -54,7 +54,7 @@
               </div>
             </button>
             <button @click="burger = !burger" class="burger_btn">
-              <LocalSvgIcon image="burger" />
+              <BurgerIcon />
 
             </button>
             
@@ -67,7 +67,7 @@
             class="button_wrapper"
             @click="burger = !burger"
           >
-            <LocalSvgIcon image="close-icon" />
+            <CloseIcon />
 
           </button>
             <ul class="mobile_menu_nav">
@@ -123,6 +123,14 @@
 </template>
 
 <script setup>
+import AngleDown from '~/assets/icons/angle-down.svg'
+import SearchIcon from '~/assets/icons/search-icon.svg'
+import ProfileIcon from '~/assets/icons/profile.svg'
+import HeartIcon from '~/assets/icons/heart.svg'
+import CartIcon from '~/assets/icons/cart.svg'
+import BurgerIcon from '~/assets/icons/burger.svg'
+import CloseIcon from '~/assets/icons/close-icon.svg'
+
 import { ref, onMounted, watch } from "vue";
 // import { useModalStore, useIndexStore, useCartStore,  } from "#imports";
 
@@ -130,7 +138,6 @@ import { useModalStore } from "@/store/modal-store";
 import { useIndexStore } from "@/store/index-store";
 import { useCartStore } from "@/store/cart-store";
 
-import LocalSvgIcon from "./LocalSvgIcon.vue";
 import Loader from "./shared/Loader.vue";
 
 const catalogBtnState = ref(false);
