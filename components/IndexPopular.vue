@@ -384,12 +384,12 @@ swiper-container::part(container) {
       display: grid;
       grid-template-rows: 1fr 116px;
       overflow: visible;
+    }
 
-      .description_content {
-        display: grid;
-        height: 100%;
-        grid-template-rows: 1fr auto;
-      }
+    :deep(.description_content) {
+      display: grid;
+      height: 100%;
+      grid-template-rows: 1fr auto;
     }
 
     img{
