@@ -1,12 +1,7 @@
 <template>
-
     <div class="index_categories">
         <div class="container" ref="containerRef">
-
-
-
             <div class="categories_head">
-
                 <h4 class="head_title">
                     Будь у моменті.
                 </h4>
@@ -30,109 +25,81 @@
                         </div>
                     </div>
                 </div>
-
             </div>
 
             <div class="categories_cards">
                 <ClientOnly>
                     <swiper-container ref="containerRef">
-                        <swiper-slide
-                            v-for="(slide, idx) in slides"
-                            :key="idx"
-                            class="card"
-                        >
-                            <NuxtImg
-                                :src="slide.imgPath"
-                                :alt="`card ${idx}`"
-                                class="card_img"
-                                lazy
-                            />
+                        <swiper-slide v-for="(slide, idx) in slides" :key="idx" class="card">
+                            <NuxtLink
+                                :to="`/products/${slide.group.toLowerCase()}`"
+                                class="card"
+                            >
+                                <NuxtImg :src="slide.categoryImg" :alt="`card ${idx}`" class="card_img" lazy />
 
-                            <span class="card_title">
-                                {{ slide.cardTitle }}
-                            </span>
-
+                                <span class="card_title">
+                                    {{ slide.translations[0].title }}
+                                </span>
+                            </NuxtLink>
                         </swiper-slide>
                     </swiper-container>
                 </ClientOnly>
             </div>
         </div>
     </div>
-
-
 </template>
 
-
 <script setup>
+import { useIndexStore } from "@/store/index-store";
 import AngleLeftIcon from '~/assets/icons/angle-left.svg'
 import AngleRightIcon from '~/assets/icons/angle-right.svg'
 
-// Create 10 slides
 const containerRef = ref(null)
-// const slides = ref(Array.from({ length: 4 }))
-
-
-const slides = ref([
-    {
-        imgPath: './images/categories/category1.webp',
-        cardTitle: 'Для неї',
-    },
-    {
-        imgPath: './images/categories/category2.webp',
-        cardTitle: 'Для нього',
-    },
-    {
-        imgPath: './images/categories/category3.webp',
-        cardTitle: 'Для пар',
-    },
-    {
-        imgPath: './images/categories/category1.webp',
-        cardTitle: 'Інтимний догляд',
-    },
-     {
-        imgPath: './images/categories/category1.webp',
-        cardTitle: 'Для неї',
-    },
-    {
-        imgPath: './images/categories/category2.webp',
-        cardTitle: 'Для нього',
-    },
-    {
-        imgPath: './images/categories/category3.webp',
-        cardTitle: 'Для пар',
-    },
-    {
-        imgPath: './images/categories/category1.webp',
-        cardTitle: 'Інтимний догляд',
-    },
-])
+const indexStore = useIndexStore()
+const categories = ref([])
 
 const swiper = useSwiper(containerRef, {
-  effect: 'creative',
-  slidesPerView: 1,
-  spaceBetween: 20,
-  breakpoints: {
-    480: {
-      slidesPerView: 2,
+    effect: 'creative',
+    slidesPerView: 1,
+    spaceBetween: 20,
+    breakpoints: {
+        480: {
+            slidesPerView: 2,
+        },
+        769: {
+            slidesPerView: 2.5,
+        },
+        1025: {
+            slidesPerView: 3,
+            spaceBetween: 10,
+        }
     },
-    769: {
-      slidesPerView: 2.5,
+    creativeEffect: {
+        prev: {
+            shadow: true,
+            translate: [0, 0, -400],
+        },
+        next: {
+            shadow: true,
+            translate: [0, 0, -400],
+        },
     },
-    1025: {
-      slidesPerView: 3,
-      spaceBetween: 10,
+})
+
+const slides = computed(() => categories.value)
+
+onMounted(async () => {
+  try {
+    const getCategories = await $fetch("/api/category");
+    
+    if (getCategories && getCategories.data) {
+      categories.value = getCategories.data;
+      categories.value = [...categories.value, ...categories.value];
+      console.log(getCategories, "getCategories");
     }
-  },
-  creativeEffect: {
-    prev: {
-      shadow: true,
-      translate: [0, 0, -400],
-    },
-    next: {
-      shadow: true,
-      translate: [0, 0, -400],
-    },
-  },
+  } catch (err) {
+    console.log(err);
+  }
 })
 </script>
 
@@ -167,12 +134,14 @@ const swiper = useSwiper(containerRef, {
     @media screen and (max-width: 1024px) {
         margin-top: 36px;
     }
+
     @media screen and (max-width: 768px) {
         margin-top: 32px;
     }
+
     @media screen and (max-width: 480px) {
         margin-top: 24px;
-        
+
     }
 }
 
@@ -202,26 +171,28 @@ const swiper = useSwiper(containerRef, {
     @media screen and (max-width: 480px) {
         font-size: 1.5rem;
     }
+
     @media screen and (max-width: 375px) {
         font-size: 1.125rem;
     }
 
 }
 
-.right_content{
+.right_content {
     @media screen and (max-width: 480px) {
         width: 100%;
-        br{
+
+        br {
             display: none;
         }
     }
 }
 
-.head_title{
+.head_title {
     font-style: italic;
 }
 
-.category_description{
+.category_description {
     color: var(--text-color);
     text-align: right;
     font-family: 'Montserrat', sans-serif;
@@ -230,15 +201,19 @@ const swiper = useSwiper(containerRef, {
     font-weight: 500;
     line-height: 150%;
     letter-spacing: 0.36px;
+
     @media screen and (max-width: 1024px) {
         font-size: 1.0625rem;
     }
+
     @media screen and (max-width: 768px) {
         text-align: left;
     }
+
     @media screen and (max-width: 480px) {
         font-size: 0.875rem;
     }
+
     @media screen and (max-width: 375px) {
         font-size: 0.75rem;
     }
@@ -278,7 +253,7 @@ swiper-container::part(container) {
     overflow: hidden;
     cursor: pointer;
 
-    img{
+    img {
         width: 100%;
         height: 100%;
     }
@@ -300,7 +275,7 @@ swiper-container::part(container) {
         font-size: 1.875rem;
         font-style: normal;
         font-weight: 500;
-        line-height: 150%; 
+        line-height: 150%;
         letter-spacing: 0.6px;
         text-transform: uppercase;
     }
