@@ -180,3 +180,121 @@
   }
 
 }
+
+@mixin defaultInput {
+  input, input::placeholder {
+      color: var(--text-color);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.875rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      letter-spacing: 0.42px;
+      width: 100%;
+      height: auto;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.20);
+      padding: 12px 8px;
+
+      @media screen and (max-width: 1024px) {
+        font-size: 0.75rem;
+      }
+      @media screen and (max-width: 480px) {
+        padding: 8px 4px;
+        font-size: 0.625rem;
+      }
+  }
+  input::placeholder{
+    color: rgba(255, 255, 255, 0.50);
+    padding: 0;
+    border-bottom: 0;
+   
+  }
+
+}
+
+@mixin googleAuth {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  gap: 24px;
+
+  svg{
+      width: 36px;
+      height: 36px;
+      transition: all ease 0.3s;
+      transform: scale(1);
+
+      @media screen and (max-width: 1024px) {
+        width: 30px;
+        height: 30px;
+      }
+      @media screen and (max-width: 480px) {
+        width: 24px;
+        height: 24px;
+      }
+  }
+  @media screen and (min-width: 1024px) {
+      &:hover svg{
+          transition: all ease 0.3s;
+          transform: scale(1.2);
+      }
+      
+  }
+  @media screen and (max-width: 1024px) {
+    span{
+        font-size: 0.75rem;
+      }
+  }
+  @media screen and (max-width: 480px) {
+    gap: 20px;
+    font-size: 0.625rem;
+  }
+  @media screen and (max-width: 375px) {
+    gap: 16px;
+  }
+}
+
+@mixin iconBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+
+  svg{
+    width: 25px;
+    height: 25px;
+
+    @media screen and (max-width: 1024px) {
+      width: 20px;
+      height: 20px;
+    }
+
+    @media screen and (max-width: 480px) {
+      width: 17px;
+      height: 17px;
+    }
+    @media screen and (max-width: 375px) {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  @media screen and (max-width: 1024px) {
+    width: 40px;
+    height: 40px;
+  }
+  @media screen and (max-width: 480px) {
+    width: 30px;
+    height: 30px;
+  }
+  @media screen and (max-width: 375px) {
+    width: 24px;
+    height: 24px;
+  }
+  
+}
