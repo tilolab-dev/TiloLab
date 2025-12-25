@@ -298,6 +298,7 @@
 
         .content_section{
 
+         
 
             ul{
                 display: flex;
@@ -322,16 +323,31 @@
                 justify-content: flex-start;
                 align-items: start;
                 gap: 12px;
+
+                @media screen and (max-width: 1024px) {
+                    gap: 8px;
+                }
+                @media screen and (max-width: 480px) {
+                    gap: 4px;
+                }
+
             }
 
+            .marked_list{
+                list-style: disc;
+                padding-left: 20px;
+
+                li{
+                    display: list-item;
+                }
+
+            }
+
+            
+
             strong{
+                @include mixins.subtitleText;
                 color: var(--text-color, #FFF);
-                font-family: 'Montserrat', sans-serif;
-                font-size: 1.125rem;
-                font-style: normal;
-                font-weight: 600;
-                line-height: 150%;
-                letter-spacing: 0.36px;
 
                 @media screen and (max-width: 1024px) {
                     font-size: 1.0625rem;
@@ -346,6 +362,16 @@
 
             span, p {
                 @include mixins.mainText;
+                color: #DBDBDB;
+
+                @media screen and (max-width: 1024px) {
+                    font-size: 1.0625rem;
+                }
+                @media screen and (max-width: 480px) {
+                    font-size: .875rem;
+                }
+               
+
 
             }
         }
@@ -356,9 +382,15 @@
             margin-bottom: 24px;
             @media screen and (max-width: 1024px) {
                 margin-bottom: 20px;
+                font-size: 1rem;
             }
             @media screen and (max-width: 480px) {
                 margin-bottom: 8px;
+                font-size: .9375rem;
+            }
+
+            @media screen and (max-width: 375px) {
+                font-size: .875rem;
             }
         }
 

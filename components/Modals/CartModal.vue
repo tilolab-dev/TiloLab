@@ -1,5 +1,5 @@
 <template>
-    <div class="cart_inner_overlay" @click="closeCart">
+    <div class="cart_inner_overlay" @click.self="closeCart">
         <div class="cart_modal_content" ref="cartRef">
     
     <div class="cart">

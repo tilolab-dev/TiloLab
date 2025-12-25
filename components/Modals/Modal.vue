@@ -26,6 +26,8 @@ import AuthModal from './AuthModal.vue';
 // import ChangeUserData from './ChangeUserData.vue';
 import CartModal from './CartModal.vue';
 import WishlistModal from '../WishlistModal.vue';
+import BurgerMenu from './BurgerMenu.vue';
+import LogOut from './LogOut.vue';
 
 // ADMIN
 
@@ -50,6 +52,8 @@ const modalComponents = {
   DeleteCategory,
 //   ProductToCart,
   AuthModal,
+  BurgerMenu,
+  LogOut,
 //   ChangeUserData
 }
 
