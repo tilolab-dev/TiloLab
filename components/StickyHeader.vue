@@ -12,13 +12,15 @@
               <NuxtLink to="/about-us" class="nav_element">
                 Про нас
               </NuxtLink>
-              <div
+              <button
                 class="nav_element"
                 @click="catalogBtnState = !catalogBtnState"
               >
                   Каталог
-                <AngleDown />
-              </div>
+                  <div class="icon_wrap">
+                    <AngleDown />
+                  </div>
+              </button>
               <div class="nav_element">
                 <NuxtLink to="/faq">
                   FAQ
@@ -38,9 +40,9 @@
           </div>
 
           <div class="main_header_buttons">
-            <button class="user_btn">
+            <NuxtLink to="/auth/login" class="user_btn">
               <ProfileIcon />
-            </button>
+            </NuxtLink>
             <NuxtLink to="/wishlist" class="wishlist_btn">
               <HeartIcon />
             </NuxtLink>
@@ -53,7 +55,7 @@
                 {{ cartStore?.cart?.length }}
               </div>
             </button>
-            <button @click="burger = !burger" class="burger_btn">
+            <button @click="modalStore.showModal('BurgerMenu')" class="burger_btn">
               <BurgerIcon />
 
             </button>
@@ -61,39 +63,9 @@
           </div>
         </div>
       </div>
-      <div class="mobile_menu " :class="burger ? 'mobile_menu_active': ''">
-        <div class="mobile_menu_top">
-          <button 
-            class="button_wrapper"
-            @click="burger = !burger"
-          >
-            <CloseIcon />
-
-          </button>
-            <ul class="mobile_menu_nav">
-              <li>
-                <NuxtLink to="/about-us">
-                  Про нас
-                </NuxtLink>
-              </li>
-              <li>
-                Каталог
-              </li>
-              <li>
-                <NuxtLink to="/faq">
-                  FAQ
-                </NuxtLink>
-              </li>
-              <li>
-                Список бажань
-              </li>
-            </ul>
-
-        </div>
-        <div class="mobile_menu_user">
-          Особистий кабінет
-        </div>
-      </div>
+      <!-- <div class="mobile_menu " :class="burger ? 'mobile_menu_active': ''">
+        
+      </div> -->
     </div>
 
     <div
@@ -166,6 +138,9 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
+
+  @use "@/style/mixins.scss" as mixins;
+
 .header {
   width: 100%;
   height: auto;
@@ -232,9 +207,22 @@ onMounted(() => {
       font-weight: 500;
       cursor: pointer;
 
-      svg {
-        transition: all ease 0.3s;
+      .icon_wrap{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+
+        svg{
+          padding: 5px;
+          stroke: var(--text-color);
+          transition: all ease 0.3s;
+
+        }
       }
+
+  
 
       @media screen and (min-width: 1024px) {
         &:hover {
@@ -242,7 +230,7 @@ onMounted(() => {
           transition: all ease 0.3s;
         }
         &:hover svg {
-          fill: var(--accent-color);
+          stroke: var(--accent-color);
           transition: all ease 0.3s;
         }
       }
@@ -266,12 +254,7 @@ onMounted(() => {
       }
 
       button {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
+        @include mixins.iconBtn;
         svg {
           transition: all ease 0.3s;
         }
@@ -292,7 +275,7 @@ onMounted(() => {
         top: 50%;
         transform: translate(-50%, -50%);
         .mobile_search_btn{
-          display: block;
+          @include mixins.iconBtn;
         }
         .desktop_search_btn{
           display: none;
@@ -324,6 +307,10 @@ onMounted(() => {
         
       }
     }
+
+    .cart_btn {
+      @include mixins.iconBtn;
+    }
     .quantity_label {
       color: white;
       position: absolute;
@@ -334,6 +321,9 @@ onMounted(() => {
       width: 20px;
       height: 20px;
       transform: translate(60%, -40%);
+    }
+    .wishlist_btn, .user_btn{
+      @include mixins.iconBtn;
     }
     .burger_btn {
       display: none;
@@ -346,9 +336,8 @@ onMounted(() => {
           display: none;
       }
       .burger_btn{
-        display: block;
+        @include mixins.iconBtn;
       }
-
     }
   }
 }
@@ -446,75 +435,6 @@ onMounted(() => {
   transition: all ease 0.3s;
 }
 
-.mobile_menu{
 
-  display: none;
-  @media screen and (max-width: 1024px) {
-      position: fixed;
-  background-color: rgba(13,11, 13, 0.9);
-  backdrop-filter: blur(10px);
-  transition: all ease 0.3s;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 90px 36px 40px;
-  top: 0;
-  right: -100%;
-  z-index: 0;
-
-  &_top{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    gap: 10px;
-    .button_wrapper{
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      width: 100%;
-    }
-  }
-  &_nav{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 100%;
-    gap: 16px;
-    li{
-      color: var(--text-color);
-      text-align: right;
-      font-family: 'Montserrat' sans-serif;
-      font-size: 1.0625rem;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 150%;
-      letter-spacing: 0.34px;
-      padding: 4px;
-    }
-  }
-  &_user{
-    color: var(--text-color);
-      text-align: right;
-      font-family: 'Montserrat' sans-serif;
-      font-size: 1.0625rem;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 150%;
-      letter-spacing: 0.34px;
-      padding: 4px;
-  }
-    
-  }
-
-}
-.mobile_menu_active {
-  right: 0;
-  transition: all ease 0.3s;
-}
 </style>
 ß
