@@ -1,220 +1,181 @@
 <template>
-
   <div class="auth_modal_content">
-     <section class="modal auth_modal">
-    <div
-      class="modal-wrapper"
-      :class="{ login_window: loginWindow, register_window: !loginWindow }"
-      ref="modalWrapper"
-    >
-      <div class="form login" v-if="!loginWindow">
-        <form>
-          <h2>Вхiд в аккаунт</h2>
-          <p class="main_text">
-            Ввійдіть в свій аккаунт щоб продовжити!
-            <br />
-            Якщо у Вас ще немає аккаунту, то зареєструйтесь!
-          </p>
-          <div class="form_item">
-            <label for="login-email "> Email </label>
-            <input
-              type="email"
-              id="login-email"
-              placeholder="Введіть вашу електронну пошту"
-              maxlength="40"
-              v-model="mail"
-              required
-            />
-          </div>
-
-          <div class="form_item">
-            <label for="login-password"> Пароль </label>
-            <input
-              type="password"
-              id="login-password"
-              placeholder="Введіть ваш пароль"
-              required
-              v-model="password"
-              maxlength="30"
-            />
-          </div>
-
-          <div class="button-wrapper">
-            <button class="forgot-password">Забыли пароль?</button>
-            <button @click="handleLogin" type="button">Войти</button>
-          </div>
-
-          <p class="bottom_content">
-            Нет аккаунта?
-
-            <button class="switch_btn" @click="loginWindow = true">
-              Создать
-            </button>
-          </p>
-        </form>
-      </div>
-      <div class="form auth" v-else-if="!supabaseConfirmState && loginWindow">
-        <form>
-          <h2>Создайте аккаунт</h2>
-          <p>
-            Зарегистрируйтесь, чтобы получить доступ ко всем возможностям. Это
-            быстро и просто!
-          </p>
-          <div class="name_wrapper">
-            <div class="name_wrapper_item">
-              <label for="register-name dark:text">Имя</label>
+    <section class="modal auth_modal">
+      <div
+        ref="modalWrapper"
+        class="modal-wrapper"
+        :class="{ login_window: loginWindow, register_window: !loginWindow }"
+      >
+        <div v-if="!loginWindow" class="form login">
+          <form>
+            <h2>Вхiд в аккаунт</h2>
+            <p class="main_text">
+              Ввійдіть в свій аккаунт щоб продовжити!
+              <br />
+              Якщо у Вас ще немає аккаунту, то зареєструйтесь!
+            </p>
+            <div class="form_item">
+              <label for="login-email "> Email </label>
               <input
-                type="text"
-                id="register-name"
-                v-model="userName"
+                id="login-email"
+                v-model="mail"
+                type="email"
+                placeholder="Введіть вашу електронну пошту"
+                maxlength="40"
                 required
               />
             </div>
 
-            <div class="name_wrapper_item">
-              <label for="register-surname">Отчество</label>
-              <input type="text" id="register-surname" v-model="userSurname" />
-            </div>
-
-            <div class="name_wrapper_item">
-              <label for="register-family">Фамилия</label>
+            <div class="form_item">
+              <label for="login-password"> Пароль </label>
               <input
-                type="text"
-                id="register-family"
-                v-model="userFamily"
-                required
-              />
-            </div>
-          </div>
-
-          <label for="register-email">Email</label>
-          <input type="email" id="register-email" v-model="mail" required />
-
-          <label for="phone-number">Номер телефона</label>
-          <input type="tel" id="phone-number" v-model="phoneNumber" required />
-
-          <div class="pass_wrapper">
-            <div class="pass_item">
-              <label for="register-password">Пароль</label>
-              <input
-                type="password"
-                id="register-password"
+                id="login-password"
                 v-model="password"
-                required
-              />
-            </div>
-
-            <div class="pass_item">
-              <label for="register-password-confirm">Повторите пароль</label>
-              <input
                 type="password"
-                id="register-password-confirm"
-                v-model="confirmedPass"
+                placeholder="Введіть ваш пароль"
                 required
+                maxlength="30"
               />
             </div>
-          </div>
 
-          <button class="register-btn" @click="handleRegister" type="button">
-            Зарегистрироваться
-          </button>
+            <div class="button-wrapper">
+              <button class="forgot-password">Забыли пароль?</button>
+              <button type="button" @click="handleLogin">Войти</button>
+            </div>
 
-          <p>
-            Уже есть аккаунт?
-            <button class="switch-tab" @click="loginWindow = false">
-              Войти
+            <p class="bottom_content">
+              Нет аккаунта?
+
+              <button class="switch_btn" @click="loginWindow = true">Создать</button>
+            </p>
+          </form>
+        </div>
+        <div v-else-if="!supabaseConfirmState && loginWindow" class="form auth">
+          <form>
+            <h2>Создайте аккаунт</h2>
+            <p>
+              Зарегистрируйтесь, чтобы получить доступ ко всем возможностям. Это быстро и просто!
+            </p>
+            <div class="name_wrapper">
+              <div class="name_wrapper_item">
+                <label for="register-name dark:text">Имя</label>
+                <input id="register-name" v-model="userName" type="text" required />
+              </div>
+
+              <div class="name_wrapper_item">
+                <label for="register-surname">Отчество</label>
+                <input id="register-surname" v-model="userSurname" type="text" />
+              </div>
+
+              <div class="name_wrapper_item">
+                <label for="register-family">Фамилия</label>
+                <input id="register-family" v-model="userFamily" type="text" required />
+              </div>
+            </div>
+
+            <label for="register-email">Email</label>
+            <input id="register-email" v-model="mail" type="email" required />
+
+            <label for="phone-number">Номер телефона</label>
+            <input id="phone-number" v-model="phoneNumber" type="tel" required />
+
+            <div class="pass_wrapper">
+              <div class="pass_item">
+                <label for="register-password">Пароль</label>
+                <input id="register-password" v-model="password" type="password" required />
+              </div>
+
+              <div class="pass_item">
+                <label for="register-password-confirm">Повторите пароль</label>
+                <input
+                  id="register-password-confirm"
+                  v-model="confirmedPass"
+                  type="password"
+                  required
+                />
+              </div>
+            </div>
+
+            <button class="register-btn" type="button" @click="handleRegister">
+              Зарегистрироваться
             </button>
-          </p>
 
-          <small
-            >Регистрируясь, вы соглашаетесь с
-            <span>условиями использования</span> и
-            <span>политикой конфиденциальности</span>.</small
-          >
-        </form>
-      </div>
-      <div class="form auth relative" v-else>
-        
-        <div class="confirm_password">
+            <p>
+              Уже есть аккаунт?
+              <button class="switch-tab" @click="loginWindow = false">Войти</button>
+            </p>
 
+            <small
+              >Регистрируясь, вы соглашаетесь с <span>условиями использования</span> и
+              <span>политикой конфиденциальности</span>.</small
+            >
+          </form>
+        </div>
+        <div v-else class="form auth relative">
+          <div class="confirm_password">
             <div class="auth_head">
-                <button
-                    @click="supabaseConfirmState = false"
-                    class="go_back_btn"
-                    >
-                    Повернутись назад
-                </button>
+              <button class="go_back_btn" @click="supabaseConfirmState = false">
+                Повернутись назад
+              </button>
 
-                <button
-                    class="close_modal"
-                    @click="modalStore.closeModal"
-                >
-                    X
-                </button>
-
+              <button class="close_modal" @click="modalStore.closeModal">X</button>
             </div>
 
             <div class="text_block">
-                 <h2
-                    class="mb-2 text-2xl font-bold text-[var(--primary-color)] dark:text-[var(--dark-font-color)]"
-                >
-                    Введіть пароль отриманий на email
-                </h2>
-                <p class="mb-5 dark:text-[var(--dark-font-color)]">
-                    Якщо ви не отримували пароль, перевірте правильність введених даних
-                    та спробуйте ще.
-                </p>
-
+              <h2
+                class="mb-2 text-2xl font-bold text-[var(--primary-color)] dark:text-[var(--dark-font-color)]"
+              >
+                Введіть пароль отриманий на email
+              </h2>
+              <p class="mb-5 dark:text-[var(--dark-font-color)]">
+                Якщо ви не отримували пароль, перевірте правильність введених даних та спробуйте ще.
+              </p>
             </div>
 
-          <div class="digits flex-col items-center gap-4">
-            <div class="digits_content flex gap-2">
-              <input
-                v-for="(digit, index) in code"
-                :key="index"
-                :ref="(el) => (inputs[index] = el)"
-                v-model="code[index]"
-                type="text"
-                maxlength="1"
-                @input="handleInput(index, $event)"
-                @keydown="handleBackspace(index, $event)"
-                class="w-12 h-12 text-center text-xl border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 dark:border-[var(--dark-border-color)]"
-              />
+            <div class="digits flex-col items-center gap-4">
+              <div class="digits_content flex gap-2">
+                <input
+                  v-for="(digit, index) in code"
+                  :key="index"
+                  :ref="(el) => (inputs[index] = el)"
+                  v-model="code[index]"
+                  type="text"
+                  maxlength="1"
+                  class="w-12 h-12 text-center text-xl border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 dark:border-[var(--dark-border-color)]"
+                  @input="handleInput(index, $event)"
+                  @keydown="handleBackspace(index, $event)"
+                />
+              </div>
+              <button
+                class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition dark:bg-[--dark-color] dark:border dark:border-[var(--dark-border-color)]"
+                @click="handleConfirmRegister"
+              >
+                Подтвердить
+              </button>
             </div>
-            <button
-              class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition dark:bg-[--dark-color] dark:border dark:border-[var(--dark-border-color)]"
-              @click="handleConfirmRegister"
-            >
-              Подтвердить
-            </button>
           </div>
         </div>
+        <div ref="background" class="background">
+          <NuxtImg
+            :src="loginWindow ? '/images/TiloLab1.webp' : '/images/TiloLab2.webp'"
+            alt="preview"
+            width="700"
+            height="450"
+            loading="lazy"
+            class="preview-image"
+          />
+          <h2>Якийсь текст</h2>
+          <button
+            class="absolute z-20 top-5 right-5 p-2 cursor-pointer border border-solid rounded-full"
+            :style="{
+              'border-color': !loginWindow ? 'var(--main-accent)' : 'var(--primary-color)'
+            }"
+            @click="modalStore.closeModal"
+          ></button>
+        </div>
       </div>
-      <div class="background" ref="background">
-        <NuxtImg
-          :src="loginWindow ? '/images/TiloLab1.webp' : '/images/TiloLab2.webp'"
-          alt="preview"
-          width="700"
-          height="450"
-          loading="lazy"
-          class="preview-image"
-        />
-        <h2>Якийсь текст</h2>
-        <button
-          class="absolute z-20 top-5 right-5 p-2 cursor-pointer border border-solid rounded-full"
-          :style="{
-            'border-color': !loginWindow
-              ? 'var(--main-accent)'
-              : 'var(--primary-color)',
-          }"
-          @click="modalStore.closeModal"
-        ></button>
-      </div>
-    </div>
-  </section>
-
+    </section>
   </div>
- 
 </template>
 
 <script setup>
@@ -243,13 +204,13 @@ const modalStore = useModalStore();
 
 const authStore = useAuthStore();
 
-const emit = defineEmits();
+const emit = defineEmits([]);
 
 const animateModalHeight = () => {
   gsap.to(modalWrapper.value, {
     duration: 0.5,
     height: loginWindow.value ? "100%" : "100%",
-    ease: "power2.out",
+    ease: "power2.out"
   });
 };
 
@@ -299,15 +260,14 @@ class Auth {
 
   static regEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  static regPassword =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  static regPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   validateEmail() {
     const validMail = Auth.regEmail.test(this.mail.trim());
     if (!validMail) {
       emit("tooltip", {
         status: "error",
-        message: "Невірний формат електронної пошти",
+        message: "Невірний формат електронної пошти"
       });
     }
     return validMail;
@@ -318,7 +278,7 @@ class Auth {
     if (!validPath) {
       emit("tooltip", {
         status: "error",
-        message: "Невірний формат паролю",
+        message: "Невірний формат паролю"
       });
     }
     return validPath;
@@ -331,16 +291,11 @@ class Auth {
   async fetchSendVerifyPass(link, method, data = {}) {
     const verifyData = new FormData();
 
-    verifyData.append(
-      "data",
-      JSON.stringify({
-        mail: mail.value,
-      })
-    );
+    verifyData.append("data", JSON.stringify(data));
 
-    const processVerify = await $fetch("/api/auth?auth=sendVerifyPass", {
-      method: "POST",
-      body: verifyData,
+    const processVerify = await $fetch(link, {
+      method: method,
+      body: verifyData
     });
 
     console.log(processVerify, "processVerify");
@@ -348,21 +303,20 @@ class Auth {
     if (processVerify.status === 200) {
       supabaseConfirmState.value = true;
     } else {
-    //   emit("tooltip", {
-    //     status: "error",
-    //     message: `Виникла помилка ${processVerify.message}`,
-    //   });
+      //   emit("tooltip", {
+      //     status: "error",
+      //     message: `Виникла помилка ${processVerify.message}`,
+      //   });
 
-        console.log({
-            status: "error",
-            message: `Виникла помилка ${processVerify.message}`,
-        }
-    )
+      console.log({
+        status: "error",
+        message: `Виникла помилка ${processVerify.message}`
+      });
     }
 
     return {
       status: processVerify.status,
-      message: processVerify.message,
+      message: processVerify.message
     };
   }
   async checkVerifyPass(link, method, data = {}) {
@@ -372,28 +326,24 @@ class Auth {
       "data",
       JSON.stringify({
         email: mail.value,
-        token: data.token,
+        token: data.token
       })
     );
 
     const processVerify = await $fetch(`/api/${link}`, {
       method: method,
-      body: verifyData,
+      body: verifyData
     });
 
     if (processVerify.status === 200) {
-      const registerUser = await this.fetchRequest(
-        "auth?auth=register",
-        "POST",
-        {
-          userName: userName.value,
-          userSurname: userSurname.value,
-          phoneNumber: phoneNumber.value,
-          userFamily: userFamily.value,
-          mail: mail.value,
-          password: password.value,
-        }
-      );
+      const registerUser = await this.fetchRequest("auth?auth=register", "POST", {
+        userName: userName.value,
+        userSurname: userSurname.value,
+        phoneNumber: phoneNumber.value,
+        userFamily: userFamily.value,
+        mail: mail.value,
+        password: password.value
+      });
 
       if (registerUser.status === 200) {
         userName.value = "";
@@ -409,12 +359,12 @@ class Auth {
         loginWindow.value = false;
         emit("tooltip", {
           status: "success",
-          message: registerUser.message,
+          message: registerUser.message
         });
       } else {
         emit("tooltip", {
           status: "error",
-          message: registerUser.message,
+          message: registerUser.message
         });
       }
 
@@ -425,7 +375,7 @@ class Auth {
     } else {
       emit("tooltip", {
         status: "error",
-        message: "Паролі не співпадають",
+        message: "Паролі не співпадають"
       });
     }
   }
@@ -437,13 +387,13 @@ class Auth {
 
     const response = await $fetch(`/api/${link}`, {
       method: method,
-      body: formData,
+      body: formData
     });
 
     if (response.status === 200) {
       emit("tooltip", {
         status: "success",
-        message: response.message,
+        message: response.message
       });
 
       setTimeout(() => {
@@ -472,18 +422,18 @@ const handleLogin = async () => {
 
   const loginUser = await loginAuth.fetchRequest("auth?auth=login", "POST", {
     mail: mail.value,
-    password: password.value,
+    password: password.value
   });
 
   if (loginUser.statusCode === 200) {
     emit("tooltip", {
       status: "success",
-      message: "Ви успішно увійшли",
+      message: "Ви успішно увійшли"
     });
   } else {
     emit("tooltip", {
       status: "error",
-      message: "Щось пішло не так",
+      message: "Щось пішло не так"
     });
     return;
   }
@@ -498,21 +448,12 @@ const handleLogin = async () => {
 };
 
 const handleRegister = () => {
-  const registerAuth = new Auth(
-    mail.value,
-    password.value,
-    confirmedPass.value
-  );
+  const registerAuth = new Auth(mail.value, password.value, confirmedPass.value);
 
-  if (
-    !userName.value &&
-    !mail.value &&
-    !password.value &&
-    !confirmedPass.value
-  ) {
+  if (!userName.value && !mail.value && !password.value && !confirmedPass.value) {
     emit("tooltip", {
       status: "error",
-      message: "Заповніть всі поля",
+      message: "Заповніть всі поля"
     });
     return null;
   }
@@ -524,30 +465,25 @@ const handleRegister = () => {
   if (!registerAuth.validateConfirmedPassword()) {
     emit("tooltip", {
       status: "error",
-      message: "Паролі не співпадають",
+      message: "Паролі не співпадають"
     });
     return;
   }
 
   registerAuth.fetchSendVerifyPass("auth?auth=sendVerifyPass", "POST", {
-    mail: mail.value,
+    mail: mail.value
   });
-
 };
 
 const handleConfirmRegister = () => {
-  const registerAuth = new Auth(
-    mail.value,
-    password.value,
-    confirmedPass.value
-  );
+  const registerAuth = new Auth(mail.value, password.value, confirmedPass.value);
 
   const codeValue = code.value.join(",").replaceAll(",", "");
 
   if (codeValue.length < 6) {
     emit("tooltip", {
       status: "error",
-      message: "Код повинен бути 6 цифр",
+      message: "Код повинен бути 6 цифр"
     });
     inputs.value = [];
     code.value = ["", "", "", "", "", ""];
@@ -558,7 +494,7 @@ const handleConfirmRegister = () => {
 
   registerAuth.checkVerifyPass("auth?auth=checkVerifyPass", "POST", {
     email: mail.value,
-    token: codeValue,
+    token: codeValue
   });
 };
 
@@ -579,18 +515,16 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-
-  .auth_modal_content{
-     position: fixed;
+.auth_modal_content {
+  position: fixed;
   top: 10%;
   // transform: translateY(-30%);
   background: white;
-    border-radius: 10px;
+  border-radius: 10px;
   overflow-x: hidden;
   height: fit-content;
   margin-bottom: 50px;
- 
-  }
+}
 
 .modal {
   height: 100%;
@@ -735,32 +669,29 @@ onUnmounted(() => {
   }
 
   .auth {
+    .auth_head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 95%;
+      position: absolute;
+      top: 20px;
+      left: 0;
 
-    .auth_head{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 95%;
-        position: absolute;
-        top: 20px;
-        left: 0;
-
-        button{
-            cursor: pointer;
-        }
-
-        .close_modal{
-            border: 1px solid darkgrey;
-            padding: 8px 10px;
-            border-radius: 50%;
-            aspect-ratio: 1 / 1;
-        }
+      button {
+        cursor: pointer;
       }
+
+      .close_modal {
+        border: 1px solid darkgrey;
+        padding: 8px 10px;
+        border-radius: 50%;
+        aspect-ratio: 1 / 1;
+      }
+    }
     form {
       padding: 2rem 1rem 2rem 0;
       gap: 0.5rem;
-
-      
 
       .name_wrapper {
         display: flex;
@@ -790,37 +721,33 @@ onUnmounted(() => {
       }
     }
 
-    .confirm_password{
-        width: 90%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: baseline;
-        justify-content: center;
-        gap: 2rem;
-
+    .confirm_password {
+      width: 90%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: baseline;
+      justify-content: center;
+      gap: 2rem;
     }
 
-    .text_block{
-        display: flex;
-        flex-direction: column;
-        align-items: baseline;
-        justify-content: center;
-        gap: 1rem;
+    .text_block {
+      display: flex;
+      flex-direction: column;
+      align-items: baseline;
+      justify-content: center;
+      gap: 1rem;
 
-        h2{
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
 
-        p{
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-
+      p {
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
     }
-
-    
 
     .digits {
       display: flex;
@@ -847,7 +774,7 @@ onUnmounted(() => {
         }
       }
 
-      button{
+      button {
         position: relative;
         top: 4rem;
         border: 1px solid darkgrey;

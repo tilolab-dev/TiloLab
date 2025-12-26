@@ -1,4 +1,2 @@
-const getSubCategory = async () => {
-
-}
+const getSubCategory = async () => {};
 export default getSubCategory;

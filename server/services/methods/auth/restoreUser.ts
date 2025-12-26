@@ -1,5 +1,3 @@
-async function restoreUser() {
-
-}
+async function restoreUser() {}
 
 export default restoreUser;

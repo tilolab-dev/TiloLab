@@ -23,15 +23,11 @@
                 <h3>Навігація</h3>
                 <ul>
                   <li>
-                    <NuxtLink to="/about-us">
-                      Про нас
-                    </NuxtLink>
+                    <NuxtLink to="/about-us"> Про нас </NuxtLink>
                   </li>
                   <li>Каталог</li>
                   <li>
-                    <NuxtLink to="/faq">
-                      FAQ
-                    </NuxtLink>
+                    <NuxtLink to="/faq"> FAQ </NuxtLink>
                   </li>
                 </ul>
               </nav>
@@ -51,9 +47,8 @@
           <h3>Залишайся з TiloLab</h3>
           <input type="text" placeholder="Твоя електронна пошта" />
           <p>
-            Я погоджуюсь з Політикою конфіденційності та даю згоду на обробку
-            моїх персональних даних та погоджуюся отримувати комерційні
-            повідомлення електронною поштою.
+            Я погоджуюсь з Політикою конфіденційності та даю згоду на обробку моїх персональних
+            даних та погоджуюся отримувати комерційні повідомлення електронною поштою.
           </p>
         </div>
       </div>
@@ -84,8 +79,8 @@
 </template>
 
 <script setup>
-import InstagramIcon from '~/assets/icons/instagram.svg'
-import TelegramIcon from '~/assets/icons/telegram.svg'
+import InstagramIcon from "~/assets/icons/instagram.svg";
+import TelegramIcon from "~/assets/icons/telegram.svg";
 </script>
 
 <style lang="scss">

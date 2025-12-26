@@ -19,11 +19,8 @@
 .index_hero {
   width: 100%;
   height: 100vh;
-  background: linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.5) 0%,
-      rgba(0, 0, 0, 0.5) 100%
-    ),
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%),
     url("../public/images/index-img/hero.webp") lightgray 50% / cover no-repeat;
   position: relative;
 
@@ -41,7 +38,6 @@
   @media screen and (max-width: 375px) {
     padding-block: 125px;
   }
-
 }
 
 .hero_content {

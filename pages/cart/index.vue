@@ -1,110 +1,119 @@
 <template>
-<section class="cart-section">
-  <div class="container">
-    <h2 class="heading">
-      <!-- {{ $t("cart.title") }} -->
+  <section class="cart-section">
+    <div class="container">
+      <h2 class="heading">
+        <!-- {{ $t("cart.title") }} -->
         Кошик
-    </h2>
-    <p class="description">
-      <!-- {{ $t("cart.description") }} -->
-        Ваш кошик - зручне місце для вибору та оформлення покупок. Ми цінуємо ваш час та прагнемо зробити процес максимально простим та комфортним.
-    </p>
+      </h2>
+      <p class="description">
+        <!-- {{ $t("cart.description") }} -->
+        Ваш кошик - зручне місце для вибору та оформлення покупок. Ми цінуємо ваш час та прагнемо
+        зробити процес максимально простим та комфортним.
+      </p>
 
-    <div class="layout">
-      <div class="products-column">
-        <div class="products-list">
-          <div v-if="cartProducts?.length === 0" class="empty-cart">
-            <h2 class="empty-title">Нажаль в кошику ще немає товарів!</h2>
-            <NuxtLink to="/products" class="btn btn-outline go-back-btn">
-              Перейти до продуктів
-            </NuxtLink>
+      <div class="layout">
+        <div class="products-column">
+          <div class="products-list">
+            <div v-if="cartProducts?.length === 0" class="empty-cart">
+              <h2 class="empty-title">Нажаль в кошику ще немає товарів!</h2>
+              <NuxtLink to="/products" class="btn btn-outline go-back-btn">
+                Перейти до продуктів
+              </NuxtLink>
+            </div>
+
+            <div v-for="(product, productIndex) in 6" :key="productIndex" class="card-wrapper">
+              <div class="inner_card">
+                <!-- <ItemCard /> -->
+              </div>
+            </div>
           </div>
+        </div>
 
-          <div
-            v-for="(product, productIndex) in 6"
-            :key="productIndex"
-            class="card-wrapper"
-          >
-            <div
-              class="inner_card"
-            >
+        <aside class="summary-column">
+          <div class="summary-panel">
+            <p class="summary-title">
+              <!-- {{ $t("cart.summary.title") }} -->
+              Підсумок замовлення
+            </p>
+
+            <div class="summary-body">
+              <div class="summary-row">
+                <dt class="muted">
+                  <!-- {{ $t("cart.summary.full-price") }} -->
+                  Повна ціна
+                </dt>
+                <dd class="muted-value">₴ 0</dd>
+              </div>
+
+              <div class="summary-row">
+                <dt class="muted">
+                  <!-- {{ $t("cart.summary.discount") }} -->
+                  Знижка
+                </dt>
+                <dd class="discount-value">-₴ 0</dd>
+              </div>
+
+              <div class="summary-total">
+                <dt class="total-label">
+                  <!-- {{ $t("cart.summary.total") }} -->
+                  Всього
+                </dt>
+                <dd class="total-value">₴ {{ totalPrice }}</dd>
+              </div>
+            </div>
+
+            <NuxtLink class="btn btn-primary process-order" @click="goToCheckout">
+              <!-- {{ $t("cart.summary.place-order") }} -->
+              Оформити замовлення
+            </NuxtLink>
+
+            <div class="summary-actions">
+              <NuxtLink to="/products" class="btn btn-dark">
+                <!-- {{ $t("cart.summary.go-back") }} -->
+                Повернутись в Магазин
+                <svg
+                  class="icon-arrow"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M19 12H5m14 0-4 4m4-4-4-4"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </NuxtLink>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="also-buy">
+        <h3 class="also-buy-title">Also buy</h3>
+        <div class="cards-grid">
+          <div v-for="(product, productIndex) in 3" :key="productIndex" class="card-wrapper">
+            <div class="inner_card">
               <!-- <ItemCard /> -->
             </div>
-
           </div>
         </div>
       </div>
-
-      <aside class="summary-column">
-        <div class="summary-panel">
-          <p class="summary-title"><!-- {{ $t("cart.summary.title") }} --> Підсумок замовлення</p>
-
-          <div class="summary-body">
-            <div class="summary-row">
-              <dt class="muted"><!-- {{ $t("cart.summary.full-price") }} --> Повна ціна</dt>
-              <dd class="muted-value">₴ 0</dd>
-            </div>
-
-            <div class="summary-row">
-              <dt class="muted"><!-- {{ $t("cart.summary.discount") }} --> Знижка</dt>
-              <dd class="discount-value">-₴ 0</dd>
-            </div>
-
-            <div class="summary-total">
-              <dt class="total-label"><!-- {{ $t("cart.summary.total") }} --> Всього</dt>
-              <dd class="total-value">₴ {{ totalPrice }}</dd>
-            </div>
-          </div>
-
-          <NuxtLink @click="goToCheckout" class="btn btn-primary process-order">
-            <!-- {{ $t("cart.summary.place-order") }} --> Оформити замовлення 
-          </NuxtLink>
-
-          <div class="summary-actions">
-            <NuxtLink to="/products" class="btn btn-dark">
-              <!-- {{ $t("cart.summary.go-back") }} -->
-                Повернутись в Магазин
-              <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19 12H5m14 0-4 4m4-4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                  stroke-linejoin="round" />
-              </svg>
-            </NuxtLink>
-          </div>
-        </div>
-      </aside>
     </div>
-
-    <div class="also-buy">
-      <h3 class="also-buy-title">Also buy</h3>
-      <div class="cards-grid">
-        <div
-          v-for="(product, productIndex) in 3"
-          :key="productIndex"
-          class="card-wrapper"
-        >
-          <div
-            class="inner_card"
-          >
-            <!-- <ItemCard /> -->
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 </template>
 
 <script setup>
-
 import { onMounted, ref } from "vue";
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 //   import Tooltips from "~/components/shared/Tooltips.vue";
 //   import Swiper from "swiper";
 
-import { useCartStore } from '@/store/cart-store';
+// import { useCartStore } from "@/store/cart-store";
 
-const cartStore = useCartStore();
+// const cartStore = useCartStore();
 const router = useRouter();
 
 const cartProducts = ref([]);
@@ -115,7 +124,6 @@ const tooltipStatus = ref("");
 const tooltipMessage = ref("");
 
 const tooltip = (obj) => {
-
   const { status, message } = obj;
 
   tooltipStatus.value = status;
@@ -128,55 +136,45 @@ const tooltip = (obj) => {
   }, 3000);
 };
 
-
-
-const removeProduct = (product) => {
-  cartStore.removeProduct(product)
-  cartProducts.value = cartStore.cart;
-  totalPrice.value = cartProducts.value.reduce((acc, product) => acc + product.totalPrice, 0);
-
-}
-
+// const removeProduct = (product) => {
+//   cartStore.removeProduct(product);
+//   cartProducts.value = cartStore.cart;
+//   totalPrice.value = cartProducts.value.reduce((acc, product) => acc + product.totalPrice, 0);
+// };
 
 const goToCheckout = (event) => {
-
   if (!cartProducts.value.length) {
     event.preventDefault();
     tooltip({
       status: "error",
       message: "Ваш кошик порожній"
-    })
-    console.log('path to checkout forbidden')
+    });
+    console.log("path to checkout forbidden");
   } else {
-    router.push('/checkout');
+    router.push("/checkout");
   }
+};
 
-}
+// const updateQuantity = (operator, product) => {
+//   const newQuantity =
+//     operator === "+"
+//       ? product.quantityProducts + product.counterQuantity
+//       : product.quantityProducts - product.counterQuantity;
 
+//   const newPrice = (product.totalPrice = countTotalPrice({
+//     price: product.price,
+//     totalProduct: newQuantity
+//   }));
 
-const updateQuantity = (operator, product) => {
-
-  const newQuantity = operator === '+' ? product.quantityProducts + product.counterQuantity : product.quantityProducts - product.counterQuantity;
-
-  const newPrice = product.totalPrice = countTotalPrice({
-    price: product.price,
-    totalProduct: newQuantity
-  })
-
-  cartStore.updateProduct(product, newPrice, newQuantity);
-  totalPrice.value = cartProducts.value.reduce((acc, product) => acc + product.totalPrice, 0);
-
-
-}
-
+//   cartStore.updateProduct(product, newPrice, newQuantity);
+//   totalPrice.value = cartProducts.value.reduce((acc, product) => acc + product.totalPrice, 0);
+// };
 
 onMounted(() => {
   // cartProducts.value = cartStore.cart;
   // totalPrice.value = cartProducts.value.reduce((acc, product) => acc + product.totalPrice, 0);
   // console.log(cartProducts.value)
-})
-
-
+});
 </script>
 
 <style lang="scss" scoped>
@@ -185,7 +183,14 @@ onMounted(() => {
 /* filepath: /Users/dmitrijnasyrkulov/WORK/SIDE/TILOLAB/pages/cart/index.vue (styles) */
 
 .cart-section {
-  font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family:
+    "Montserrat",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial;
   padding: 2rem 0;
   color: var(--dark-color);
 }
@@ -199,7 +204,7 @@ onMounted(() => {
 .heading {
   font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: .25rem;
+  margin-bottom: 0.25rem;
   color: var(--text-color);
 }
 
@@ -279,7 +284,7 @@ onMounted(() => {
 
 .product-desc {
   color: rgba(0, 0, 0, 0.6);
-  font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 /* controls */
@@ -315,12 +320,12 @@ onMounted(() => {
 }
 
 .quantity-label {
-  font-size: .8rem;
+  font-size: 0.8rem;
   color: var(--dark-color);
 }
 
 .package-label {
-  font-size: .8rem;
+  font-size: 0.8rem;
   color: rgba(0, 0, 0, 0.6);
 }
 
@@ -379,7 +384,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: .5rem;
+  gap: 0.5rem;
   // background: var(--dark-color, #111827);
   // color: #fff;
   // border: none;

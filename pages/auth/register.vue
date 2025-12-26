@@ -39,9 +39,7 @@
         </button>
 
         <div class="test_user_btn">
-          <NuxtLink to="/user" class="test_user">
-            Тестова кнопка сторінки користувача
-          </NuxtLink>
+          <NuxtLink to="/user" class="test_user"> Тестова кнопка сторінки користувача </NuxtLink>
         </div>
       </div>
     </div>

@@ -1,69 +1,75 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
+  compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   app: {
-    baseURL: '/',
+    baseURL: "/",
     head: {
       meta: [
-        { 
-          name: 'viewport', 
-          content: 'width=device-width, initial-scale=1' 
+        {
+          name: "viewport",
+          content: "width=device-width, initial-scale=1"
         }
       ]
     }
   },
   nitro: {
-    compressPublicAssets: true,
+    compressPublicAssets: true
   },
   build: {
-    transpile: ['@supabase/supabase-js']
+    transpile: ["@supabase/supabase-js"]
   },
   imports: {
-    dirs: ['helpers']
+    dirs: ["helpers"]
   },
   runtimeConfig: {
     api_secret_path: process.env.API_SECRET_PATH,
     api_secret_key: process.env.API_SECRET_KEY,
 
     public: {
-      api_base_url: process.env.API_BASE_URL,
-
+      api_base_url: process.env.API_BASE_URL
     }
   },
   css: [
-    '~/style/mixins.scss',
-    '~/style/default.css',
-    '~/style/index.scss',
-    '~/style/variables.scss',
-    
+    "~/style/mixins.scss",
+    "~/style/default.css",
+    "~/style/index.scss",
+    "~/style/variables.scss"
   ],
   alias: {
-   '@components': '/components',
-    '@utils': '/utils',
-    '@store': '/store',
-    '@helpers': '/helpers'
+    "@components": "/components",
+    "@utils": "/utils",
+    "@store": "/store",
+    "@helpers": "/helpers"
   },
-  modules: ['@pinia/nuxt', '@nuxt/image', ['@nuxtjs/google-fonts', {
-    families: {
-      'Montserrat': {
-        wght: [400, 500, 600],
-        ital: [500],
-      },
-      'Inter': {
-        wght: [500],
-      },
-    },
-  }], 'nuxt-swiper'],
+  modules: [
+    "@pinia/nuxt",
+    "@nuxt/image",
+    [
+      "@nuxtjs/google-fonts",
+      {
+        families: {
+          Montserrat: {
+            wght: [400, 500, 600],
+            ital: [500]
+          },
+          Inter: {
+            wght: [500]
+          }
+        }
+      }
+    ],
+    "nuxt-swiper"
+  ],
 
   vite: {
     plugins: [
-      require('vite-svg-loader')({
+      require("vite-svg-loader")({
         svgo: true,
         svgoConfig: {
           plugins: [
             {
-              name: 'removeViewBox',
+              name: "removeViewBox",
               active: false
             }
           ]
@@ -71,4 +77,4 @@ export default defineNuxtConfig({
       })
     ]
   }
-})
+});
