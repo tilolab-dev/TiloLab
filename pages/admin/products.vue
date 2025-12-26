@@ -39,12 +39,8 @@
           </div>
         </div>
         <div class="adding_content">
-          <button class="text-nowrap" @click="openPopup('AddCategory')">
-            Додати категорію
-          </button>
-          <button class="text-nowrap" @click="openPopup('AddProduct')">
-            Додати товар
-          </button>
+          <button class="text-nowrap" @click="openPopup('AddCategory')">Додати категорію</button>
+          <button class="text-nowrap" @click="openPopup('AddProduct')">Додати товар</button>
           <!-- <button>
                 <SvgIcon name="burger-menu" size="micro" fill="var(--dark-color)" />
             </button> -->
@@ -53,7 +49,7 @@
 
       <div class="info_content">
         <div v-if="activeGroup === 'categories'" class="info_content_wrapper">
-          <div class="wrapper_content" ref="categoryElem">
+          <div ref="categoryElem" class="wrapper_content">
             <div class="table_name">
               <h6 class="dark:text-white">Категорії товарів</h6>
             </div>
@@ -70,79 +66,66 @@
                       <th class="t_head_cell"></th>
                     </tr>
                   </thead>
-                  <tbody class="t_body" v-if="!loadingCategoryState">
+                  <tbody v-if="!loadingCategoryState" class="t_body">
                     <!-- Skeleton -->
-                      <tr v-for="i in 5" :key="'skeleton-' + i"  class="skeleton_content_row">
-                        <!-- Author -->
-                        <td
-                          class="skeleton_content"
-                        >
-                          <div class="main_cell">
-                            <div class="main_cell_circle skeleton_item"></div>
-                            <div class="main_cell_text">
-                              <div class="skeleton_item main_cell_text_top"></div>
-                              <div class="skeleton_item main_cell_text_bottom"></div>
-                            </div>
+                    <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
+                      <!-- Author -->
+                      <td class="skeleton_content">
+                        <div class="main_cell">
+                          <div class="main_cell_circle skeleton_item"></div>
+                          <div class="main_cell_text">
+                            <div class="skeleton_item main_cell_text_top"></div>
+                            <div class="skeleton_item main_cell_text_bottom"></div>
                           </div>
-                        </td>
-                        <!-- Function -->
-                        <td
-                          class="skeleton_content"
-                        >
-                          <div class="skeleton_item "></div>
-                          <div class="skeleton_item "></div>
-                        </td>
-                        <!-- Status -->
-                        <td
-                          class="skeleton_content"
-                        >
-                          <div
-                            class="skeleton_item"
-                          ></div>
-                        </td>
-                        <!-- Employed -->
-                        <td
-                          class="skeleton_content"
-                        >
-                          <div class="skeleton_item "></div>
-                        </td>
-                        <!-- Edit -->
-                        <td
-                          class="skeleton_content"
-                        >
-                          <div class="skeleton_item "></div>
-                        </td>
-                      </tr>
+                        </div>
+                      </td>
+                      <!-- Function -->
+                      <td class="skeleton_content">
+                        <div class="skeleton_item"></div>
+                        <div class="skeleton_item"></div>
+                      </td>
+                      <!-- Status -->
+                      <td class="skeleton_content">
+                        <div class="skeleton_item"></div>
+                      </td>
+                      <!-- Employed -->
+                      <td class="skeleton_content">
+                        <div class="skeleton_item"></div>
+                      </td>
+                      <!-- Edit -->
+                      <td class="skeleton_content">
+                        <div class="skeleton_item"></div>
+                      </td>
+                    </tr>
                     <!-- Data -->
                   </tbody>
-                  <tbody class="t_body" v-else>
-                      <!-- v-for="category in fetchedCategories" -->
+                  <tbody v-else class="t_body">
+                    <!-- v-for="category in fetchedCategories" -->
 
-                     <tr v-for="(item, i) in 6" :key="i">
-                        <td class="table_row">
-                          <div class="table_main">
-                            <img src="/images/item.png" alt="user1" />
-                            <div class="table_main_wrapper">
-                              <h6>John Michael</h6>
-                              <p>john@creative-tim.com</p>
-                            </div>
+                    <tr v-for="(item, i) in 6" :key="i">
+                      <td class="table_row">
+                        <div class="table_main">
+                          <img src="/images/item.png" alt="user1" />
+                          <div class="table_main_wrapper">
+                            <h6>John Michael</h6>
+                            <p>john@creative-tim.com</p>
                           </div>
-                        </td>
-                        <td>
-                          <p>Manager</p>
-                          <p>Organization</p>
-                        </td>
-                        <td>
-                          <span> Online </span>
-                        </td>
-                        <td>
-                          <span> 23/04/18 </span>
-                        </td>
-                        <td>
-                          <button>Edit</button>
-                        </td>
-                      </tr>
-
+                        </div>
+                      </td>
+                      <td>
+                        <p>Manager</p>
+                        <p>Organization</p>
+                      </td>
+                      <td>
+                        <span> Online </span>
+                      </td>
+                      <td>
+                        <span> 23/04/18 </span>
+                      </td>
+                      <td>
+                        <button>Edit</button>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -153,7 +136,7 @@
         <!-- card 2 -->
 
         <div v-else class="info_content_wrapper">
-          <div class="wrapper_content" ref="productElem">
+          <div ref="productElem" class="wrapper_content">
             <div class="table_name">
               <h6 class="dark:text-white">Товари</h6>
             </div>
@@ -169,57 +152,47 @@
                       <th class="t_head_cell"></th>
                     </tr>
                   </thead>
-                  <tbody class="t_body" v-if="!loadingProductState">
+                  <tbody v-if="!loadingProductState" class="t_body">
                     <!-- <div > -->
-                    <tr
-                      v-for="i in 5"
-                      :key="'skeleton-' + i"
-                      class="skeleton_content_row"
-                    >
+                    <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
                       <!-- Author -->
                       <td class="skeleton_content">
                         <div class="main_cell">
                           <div class="main_cell_circle skeleton_item"></div>
                           <div class="main_cell_text">
                             <div class="skeleton_item main_cell_text_top"></div>
-                            <div
-                              class="skeleton_item main_cell_text_bottom"
-                            ></div>
+                            <div class="skeleton_item main_cell_text_bottom"></div>
                           </div>
                         </div>
                       </td>
                       <!-- Function -->
                       <td class="skeleton_content">
-                        <div class="skeleton_item "></div>
-                        <div class="skeleton_item "></div>
+                        <div class="skeleton_item"></div>
+                        <div class="skeleton_item"></div>
                       </td>
                       <!-- Status -->
                       <td class="skeleton_content">
-                        <div
-                          class="skeleton_item "
-                        ></div>
+                        <div class="skeleton_item"></div>
                       </td>
                       <!-- Employed -->
                       <td class="skeleton_content">
-                        <div class="skeleton_item "></div>
+                        <div class="skeleton_item"></div>
                       </td>
                       <!-- Edit -->
                       <td class="skeleton_content">
-                        <div class="skeleton_item "></div>
+                        <div class="skeleton_item"></div>
                       </td>
                     </tr>
                     <!-- </div> -->
                   </tbody>
-                  <tbody class="t_body" v-else>
+                  <tbody v-else class="t_body">
                     <!-- v-for="product in fetchedProducts" -->
 
                     <tr v-for="(product, i) in 6" :key="i">
                       <td class="table_row">
                         <div class="table_main">
                           <img src="/images/item.png" alt="item" />
-                          <h6
-                            class="mb-0 text-sm leading-normal dark:text-white"
-                          >
+                          <h6 class="mb-0 text-sm leading-normal dark:text-white">
                             <!-- {{
                                     product.translations.find(
                                       (translation) =>
@@ -288,7 +261,7 @@ const categoryElem = ref(null);
 const loadingProductState = ref(false);
 const fetchedProducts = ref([]);
 const productElem = ref(null);
-const productCategoryElem = ref(null);
+// const productCategoryElem = ref(null);
 
 const activeGroup = ref("products");
 
@@ -317,7 +290,6 @@ watch(fetchedCategories, async () => {
   }
 });
 watch(fetchedProducts, async () => {
-  console.log("watch fetchedproducts");
   if (productElem.value) {
     const prevHeight = productElem.value.clientHeight;
     await nextTick();
@@ -332,7 +304,7 @@ watch(fetchedProducts, async () => {
 });
 
 definePageMeta({
-  layout: "admin",
+  layout: "admin"
 });
 
 const showGroup = (group) => {
@@ -348,12 +320,12 @@ const showGroup = (group) => {
   }
 };
 
-const deleteCategory = (category) => {
-  modalStore.showModal("DeleteCategory", {
-    categoryId: category.id,
-    categoryName: category.language.title,
-  });
-};
+// const deleteCategory = (category) => {
+//   modalStore.showModal("DeleteCategory", {
+//     categoryId: category.id,
+//     categoryName: category.language.title
+//   });
+// };
 
 const fetchCategory = async () => {
   loadingCategoryState.value = true;
@@ -363,9 +335,7 @@ const fetchCategory = async () => {
     if (getCategories.data.length > 0) {
       fetchedCategories.value = getCategories.data.map((item) => ({
         ...item,
-        language: item.translations.find(
-          (translation) => translation.language === "uk"
-        ),
+        language: item.translations.find((translation) => translation.language === "uk")
       }));
     }
     loadingCategoryState.value = false;
@@ -534,7 +504,8 @@ onMounted(() => {
         word-break: break-word;
         background: #ffffff;
         border: 0 solid transparent;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
           0 10px 10px -5px rgba(0, 0, 0, 0.04);
         border-radius: 1rem;
         background-clip: border-box;

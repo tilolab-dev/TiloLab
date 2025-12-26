@@ -1,5 +1,3 @@
-const addSubCategory = async () => {
-
-}
+const addSubCategory = async () => {};
 
 export default addSubCategory;

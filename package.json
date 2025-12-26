@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "build": "prisma generate && nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev && eslint . --quiet",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare && prisma generate"
+    "postinstall": "nuxt prepare && prisma generate",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@nuxt/image": "^2.0.0",
@@ -34,12 +37,20 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@types/bcrypt": "^6.0.0",
     "@types/formidable": "^3.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/pg": "^8.15.6",
+    "@typescript-eslint/eslint-plugin": "^8.50.1",
+    "@typescript-eslint/parser": "^8.50.1",
     "autoprefixer": "^10.4.22",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-vue": "^10.6.2",
     "postcss": "^8.5.6",
+    "prettier": "^3.7.4",
     "prisma": "^7.0.1",
     "sass": "^1.94.2",
     "scss": "^0.2.4",

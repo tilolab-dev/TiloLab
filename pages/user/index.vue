@@ -6,11 +6,7 @@
           <h1>Мої замовлення</h1>
 
           <ul class="order_items">
-            <li
-              class="order_item"
-              v-for="(order, i) in userData.orders"
-              :key="i"
-            >
+            <li v-for="(order, i) in userData.orders" :key="i" class="order_item">
               <div class="order_item_head">
                 <span class="order_number"> Номер {{ order.number }} </span>
                 <span class="order_date">
@@ -21,17 +17,9 @@
               <div class="items_quantity">{{ order.items.length }} товари</div>
 
               <ul class="product_list">
-                <li
-                  class="product_list_item"
-                  v-for="(item, i) in order.items"
-                  :key="i"
-                >
+                <li v-for="(item, i) in order.items" :key="i" class="product_list_item">
                   <div class="item_main">
-                    <img
-                      :src="item.image"
-                      alt="preview"
-                      class="product_preview"
-                    />
+                    <img :src="item.image" alt="preview" class="product_preview" />
                     <span>
                       {{ item.title }}
                     </span>
@@ -67,9 +55,7 @@
 
                 <ul
                   class="order_additional_list"
-                  :class="
-                    openOrders.includes(i) ? 'order_additional_list_active' : ''
-                  "
+                  :class="openOrders.includes(i) ? 'order_additional_list_active' : ''"
                 >
                   <li>
                     <span> Сума: </span>
@@ -122,10 +108,7 @@
                 <AngleRight />
               </div>
             </button>
-            <button
-              class="exit_profile"
-              @click="modalStore.showModal('LogOut')"
-            >
+            <button class="exit_profile" @click="modalStore.showModal('LogOut')">
               Вийти з облікового запису
             </button>
           </div>
@@ -136,7 +119,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import AngleDown from "~/assets/icons/angle-down.svg";
 import AngleRight from "~/assets/icons/angle-right.svg";
 import CloseIcon from "~/assets/icons/close-icon.svg";
@@ -160,27 +143,27 @@ const userData = {
           title: "Вагінальні кульки кегеля",
           quantity: "2",
           price: "3 850",
-          salePrice: "3 550",
+          salePrice: "3 550"
         },
         {
           image: "/images/popular/popular1.webp",
           title: "Вагінальні кульки кегеля",
           quantity: "2",
           price: "3 850",
-          salePrice: "3 550",
+          salePrice: "3 550"
         },
         {
           image: "/images/popular/popular1.webp",
           title: "Вагінальні кульки кегеля",
           quantity: "2",
           price: "3 850",
-          salePrice: "3 550",
-        },
+          salePrice: "3 550"
+        }
       ],
       status: "Відправлено",
       totalPrice: "6 850",
       payment: "Оплата на онлайн сайті",
-      delivery: "Відділення Нової пошти",
+      delivery: "Відділення Нової пошти"
     },
     {
       id: 2,
@@ -192,13 +175,13 @@ const userData = {
           title: "Вагінальні кульки кегеля",
           quantity: "2",
           price: "3 850 ",
-          salePrice: "3 550 ",
-        },
+          salePrice: "3 550 "
+        }
       ],
       status: "Відправлено",
       totalPrice: "6 850 ",
       payment: "Оплата на онлайн сайті",
-      delivery: "Відділення Нової пошти",
+      delivery: "Відділення Нової пошти"
     },
     {
       id: 3,
@@ -210,15 +193,15 @@ const userData = {
           title: "Вагінальні кульки кегеля",
           quantity: "2",
           price: "3 850 ",
-          salePrice: "3 550 ",
-        },
+          salePrice: "3 550 "
+        }
       ],
       status: "Відправлено",
       totalPrice: "6 850 ",
       payment: "Оплата на онлайн сайті",
-      delivery: "Відділення Нової пошти",
-    },
-  ],
+      delivery: "Відділення Нової пошти"
+    }
+  ]
 };
 
 const openOrders = ref([]);

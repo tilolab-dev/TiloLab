@@ -17,8 +17,8 @@
         <component
           :is="currentModal"
           v-bind="modalProps"
-          :openModal="openModal"
-          :closeModal="closeModal"
+          :open-modal="openModal"
+          :close-modal="closeModal"
         />
       </template>
     </Modal>
@@ -29,41 +29,39 @@
 </template>
 
 <script setup>
-  import Modal from "~/components/Modals/Modal.vue";
-  import StickyHeader from "@/components/StickyHeader.vue";
-  // import Tooltips from "~/components/shared/Tooltips.vue";
-  import { useModalStore } from "@/store/modal-store"; 
-  import { useAuthStore } from "@/store/auth-store";
-  import { onMounted } from "vue";
+import Modal from "~/components/Modals/Modal.vue";
+import StickyHeader from "@/components/StickyHeader.vue";
+// import Tooltips from "~/components/shared/Tooltips.vue";
+import { useModalStore } from "@/store/modal-store";
+// import { useAuthStore } from "@/store/auth-store";
+// import { onMounted } from "vue";
 
-  const modalStore = useModalStore();
-  const authStore = useAuthStore();
-  const currentModal = computed(() => modalStore.currentModal);
-  const modalProps = computed(() => modalStore.modalProps);
+const modalStore = useModalStore();
+// const authStore = useAuthStore();
+const currentModal = computed(() => modalStore.currentModal);
+const modalProps = computed(() => modalStore.modalProps);
 
-  const showTooltip = ref(false);
-  const tooltipStatus = ref("");
-  const tooltipMessage = ref("");
+// const showTooltip = ref(false);
+// const tooltipStatus = ref("");
+// const tooltipMessage = ref("");
 
-  const tooltip = (obj) => {
+// const tooltip = (obj) => {
+//   const { status, message } = obj;
 
-    const { status, message } = obj;
+//   tooltipStatus.value = status;
+//   tooltipMessage.value = message;
+//   showTooltip.value = true;
+//   setTimeout(() => {
+//     showTooltip.value = false;
+//   }, 3000);
+// };
 
-    tooltipStatus.value = status;
-    tooltipMessage.value = message;
-    showTooltip.value = true;
-    setTimeout(() => {
-      showTooltip.value = false;
-    }, 3000);
-  };
-
-  // onMounted(() => {
-  //   authStore.fetchUser();
-  // })
+// onMounted(() => {
+//   authStore.fetchUser();
+// })
 </script>
 
 <style scoped>
-
 .layout {
   display: flex;
   flex-direction: column;

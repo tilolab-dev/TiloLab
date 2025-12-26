@@ -1,5 +1,3 @@
-const deleteSubCategory = () => {
-
-}
+const deleteSubCategory = () => {};
 
 export default deleteSubCategory;
