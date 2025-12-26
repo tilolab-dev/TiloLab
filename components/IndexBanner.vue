@@ -21,28 +21,24 @@
   height: auto;
   position: relative;
   padding-block: 352px;
-  background: linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.5) 0%,
-      rgba(0, 0, 0, 0.5) 100%
-    ),
-    url("../public/images/index-img/banner.webp") lightgray 50% / cover
-      no-repeat;
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%),
+    url("../public/images/index-img/banner.webp") lightgray 50% / cover no-repeat;
 
-    @media screen and (max-width: 1024px) {
-        padding-block: 220px;
-    }
-    @media screen and (max-width: 768px) {
-        padding-block: 250px;
-    }
+  @media screen and (max-width: 1024px) {
+    padding-block: 220px;
+  }
+  @media screen and (max-width: 768px) {
+    padding-block: 250px;
+  }
 
-    @media screen and (max-width: 480px) {
-        padding-block: 111px;
-    }
+  @media screen and (max-width: 480px) {
+    padding-block: 111px;
+  }
 
-    @media screen and (max-width: 375px) {
-        padding-block: 51px;
-    }
+  @media screen and (max-width: 375px) {
+    padding-block: 51px;
+  }
 }
 
 .banner_content {

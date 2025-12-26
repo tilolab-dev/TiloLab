@@ -14,27 +14,18 @@
             <div class="label_wrapper">
               <label for="file_out" class="icon-label">
                 <span> Оберіть файл </span>
-                <SvgIcon
-                  name="download-btn"
-                  size="micro"
-                  fill="rgb(79, 79, 79)"
-                />
+                <SvgIcon name="download-btn" size="micro" fill="rgb(79, 79, 79)" />
               </label>
               <input
-                type="file"
-                ref="fileInput"
                 id="file_out"
+                ref="fileInput"
+                type="file"
                 class="icon-file"
                 @change="handleFileUpload"
               />
             </div>
             <div class="icon_preview">
-              <SvgIcon
-                v-if="!fileReady"
-                name="default-picture"
-                size="big"
-                fill="rgb(79, 79, 79)"
-              />
+              <SvgIcon v-if="!fileReady" name="default-picture" size="big" fill="rgb(79, 79, 79)" />
               <img
                 v-if="fileReady"
                 :src="filePreview"
@@ -46,9 +37,7 @@
             <span v-if="!fileReady" class="file_note">
               ( Файл повинен бути формату .svg .png )
             </span>
-            <span v-if="fileReady" class="file_ready">
-              Файл готовий для завантаження
-            </span>
+            <span v-if="fileReady" class="file_ready"> Файл готовий для завантаження </span>
           </div>
         </div>
         <div class="category-name-wrap">
@@ -68,27 +57,21 @@
             Опис категорії (українською)
           </span>
           <textarea
+            id=""
+            v-model="categoryTextUk"
             class="border border-solid border-[var(--dark-color)] resize-none rounded-lg p-2"
             placeholder="Введіть опис категорії"
-            v-model="categoryTextUk"
             name="textUk"
-            id=""
             rows="3"
           />
         </div>
 
         <div class="checkbox_wrapper flex flex-col">
-          <span
-            class="default_text text-[var(--dark-color)] font-sm text-base pb-2"
-          >
+          <span class="default_text text-[var(--dark-color)] font-sm text-base pb-2">
             Показувати групу на сайті? (опціонально)
           </span>
 
-          <input
-            v-model="categoryVisible"
-            class="checkbox_input"
-            type="checkbox"
-          />
+          <input v-model="categoryVisible" class="checkbox_input" type="checkbox" />
         </div>
       </div>
       <div class="button-group flex justify-end items-center gap-2 w-full">
@@ -104,12 +87,13 @@
 <script setup>
 import { ref } from "vue";
 import { useModalStore } from "@/store/modal-store";
-import { useFetch, useAsyncData } from "nuxt/app";
+// import { useFetch, useAsyncData } from "nuxt/app";
+// import { transliterate } from "@/utils/transliterate";
 
 import SvgIcon from "@/components/shared/SvgIcon.vue";
 
 const modalStore = useModalStore();
-const emit = defineEmits();
+const emit = defineEmits([]);
 
 const file = ref(null);
 const fileReady = ref(false);
@@ -118,6 +102,8 @@ const filePreview = ref(null);
 const uploadProgress = ref(null);
 const uploadStatus = ref("");
 const categoryNameUk = ref("");
+const categoryNameEn = ref("");
+const categoryNameRu = ref("");
 
 const categoryTextUk = ref("");
 
@@ -126,9 +112,7 @@ const categoryVisible = ref(false);
 const handleFileUpload = (event) => {
   const accessedFormat = ["svg", "png"];
   const selectedFile = event.target.files[0];
-  const accessedFile = accessedFormat.some((item) =>
-    selectedFile.name.includes(item)
-  );
+  const accessedFile = accessedFormat.some((item) => selectedFile.name.includes(item));
 
   if (accessedFile) {
     file.value = selectedFile;
@@ -146,7 +130,7 @@ const handleFileUpload = (event) => {
     // console.error('Файл повинен бути формату .svg .png');
     emit("tooltip", {
       status: "error",
-      message: "Файл повинен бути формату .svg .png",
+      message: "Файл повинен бути формату .svg .png"
     });
     resetForm();
     return;
@@ -161,24 +145,24 @@ const resetForm = () => {
   uploadProgress.value = null;
   uploadStatus.value = "";
   categoryNameUk.value = "";
-  // categoryNameEn.value = '';
-  // categoryNameRu.value = '';
+  categoryNameEn.value = "";
+  categoryNameRu.value = "";
   categoryVisible.value = false;
   // categoryTextEn.value = '';
   // categoryTextRu.value = '';
   // categoryTextUk.value = '';
 };
 
-const sendData = () => {
-  resetForm();
-  emit("tooltip", {
-    status: "success",
-    message: "Категорія успішно додана",
-  });
-  setTimeout(() => {
-    modalStore.closeModal();
-  }, 1000);
-};
+// const sendData = () => {
+//   resetForm();
+//   emit("tooltip", {
+//     status: "success",
+//     message: "Категорія успішно додана"
+//   });
+//   setTimeout(() => {
+//     modalStore.closeModal();
+//   }, 1000);
+// };
 
 const testAlertHandler = () => {
   alert("Категорія успішно додана");
@@ -248,7 +232,7 @@ const addNewCategory = () => {
   const translitString = transliterate(categoryNameUk.value);
   const categoryName = translitString.trim().replaceAll(" ", "-").toLowerCase();
 
-  //   console.log(categoryName, "categoryName");
+  console.log(categoryName, "categoryName");
 
   const uploadCategoryFile = async () => {
     const formData = new FormData();
@@ -258,7 +242,7 @@ const addNewCategory = () => {
 
       const response = await $fetch("/api/upload", {
         method: "POST",
-        body: formData,
+        body: formData
       });
       if (response.success) {
         return response.data[0].filePath;
@@ -314,11 +298,11 @@ const addNewCategory = () => {
             {
               language: "uk",
               title: categoryNameUk.value,
-              description: categoryTextUk.value,
-            },
+              description: categoryTextUk.value
+            }
           ],
-          categoryImg: categoryIconPath,
-        },
+          categoryImg: categoryIconPath
+        }
       });
 
       return response;
@@ -355,7 +339,7 @@ const addNewCategory = () => {
     } catch (error) {
       emit("tooltip", {
         status: "error",
-        message: `Помилка при додаванні категорії ${error}`,
+        message: `Помилка при додаванні категорії ${error}`
       });
     }
   };
@@ -373,31 +357,31 @@ const shareData = async () => {
   ) {
     emit("tooltip", {
       status: "error",
-      message: "Заповніть всі поля",
+      message: "Заповніть всі поля"
     });
     return;
   } else if (categoryNameUk.value.length < 1) {
     emit("tooltip", {
       status: "error",
-      message: "Заповніть назву категорії Українською",
+      message: "Заповніть назву категорії Українською"
     });
     return;
   } else if (categoryNameEn.value.length < 1) {
     emit("tooltip", {
       status: "error",
-      message: "Заповніть назву категорії Англійською",
+      message: "Заповніть назву категорії Англійською"
     });
     return;
   } else if (categoryNameRu.value.length < 1) {
     emit("tooltip", {
       status: "error",
-      message: "Заповніть назву категорії Російською",
+      message: "Заповніть назву категорії Російською"
     });
     return;
   } else if (!file.value) {
     emit("tooltip", {
       status: "error",
-      message: "Оберіть іконку для обраної категорії",
+      message: "Оберіть іконку для обраної категорії"
     });
     return;
   }
@@ -413,15 +397,15 @@ const shareData = async () => {
   const res = await $fetch("/api/category", {
     method: "POST",
 
-    body: formData,
+    body: formData
   });
   resetForm();
 
-  resetTextFields();
+  // resetTextFields();
 
   emit("tooltip", {
     status: res.tooltipStatus,
-    message: `Категорія ${res.message} успішно створена`,
+    message: `Категорія ${res.message} успішно створена`
   });
 };
 

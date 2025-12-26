@@ -1,7 +1,7 @@
 <template>
-    <section class="index_page">
-        <!-- HELLO WORLD -->
-         <!-- <SharedTransparentBtn
+  <section class="index_page">
+    <!-- HELLO WORLD -->
+    <!-- <SharedTransparentBtn
             @click="console.log('ololo')"
          >accent btn</SharedTransparentBtn>
 
@@ -14,46 +14,32 @@
 
 
         </button> -->
-        <IndexHero/>
-        <IndexCategories/>
-        <IndexPopular/>
-        <IndexBanner/>
-        <IndexCta/>
-    </section>
+    <IndexHero />
+    <IndexCategories />
+    <IndexPopular />
+    <IndexBanner />
+    <IndexCta />
+  </section>
 </template>
 
-
-
 <script setup>
+// import { useModalStore } from "@/store/modal-store";
 
-import { useModalStore } from '@/store/modal-store';
-
-
-const modalStore = useModalStore();
-
-
-
-
-
-
-
+// const modalStore = useModalStore();
 </script>
 
-
 <style lang="scss">
+// .index_page .accent_btn{
+//     width: 100% ;
+// }
 
-    // .index_page .accent_btn{
-    //     width: 100% ;
-    // }
-
-.auth-btn{
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 1px solid black;
-    padding-inline: 1rem;
-    cursor: pointer;
+.auth-btn {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid black;
+  padding-inline: 1rem;
+  cursor: pointer;
 }
-
 </style>

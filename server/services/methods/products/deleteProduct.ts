@@ -1,18 +1,15 @@
 import { readMultipartFormData } from "h3";
-import supabase from '@/utils/supabase'
-import { prisma } from '@/prisma/prisma'
-
+// import supabase from "@/utils/supabase";
+// import { prisma } from "@/prisma/prisma";
 
 async function deleteProduct(event: any) {
-    try{
-
-
-        
-
-    } catch (error) {
-
-    }
-
+  console.log(event);
+  try {
+    const body = await readMultipartFormData(event);
+    console.log(body);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-export default deleteProduct
+export default deleteProduct;

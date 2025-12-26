@@ -1,21 +1,15 @@
 <template>
   <!-- <section class="bg-white py-8 antialiased dark:bg-gray-900 md:py-10"> -->
   <section class="bg-white py-8 antialiased dark:bg-[var(--dark-alter-color)] md:py-10">
-
     <form action="#" class="mx-auto max-w-screen-xl px-4 2xl:px-0">
-      <div
-        class="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16 gap-5"
-      >
+      <div class="mt-6 sm:mt-8 lg:flex lg:items-start lg:gap-12 xl:gap-16 gap-5">
         <div class="min-w-0 flex-1 space-y-8">
           <div class="space-y-4">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
               Контактна інформація
             </h2>
 
-            <div
-              class="grid grid-cols-1 gap-4 sm:grid-cols-2"
-              v-if="contactInfoState"
-            >
+            <div v-if="contactInfoState" class="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div class="relative">
                 <label
                   for="your_name"
@@ -23,11 +17,11 @@
                   >Ім'я
                 </label>
                 <input
-                  type="text"
                   id="your_name"
+                  v-model="name"
+                  type="text"
                   class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                   placeholder="Введіть ім'я"
-                  v-model="name"
                 />
               </div>
 
@@ -39,11 +33,11 @@
                   По батькові
                 </label>
                 <input
-                  type="text"
                   id="your_surname"
+                  v-model="surname"
+                  type="text"
                   class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                   placeholder="Введіть по батькові"
-                  v-model="surname"
                 />
               </div>
 
@@ -55,11 +49,11 @@
                   Прізвище
                 </label>
                 <input
-                  type="text"
                   id="your_family"
+                  v-model="familyName"
+                  type="text"
                   class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                   placeholder="Введіть прізвище"
-                  v-model="familyName"
                 />
               </div>
 
@@ -77,32 +71,26 @@
                     class="z-10 inline-flex shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-700"
                     type="button"
                   >
-                    <svg
-  fill="none"
-  aria-hidden="true"
-  class="me-2 h-4 w-4"
-  viewBox="0 0 20 15"
->
-  <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
-  <mask
-    id="b"
-    style="mask-type: luminance"
-    width="20"
-    height="15"
-    x="0"
-    y="0"
-    maskUnits="userSpaceOnUse"
-  >
-    <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
-  </mask>
-  <g mask="url(#b)">
-    <path fill="#0057B7" d="M0 .5h19.6v7H0z" />
-    <path fill="#FFD700" d="M0 7.5h19.6v7H0z" />
-  </g>
-</svg>
+                    <svg fill="none" aria-hidden="true" class="me-2 h-4 w-4" viewBox="0 0 20 15">
+                      <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
+                      <mask
+                        id="b"
+                        style="mask-type: luminance"
+                        width="20"
+                        height="15"
+                        x="0"
+                        y="0"
+                        maskUnits="userSpaceOnUse"
+                      >
+                        <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
+                      </mask>
+                      <g mask="url(#b)">
+                        <path fill="#0057B7" d="M0 .5h19.6v7H0z" />
+                        <path fill="#FFD700" d="M0 7.5h19.6v7H0z" />
+                      </g>
+                    </svg>
 
                     +380
-                  
                   </div>
                   <div
                     id="dropdown-phone-3"
@@ -125,13 +113,7 @@
                               class="me-2 h-4 w-4"
                               viewBox="0 0 20 15"
                             >
-                              <rect
-                                width="19.6"
-                                height="14"
-                                y=".5"
-                                fill="#fff"
-                                rx="2"
-                              />
+                              <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
                               <mask
                                 id="a"
                                 style="mask-type: luminance"
@@ -141,13 +123,7 @@
                                 y="0"
                                 maskUnits="userSpaceOnUse"
                               >
-                                <rect
-                                  width="19.6"
-                                  height="14"
-                                  y=".5"
-                                  fill="#fff"
-                                  rx="2"
-                                />
+                                <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
                               </mask>
                               <g mask="url(#a)">
                                 <path
@@ -187,10 +163,7 @@
                                   color-interpolation-filters="sRGB"
                                   filterUnits="userSpaceOnUse"
                                 >
-                                  <feFlood
-                                    flood-opacity="0"
-                                    result="BackgroundImageFix"
-                                  />
+                                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
                                   <feColorMatrix
                                     in="SourceAlpha"
                                     result="hardAlpha"
@@ -223,18 +196,8 @@
                           role="menuitem"
                         >
                           <span class="inline-flex items-center">
-                            <svg
-                              class="me-2 h-4 w-4"
-                              fill="none"
-                              viewBox="0 0 20 15"
-                            >
-                              <rect
-                                width="19.6"
-                                height="14"
-                                y=".5"
-                                fill="#fff"
-                                rx="2"
-                              />
+                            <svg class="me-2 h-4 w-4" fill="none" viewBox="0 0 20 15">
+                              <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
                               <mask
                                 id="a"
                                 style="mask-type: luminance"
@@ -244,13 +207,7 @@
                                 y="0"
                                 maskUnits="userSpaceOnUse"
                               >
-                                <rect
-                                  width="19.6"
-                                  height="14"
-                                  y=".5"
-                                  fill="#fff"
-                                  rx="2"
-                                />
+                                <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
                               </mask>
                               <g mask="url(#a)">
                                 <path fill="#0A17A7" d="M0 .5h19.6v14H0z" />
@@ -291,13 +248,7 @@
                               viewBox="0 0 20 15"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <rect
-                                width="19.6"
-                                height="14"
-                                y=".5"
-                                fill="#fff"
-                                rx="2"
-                              />
+                              <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
                               <mask
                                 id="a"
                                 style="mask-type: luminance"
@@ -307,13 +258,7 @@
                                 y="0"
                                 maskUnits="userSpaceOnUse"
                               >
-                                <rect
-                                  width="19.6"
-                                  height="14"
-                                  y=".5"
-                                  fill="#fff"
-                                  rx="2"
-                                />
+                                <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
                               </mask>
                               <g mask="url(#a)">
                                 <path fill="#0A17A7" d="M0 .5h19.6v14H0z" />
@@ -378,18 +323,8 @@
                           role="menuitem"
                         >
                           <span class="inline-flex items-center">
-                            <svg
-                              class="me-2 h-4 w-4"
-                              fill="none"
-                              viewBox="0 0 20 15"
-                            >
-                              <rect
-                                width="19.6"
-                                height="14"
-                                y=".5"
-                                fill="#fff"
-                                rx="2"
-                              />
+                            <svg class="me-2 h-4 w-4" fill="none" viewBox="0 0 20 15">
+                              <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
                               <mask
                                 id="a"
                                 style="mask-type: luminance"
@@ -399,13 +334,7 @@
                                 y="0"
                                 maskUnits="userSpaceOnUse"
                               >
-                                <rect
-                                  width="19.6"
-                                  height="14"
-                                  y=".5"
-                                  fill="#fff"
-                                  rx="2"
-                                />
+                                <rect width="19.6" height="14" y=".5" fill="#fff" rx="2" />
                               </mask>
                               <g mask="url(#a)">
                                 <path
@@ -441,10 +370,7 @@
                                   color-interpolation-filters="sRGB"
                                   filterUnits="userSpaceOnUse"
                                 >
-                                  <feFlood
-                                    flood-opacity="0"
-                                    result="BackgroundImageFix"
-                                  />
+                                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
                                   <feColorMatrix
                                     in="SourceAlpha"
                                     result="hardAlpha"
@@ -473,10 +399,7 @@
                                   color-interpolation-filters="sRGB"
                                   filterUnits="userSpaceOnUse"
                                 >
-                                  <feFlood
-                                    flood-opacity="0"
-                                    result="BackgroundImageFix"
-                                  />
+                                  <feFlood flood-opacity="0" result="BackgroundImageFix" />
                                   <feColorMatrix
                                     in="SourceAlpha"
                                     result="hardAlpha"
@@ -509,11 +432,7 @@
                           role="menuitem"
                         >
                           <span class="inline-flex items-center">
-                            <svg
-                              class="me-2 h-4 w-4"
-                              fill="none"
-                              viewBox="0 0 20 15"
-                            >
+                            <svg class="me-2 h-4 w-4" fill="none" viewBox="0 0 20 15">
                               <rect
                                 width="19.1"
                                 height="13.5"
@@ -545,10 +464,7 @@
                                 />
                               </mask>
                               <g mask="url(#a)">
-                                <path
-                                  fill="#F44653"
-                                  d="M13.067.5H19.6v14h-6.533z"
-                                />
+                                <path fill="#F44653" d="M13.067.5H19.6v14h-6.533z" />
                                 <path
                                   fill="#1035BB"
                                   fill-rule="evenodd"
@@ -565,19 +481,19 @@
                   </div>
                   <div class="relative w-full">
                     <input
-                      type="text"
                       id="phone-input"
+                      v-model="phone"
+                      type="text"
                       class="z-20 block w-full rounded-e-lg border border-s-0 border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500"
                       pattern="\d{9}"
                       placeholder="123-456-7890"
-                      v-model="phone"
                       maxlength="9"
                     />
                   </div>
                 </div>
               </div>
 
-              <div class="w-full" v-if="!authStore.user">
+              <div v-if="!authStore.user" class="w-full">
                 <label
                   for="email"
                   class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -585,16 +501,16 @@
                   Email
                 </label>
                 <input
-                  type="email"
                   id="email"
+                  v-model="email"
+                  type="email"
                   class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                   placeholder="name@flowbite.com"
-                  v-model="email"
                 />
               </div>
             </div>
             <!-- Logged user saved info -->
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-3" v-else-if="authStore.user">
+            <div v-else-if="authStore.user" class="grid grid-cols-1 gap-4 md:grid-cols-3">
               <div
                 class="rounded-lg border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-800"
               >
@@ -623,9 +539,7 @@
                   <p class="text-gray-900 dark:text-white whitespace-nowrap">
                     <span class="font-semibold">Email:</span>
                     &nbsp;
-                    <span class="text-gray-700 dark:text-gray-300">{{
-                      authStore.user.email
-                    }}</span>
+                    <span class="text-gray-700 dark:text-gray-300">{{ authStore.user.email }}</span>
                   </p>
                   <p class="text-gray-900 dark:text-white whitespace-nowrap">
                     <span class="font-semibold">Телефон:</span>
@@ -642,17 +556,13 @@
               v-if="authStore.user"
               class="w-full flex justify-between items-center p-4 rounded-lg bg-gray-50"
             >
-              <span class="text-gray-900 dark:text-white">
-                Вибрати іншого отримувача
-              </span>
+              <span class="text-gray-900 dark:text-white"> Вибрати іншого отримувача </span>
               <!-- <ToggleBtn @click="toggleContactInfo" /> -->
             </div>
           </div>
 
           <div class="space-y-4">
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Спосіб доставки
-            </h3>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Спосіб доставки</h3>
             <!-- <DeliverySelector v-model="deliveryMethod"/> -->
 
             <!-- <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -798,9 +708,11 @@
                 </div>
               </label>
             </div> -->
-
           </div>
-          <div class="space-y-4" v-if="!deliveryAddressState && authStore.user && authStore.user.adresses > 0">
+          <div
+            v-if="!deliveryAddressState && authStore.user && authStore.user.adresses > 0"
+            class="space-y-4"
+          >
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
               Збережені способи отримання
             </h3>
@@ -844,23 +756,15 @@
                 </div>
               </div>
             </div>
-            <div
-             
-              class="w-full flex justify-between items-center p-4 rounded-lg bg-gray-50"
-            >
-              <span class="text-gray-900 dark:text-white">
-                Додати новий спосіб отримання
-              </span>
+            <div class="w-full flex justify-between items-center p-4 rounded-lg bg-gray-50">
+              <span class="text-gray-900 dark:text-white"> Додати новий спосіб отримання </span>
               <!-- <ToggleBtn @click="toggleContactInfo" /> -->
             </div>
-           
           </div>
 
           <!-- NOVA POSTA -->
-          <div class="space-y-4" v-if="!deliveryAddressState && deliveryMethod === 'nova-post'">
-            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Деталі доставки
-            </h2>
+          <div v-if="!deliveryAddressState && deliveryMethod === 'nova-post'" class="space-y-4">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Деталі доставки</h2>
 
             <div class="grid grid-cols-1 gap-4">
               <div class="relative">
@@ -871,12 +775,12 @@
                   Ваш населений пункт
                 </label>
                 <input
-                  v-model="cityRef"
-                  @input="getCitiesNp"
-                  type="text"
                   id="your_name"
+                  v-model="cityRef"
+                  type="text"
                   class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                   placeholder="Оберіть населений пункт"
+                  @input="getCitiesNp"
                 />
                 <ul
                   v-if="fetchedCity.length > 0"
@@ -886,14 +790,12 @@
                     v-for="city in fetchedCity"
                     :key="city.id"
                     @click="
-                      (cityRef = city.Present),
-                        (cityName = city.MainDescription),
-                        (fetchedCity = [])
+                      ((cityRef = city.Present),
+                      (cityName = city.MainDescription),
+                      (fetchedCity = []))
                     "
                   >
-                    <span
-                      class="text-[var(--dark-color)] text-sm p-2 cursor-pointer"
-                    >
+                    <span class="text-[var(--dark-color)] text-sm p-2 cursor-pointer">
                       {{ city.Present }}
                     </span>
                   </li>
@@ -919,11 +821,11 @@
             </label>
             <label class="flex items-center gap-3 cursor-pointer relative">
               <input
-                type="radio"
                 id="postomat"
+                v-model="selectedDelivery"
+                type="radio"
                 name="deliveryMethod"
                 value="postomat"
-                v-model="selectedDelivery"
                 class="hidden peer"
                 @click="getPostomatsNp(e, 'reload')"
               />
@@ -935,14 +837,12 @@
                   v-for="(postomat, index) in postomatList"
                   :key="index"
                   @click="
-                    (postomatNumber = `${postomat.Number} ${postomat.ShortAddress}`),
-                      (postomatList.length = 0),
-                      (preventReloadBox = true)
+                    ((postomatNumber = `${postomat.Number} ${postomat.ShortAddress}`),
+                    (postomatList.length = 0),
+                    (preventReloadBox = true))
                   "
                 >
-                  <span
-                    class="text-[var(--dark-color)] text-sm p-2 cursor-pointer"
-                  >
+                  <span class="text-[var(--dark-color)] text-sm p-2 cursor-pointer">
                     {{ postomat.Number }}
                     {{ postomat.ShortAddress }}
                   </span>
@@ -956,28 +856,28 @@
                 ></span>
               </span>
               <input
+                v-model="postomatNumber"
                 type="text"
                 class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                 placeholder="Введіть номер поштомату або адресу"
                 :disabled="selectedDelivery !== 'postomat'"
-                v-model="postomatNumber"
                 @input="getPostomatsNp(e, 'reload')"
               />
             </label>
 
             <label
               for="branch"
-              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white "
+              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
             >
               Відділення "Нова Пошта"
             </label>
             <label class="flex items-center gap-3 cursor-pointer relative">
               <input
-                type="radio"
                 id="branch"
+                v-model="selectedDelivery"
+                type="radio"
                 name="deliveryMethod"
                 value="branch"
-                v-model="selectedDelivery"
                 class="hidden peer"
                 @click="getPostOfficeNp(e, 'reload')"
               />
@@ -989,12 +889,12 @@
                 ></span>
               </span>
               <input
+                v-model="postAddress"
                 type="text"
                 class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                 placeholder="Введіть номер відділення"
-                v-model="postAddress"
-                @input="getPostOfficeNp(e, 'reload')"
                 :disabled="selectedDelivery !== 'branch'"
+                @input="getPostOfficeNp(e, 'reload')"
               />
               <ul
                 v-if="postAddressList.length > 0"
@@ -1004,16 +904,12 @@
                   v-for="(office, index) in postAddressList"
                   :key="index"
                   @click="
-                    (postAddress = `${office.Number} ${office.ShortAddress}`),
-                      (postAddressList.length = 0),
-                      (preventReloadBox = true)
-
-
+                    ((postAddress = `${office.Number} ${office.ShortAddress}`),
+                    (postAddressList.length = 0),
+                    (preventReloadBox = true))
                   "
                 >
-                  <span
-                    class="text-[var(--dark-color)] text-sm p-2 cursor-pointer"
-                  >
+                  <span class="text-[var(--dark-color)] text-sm p-2 cursor-pointer">
                     {{ office.Number }}
                     {{ office.ShortAddress }}
                   </span>
@@ -1029,11 +925,11 @@
             </label>
             <label class="flex items-center gap-3 cursor-pointer">
               <input
-                type="radio"
                 id="courier"
+                v-model="selectedDelivery"
+                type="radio"
                 name="deliveryMethod"
                 value="courier"
-                v-model="selectedDelivery"
                 class="hidden peer"
               />
               <span
@@ -1054,17 +950,13 @@
               v-if="authStore.user"
               class="w-full flex justify-between items-center p-4 rounded-lg bg-gray-50"
             >
-              <span class="text-gray-900 dark:text-white">
-                Зберегти спосіб отримання
-              </span>
+              <span class="text-gray-900 dark:text-white"> Зберегти спосіб отримання </span>
               <!-- <ToggleBtn @click="toggleContactInfo" /> -->
             </div>
           </div>
           <!-- UKRPOSTA -->
-          <div class="space-y-4" v-if="!deliveryAddressState && deliveryMethod === 'ukrpost'">
-            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Деталі доставки
-            </h2>
+          <div v-if="!deliveryAddressState && deliveryMethod === 'ukrpost'" class="space-y-4">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Деталі доставки</h2>
 
             <div class="grid grid-cols-1 gap-4">
               <div class="relative">
@@ -1075,9 +967,9 @@
                   Ваш населений пункт
                 </label>
                 <input
+                  id="your_name"
                   v-model="cityRef"
                   type="text"
-                  id="your_name"
                   class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                   placeholder="Введіть Ваш населений пункт"
                 />
@@ -1096,11 +988,11 @@
             </label>
             <label class="flex items-center gap-3 cursor-pointer">
               <input
-                type="radio"
                 id="branch"
+                v-model="selectedDelivery"
+                type="radio"
                 name="deliveryMethod"
                 value="branch"
-                v-model="selectedDelivery"
                 class="hidden peer"
               />
               <span
@@ -1126,11 +1018,11 @@
             </label>
             <label class="flex items-center gap-3 cursor-pointer">
               <input
-                type="radio"
                 id="courier"
+                v-model="selectedDelivery"
+                type="radio"
                 name="deliveryMethod"
                 value="courier"
-                v-model="selectedDelivery"
                 class="hidden peer"
               />
               <span
@@ -1151,21 +1043,14 @@
               v-if="authStore.user"
               class="w-full flex justify-between items-center p-4 rounded-lg bg-gray-50"
             >
-              <span class="text-gray-900 dark:text-white">
-                Зберегти спосіб отримання
-              </span>
+              <span class="text-gray-900 dark:text-white"> Зберегти спосіб отримання </span>
               <!-- <ToggleBtn @click="toggleContactInfo" /> -->
             </div>
           </div>
 
           <!-- COURIER DELIVERY -->
-          <div  
-            class="space-y-4"
-            v-if="courierDeliveryState"
-          >
-            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Деталі доставки
-            </h2>
+          <div v-if="courierDeliveryState" class="space-y-4">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Деталі доставки</h2>
             <label
               for="courier"
               class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -1174,11 +1059,11 @@
             </label>
             <label class="flex items-center gap-3 cursor-pointer">
               <input
-                type="radio"
                 id="courier"
+                v-model="selectedDelivery"
+                type="radio"
                 name="deliveryMethod"
                 value="courier"
-                v-model="selectedDelivery"
                 class="hidden peer"
               />
               <span
@@ -1197,33 +1082,26 @@
             </label>
           </div>
           <div class="space-y-4">
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Спосіб оплати
-            </h3>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Спосіб оплати</h3>
 
             <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
               <label class="block cursor-pointer">
                 <input
+                  v-model="paymentMethod"
                   type="radio"
                   name="payment-method"
                   class="peer hidden"
                   value="cash-on-delivery"
-                  v-model="paymentMethod"
                   checked
                 />
                 <div
                   class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 peer-checked:border-[var(--dark-color)] peer-checked:dark:border-[var(--main-accent)] peer-checked:dark:bg-[var(--dark-color)]"
-
                 >
                   <div class="text-sm">
-                    <span
-                      class="font-medium leading-none text-gray-900 dark:text-white"
-                    >
+                    <span class="font-medium leading-none text-gray-900 dark:text-white">
                       Оплата при отриманні
                     </span>
-                    <p
-                      class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                    >
+                    <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
                       Оплата при отриманні товару
                     </p>
                   </div>
@@ -1232,24 +1110,20 @@
 
               <label class="block cursor-pointer">
                 <input
+                  v-model="paymentMethod"
                   type="radio"
                   name="payment-method"
                   value="banc-account"
-                  v-model="paymentMethod"
                   class="peer hidden"
                 />
                 <div
                   class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 peer-checked:border-[var(--dark-color)] peer-checked:dark:border-[var(--main-accent)] peer-checked:dark:bg-[var(--dark-color)]"
                 >
                   <div class="text-sm">
-                    <span
-                      class="font-medium leading-none text-gray-900 dark:text-white"
-                    >
+                    <span class="font-medium leading-none text-gray-900 dark:text-white">
                       Оплата на рахунок
                     </span>
-                    <p
-                      class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400"
-                    >
+                    <p class="mt-1 text-xs font-normal text-gray-500 dark:text-gray-400">
                       Оплата на рахунок після перевірки
                     </p>
                   </div>
@@ -1268,7 +1142,7 @@
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
                   Ваше замовлення:
                 </h2>
-                
+
                 <NuxtLink
                   to="/cart"
                   class="text-sm font-semibold text-red-600 hover:text-red-700 dark:text-gray-400 dark:hover:text-gray-300"
@@ -1278,41 +1152,38 @@
               </dl>
               <dl class="products-slide">
                 <Swiper
-                  :slidesPerView="3"
-                  :spaceBetween="0"
+                  :slides-per-view="3"
+                  :space-between="0"
                   :pagination="{
-                    clickable: true,
+                    clickable: true
                   }"
                   :autoplay="{
                     delay: 3500,
-                    disableOnInteraction: false,
+                    disableOnInteraction: false
                   }"
-                   class="mySwiper"
+                  class="mySwiper"
                 >
-                  <SwiperSlide 
-                    v-for="product in cartStore.cart" 
+                  <SwiperSlide
+                    v-for="product in cartStore.cart"
                     :key="product.id"
                     class="flex flex-col items-center justify-center gap-1 p-0"
                   >
-                    <img 
-                      :src="product.img[0].path" 
+                    <img
+                      :src="product.img[0].path"
                       alt="product"
                       class="w-20 h-20 object-contain"
-                    >
+                    />
                     <span
-                      class="text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap" 
+                      class="text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap"
                     >
                       {{ product.totalPrice }}
                       грн.
                     </span>
                   </SwiperSlide>
                 </Swiper>
-
               </dl>
               <dl class="flex items-center justify-between gap-4 py-3">
-                <dt
-                  class="text-base font-normal text-gray-500 dark:text-gray-400"
-                >
+                <dt class="text-base font-normal text-gray-500 dark:text-gray-400">
                   Вартість товарів
                 </dt>
                 <dd class="text-base font-medium text-gray-900 dark:text-white">
@@ -1320,39 +1191,26 @@
                 </dd>
               </dl>
 
-              <dl 
-                class="flex items-center justify-between gap-4 py-3"
+              <dl
                 v-if="checkout.totalPrice < 2000"
+                class="flex items-center justify-between gap-4 py-3"
               >
-                <dt
-                  class="text-base font-normal text-gray-500 dark:text-gray-400"
-                >
+                <dt class="text-base font-normal text-gray-500 dark:text-gray-400">
                   Вартість доставки
                 </dt>
-                <dd class="text-base font-medium text-gray-900 dark:text-white">
-                  200 грн.
-                </dd>
+                <dd class="text-base font-medium text-gray-900 dark:text-white">200 грн.</dd>
               </dl>
 
               <dl class="flex items-center justify-between gap-4 py-3">
-                <dt
-                  class="text-base font-normal text-gray-500 dark:text-gray-400"
-                >
-                  Знижка
-                </dt>
+                <dt class="text-base font-normal text-gray-500 dark:text-gray-400">Знижка</dt>
                 <dd class="text-base font-medium text-green-500">-0 грн.</dd>
               </dl>
 
-              
-
               <dl class="flex items-center justify-between gap-4 py-3">
-                <dt class="text-base font-bold text-gray-900 dark:text-white">
-                  Всього:
-                </dt>
+                <dt class="text-base font-bold text-gray-900 dark:text-white">Всього:</dt>
                 <dd class="text-base font-bold text-gray-900 dark:text-white">
                   <!-- {{ cartStore.totalPrice > 2000 ? cartStore.totalPrice : cartStore.totalPrice + 200 }} грн. -->
                   {{ checkout.totalPrice }} грн.
-
                 </dd>
               </dl>
             </div>
@@ -1361,30 +1219,27 @@
           <div class="space-y-3">
             <button
               type="button"
-              @click="processCheckout"
               class="flex w-full items-center gap-2 justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 bg-[var(--dark-color)] focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-            > 
-            <svg
-                  class="h-5 w-5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 12h14m-7 7V5"
-                  />
-                </svg>
-                <span>
-                  Оформити замовлення
-
-                </span>
+              @click="processCheckout"
+            >
+              <svg
+                class="h-5 w-5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 12h14m-7 7V5"
+                />
+              </svg>
+              <span> Оформити замовлення </span>
             </button>
 
             <p class="text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -1403,13 +1258,14 @@
 <script setup>
 import { ref, watch, computed, onMounted } from "vue";
 // import { useCartStore, useAuthStore } from "#imports";
-import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Swiper, SwiperSlide } from "swiper/vue";
 
 import { navigateTo } from "nuxt/app";
 // import ToggleBtn from "@/components/shared/ToggleBtn.vue";
 // import Tooltips from "@/components/shared/Tooltips.vue";
 // import DeliverySelector from "~/components/DeliverySelector.vue";
-
+import { useAuthStore } from "@/store/auth-store";
+import { useCartStore } from "@/store/cart-store";
 
 const cityRef = ref("");
 const cityName = ref("");
@@ -1428,28 +1284,25 @@ const paymentMethod = ref("");
 const contactInfoState = ref(false);
 const deliveryAddressState = ref(false);
 const courierDeliveryState = ref(false);
-const saveDeliveryAddress = ref(false);
+// const saveDeliveryAddress = ref(false);
 
-const checkoutProducts = ref([]);
-
-
+// const checkoutProducts = ref([]);
 
 const checkout = ref({
   totalProducts: 0,
   discount: 0,
-  totalPrice: 0,
-})
+  totalPrice: 0
+});
 
 let timerId = null;
 
 const date = new Date();
-const day = date.getDate();
-const month = date.getMonth();
-const year = date.getFullYear();
+// const day = date.getDate();
+// const month = date.getMonth();
+// const year = date.getFullYear();
 const hours = date.getHours();
 const openHour = 9;
 const closeHour = 18;
-
 
 const postomatNumber = ref("");
 const postAddress = ref("");
@@ -1458,12 +1311,11 @@ const postomatList = ref([]);
 const postAddressList = ref([]);
 const preventReloadBox = ref(false);
 
-// const cartStore = useCartStore();
-// const authStore = useAuthStore();
+const cartStore = useCartStore();
+const authStore = useAuthStore();
 
 const getFormattedHours = (h) => (h < 10 ? "0" + h : h);
-const getFormattedMonth = (m) => (m < 10 ? "0" + m : m);
-
+// const getFormattedMonth = (m) => (m < 10 ? "0" + m : m);
 
 const config = useRuntimeConfig();
 const NOVA_POST_KEY = config.public.novaPostKey;
@@ -1473,12 +1325,10 @@ const showTooltip = ref(false);
 const tooltipStatus = ref("");
 const tooltipMessage = ref("");
 
-const numReg = /^[0-9]+$/;
-
+// const numReg = /^[0-9]+$/;
 
 const tooltip = (obj) => {
-
-const { status, message } = obj;
+  const { status, message } = obj;
 
   tooltipStatus.value = status;
   tooltipMessage.value = message;
@@ -1503,8 +1353,7 @@ const clearForm = () => {
   postAddressList.value = [];
   cityName.value = "";
   cityRef.value = "";
-
-}
+};
 
 onMounted(() => {
   if (authStore.user) {
@@ -1516,11 +1365,10 @@ onMounted(() => {
     contactInfoState.value = false;
   } else {
     contactInfoState.value = true;
-
   }
   checkout.value.totalProducts = cartStore.totalPrice;
-  checkout.value.totalPrice = cartStore.totalPrice > 2000 ? cartStore.totalPrice : cartStore.totalPrice + 200;
-
+  checkout.value.totalPrice =
+    cartStore.totalPrice > 2000 ? cartStore.totalPrice : cartStore.totalPrice + 200;
 });
 
 const deliveryTime = computed(() => {
@@ -1533,77 +1381,72 @@ const deliveryTime = computed(() => {
   }
 });
 
-const toggleContactInfo = () => {
-  contactInfoState.value = !contactInfoState.value;
-  if (!contactInfoState.value) {
-    console.log(1);
-    name.value = authStore.user.username;
-    surname.value = authStore.user.userSurname;
-    familyName.value = authStore.user.userFamily;
-    phone.value = authStore.user.phoneNumber;
-  } else {
-    console.log(2);
-    name.value = "";
-    surname.value = "";
-    familyName.value = "";
-    phone.value = "";
-  }
-};
+// const toggleContactInfo = () => {
+//   contactInfoState.value = !contactInfoState.value;
+//   if (!contactInfoState.value) {
+//     console.log(1);
+//     name.value = authStore.user.username;
+//     surname.value = authStore.user.userSurname;
+//     familyName.value = authStore.user.userFamily;
+//     phone.value = authStore.user.phoneNumber;
+//   } else {
+//     console.log(2);
+//     name.value = "";
+//     surname.value = "";
+//     familyName.value = "";
+//     phone.value = "";
+//   }
+// };
 
 watch(deliveryMethod, () => {
-  if (
-    deliveryMethod.value === "courier-delivery" ||
-    deliveryMethod.value === "express"
-  ) {
+  if (deliveryMethod.value === "courier-delivery" || deliveryMethod.value === "express") {
     deliveryAddressState.value = true;
   } else {
     deliveryAddressState.value = false;
   }
 
-  deliveryMethod.value === 'courier-delivery' ? courierDeliveryState.value = true : courierDeliveryState.value = false;
+  deliveryMethod.value === "courier-delivery"
+    ? (courierDeliveryState.value = true)
+    : (courierDeliveryState.value = false);
 });
 
 const processCheckout = async () => {
-
   if (cartStore.totalPrice === 0) {
     tooltip({
       status: "error",
-      message: "Ваш кошик порожній",
-    })
+      message: "Ваш кошик порожній"
+    });
     return;
   }
 
   if (!authStore.user || contactInfoState.value) {
     if (!name.value || !surname.value || !familyName.value || !email.value || !phone.value) {
-    tooltip({
-      status: "error",
-      message: "Всі поля повинні бути заповнені",
-    })
-    return;
-  }
-
-  if (!authStore.user) {
-    if (!email.value.includes('@')) {
       tooltip({
         status: "error",
-        message: "Введіть коректну електронну адресу",
-      })
+        message: "Всі поля повинні бути заповнені"
+      });
       return;
     }
 
-    const phoneRegex = /^\d{2}\s*\d{3}\s*\d{2}\s*\d{2}$/;
+    if (!authStore.user) {
+      if (!email.value.includes("@")) {
+        tooltip({
+          status: "error",
+          message: "Введіть коректну електронну адресу"
+        });
+        return;
+      }
 
-    if (!phoneRegex.test(phone.value)) {
-      tooltip({
-        status: "error",
-        message: "Введіть коректний номер телефону",
-      })
-      return;
+      const phoneRegex = /^\d{2}\s*\d{3}\s*\d{2}\s*\d{2}$/;
+
+      if (!phoneRegex.test(phone.value)) {
+        tooltip({
+          status: "error",
+          message: "Введіть коректний номер телефону"
+        });
+        return;
+      }
     }
-  }
-
- 
-    
   }
 
   // delivery validation
@@ -1612,21 +1455,25 @@ const processCheckout = async () => {
     if (cityName.value.trim().length === 0) {
       tooltip({
         status: "info",
-        message: "Введіть місто",
-      })
+        message: "Введіть місто"
+      });
       return;
     }
 
-    if (postAddress.value.trim().length === 0 && postomatNumber.value.trim().length === 0 && currierAddress.value.trim().length === 0) {
+    if (
+      postAddress.value.trim().length === 0 &&
+      postomatNumber.value.trim().length === 0 &&
+      currierAddress.value.trim().length === 0
+    ) {
       tooltip({
         status: "info",
-        message: "Оберіть метод та введіть адресу доставки",
-      })
+        message: "Оберіть метод та введіть адресу доставки"
+      });
       return;
     }
 
     // if (
-    //   postAddress.value.trim().length === 0 || 
+    //   postAddress.value.trim().length === 0 ||
     //   (postomatNumber.value.trim().length === 0 && currierAddress.value.trim().length === 0)
     // ) {
     //   tooltip({
@@ -1635,21 +1482,17 @@ const processCheckout = async () => {
     //   });
     //   return;
     // }
-
   } else if (deliveryMethod.value === "ukrpost") {
-
+    console.log("ukrpost");
   } else if (deliveryMethod.value === "courier-delivery") {
-
+    console.log("courier-delivery");
   }
-
-
-
 
   try {
     const cartData = cartStore.cart.map((item) => {
       return {
         productId: item.id,
-        quantity: item.quantityProducts,
+        quantity: item.quantityProducts
       };
     });
 
@@ -1662,37 +1505,36 @@ const processCheckout = async () => {
           totalPrice: cartStore.totalPrice,
           paymentMethod: paymentMethod.value,
           shippingInfo: {
-            recipient:
-              name.value + " " + surname.value + " " + familyName.value,
+            recipient: name.value + " " + surname.value + " " + familyName.value,
             postCompany: deliveryMethod.value,
             phoneNumber: phone.value,
             postOffice: postAddress.value,
             postomat: postomatNumber.value,
             address: currierAddress.value,
             city: cityName.value,
-            country: "Ukraine",
+            country: "Ukraine"
           },
-          orderItems: [...cartData],
-        },
-      ],
+          orderItems: [...cartData]
+        }
+      ]
     };
 
     orderData.append("data", JSON.stringify(orderBody));
 
     const createNewOrder = await $fetch("api/orders", {
       method: "POST",
-      body: orderData,
+      body: orderData
     });
 
     console.log(createNewOrder, "createNewOrder");
-    if (createNewOrder.status === 'error') {
-      console.log(createNewOrder.message)
-      return
+    if (createNewOrder.status === "error") {
+      console.log(createNewOrder.message);
+      return;
     }
 
     tooltip({
       status: "success",
-      message: "Ваше замовлення було успішно створено",
+      message: "Ваше замовлення було успішно створено"
     });
 
     const tgMessageBody = {
@@ -1702,7 +1544,7 @@ const processCheckout = async () => {
       amount: cartStore.totalPrice,
       phone: phone.value,
       email: email.value,
-      date: new Date().toLocaleString("uk-UA", { timeZone: "Europe/Kiev" }),
+      date: new Date().toLocaleString("uk-UA", { timeZone: "Europe/Kiev" })
     };
 
     const tgData = new FormData();
@@ -1711,17 +1553,15 @@ const processCheckout = async () => {
 
     const notificationTg = await $fetch("/api/telegram?notification=newOrder", {
       method: "POST",
-      body: tgData,
+      body: tgData
     });
 
     console.log(notificationTg, "notificationTg");
 
-   
-
     clearForm();
     setTimeout(() => {
       navigateTo("/");
-    }, 3000)
+    }, 3000);
 
     cartStore.clearCart();
   } catch (err) {
@@ -1754,9 +1594,9 @@ class PostalServiceApi {
       const res = await fetch(`${this.baseUrl}${endpoint}`, {
         method: options.method || "GET",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: options.body ? JSON.stringify(options.body) : undefined,
+        body: options.body ? JSON.stringify(options.body) : undefined
       });
 
       if (!res.ok) {
@@ -1778,13 +1618,13 @@ class PostalServiceApi {
       methodProperties: {
         CityName: cityName,
         Limit: "500",
-        Page: "1",
-      },
+        Page: "1"
+      }
     };
 
     return this.request("", {
       method: "POST",
-      body,
+      body
     });
   }
 
@@ -1798,23 +1638,20 @@ class PostalServiceApi {
         Limit: "1000",
         CategoryOfWarehouse: "Postomat",
         Page: "1",
-        ...extraParams,
-      },
+        ...extraParams
+      }
     };
 
     return this.request("", {
       method: "POST",
-      body,
+      body
     });
   }
 }
 
 class NovaPoshtaApi extends PostalServiceApi {
   constructor() {
-    super(
-      NOVA_POST_URI,
-      NOVA_POST_KEY
-    );
+    super(NOVA_POST_URI, NOVA_POST_KEY);
   }
 
   fetchCity(cityName) {
@@ -1830,18 +1667,18 @@ class NovaPoshtaApi extends PostalServiceApi {
         CityName: cityName,
         Limit: "1000",
         CategoryOfWarehouse: "Postomat",
-        Page: "1",
-      },
+        Page: "1"
+      }
     };
 
     return super.request("", {
       method: "POST",
-      body,
+      body
     });
   }
 
   async fetchOfficeByNumber(cityName, number) {
-    console.log(cityName, number)
+    console.log(cityName, number);
     const body = {
       apiKey: this.apiKey,
       modelName: "AddressGeneral",
@@ -1850,13 +1687,13 @@ class NovaPoshtaApi extends PostalServiceApi {
         CityName: cityName,
         Limit: "1000",
         FindByString: number,
-        Page: "1",
-      },
+        Page: "1"
+      }
     };
 
     return this.request("", {
       method: "POST",
-      body,
+      body
     });
   }
 
@@ -1870,18 +1707,18 @@ class NovaPoshtaApi extends PostalServiceApi {
       methodProperties: {
         CityName: cityName,
         Limit: "3000",
-        Page: "1",
-      },
+        Page: "1"
+      }
     };
 
     return super.request("", {
       method: "POST",
-      body,
+      body
     });
   }
 
   async fetchPostomatsByNumber(cityName, number) {
-    console.log(cityName, number)
+    console.log(cityName, number);
     const body = {
       apiKey: this.apiKey,
       modelName: "AddressGeneral",
@@ -1891,13 +1728,13 @@ class NovaPoshtaApi extends PostalServiceApi {
         Limit: "1000",
         CategoryOfWarehouse: "Postomat",
         FindByString: number,
-        Page: "1",
-      },
+        Page: "1"
+      }
     };
 
     return this.request("", {
       method: "POST",
-      body,
+      body
     });
   }
 }
@@ -1923,7 +1760,7 @@ watch(selectedDelivery, () => {
     postomatList.value = [];
     preventReloadBox.value = false;
   }
-})
+});
 
 const novaPost = new NovaPoshtaApi();
 
@@ -1937,16 +1774,13 @@ const getCitiesNp = debounce(cityRef.value, async () => {
   }
 });
 
-
-
 const getPostomatsNp = async (event, state) => {
-
-
-
-  if (state === 'reload') {
- 
-    const getPostomatsByNumber = await novaPost.fetchPostomatsByNumber(cityName.value, postomatNumber.value);
-    console.log(getPostomatsByNumber, 'getPostomatsByNumber');
+  if (state === "reload") {
+    const getPostomatsByNumber = await novaPost.fetchPostomatsByNumber(
+      cityName.value,
+      postomatNumber.value
+    );
+    console.log(getPostomatsByNumber, "getPostomatsByNumber");
     postomatList.value = getPostomatsByNumber.data;
     return;
   }
@@ -1958,25 +1792,24 @@ const getPostomatsNp = async (event, state) => {
   if (!cityName.value) {
     tooltip({
       status: "info",
-      message: "Виберіть місто",
+      message: "Виберіть місто"
     });
     event.preventDefault();
-    
+
     return;
   }
-
 
   const postomatsNp = await novaPost.fetchPostomats(cityName.value);
   postomatList.value = postomatsNp.data;
 };
 
 const getPostOfficeNp = async (event, state) => {
-
-  if (state === 'reload') {
- 
+  if (state === "reload") {
     const getOfficeByNumber = await novaPost.fetchOfficeByNumber(cityName.value, postAddress.value);
-    console.log(getOfficeByNumber, 'getPostomatsByNumber');
-    const filteredOffice = getOfficeByNumber.data.filter((item) => item.CategoryOfWarehouse === "Branch");
+    console.log(getOfficeByNumber, "getPostomatsByNumber");
+    const filteredOffice = getOfficeByNumber.data.filter(
+      (item) => item.CategoryOfWarehouse === "Branch"
+    );
 
     postAddressList.value = filteredOffice;
     return;
@@ -1989,10 +1822,10 @@ const getPostOfficeNp = async (event, state) => {
   if (!cityName.value) {
     tooltip({
       status: "info",
-      message: "Виберіть місто",
+      message: "Виберіть місто"
     });
     event.preventDefault();
-    
+
     return;
   }
 
@@ -2000,23 +1833,16 @@ const getPostOfficeNp = async (event, state) => {
   // console.log(postOfficeNp, 'postOfficeNp');
   const filteredOffice = postOfficeNp.data.filter((item) => item.CategoryOfWarehouse === "Branch");
   postAddressList.value = filteredOffice;
-
-}
+};
 
 useHead({
-  meta: [
-    { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1' }
-  ]
+  meta: [{ name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1" }]
 });
-
-
-
 </script>
 
 <style scoped lang="scss">
-.swiper-slide{
+.swiper-slide {
   display: flex;
   padding: 0 0 15px;
 }
-
 </style>

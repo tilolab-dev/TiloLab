@@ -1,48 +1,46 @@
 <template>
-    <div v-if="isVisible" class="modal-overlay" @click.self="closeModal">
-      <!-- <div class="modal-content max-h-[100vh] overflow-y-auto"> -->
-        <slot :openModal="openModal" :closeModal="closeModal" />
-        <component
-          v-if="currentModal"
-          :is="modalComponents[currentModal]"
-          v-bind="modalProps"
-          :openModal="openModal"
-          :closeModal="closeModal"
-          @tooltip="tooltip"
-        />
-      <!-- </div> -->
-      <!-- v-bind="{...modalProps}" -->
-    </div>
-  </template>
+  <div v-if="isVisible" class="modal-overlay" @click.self="closeModal">
+    <!-- <div class="modal-content max-h-[100vh] overflow-y-auto"> -->
+    <slot :open-modal="openModal" :close-modal="closeModal" />
+    <component
+      :is="modalComponents[currentModal]"
+      v-if="currentModal"
+      v-bind="modalProps"
+      :open-modal="openModal"
+      :close-modal="closeModal"
+      @tooltip="tooltip"
+    />
+    <!-- </div> -->
+    <!-- v-bind="{...modalProps}" -->
+  </div>
+</template>
 
 <script setup>
-import {  toRefs} from 'vue';
-import { useModalStore } from '@/store/modal-store';
+import { useModalStore } from "@/store/modal-store";
 
 // import LangModal from '~/components/Modals/LangModal.vue';
 // import ThemeModal from '~/components/Modals/ThemeModal.vue';
 // import ProductToCart from './ProductToCart.vue';
-import AuthModal from './AuthModal.vue';
+import AuthModal from "./AuthModal.vue";
 // import ChangeUserData from './ChangeUserData.vue';
-import CartModal from './CartModal.vue';
-import WishlistModal from '../WishlistModal.vue';
-import BurgerMenu from './BurgerMenu.vue';
-import LogOut from './LogOut.vue';
+import CartModal from "./CartModal.vue";
+import WishlistModal from "../WishlistModal.vue";
+import BurgerMenu from "./BurgerMenu.vue";
+import LogOut from "./LogOut.vue";
 
 // ADMIN
 
-import AddProduct from '@/components/Modals/admin/AddProduct.vue';
+import AddProduct from "@/components/Modals/admin/AddProduct.vue";
 // import AddCategory from '@/components/Modals/admin/AddCategory.vue';
-import AddCategory from "@/components/Modals/admin/AddCategory.vue"
-import DeleteCategory from '@/components/Modals/admin/DeleteCategory.vue'
+import AddCategory from "@/components/Modals/admin/AddCategory.vue";
+import DeleteCategory from "@/components/Modals/admin/DeleteCategory.vue";
 
 const modalStore = useModalStore();
 const isVisible = computed(() => modalStore.isVisible);
 const currentModal = computed(() => modalStore.currentModal);
 const modalProps = computed(() => modalStore.modalProps);
 
-
-const emit = defineEmits(['addNewItem', 'tooltip']);
+const emit = defineEmits(["addNewItem", "tooltip"]);
 
 const modalComponents = {
   CartModal,
@@ -50,29 +48,25 @@ const modalComponents = {
   AddProduct,
   AddCategory,
   DeleteCategory,
-//   ProductToCart,
+  //   ProductToCart,
   AuthModal,
   BurgerMenu,
-  LogOut,
-//   ChangeUserData
-}
+  LogOut
+  //   ChangeUserData
+};
 
 const tooltip = (obj) => {
-        emit('tooltip', obj);
-
-    };
+  emit("tooltip", obj);
+};
 
 const closeModal = () => {
   modalStore.closeModal();
 };
 
-
 const openModal = (modalName, props = {}) => {
   document.body.style.overflow = "hidden";
+  console.log(modalName, props);
 };
-
-
-
 </script>
 
 <style>
@@ -94,21 +88,19 @@ const openModal = (modalName, props = {}) => {
 }
 /* .modal-content { */
 
-  /* width: 100%; */
-  /* height: 100%; */
+/* width: 100%; */
+/* height: 100%; */
 
-
-  
-  /* position: fixed;
+/* position: fixed;
   top: 30%;
   transform: translateY(-50%);
   background: white; */
-  /* padding: 20px; */
-  /* border-radius: 10px;
+/* padding: 20px; */
+/* border-radius: 10px;
   overflow-x: hidden;
   height: fit-content; */
-  /* min-height: 500px; */
-  /* position: relative;
+/* min-height: 500px; */
+/* position: relative;
   overflow: hidden; */
 /* } */
 </style>

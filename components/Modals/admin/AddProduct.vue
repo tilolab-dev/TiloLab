@@ -13,16 +13,14 @@
                 <div class="picture third"></div>
               </div>
               <h2 class="img-title text-center">Завантажте файли зображення</h2>
-              <span class="text-center">
-                Зображення повинні бути в форматі .jpg, .png, .jpeg
-              </span>
+              <span class="text-center"> Зображення повинні бути в форматі .jpg, .png, .jpeg </span>
               <label for="product-file" class="icon_label">
                 <div class="btn_fill">Вибрати</div>
               </label>
 
               <input
-                type="file"
                 id="product-file"
+                type="file"
                 class="hidden"
                 multiple
                 @change="
@@ -38,22 +36,21 @@
           </div>
 
           <div class="add_image_preview">
-            <SvgIcon 
-                name="default-picture" 
-                size="large" 
-                fill="var(--dark-color)"
-                v-if="productFileState.productFilesPreview.value.length === 0"
+            <SvgIcon
+              v-if="productFileState.productFilesPreview.value.length === 0"
+              name="default-picture"
+              size="large"
+              fill="var(--dark-color)"
             />
             <div
-              class="preview_wrapper"
-              v-for="(file, index) in productFileState.productFilesPreview
-                .value"
+              v-for="(file, index) in productFileState.productFilesPreview.value"
               :key="index"
+              class="preview_wrapper"
             >
               <!-- v-else -->
 
               <div class="remove_btn" @click="removeProductImg(index)">
-                <SvgIcon name="close-btn" size="micro" fill="white"/>
+                <SvgIcon name="close-btn" size="micro" fill="white" />
               </div>
               <img :src="file" alt="preview" />
             </div>
@@ -61,11 +58,9 @@
         </div>
         <div class="add_info">
           <div class="top_content">
-            <h2 class="main_text">
-              Інформація про товар
-            </h2>
+            <h2 class="main_text">Інформація про товар</h2>
             <button @click="closeModal">
-              <SvgIcon name="close-btn" size="micro" fill="var(--dark-color)"/>
+              <SvgIcon name="close-btn" size="micro" fill="var(--dark-color)" />
             </button>
           </div>
 
@@ -87,19 +82,9 @@
           <div class="options">
             <div class="option main_option">
               <div class="main_option_content">
-                <h4 class="default_text">
-                  Оберіть категорію товару:<strong >
-                    *
-                  </strong>
-                </h4>
-                <select
-                  name="wholesaleType"
-                  id="wholesaleType"
-                  v-model="productCategory"
-                >
-                  <option disabled selected value>
-                    -- Виберіть категорію --
-                  </option>
+                <h4 class="default_text">Оберіть категорію товару:<strong> * </strong></h4>
+                <select id="wholesaleType" v-model="productCategory" name="wholesaleType">
+                  <option disabled selected value>-- Виберіть категорію --</option>
                   <option
                     v-for="(category, index) in fetchedCategories"
                     :key="index"
@@ -112,85 +97,68 @@
 
               <div class="main_option_content">
                 <h4 class="default_text">
-                   
-                    Назва товару: 
-                     <span> ( Українською )</span>
-                    <strong > * </strong>
+                  Назва товару:
+                  <span> ( Українською )</span>
+                  <strong> * </strong>
                 </h4>
                 <div class="text-wrapper">
-                    <div class="wrapper">
-                    <input
-                        v-model="productNameUk"
-                        type="text"
-                        placeholder="Введіть назву товару"
-                    />
-                    </div>
+                  <div class="wrapper">
+                    <input v-model="productNameUk" type="text" placeholder="Введіть назву товару" />
+                  </div>
                 </div>
-
-
               </div>
             </div>
-          
-            <div class="option description_option">
 
-                <div class="description_option_content">
-                       <h4 class="default_text">Опис товару: ( Українська )</h4>
-              <div class="text-wrapper">
+            <div class="option description_option">
+              <div class="description_option_content">
+                <h4 class="default_text">Опис товару: ( Українська )</h4>
+                <div class="text-wrapper">
                   <textarea
+                    id="descriptionText"
                     v-model="productDescriptionUk"
                     name="descriptionText"
-                    id="descriptionText"
                     placeholder="Введіть опис товару максимум 500 символів"
                   ></textarea>
-              </div>
-
                 </div>
-                <div class="description_option_content">
-                      <h4 class="default_text">
-                        Відображати кількість товару на складі
-                <strong v-if="productAvailability" >
-                  *
-                </strong>
-              </h4>
-              <div class="checkbox">
-                <!-- <span> Відображати кількість товару на складі </span> -->
+              </div>
+              <div class="description_option_content">
+                <h4 class="default_text">
+                  Відображати кількість товару на складі
+                  <strong v-if="productAvailability"> * </strong>
+                </h4>
+                <div class="checkbox">
+                  <!-- <span> Відображати кількість товару на складі </span> -->
+                  <input
+                    v-model="productStockState"
+                    type="checkbox"
+                    value="false"
+                    @change="productAvailability = !productAvailability"
+                  />
+                </div>
                 <input
-                  v-model="productStockState"
-                  type="checkbox"
-                  value="false"
-                  @change="productAvailability = !productAvailability"
+                  v-if="productAvailability"
+                  v-model="productStockValue"
+                  type="number"
+                  placeholder="Введіть наявну кількість товару на складі"
                 />
               </div>
-              <input
-                v-if="productAvailability"
-                v-model="productStockValue"
-                type="number"
-                placeholder="Введіть наявну кількість товару на складі"
-              />
-                    
-                </div>
-
-           
             </div>
 
             <h4 class="main_text">Параметри товару:</h4>
 
-            
-
-          
             <div class="option">
               <div class="text-wrapper items-stretch">
                 <div class="wrapper">
                   <span class="default_text">
                     Ціна товару
-                    <strong > * </strong>
+                    <strong> * </strong>
                   </span>
-                    <input
-                      v-model="productPrice"
-                      class="checkbox"
-                      type="text"
-                      placeholder="Введіть значення розміру"
-                    />
+                  <input
+                    v-model="productPrice"
+                    class="checkbox"
+                    type="text"
+                    placeholder="Введіть значення розміру"
+                  />
                 </div>
                 <div class="wrapper">
                   <span class="default_text"> Відображати товар на сайті </span>
@@ -206,51 +174,47 @@
                 <div class="wrapper">
                   <span class="default_text">
                     Розмір товару
-                    <strong > * </strong>
+                    <strong> * </strong>
                   </span>
-                    <input
-                      v-model="productSize"
-                      class="checkbox"
-                      type="text"
-                      placeholder="Введіть значення розміру"
-                    />
-                </div>
-                 <div class="wrapper">
-              <h4 class="default_text">Матеріал товару</h4>
-              <div class="text-wrapper">
-                <div class="wrapper">
-                  <span> Українська </span>
                   <input
-                    v-model="productMaterialUk"
-                    class=""
+                    v-model="productSize"
+                    class="checkbox"
                     type="text"
-                    placeholder="Введіть матеріал"
+                    placeholder="Введіть значення розміру"
                   />
                 </div>
-              </div>
-            </div>
-            <div class="wrapper">
-              <h4 class="default_text">Колір товару</h4>
-              <div class="text-wrapper">
                 <div class="wrapper">
-                  <span> Українська </span>
-                  <input
-                    v-model="productColorUk"
-                    class=""
-                    type="text"
-                    placeholder="Введіть колір"
-                  />
+                  <h4 class="default_text">Матеріал товару</h4>
+                  <div class="text-wrapper">
+                    <div class="wrapper">
+                      <span> Українська </span>
+                      <input
+                        v-model="productMaterialUk"
+                        class=""
+                        type="text"
+                        placeholder="Введіть матеріал"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="wrapper">
+                <div class="wrapper">
+                  <h4 class="default_text">Колір товару</h4>
+                  <div class="text-wrapper">
+                    <div class="wrapper">
+                      <span> Українська </span>
+                      <input
+                        v-model="productColorUk"
+                        class=""
+                        type="text"
+                        placeholder="Введіть колір"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="wrapper">
                   <span class="default_text"> Акційний товар </span>
                   <div class="checkbox-wrap flex items-center justify-start">
-                    <input
-                      class="checkbox"
-                      type="checkbox"
-                      v-model="discountState"
-                    />
+                    <input v-model="discountState" class="checkbox" type="checkbox" />
                   </div>
                 </div>
                 <div v-if="discountState" class="wrapper">
@@ -266,21 +230,18 @@
                 </div>
               </div>
             </div>
-           
 
             <div class="option add_new">
               <h4 class="main_text">Додати опцію товару (макс. 10)</h4>
-              <div class="add_new_wrap ">
+              <div class="add_new_wrap">
                 <div class="new_option">
                   <span class="default_text"> Додати файл </span>
                   <div class="new_option_wrapper">
                     <label for="option-upload" class="icon-label">
-                      <span > Оберіть файл </span>
-                      <SvgIcon name="download-btn" size="micro" fill="black"/>
+                      <span> Оберіть файл </span>
+                      <SvgIcon name="download-btn" size="micro" fill="black" />
                     </label>
-                    <div
-                      class="preview"
-                    >
+                    <div class="preview">
                       <!-- <img
                         v-if="optionFileState.optionFiles.value.length === 0"
                         class="file-preview w-5"
@@ -296,22 +257,16 @@
                     </div>
 
                     <input
-                      type="file"
                       id="option-upload"
+                      type="file"
                       class="hidden_input"
-                      @change="
-                        handleFileUpload($event, 'option', optionFileState)
-                      "
+                      @change="handleFileUpload($event, 'option', optionFileState)"
                     />
                   </div>
                 </div>
-                <div
-                  class="new_option"
-                >
+                <div class="new_option">
                   <div class="option-lang flex flex-col flex-grow">
-                    <span class="default_text">
-                      Короткий опис
-                    </span>
+                    <span class="default_text"> Короткий опис </span>
                     <input
                       v-model="addOptionTextUk"
                       type="text"
@@ -320,32 +275,27 @@
                   </div>
                 </div>
                 <div class="new_option flex flex-col gap-2">
-                    <div class="new_option_wrapper">
-                        <span class="default_text"> Додати ціну для опційного товару </span>
-                        <div class="checkbox-wrap">
-                            <input
-                            v-model="addOptionPrice"
-                            value="false"
-                            class="checkbox"
-                            type="checkbox"
-                            />
-                        </div>
-
+                  <div class="new_option_wrapper">
+                    <span class="default_text"> Додати ціну для опційного товару </span>
+                    <div class="checkbox-wrap">
+                      <input
+                        v-model="addOptionPrice"
+                        value="false"
+                        class="checkbox"
+                        type="checkbox"
+                      />
                     </div>
-                  
+                  </div>
                 </div>
-                <div class="new_option" v-if="addOptionPrice">
+                <div v-if="addOptionPrice" class="new_option">
                   <input
+                    v-model="optionPrice"
                     type="number"
                     placeholder="Введіть ціну на опційний товар"
-                    v-model="optionPrice"
                   />
                 </div>
                 <div class="new_option_btn">
-                  <button
-                    class="btn_fill"
-                    @click="addNewOption('text', 'value')"
-                  >
+                  <button class="btn_fill" @click="addNewOption('text', 'value')">
                     <!-- @click="addTestData" -->
 
                     <!-- @click="addNewOption('text', 'value')" -->
@@ -355,34 +305,27 @@
                 </div>
               </div>
 
-              <div class="added_options pt-3" v-if="addOptionsRef.length > 0">
-                <ul class="added_options_list ">
+              <div v-if="addOptionsRef.length > 0" class="added_options pt-3">
+                <ul class="added_options_list">
                   <li
                     v-for="(option, index) in addOptionsRef"
                     :key="index"
-                    class="added_options_item "
+                    class="added_options_item"
                   >
                     <img :src="option.fileImg" alt="img" width="25px" />
-                    <div
-                      class="separator "
-                    ></div>
+                    <div class="separator"></div>
                     <span>
                       {{ option.translations[0].optionInfo }}
                     </span>
-                    <div
-                      class="separator "
-                    ></div>
+                    <div class="separator"></div>
                     <span v-if="option.optionPrice !== 0">
                       {{ option.optionPrice }}
                       UAH
                     </span>
-                    <div
-                      v-if="option.optionPrice !== 0"
-                      class="separator "
-                    ></div>
+                    <div v-if="option.optionPrice !== 0" class="separator"></div>
 
                     <button @click="removeOption(index)">
-                      <SvgIcon name="close-btn" size="micro" fill="rgb(25, 25, 25)"/>
+                      <SvgIcon name="close-btn" size="micro" fill="rgb(25, 25, 25)" />
                     </button>
                   </li>
                 </ul>
@@ -390,15 +333,8 @@
             </div>
           </div>
           <div class="button-group">
-            <button class="btn_transparent" @click="clearModal">
-              Очистити форму
-            </button>
-            <button
-              class="btn_fill"
-              @click="addNewProduct"
-            >
-              Додати товар
-            </button>
+            <button class="btn_transparent" @click="clearModal">Очистити форму</button>
+            <button class="btn_fill" @click="addNewProduct">Додати товар</button>
           </div>
         </div>
       </div>
@@ -408,10 +344,11 @@
 
 <script setup>
 import { ref, onMounted, toRaw } from "vue";
+// import { transliterate } from "@/utils/transliterate";
 
 // import bagImg from '@/public/img/bag.png';
 
-import SvgIcon from '@/components/shared/SvgIcon.vue';
+import SvgIcon from "@/components/shared/SvgIcon.vue";
 import { useModalStore } from "@/store/modal-store";
 
 const modalStore = useModalStore();
@@ -445,7 +382,7 @@ const price = ref(0); // Стандартная цена
 // const packageType = ref("Bag"); // Значение типа упаковки
 const productAvailability = ref(false);
 const productDiscountPersent = ref(0); // процент скидки
-const productPrice= ref(null);
+const productPrice = ref(null);
 const productMaterialUk = ref("");
 // const productMaterialEn = ref("");
 // const productMaterialRu = ref("");
@@ -467,8 +404,8 @@ const productSize = ref("");
 const addOptionsRef = ref([]);
 const discountState = ref(false);
 const addOptionTextUk = ref("");
-const addOptionTextEn = ref("");
-const addOptionTextRu = ref("");
+// const addOptionTextEn = ref("");
+// const addOptionTextRu = ref("");
 const addOptionPrice = ref(false);
 const optionPrice = ref(0);
 
@@ -478,13 +415,13 @@ const productFileState = {
   // product files
   productFilesPreview: ref([]),
   productFiles: ref([]),
-  productReady: ref(false),
+  productReady: ref(false)
 };
 
 const optionFileState = {
   optionFilesPreview: ref([]),
   optionFiles: ref([]),
-  optionReady: ref(false),
+  optionReady: ref(false)
 };
 
 const removeProductImg = (index) => {
@@ -501,24 +438,24 @@ const clearModal = () => {
   productVisibility.value = false;
   productFileState.productFiles.value = [];
   productFileState.productFilesPreview.value = [];
-  (productFileState.productReady.value = false), (price.value = 0);
+  ((productFileState.productReady.value = false), (price.value = 0));
   productStockState.value = false;
   productStockValue.value = 0;
   productDiscountPersent.value = 0;
-//   wholesalePrice.value = 0;
-//   wholesalePriceFrom.value = 0;
-//   counterQuantity.value = 1;
-//   packageType.value = "Bag";
-//   wholesaleOnly.value = false;
+  //   wholesalePrice.value = 0;
+  //   wholesalePriceFrom.value = 0;
+  //   counterQuantity.value = 1;
+  //   packageType.value = "Bag";
+  //   wholesaleOnly.value = false;
   productNameUk.value = "";
   productDescriptionUk.value = "";
-//   wholesaleDescriptionUk.value = "";
-//   productNameEn.value = "";
-//   productDescriptionEn.value = "";
-//   wholesaleDescriptionEn.value = "";
-//   productNameRu.value = "";
-//   productDescriptionRu.value = "";
-//   wholesaleDescriptionRu.value = "";
+  //   wholesaleDescriptionUk.value = "";
+  //   productNameEn.value = "";
+  //   productDescriptionEn.value = "";
+  //   wholesaleDescriptionEn.value = "";
+  //   productNameRu.value = "";
+  //   productDescriptionRu.value = "";
+  //   wholesaleDescriptionRu.value = "";
   addOptionsRef.value = [];
   optionFileState.optionFiles.value = [];
   optionFileState.optionFilesPreview.value = [];
@@ -526,38 +463,37 @@ const clearModal = () => {
   discountState.value = false;
   productAvailability.value = false;
   productMaterialUk.value = "";
-//   productMaterialEn.value = "";
-//   productMaterialRu.value = "";
+  //   productMaterialEn.value = "";
+  //   productMaterialRu.value = "";
   productColorUk.value = "";
-//   productColorEn.value = "";
-//   productColorRu.value = "";
-//   productUnitTypeUk.value = "";
-//   productUnitTypeEn.value = "";
-//   productUnitTypeRu.value = "";
+  //   productColorEn.value = "";
+  //   productColorRu.value = "";
+  //   productUnitTypeUk.value = "";
+  //   productUnitTypeEn.value = "";
+  //   productUnitTypeRu.value = "";
   productSize.value = "";
-//   productWeight.value = "";
-//   productDensity.value = "";
-//   productCapacity.value = "";
-//   productQuantity.value = "";
-//   productGroupQuantity.value = "";
+  //   productWeight.value = "";
+  //   productDensity.value = "";
+  //   productCapacity.value = "";
+  //   productQuantity.value = "";
+  //   productGroupQuantity.value = "";
 };
 
 const addNewOption = () => {
-
-    console.log(addOptionsRef.value.length, 'option ref');
-//   if (addOptionsRef.value.length > 9) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Максимальна кількість опцій 10",
-//     });
-//     return;
-//   }
+  console.log(addOptionsRef.value.length, "option ref");
+  //   if (addOptionsRef.value.length > 9) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Максимальна кількість опцій 10",
+  //     });
+  //     return;
+  //   }
 
   if (optionFileState.optionFilesPreview.value.length > 0) {
     if (
       addOptionTextUk.value
-    //   addOptionTextEn.value &&
-    //   addOptionTextRu.value
+      //   addOptionTextEn.value &&
+      //   addOptionTextRu.value
     ) {
       addOptionsRef.value.push({
         file: toRaw(optionFileState.optionFiles.value),
@@ -566,17 +502,17 @@ const addNewOption = () => {
         translations: [
           {
             language: "uk",
-            optionInfo: addOptionTextUk.value,
-          },
-        //   {
-        //     language: "en",
-        //     optionInfo: addOptionTextEn.value,
-        //   },
-        //   {
-        //     language: "ru",
-        //     optionInfo: addOptionTextRu.value,
-        //   },
-        ],
+            optionInfo: addOptionTextUk.value
+          }
+          //   {
+          //     language: "en",
+          //     optionInfo: addOptionTextEn.value,
+          //   },
+          //   {
+          //     language: "ru",
+          //     optionInfo: addOptionTextRu.value,
+          //   },
+        ]
       });
     }
 
@@ -595,46 +531,35 @@ const removeOption = (index) => {
 };
 
 const addNewProduct = async () => {
-//   if (!productCategory.value) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Оберіть категорію товару",
-//     });
-//     return;
-//   }
-//   if (!productNameUk.value || !productNameRu.value || !productNameEn.value) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Введіть назву товару",
-//     });
-//     return;
-//   }
-//   if (!price.value) {
-//     emit("tooltip", {
-//       status: "error",
-//       message: "Введіть роздрібну ціну товару",
-//     });
-//     return;
-//   }
+  //   if (!productCategory.value) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Оберіть категорію товару",
+  //     });
+  //     return;
+  //   }
+  //   if (!productNameUk.value || !productNameRu.value || !productNameEn.value) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Введіть назву товару",
+  //     });
+  //     return;
+  //   }
+  //   if (!price.value) {
+  //     emit("tooltip", {
+  //       status: "error",
+  //       message: "Введіть роздрібну ціну товару",
+  //     });
+  //     return;
+  //   }
 
-  const categoryData = fetchedCategories.value.filter(
-    (item) => item.id === productCategory.value
-  );
+  const categoryData = fetchedCategories.value.filter((item) => item.id === productCategory.value);
 
-
-
-  const categoryName = categoryData[0].group
-    .trim()
-    .replaceAll(" ", "-")
-    .toLowerCase();
+  const categoryName = categoryData[0].group.trim().replaceAll(" ", "-").toLowerCase();
 
   const translitProductName = transliterate(productNameUk.value);
 
-  const productName = translitProductName
-    .replaceAll(" ", "-")
-    .toLowerCase()
-    .trim();
-
+  const productName = translitProductName.replaceAll(" ", "-").toLowerCase().trim();
 
   // UPLOAD PRODUCT FILE
   const uploadProductFiles = async () => {
@@ -651,16 +576,13 @@ const addNewProduct = async () => {
 
       const productFileUpload = await $fetch("/api/upload", {
         method: "POST",
-        body: formData,
+        body: formData
       });
 
       if (productFileUpload && Array.isArray(productFileUpload.data)) {
         return productFileUpload.data.map((elem) => elem.filePath);
       } else {
-        console.error(
-          "Ошибка: productFileUpload не является массивом",
-          productFileUpload
-        );
+        console.error("Ошибка: productFileUpload не является массивом", productFileUpload);
         return [];
       }
     } catch (error) {
@@ -686,20 +608,20 @@ const addNewProduct = async () => {
 
       const optionFileUpload = await $fetch("/api/upload", {
         method: "POST",
-        body: formData,
+        body: formData
       });
 
       if (optionFileUpload && Array.isArray(optionFileUpload.data)) {
         return optionFileUpload.data.map((elem) => elem.filePath);
       } else {
-        console.error(
-          "Ошибка: productFileUpload не является массивом",
-          productFileUpload
-        );
+        console.error("Ошибка: productFileUpload не является массивом", optionFileUpload);
         return [];
       }
     } catch (error) {
-      console.error();
+      if (error) {
+        console.error(error);
+      }
+      return [];
     }
   };
 
@@ -711,11 +633,10 @@ const addNewProduct = async () => {
     // const formData = new FormData();
 
     // const jsonData = {
-     
+
     // };
 
     // formData.append("data", JSON.stringify(jsonData));
-
 
     const res = await $fetch("/api/products", {
       method: "POST",
@@ -739,41 +660,40 @@ const addNewProduct = async () => {
         //   productQuantity: productQuantity.value,
         // groupPackQuantity: productGroupQuantity.value,
         translations: [
-            {
+          {
             language: "uk",
             title: productNameUk.value,
             description: productDescriptionUk.value,
             // wholesaleDescription: wholesaleDescriptionUk.value,
             productColor: productColorUk.value,
             // groupPackage: productUnitTypeUk.value,
-            productMaterial: productMaterialUk.value,
-            },
-            // {
-            //   language: "en",
-            //   title: productNameEn.value,
-            //   description: productDescriptionEn.value,
-            //   wholesaleDescription: wholesaleDescriptionEn.value,
-            //   productColor: productColorEn.value,
-            //   groupPackage: productUnitTypeEn.value,
-            //   productMaterial: productMaterialEn.value,
-            // },
-            // {
-            //   language: "ru",
-            //   title: productNameRu.value,
-            //   description: productDescriptionRu.value,
-            //   wholesaleDescription: wholesaleDescriptionRu.value,
-            //   productColor: productColorRu.value,
-            //   groupPackage: productUnitTypeRu.value,
-            //   productMaterial: productMaterialRu.value,
-            // },
+            productMaterial: productMaterialUk.value
+          }
+          // {
+          //   language: "en",
+          //   title: productNameEn.value,
+          //   description: productDescriptionEn.value,
+          //   wholesaleDescription: wholesaleDescriptionEn.value,
+          //   productColor: productColorEn.value,
+          //   groupPackage: productUnitTypeEn.value,
+          //   productMaterial: productMaterialEn.value,
+          // },
+          // {
+          //   language: "ru",
+          //   title: productNameRu.value,
+          //   description: productDescriptionRu.value,
+          //   wholesaleDescription: wholesaleDescriptionRu.value,
+          //   productColor: productColorRu.value,
+          //   groupPackage: productUnitTypeRu.value,
+          //   productMaterial: productMaterialRu.value,
+          // },
         ],
-        options: toRaw(addOptionsRef.value),
-
-      },
+        options: toRaw(addOptionsRef.value)
+      }
     });
 
     return {
-      data: res,
+      data: res
     };
   };
 
@@ -781,7 +701,7 @@ const addNewProduct = async () => {
     try {
       const [productImgPath, optionImgPath] = await Promise.all([
         uploadProductFiles(),
-        uploadOptionFiles(),
+        uploadOptionFiles()
       ]);
 
       console.log("Изображения загружены:", productImgPath, optionImgPath);
@@ -794,17 +714,17 @@ const addNewProduct = async () => {
 
       alert("Товар створений успішно");
 
-    //   emit("tooltip", {
-    //     status: "success",
-    //     message: "Товар створений успішно",
-    //   });
+      //   emit("tooltip", {
+      //     status: "success",
+      //     message: "Товар створений успішно",
+      //   });
     } catch (error) {
       console.error(error);
-        alert(error);
-    //   emit("tooltip", {
-    //     status: "error",
-    //     message: error,
-    //   });
+      alert(error);
+      //   emit("tooltip", {
+      //     status: "error",
+      //     message: error,
+      //   });
     }
   };
 
@@ -818,9 +738,7 @@ onMounted(async () => {
     if (getData.data.length > 0) {
       fetchedCategories.value = getData.data.map((item) => ({
         ...item,
-        itemLanguage: item.translations.find(
-          (translation) => translation.language === "uk"
-        ),
+        itemLanguage: item.translations.find((translation) => translation.language === "uk")
       }));
     }
   } catch (error) {
@@ -850,10 +768,10 @@ onMounted(async () => {
   overflow-y: hidden;
   padding-inline: 1.5rem;
 
-   .btn_fill{
+  .btn_fill {
     width: fit-content;
     height: auto;
-    display: flex; 
+    display: flex;
     align-items: center;
     justify-content: center;
     background: rgb(27, 27, 27);
@@ -863,25 +781,21 @@ onMounted(async () => {
     border-radius: 0.5rem;
     cursor: pointer;
     // transition: all 0.3s ease;
-
-
-
-    }
-    .btn_transparent{
-        width: fit-content;
-        height: auto;
-        display: flex; 
-        align-items: center;
-        justify-content: center;
-        background: transparent;
-        border: 1px solid rgb(27, 27, 27);
-        color: rgb(27, 27, 27);
-        font-weight: 600;
-        padding: 0.5rem 1.25rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        
-    }
+  }
+  .btn_transparent {
+    width: fit-content;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid rgb(27, 27, 27);
+    color: rgb(27, 27, 27);
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
 
   .modal_wrapper {
     display: grid;
@@ -1003,7 +917,7 @@ onMounted(async () => {
       // @include mixins.descriptionText(400, var(--dark-color));
     }
     .icon_label {
-        margin-top: 2rem;
+      margin-top: 2rem;
     }
     .upload-btn {
       margin: 50px 0 20px;
@@ -1020,10 +934,10 @@ onMounted(async () => {
     position: relative;
 
     .main_text {
-        font-size: 1.5rem;
-        line-height: 2rem;
-        color: rgb(79, 79, 79);
-        font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 2rem;
+      color: rgb(79, 79, 79);
+      font-weight: 700;
     }
 
     .default_text {
@@ -1037,7 +951,6 @@ onMounted(async () => {
       display: flex;
       align-items: center;
       justify-content: space-between;
-
     }
 
     .header_description {
@@ -1045,8 +958,6 @@ onMounted(async () => {
         color: red;
       }
     }
-
-   
 
     .options {
       margin-top: 1rem;
@@ -1089,41 +1000,38 @@ onMounted(async () => {
       strong {
         color: red;
       }
-   
     }
 
-    .main_option{
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        align-items: center;
-        gap: 1rem;
+    .main_option {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      align-items: center;
+      gap: 1rem;
 
-        &_content{
-
-            select{
-                width: 100%;
-                height: 100%;
-            }
-
+      &_content {
+        select {
+          width: 100%;
+          height: 100%;
         }
+      }
     }
 
-    .add_new_option{
-        margin-top: 1rem;
+    .add_new_option {
+      margin-top: 1rem;
     }
 
-    .description_option{
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        align-items: stretch;
+    .description_option {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      align-items: stretch;
+      gap: 1rem;
+
+      &_content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
         gap: 1rem;
-
-        &_content{
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            gap: 1rem
-        }
+      }
     }
 
     select {
@@ -1163,74 +1071,69 @@ onMounted(async () => {
       height: auto;
     }
 
+    .add_new {
+      &_wrap {
+        display: flex;
+        flex-direction: column;
+        margin-top: 1rem;
+        gap: 1rem;
+        padding-bottom: 1rem;
+      }
+      .new_option {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
 
-    .add_new{
-        &_wrap{
+        &_wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          flex-basis: 2.5rem;
+          gap: 1rem;
+          .hidden_input {
+            display: none;
+          }
+
+          label {
+            border: 1px solid black;
+            padding: 3px 5px;
+            border-radius: 8px;
             display: flex;
-            flex-direction: column;
-            margin-top: 1rem;
-            gap: 1rem;
-            padding-bottom: 1rem;
-
-        }
-        .new_option{
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-
-            &_wrapper{
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                flex-basis: 2.5rem;
-                gap: 1rem;
-                .hidden_input {
-                    display: none;
-                }
-
-                label{
-                    border: 1px solid black;
-                    padding: 3px 5px;
-                    border-radius: 8px;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 0.8rem;
-
-                    span{
-                        font-size: 1rem;
-                        font-weight: 500;
-                        color: rgb(80, 80, 80);
-                    }
-
-                }
-                .preview{
-                    padding: 0.25rem 0.5rem;
-                    border-radius: 0.5rem;
-                    img{
-                        width: 1.25rem;
-                    }
-                }
-
-                .checkbox_wrap{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    input{
-                        margin-top: unset;
-
-                    }
-                }
-            }
-
-        }
-        .new_option_btn{
-            display: flex;
-            justify-content: flex-end;
+            flex-direction: row;
             align-items: center;
-            margin-top: 1rem;
+            justify-content: center;
+            gap: 0.8rem;
+
+            span {
+              font-size: 1rem;
+              font-weight: 500;
+              color: rgb(80, 80, 80);
+            }
+          }
+          .preview {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            img {
+              width: 1.25rem;
+            }
+          }
+
+          .checkbox_wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            input {
+              margin-top: unset;
+            }
+          }
         }
+      }
+      .new_option_btn {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: 1rem;
+      }
     }
     .add-option {
       display: flex;
@@ -1245,36 +1148,36 @@ onMounted(async () => {
       justify-content: space-between;
       gap: 8px;
     }
-    .added_options{
-        background: rgb(27, 27, 27);
-        padding: 1rem;
+    .added_options {
+      background: rgb(27, 27, 27);
+      padding: 1rem;
+      border-radius: 8px;
+      padding-top: 1rem;
+      &_list {
+        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      &_item {
+        background: rgb(226, 226, 226);
         border-radius: 8px;
-        padding-top: 1rem;
-        &_list{
-            display: flex;
-            align-items: stretch;
-            justify-content: flex-start;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        &_item{
-            background: rgb(226, 226, 226);
-            border-radius: 8px;
-            width: fit-content;
-            height: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            color: rgb(25, 25, 25);
-            font-weight: 500;
-        }
-        .separator{
-            width: 1px;
-            height: 25px;
-            background: rgb(25, 25, 25);
-        }
+        width: fit-content;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        color: rgb(25, 25, 25);
+        font-weight: 500;
+      }
+      .separator {
+        width: 1px;
+        height: 25px;
+        background: rgb(25, 25, 25);
+      }
     }
     .button-group {
       padding-top: 30px;

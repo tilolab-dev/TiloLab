@@ -1,5 +1,3 @@
-const patchSubCategory = async () => {
-
-}
+const patchSubCategory = async () => {};
 
 export default patchSubCategory;
