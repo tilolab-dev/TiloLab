@@ -1,56 +1,43 @@
 <template>
   <div class="item_card">
-    <div :v-if="props.product.discountPercent !== 0" class="action_label">
-      Акція
+    <div :v-if="props.product.discountPercent !== 0" class="action_label">Акція</div>
+
+    <div class="img_container">
+      <img :src="props.product.img[0].path" alt="product" />
     </div>
-
-    <img :src="props.product.img[0].path" alt="product" />
     <div class="description_content">
-
       <h3>{{ props.product.translations[0].title }}</h3>
       <div class="price_content">
-        <div class="price" :style="props.product.discountPercent > 0 ? { 'text-decoration': 'line-through' } : {}">
+        <div
+          class="price"
+          :style="props.product.discountPercent > 0 ? { 'text-decoration': 'line-through' } : {}"
+        >
           {{ props.product.productPrice }} грн
         </div>
 
-        <div class="discount_price" v-if="props.product.discountPercent > 0">
+        <div v-if="props.product.discountPercent > 0" class="discount_price">
           {{ discountedPrice }} грн
         </div>
       </div>
-
     </div>
-
-      
-
   </div>
 </template>
 
 <script setup>
-import { useModalStore } from "@/store/modal-store";
-import { useProductStore } from "@/store/product-store";
+// import { useModalStore } from "@/store/modal-store";
+// import { useProductStore } from "@/store/product-store";
 
-// import { useProductStore, useModalStore } from '#imports';
+// const productStore = useProductStore();
+// const modalStore = useModalStore();
 
-// import SvgIcon from './shared/SvgIcon.vue';
-
-const productStore = useProductStore();
-const modalStore = useModalStore();
-
-let counter = ref(0);
-
-// const props = defineProps({
-//     product: Object,
-//     // group: String,
-// })
+// let counter = ref(0);
 
 const props = defineProps({
   product: {
     type: Object,
-    required: true,
-  },
+    required: true
+  }
 });
-
-console.log(props.product, "props");
 
 const discountedPrice = computed(() => {
   const p = props.product.productPrice;
@@ -58,23 +45,23 @@ const discountedPrice = computed(() => {
   return Math.round(p - (p * d) / 100);
 });
 
-const selectProduct = (product) => {
-  productStore.setSelectedProducts(product);
-};
+// const selectProduct = (product) => {
+//   productStore.setSelectedProducts(product);
+// };
 
-const counterControl = (event, operator, quantity) => {
-  event.preventDefault();
-  if (operator === "+") {
-    counter.value = counter.value + quantity;
-  } else if (operator === "-" && counter.value > 0) {
-    counter.value = counter.value - quantity;
-  }
-};
+// const counterControl = (event, operator, quantity) => {
+//   event.preventDefault();
+//   if (operator === "+") {
+//     counter.value = counter.value + quantity;
+//   } else if (operator === "-" && counter.value > 0) {
+//     counter.value = counter.value - quantity;
+//   }
+// };
 
-const addToCart = (event, props) => {
-  event.preventDefault();
-  modalStore.showModal("ProductToCart", props);
-};
+// const addToCart = (event, props) => {
+//   event.preventDefault();
+//   modalStore.showModal("ProductToCart", props);
+// };
 </script>
 
 <style scoped lang="scss">
@@ -94,29 +81,17 @@ const addToCart = (event, props) => {
   gap: 5px;
 
   @media screen and (min-width: 1024px) {
-    &:hover {
-      border: 3px solid var(--border-color);
-      transition: all ease 0.3s;
-    }
-
-    &:hover .description_content {
-      padding-inline: 0.5rem;
-      transition: all ease 0.3s;
-    }
-
     &:hover img {
-      filter: brightness(0.8);
+      transform: scale(1.1);
       transition: all ease 0.3s;
-
-    }
-
-    &:hover h3 {
-      color: var(--accent-color);
-      transition: all ease 0.3s;
-      font-weight: 500;
     }
   }
-  
+
+  .img_container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 
   img {
     width: 100%;
@@ -124,7 +99,6 @@ const addToCart = (event, props) => {
     object-fit: cover;
     aspect-ratio: 1/1;
     transition: all ease 0.3s;
-
   }
   h3 {
     color: var(--text-color);
@@ -144,7 +118,7 @@ const addToCart = (event, props) => {
     z-index: 1;
   }
 
-  .description_content{
+  .description_content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -155,8 +129,6 @@ const addToCart = (event, props) => {
     flex: 1;
   }
 
-
-
   .price_content {
     color: white;
     display: flex;
@@ -166,7 +138,6 @@ const addToCart = (event, props) => {
 
     font-size: 1.6rem;
     font-weight: 600;
-
   }
   .discount_price {
     color: var(--accent-color);

@@ -12,26 +12,27 @@ async function me(event: any) {
     try {
       const decoded = jwt.verify(refreshToken, JWT_SECRET) as { id: number };
       accessToken = jwt.sign({ id: decoded.id }, JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "1h"
       });
 
       setCookie(event, "accessToken", accessToken, {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
-        maxAge: 3600,
+        maxAge: 3600
       });
     } catch (error) {
+      console.error("Refresh token invalid:", error);
       throw createError({
         statusCode: 401,
-        statusMessage: "Invalid refresh token",
+        statusMessage: "Invalid refresh token"
       });
     }
   }
   if (accessToken) {
     try {
       const decoded = jwt.verify(accessToken, JWT_SECRET) as { id: number };
-  
+
       const user = await prisma.user.findUnique({
         where: { id: decoded.id },
         select: {
@@ -55,35 +56,33 @@ async function me(event: any) {
               postCompany: true,
               postOffice: true,
               postomat: true
-            },
+            }
           },
           notifications: {
             select: {
               id: true,
               isReaded: true,
               message: true,
-              createdAt: true,
-            },
-          },
-  
+              createdAt: true
+            }
+          }
         }
       });
-  
+
       if (!user) {
         throw createError({ statusCode: 401, statusMessage: "User not found" });
       }
-  
+
       console.log("User found:", user);
       return { user: user };
     } catch (error) {
       console.error("Access token invalid:", error);
       throw createError({
         statusCode: 401,
-        statusMessage: "Invalid access token",
+        statusMessage: "Invalid access token"
       });
     }
   }
- 
 }
 
 export default me;

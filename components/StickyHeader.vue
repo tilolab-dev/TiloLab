@@ -9,22 +9,15 @@
 
           <div class="main_header_content">
             <nav class="desktop_navigation">
-              <NuxtLink to="/about-us" class="nav_element">
-                Про нас
-              </NuxtLink>
-              <button
-                class="nav_element"
-                @click="catalogBtnState = !catalogBtnState"
-              >
-                  Каталог
-                  <div class="icon_wrap">
-                    <AngleDown />
-                  </div>
+              <NuxtLink to="/about-us" class="nav_element"> Про нас </NuxtLink>
+              <button class="nav_element" @click="catalogBtnState = !catalogBtnState">
+                Каталог
+                <div class="icon_wrap">
+                  <AngleDown />
+                </div>
               </button>
               <div class="nav_element">
-                <NuxtLink to="/faq">
-                  FAQ
-                </NuxtLink>
+                <NuxtLink to="/faq"> FAQ </NuxtLink>
               </div>
             </nav>
 
@@ -46,20 +39,15 @@
             <NuxtLink to="/wishlist" class="wishlist_btn">
               <HeartIcon />
             </NuxtLink>
-            <button @click="modalStore.showModal('CartModal')" class="cart_btn">
+            <button class="cart_btn" @click="modalStore.showModal('CartModal')">
               <CartIcon />
-              <div
-                class="quantity_label"
-                v-if="mounted && cartStore?.cart?.length !== 0"
-              >
+              <div v-if="mounted && cartStore?.cart?.length !== 0" class="quantity_label">
                 {{ cartStore?.cart?.length }}
               </div>
             </button>
-            <button @click="modalStore.showModal('BurgerMenu')" class="burger_btn">
+            <button class="burger_btn" @click="modalStore.showModal('BurgerMenu')">
               <BurgerIcon />
-
             </button>
-            
           </div>
         </div>
       </div>
@@ -68,11 +56,8 @@
       </div> -->
     </div>
 
-    <div
-      class="header_catalog"
-      :class="catalogBtnState ? 'header_catalog_active' : ''"
-    >
-      <div class="loader_wrapper" v-if="!loaderState">
+    <div class="header_catalog" :class="catalogBtnState ? 'header_catalog_active' : ''">
+      <div v-if="!loaderState" class="loader_wrapper">
         <Loader />
         Завантаження
       </div>
@@ -80,28 +65,28 @@
       <nav v-else>
         <NuxtLink
           v-for="(item, index) in fetchCategories"
-          :to="`/products/${item.group.toLowerCase()}`"
           :key="index"
+          :to="`/products/${item.group.toLowerCase()}`"
         >
           {{ item.translations[0].title }}
         </NuxtLink>
       </nav>
     </div>
 
-    <div class="mobile_search" :class="mobileSearch ? 'mobile_search_active': ''">
-      <input type="text" placeholder="Пошук">
+    <div class="mobile_search" :class="mobileSearch ? 'mobile_search_active' : ''">
+      <input type="text" placeholder="Пошук" />
     </div>
   </div>
 </template>
 
 <script setup>
-import AngleDown from '~/assets/icons/angle-down.svg'
-import SearchIcon from '~/assets/icons/search-icon.svg'
-import ProfileIcon from '~/assets/icons/profile.svg'
-import HeartIcon from '~/assets/icons/heart.svg'
-import CartIcon from '~/assets/icons/cart.svg'
-import BurgerIcon from '~/assets/icons/burger.svg'
-import CloseIcon from '~/assets/icons/close-icon.svg'
+import AngleDown from "~/assets/icons/angle-down.svg";
+import SearchIcon from "~/assets/icons/search-icon.svg";
+import ProfileIcon from "~/assets/icons/profile.svg";
+import HeartIcon from "~/assets/icons/heart.svg";
+import CartIcon from "~/assets/icons/cart.svg";
+import BurgerIcon from "~/assets/icons/burger.svg";
+// import CloseIcon from "~/assets/icons/close-icon.svg";
 
 import { ref, onMounted, watch } from "vue";
 // import { useModalStore, useIndexStore, useCartStore,  } from "#imports";
@@ -124,10 +109,10 @@ const loaderState = ref(false);
 const mounted = ref(false);
 
 watch(burger, () => {
-  burger.value ? 
-    document.body.style.overflow = "hidden" : 
-    document.body.style.overflow = "unset";
-})
+  burger.value
+    ? (document.body.style.overflow = "hidden")
+    : (document.body.style.overflow = "unset");
+});
 
 const fetchCategories = computed(() => indexStore.fetchedCategories);
 
@@ -138,8 +123,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-
-  @use "@/style/mixins.scss" as mixins;
+@use "@/style/mixins.scss" as mixins;
 
 .header {
   width: 100%;
@@ -207,22 +191,19 @@ onMounted(() => {
       font-weight: 500;
       cursor: pointer;
 
-      .icon_wrap{
+      .icon_wrap {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 24px;
         height: 24px;
 
-        svg{
+        svg {
           padding: 5px;
           stroke: var(--text-color);
           transition: all ease 0.3s;
-
         }
       }
-
-  
 
       @media screen and (min-width: 1024px) {
         &:hover {
@@ -241,16 +222,23 @@ onMounted(() => {
       align-items: center;
       gap: 0.7rem;
       input {
-        background: var(--accent-grey);
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 500;
+        letter-spacing: 0.45px;
+
+        width: 100%;
+        background: var(--transparent-fill);
         color: white;
         padding: 5px 7px;
-        border-radius: 5px;
+        border-radius: 4px;
+        backdrop-filter: blur(2px);
         @media screen and (max-width: 480px) {
           display: none;
         }
       }
       input::placeholder {
-        color: var(--text-color);
+        color: rgba(255, 255, 255, 0.5);
       }
 
       button {
@@ -260,12 +248,14 @@ onMounted(() => {
         }
         @media screen and (min-width: 1024px) {
           &:hover svg {
-            transition: all ease 0.3s;
-            fill: var(--accent-color);
+            path {
+              transition: all ease 0.3s;
+              fill: var(--accent-color);
+            }
           }
         }
       }
-      .mobile_search_btn{
+      .mobile_search_btn {
         display: none;
       }
 
@@ -274,13 +264,12 @@ onMounted(() => {
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        .mobile_search_btn{
+        .mobile_search_btn {
           @include mixins.iconBtn;
         }
-        .desktop_search_btn{
+        .desktop_search_btn {
           display: none;
         }
-
       }
     }
   }
@@ -290,9 +279,9 @@ onMounted(() => {
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    button {
-      cursor: pointer;
-      position: relative;
+
+    .cart_btn {
+      @include mixins.iconBtn;
 
       svg {
         transition: all ease 0.3s;
@@ -300,30 +289,59 @@ onMounted(() => {
 
       @media screen and (min-width: 1024px) {
         &:hover svg {
-          fill: var(--accent-color);
-          transition: all ease 0.3s;
+          path {
+            transition: all ease 0.3s;
+            stroke: var(--accent-color);
+          }
         }
-
-        
       }
     }
 
-    .cart_btn {
+    .wishlist_btn {
       @include mixins.iconBtn;
+
+      svg {
+        transition: all ease 0.3s;
+      }
+
+      @media screen and (min-width: 1024px) {
+        &:hover svg {
+          path {
+            transition: all ease 0.3s;
+            stroke: var(--accent-color);
+          }
+        }
+      }
     }
+
+    .user_btn {
+      @include mixins.iconBtn;
+
+      svg {
+        transition: all ease 0.3s;
+      }
+
+      @media screen and (min-width: 1024px) {
+        &:hover svg {
+          path {
+            transition: all ease 0.3s;
+            fill: var(--accent-color);
+          }
+        }
+      }
+    }
+
     .quantity_label {
       color: white;
       position: absolute;
       top: 0;
       right: 0;
-      background: var(--accent-color);
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
+      font-size: 14px;
+      font-weight: 600;
       transform: translate(60%, -40%);
-    }
-    .wishlist_btn, .user_btn{
-      @include mixins.iconBtn;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .burger_btn {
       display: none;
@@ -332,10 +350,11 @@ onMounted(() => {
       & {
         gap: 20px;
       }
-      .user_btn, .wishlist_btn {
-          display: none;
+      .user_btn,
+      .wishlist_btn {
+        display: none;
       }
-      .burger_btn{
+      .burger_btn {
         @include mixins.iconBtn;
       }
     }
@@ -402,31 +421,27 @@ onMounted(() => {
   top: -100%;
   left: 0;
 
-  input{
-    background: rgba(254, 253, 254, 0.30);
+  input {
+    background: rgba(254, 253, 254, 0.3);
     padding: 8px;
     border-radius: 4px;
     width: 220px;
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.50);
-      font-family: 'Montserrat', sans-serif;
+      color: rgba(255, 255, 255, 0.5);
+      font-family: "Montserrat", sans-serif;
       font-size: 0.6875rem;
       font-style: normal;
       font-weight: 500;
       line-height: normal;
       letter-spacing: 0.33px;
     }
-
   }
-
-
 
   @media screen and (max-width: 480px) {
     display: flex;
     justify-content: center;
     align-items: center;
-
   }
 }
 
@@ -434,7 +449,5 @@ onMounted(() => {
   top: 100%;
   transition: all ease 0.3s;
 }
-
-
 </style>
 ß

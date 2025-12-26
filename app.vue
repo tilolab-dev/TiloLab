@@ -8,5 +8,3 @@
     <SharedIconLibrary />
   </NuxtLayout>
 </template>
-
-

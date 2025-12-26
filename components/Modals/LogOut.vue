@@ -2,16 +2,10 @@
   <div class="logout_inner_overlay" @click.self="modalStore.closeModal()">
     <div class="logout">
       <div class="logout_content">
-        <p class="logout_content_text">
-          Ви впевнені, що хочете вийти з аккаунту?
-        </p>
+        <p class="logout_content_text">Ви впевнені, що хочете вийти з аккаунту?</p>
         <div class="logout_content_btns">
-          <button class="logout_btn" @click="modalStore.closeModal()">
-            Так
-          </button>
-          <button class="logout_btn" @click="modalStore.closeModal()">
-            Скасувати
-          </button>
+          <button class="logout_btn" @click="modalStore.closeModal()">Так</button>
+          <button class="logout_btn" @click="modalStore.closeModal()">Скасувати</button>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="burger_inner_overlay" @click.self="closeBurgerMenu">
-    <div class="burger_modal_content" ref="burgerRef">
+    <div ref="burgerRef" class="burger_modal_content">
       <div class="burger_menu_top">
         <button class="button_wrapper" @click="closeBurgerMenu">
           <div class="icon_wrap">
@@ -14,9 +14,7 @@
           <li @click="closeBurgerMenu('/wishlist')">Список бажань</li>
         </ul>
       </div>
-      <div class="burger_menu_user" @click="closeBurgerMenu('/auth/login')">
-        Особистий кабінет
-      </div>
+      <div class="burger_menu_user" @click="closeBurgerMenu('/auth/login')">Особистий кабінет</div>
     </div>
   </div>
 </template>
@@ -36,13 +34,13 @@ onMounted(() => {
     burgerRef.value,
     {
       x: "100%",
-      opacity: 0,
+      opacity: 0
     },
     {
       x: "0%",
       opacity: 1,
       duration: 0.5,
-      ease: "power3.out",
+      ease: "power3.out"
     }
   );
 });
@@ -58,7 +56,7 @@ const closeBurgerMenu = (link) => {
     ease: "power4.in",
     onComplete: () => {
       modalStore.closeModal();
-    },
+    }
   });
 };
 </script>

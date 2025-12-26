@@ -1,29 +1,13 @@
 <template>
-
-    <div class="wishlist">
-
-        <h1>
-            wishlist
-        </h1>
-    </div>
-
-
-
+  <div class="wishlist">
+    <h1>wishlist</h1>
+  </div>
 </template>
 
-
-<script setup>
-
-
-
-</script>
-
+<script setup></script>
 
 <style lang="scss">
-
-    .wishlist{
-        color: var(--text-color)
-    }
-
-
+.wishlist {
+  color: var(--text-color);
+}
 </style>

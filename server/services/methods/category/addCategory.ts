@@ -1,6 +1,6 @@
-import { readMultipartFormData } from "h3";
-import supabase from '@/utils/supabase'
-import { prisma } from '@/prisma/prisma';
+// import { readMultipartFormData } from "h3";
+// import supabase from "@/utils/supabase";
+import { prisma } from "@/prisma/prisma";
 
 type Translation = {
   language: string;
@@ -9,69 +9,63 @@ type Translation = {
 };
 
 async function addCategory(event: any) {
+  const body = await readBody<{
+    group: string;
+    visible: boolean;
+    translations: Translation[];
+    categoryImg: string;
+  }>(event);
 
-    const body = await readBody<{
-        group: string,
-        visible: boolean,
-        translations: Translation[],
-        categoryImg: string
+  if (!body) {
+    return { message: "No data received!" };
+  }
 
+  const { group, visible, translations, categoryImg } = body;
 
-    }>(event);
+  if (!group || !visible || !translations || !categoryImg) {
+    return {
+      statusCode: 400,
+      message: "All fields are required!"
+    };
+  }
 
-    if (!body) {
-        return { message: 'No data received!' };
-    }
+  const lastCategory = await prisma.category.findFirst({
+    orderBy: { listPosition: "desc" }
+  });
 
-    const { group, visible, translations, categoryImg } = body;
+  const newListPosition = lastCategory ? lastCategory.listPosition + 1 : 1;
 
-    if (!group || !visible || !translations || !categoryImg) {
-        return { 
-            statusCode: 400,
-            message: 'All fields are required!' 
-        };
-    }
-
-    const lastCategory = await prisma.category.findFirst({
-        orderBy: { listPosition: 'desc' },
+  try {
+    const newCategory = await prisma.category.create({
+      data: {
+        group: group,
+        listPosition: newListPosition,
+        visible: visible,
+        translations: {
+          create: translations.map((translation: any) => ({
+            language: translation.language,
+            title: translation.title,
+            groupText: translation.description,
+            description: translation.description
+          }))
+        },
+        categoryImg: categoryImg
+      }
     });
 
-    const newListPosition = lastCategory ? lastCategory.listPosition + 1 : 1;
-
-    try {
-
-        const newCategory = await prisma.category.create({
-            data: {
-                group: group,
-                listPosition: newListPosition,
-                visible: visible,
-                translations: {
-                    create: translations.map((translation: any) => ({
-                        language: translation.language,
-                        title: translation.title,
-                        groupText: translation.description,
-                        description: translation.description
-                    }))
-                },
-                categoryImg: categoryImg
-            }
-        })
-
-        return {
-            statusCode: 200,
-            tooltipStatus: 'success',
-            message: 'Категорія створена успішно',
-            category: newCategory
-        }
-        
-    } catch (error) {
-        console.error(error);
-        return {
-            statusCode: 500,
-            message: `Something went wrong, ${error}`
-            
-        }
-    }
+    return {
+      statusCode: 200,
+      tooltipStatus: "success",
+      message: "Категорія створена успішно",
+      category: newCategory
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      statusCode: 500,
+      message: `Something went wrong, ${error}`
+    };
+  }
 }
 
 export default addCategory;

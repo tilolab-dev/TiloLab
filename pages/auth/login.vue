@@ -19,14 +19,12 @@
             </button>
           </label>
 
-          <input type="checkbox" id="checkbox" />
+          <input id="checkbox" type="checkbox" />
         </div>
 
         <button class="login_btn">Увійти</button>
 
-        <NuxtLink to="/auth/reset" class="forgot_btn">
-          Забули пароль?
-        </NuxtLink>
+        <NuxtLink to="/auth/reset" class="forgot_btn"> Забули пароль? </NuxtLink>
 
         <NuxtLink to="/auth/register" class="register_btn">
           <span> Зареєструватися </span>
@@ -43,9 +41,7 @@
         </button>
 
         <div class="test_user_btn">
-          <NuxtLink to="/user" class="test_user">
-            Тестова кнопка сторінки користувача
-          </NuxtLink>
+          <NuxtLink to="/user" class="test_user"> Тестова кнопка сторінки користувача </NuxtLink>
         </div>
       </div>
     </div>
@@ -60,7 +56,7 @@ import Check from "~/assets/icons/check.svg";
 
 // imports
 
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 
 const rememberMe = ref(false);
 </script>

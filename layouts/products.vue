@@ -18,60 +18,40 @@
           <div class="category">
             <button @click="toggleCategory = !toggleCategory">
               Категорія
-              <SvgIcon name="arrow-down" size="micro" class="arrow_icon" :class="toggleCategory ? 'active_icon': ''"/> 
-
+              <SvgIcon
+                name="arrow-down"
+                size="micro"
+                class="arrow_icon"
+                :class="toggleCategory ? 'active_icon' : ''"
+              />
             </button>
-          
-            <ul class="categories_wrapper" v-if="toggleCategory">
-              <li>
-                Для неї
-              </li>
-              <li>
-                Для нього
-              </li>
-              <li>
-                Для пар
-              </li>
-              <li>
-                Інтимний догляд
-              </li>
-              <li>
-                Анальний секс
-              </li>
-              <li>
-                Фалоімітатори
-              </li>
-              <li>
-                Прелюдія
-              </li>
-              <li>
-                БДСМ
-              </li>
-              <li>
-                Косметика
-              </li>
 
+            <ul v-if="toggleCategory" class="categories_wrapper">
+              <li>Для неї</li>
+              <li>Для нього</li>
+              <li>Для пар</li>
+              <li>Інтимний догляд</li>
+              <li>Анальний секс</li>
+              <li>Фалоімітатори</li>
+              <li>Прелюдія</li>
+              <li>БДСМ</li>
+              <li>Косметика</li>
             </ul>
           </div>
         </div>
         <!--MAIN -->
-        <div class="products-wrapper ">
+        <div class="products-wrapper">
           <slot />
         </div>
-
-
       </div>
-      
- 
-     
     </main>
     <Modal>
       <template #default="{ openModal, closeModal }">
         <component
           :is="currentModal"
           v-bind="modalProps"
-          :openModal="openModal"
-          :closeModal="closeModal"
+          :open-modal="openModal"
+          :close-modal="closeModal"
         />
       </template>
     </Modal>
@@ -82,16 +62,13 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 
-
 import { useModalStore } from "@/store/modal-store";
 import { useIndexStore } from "@/store/index-store";
-
 
 import Modal from "@/components/Modals/Modal.vue";
 import BreadCrumbs from "@/components/shared/BreadCrumbs.vue";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
 import DoubleRange from "@/components/DoubleRange.vue";
-
 
 const modalStore = useModalStore();
 const indexStore = useIndexStore();
@@ -100,42 +77,40 @@ const modalProps = computed(() => modalStore.modalProps);
 
 const toggleCategory = ref(false);
 
-const fetchedProducts = ref([]);
+// const fetchedProducts = ref([]);
 
 const fetchedAllCategories = ref([]);
 
 const fetchCategory = computed(() => indexStore.fetchedCategories);
 fetchedAllCategories.value = fetchCategory.value;
 
-const categories = ref(true);
-const filters = ref(true);
-const search = ref(true);
+// const categories = ref(true);
+// const filters = ref(true);
+// const search = ref(true);
 
-const mobileBags = ref(false);
-const mobilePackages = ref(false);
+// const mobileBags = ref(false);
+// const mobilePackages = ref(false);
 
-const mobileCategoryState = ref(false);
+// const mobileCategoryState = ref(false);
 
-const mobileCategory = () => {
-  mobileCategoryState.value = !mobileCategoryState.value;
-
-}
+// const mobileCategory = () => {
+//   mobileCategoryState.value = !mobileCategoryState.value;
+// };
 
 let activeCategory = ref([]);
 
 const showCategory = (category) => {
+  const listProducts = computed(() => indexStore.fetchedProducts);
   if (category === "showAll") {
     activeCategory.value = [];
   } else {
-    activeCategory.value = listProducts.reduce((acc, item) => {
+    activeCategory.value = listProducts.value.reduce((acc, item) => {
       if (item.group === category) {
         acc.push(item);
       }
 
       if (item.groupProducts) {
-        const matchingGroups = item.groupProducts.filter(
-          (group) => group.group === category
-        );
+        const matchingGroups = item.groupProducts.filter((group) => group.group === category);
         matchingGroups.forEach((group) => acc.push(group));
       }
 
@@ -144,28 +119,28 @@ const showCategory = (category) => {
   }
 };
 
-const showMobileCategory = (category) => {
-  switch (category) {
-    case "mobileBags":
-      if (mobileBags.value) {
-        mobileBags.value = false;
-        return;
-      } else {
-        mobilePackages.value = false;
-        mobileBags.value = true;
-      }
-      break;
-    case "mobilePackages":
-      if (mobilePackages.value) {
-        mobilePackages.value = false;
-        return;
-      } else {
-        mobileBags.value = false;
-        mobilePackages.value = true;
-      }
-      break;
-  }
-};
+// const showMobileCategory = (category) => {
+//   switch (category) {
+//     case "mobileBags":
+//       if (mobileBags.value) {
+//         mobileBags.value = false;
+//         return;
+//       } else {
+//         mobilePackages.value = false;
+//         mobileBags.value = true;
+//       }
+//       break;
+//     case "mobilePackages":
+//       if (mobilePackages.value) {
+//         mobilePackages.value = false;
+//         return;
+//       } else {
+//         mobileBags.value = false;
+//         mobilePackages.value = true;
+//       }
+//       break;
+//   }
+// };
 
 onMounted(() => {
   showCategory("showAll");
@@ -182,7 +157,6 @@ onMounted(() => {
   min-height: 100vh;
   position: relative;
   background: var(--bg-color);
-
 }
 .main_content {
   flex: 1;
@@ -216,27 +190,25 @@ onMounted(() => {
     font-weight: 500;
     position: relative;
 
-    button{
+    button {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 1rem;
       cursor: pointer;
     }
-    .arrow_icon{
+    .arrow_icon {
       transition: all ease 0.3s;
     }
 
-    .active_icon{
+    .active_icon {
       transition: all ease 0.3s;
       transform: rotate(180deg);
       fill: var(--accent-color);
-
-
     }
   }
 
-  .categories_wrapper{
+  .categories_wrapper {
     position: absolute;
     width: fit-content;
     height: auto;
@@ -246,14 +218,11 @@ onMounted(() => {
     top: 50px;
     right: 0;
 
-    li{
+    li {
       white-space: nowrap;
       color: var(--accent-color);
       padding-block: 5px;
     }
-
   }
 }
-
-
 </style>

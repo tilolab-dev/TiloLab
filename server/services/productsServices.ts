@@ -4,10 +4,4 @@ import getProducts from "./methods/products/getProducts";
 import patchProduct from "./methods/products/patchProduct";
 import getProductById from "./methods/products/getProductById";
 
-export {
-    addProduct,
-    deleteProduct,
-    getProducts,
-    patchProduct,
-    getProductById
-}
+export { addProduct, deleteProduct, getProducts, patchProduct, getProductById };
