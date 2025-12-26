@@ -121,9 +121,6 @@ import { ref, computed, watch, onMounted } from "vue";
 import { useProductStore } from "@/store/product-store";
 import { useCartStore } from "@/store/cart-store";
 import { useRoute } from "vue-router";
-import { navigateTo } from "#app";
-import { $fetch } from "#app";
-
 // components
 import BreadCrumbs from "@/components/shared/BreadCrumbs.vue";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
