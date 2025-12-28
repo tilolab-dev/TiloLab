@@ -231,17 +231,25 @@ swiper-container::part(container) {
 .card {
   background: #222;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-rows: 488px;
   font-size: 24px;
   position: relative;
   overflow: hidden;
   cursor: pointer;
 
+  @media screen and (min-width: 1024px) {
+    &:hover img {
+      transform: scale(1.1);
+      transition: all ease 0.3s;
+    }
+  }
+
   img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 
   .card_title {
@@ -289,6 +297,11 @@ swiper-container::part(container) {
 
   @media screen and (max-width: 1024px) {
     display: none;
+  }
+
+  svg {
+    width: 5px;
+    height: 13px;
   }
 }
 </style>

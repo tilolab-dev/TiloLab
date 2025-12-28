@@ -1,22 +1,29 @@
 <template>
-  <div class="item_card">
-    <div :v-if="props.product.discountPercent !== 0" class="action_label">Акція</div>
-
-    <div class="img_container">
-      <img :src="props.product.img[0].path" alt="product" />
+  <div class="wishlist_item_card_wrapper">
+    <div class="remove_button">
+      <SvgIcon name="close" size="micro" />
+      <span>х Видалити</span>
     </div>
-    <div class="description_content">
-      <h3>{{ props.product.translations[0].title }}</h3>
-      <div class="price_content">
-        <div
-          class="price"
-          :style="props.product.discountPercent > 0 ? { 'text-decoration': 'line-through' } : {}"
-        >
-          {{ props.product.productPrice }} грн
-        </div>
 
-        <div v-if="props.product.discountPercent > 0" class="discount_price">
-          {{ discountedPrice }} грн
+    <div class="wishlist_item_card">
+      <div :v-if="props.product.discountPercent !== 0" class="action_label">Акція</div>
+
+      <div class="img_container">
+        <img :src="props.product.img[0].path" alt="product" />
+      </div>
+      <div class="description_content">
+        <h3>{{ props.product.translations[0].title }}</h3>
+        <div class="price_content">
+          <div
+            class="price"
+            :style="props.product.discountPercent > 0 ? { 'text-decoration': 'line-through' } : {}"
+          >
+            {{ props.product.productPrice }} грн
+          </div>
+
+          <div v-if="props.product.discountPercent > 0" class="discount_price">
+            {{ discountedPrice }} грн
+          </div>
         </div>
       </div>
     </div>
@@ -31,6 +38,7 @@
 // const modalStore = useModalStore();
 
 // let counter = ref(0);
+import SvgIcon from "@/components/shared/SvgIcon.vue";
 
 const props = defineProps({
   product: {
@@ -65,7 +73,7 @@ const discountedPrice = computed(() => {
 </script>
 
 <style scoped lang="scss">
-.item_card {
+.wishlist_item_card {
   overflow: hidden;
   z-index: 20;
   position: relative;
