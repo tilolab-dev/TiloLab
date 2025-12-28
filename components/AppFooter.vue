@@ -39,10 +39,18 @@
             <div class="footer_content_links_docs">
               <h3>Документи</h3>
               <ul>
-                <li>Політика конфіденційності</li>
+                <li>
+                  <NuxtLink to="/privacy-policy">
+                    Політика конфіденційності
+                  </NuxtLink>
+                </li>
                 <li>Оплата і доставка</li>
                 <li>Обмін і гарантія</li>
-                <li>Публічна оферта</li>
+                <li>
+                  <NuxtLink to="/public-offer">
+                    Публічна оферта
+                  </NuxtLink>
+                </li>
               </ul>
             </div>
           </div>
