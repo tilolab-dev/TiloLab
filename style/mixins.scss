@@ -299,3 +299,177 @@
   }
   
 }
+
+@mixin legalPage {
+  @include pageSpacing;
+  color: var(--text-color);
+
+  .legal_title {
+    @include titleText;
+    margin-bottom: 40px;
+  }
+
+  .legal_last_changes {
+    @include mainText;
+    font-size: 0.75rem;
+    margin-bottom: 20px;
+  }
+
+  .legal_content {
+    width: 75%;
+    @media screen and (max-width: 1024px) {
+      width: 85%;
+    }
+    @media screen and (max-width: 480px) {
+      width: 100%
+    }
+  }
+
+  p {
+    @include mainText;
+    font-size: 1.0625rem;
+
+    @media (max-width: 480px) {
+      font-size: 0.875rem;
+    }
+    @media (max-width: 375px) {
+      font-size: 0.75rem;
+    }
+  }
+
+  h3 {
+    @include subtitleText;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+
+    @media (max-width: 1024px) {
+      margin-bottom: 16px;
+      font-size: 1rem;
+    }
+    @media (max-width: 480px) {
+      margin-bottom: 12px;
+      font-size: .9375rem;
+    }
+    @media screen and (max-width: 375px) {
+      font-size: .875rem;
+    }
+  }
+  ol,
+  ul {
+    padding-left: 22px;
+    // margin: 10px 0 14px;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  .legal_main_list {
+    list-style: decimal;
+    counter-reset: section;
+    margin-top: 20px;
+
+    > li {
+      counter-increment: section;
+      padding-block: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      @media screen and (max-width: 1024px) {
+        padding-block: 18px;
+      }
+      @media screen and (max-width: 480px) {
+        padding-block: 14px;
+      }
+    }
+
+    > li::marker {
+      content: counter(section) ". ";
+    }
+    @media screen and (max-width: 1024px) {
+      margin-top: 14px
+    }
+    @media screen and (max-width: 375px) {
+      margin-top: 10px;
+    }
+  }
+
+  .legal_inner_num {
+    counter-increment: reset;
+    padding-left: 15px;
+
+    > li {
+      counter-increment: subsection;
+    }
+
+    > li::marker {
+      content: counter(section) "." counter(subsection) " ";
+    }
+  }
+
+  .legal_inner_list {
+      margin-top: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 16px;
+
+      li {
+        @include mainText;
+        font-size: 1.0625rem;
+        color: #dbdbdb;
+        @media screen and (max-width: 480px) {
+          font-size: .875rem;
+        }
+        @media screen and (max-width: 375px) {
+          font-size: .8125rem;
+        }
+      }
+      @media screen and (max-width: 1024px) {
+        gap: 8px;
+      }
+
+  }
+  .legal_text_list {
+    display: flex;
+    flex-direction: column;
+    padding-left: 15px;
+    gap: 16px;
+
+    li {
+      @include mainText;
+      font-size: 1.0625rem;
+      color: #dbdbdb;
+    }
+  }
+
+  .legal_dot_list {
+    display: flex;
+    flex-direction: column;
+    padding-block: 20px;
+    padding-left: 0;
+    gap: 12px;
+
+    li {
+      @include mainText;
+      font-size: 1.125rem;
+      color: #dbdbdb;
+      @media screen and (max-width: 1024px) {
+        font-size: 1.0625rem;
+      }
+        @media screen and (max-width: 480px) {
+        font-size: .875rem;
+    }
+    @media screen and (max-width: 375px) {
+      font-size: .75rem;
+    }
+    }
+    @media screen and (max-width: 1024px) {
+      padding-block: 12px;
+      gap: 8px;
+    }
+    @media screen and (max-width: 480px) {
+      padding-block: 8px;
+      gap: 4px;
+    }
+  }
+}
