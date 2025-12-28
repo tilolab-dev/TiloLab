@@ -1,15 +1,10 @@
 <template>
-  <div class="index_popular">
+  <div class="product_page_popular">
     <div ref="containerRef" class="container">
       <div class="popular_head">
         <div class="head_content">
-          <h5 class="left_content">Створюйте момент удвох</h5>
+          <h5 class="left_content">вам також може сподобатись</h5>
           <div class="right_content">
-            <p class="popular_description">
-              Обирай те, що допомагає краще <br />
-              відчувати себе й своє тіло.
-            </p>
-
             <div class="button_items">
               <button @click="swiper.prev()">
                 <AngleLeftIcon />
@@ -108,7 +103,7 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-.index_popular {
+.product_page_popular {
   overflow: hidden;
   padding-block: 109px;
 
@@ -130,7 +125,7 @@ onMounted(async () => {
 }
 
 .popular_cards {
-  overflow: visible;
+  overflow: hidden;
   margin-top: 32px;
 
   @media screen and (max-width: 1024px) {
@@ -282,7 +277,6 @@ swiper-container::part(container) {
   justify-content: flex-end;
   gap: 10px;
   color: var(--accent-color);
-  margin-top: 22px;
 
   button {
     padding: 5px;

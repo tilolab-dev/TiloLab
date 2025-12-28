@@ -8,7 +8,7 @@
         <BreadCrumbs />
 
         <div class="product_id_main">
-          <div class="product_id_preview">
+          <div v-if="slides.length > 0" class="product_id_preview">
             <div class="main_img">
               <ClientOnly>
                 <swiper-container ref="containerMainRef">
@@ -28,6 +28,9 @@
                 </swiper-container>
               </ClientOnly>
             </div>
+          </div>
+          <div v-else class="img_gallery_placeholder">
+            <p>No images available</p>
           </div>
 
           <div class="product_id_info">
@@ -111,12 +114,16 @@
             </div>
           </div>
         </div>
+
+        <ProductPagePopular />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import ProductPagePopular from "@/components/ProductPagePopular.vue";
+
 import { ref, computed, watch, onMounted } from "vue";
 import { useProductStore } from "@/store/product-store";
 import { useCartStore } from "@/store/cart-store";
@@ -164,7 +171,10 @@ const swiperMain = useSwiper(containerMainRef, {
 
 const slides = computed(() => {
   const product = productStore.selectedProducts;
-  if (!product?.img) return [];
+
+  if (!product?.img || product.img.length === 0) {
+    return [];
+  }
 
   const computedSlides = product.img.map((img, idx) => ({
     id: idx,
@@ -172,7 +182,7 @@ const slides = computed(() => {
     title: product.translations?.[0]?.title ?? ""
   }));
 
-  return [...computedSlides, ...computedSlides];
+  return computedSlides;
 });
 
 const routeId = route.params.productId;
@@ -242,6 +252,7 @@ onMounted(async () => {
   scroll-snap-type: x mandatory;
   padding-bottom: 10px;
   scrollbar-width: none;
+  max-width: 100%;
 
   &::-webkit-scrollbar {
     display: none;
@@ -260,6 +271,18 @@ onMounted(async () => {
   }
 }
 
+.img_gallery_placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 80px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
 .product_id_main {
   display: flex;
   align-items: flex-start;
@@ -276,6 +299,7 @@ onMounted(async () => {
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
+  max-width: 600px;
   height: 100%;
   gap: 1rem;
   flex: 1;
