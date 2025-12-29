@@ -36,16 +36,12 @@
               <h3>Документи</h3>
               <ul>
                 <li>
-                  <NuxtLink to="/privacy-policy">
-                    Політика конфіденційності
-                  </NuxtLink>
+                  <NuxtLink to="/privacy-policy"> Політика конфіденційності </NuxtLink>
                 </li>
                 <li>Оплата і доставка</li>
                 <li>Обмін і гарантія</li>
                 <li>
-                  <NuxtLink to="/public-offer">
-                    Публічна оферта
-                  </NuxtLink>
+                  <NuxtLink to="/public-offer"> Публічна оферта </NuxtLink>
                 </li>
               </ul>
             </div>
