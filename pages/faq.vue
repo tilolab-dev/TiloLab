@@ -238,7 +238,7 @@
     span,
     p {
       @include mixins.mainText;
-      color: #dbdbdb;
+      color: var(--text-gray);
 
       @media screen and (max-width: 1024px) {
         font-size: 1.0625rem;
