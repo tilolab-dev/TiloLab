@@ -12,5 +12,7 @@
     --text-color: rgb(255 255 255);
     --dark-text: rgb(142 142 142);
     --text-grey: #DBDBDB;
-
+    --link-color: var(--accent-color);
+    --link-color-hover: rgb(255, 159, 200);
+    --link-color-active: var(--btn-color-active);
 }
