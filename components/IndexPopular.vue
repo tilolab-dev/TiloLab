@@ -26,12 +26,12 @@
         <ClientOnly>
           <swiper-container ref="containerPopular">
             <swiper-slide v-for="(product, i) in popularCards" :key="i">
-              <NuxtLink
-                :to="`/products/${product.category.group.toLowerCase()}/${product.id}`"
+              <ItemCard
+                :product="product"
+                :link="`/products/${product.category.group.toLowerCase()}/${product.id}`"
                 class="card"
-              >
-                <ItemCard :product="product" @click="productStore.setSelectedProducts(product)" />
-              </NuxtLink>
+                @click="productStore.setSelectedProducts(product)"
+              />
             </swiper-slide>
           </swiper-container>
           <!-- <div
@@ -233,7 +233,6 @@ swiper-container::part(container) {
 }
 
 .card {
-  background: #222;
   color: white;
   align-items: center;
   justify-content: center;

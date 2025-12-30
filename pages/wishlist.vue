@@ -9,9 +9,11 @@
     </div>
     <ul v-else class="product_wrapper">
       <li v-for="product in fetchedProducts" :key="product.id">
-        <NuxtLink :to="`/products/${categoryName}/${product.id}`">
-          <WishlistItemCard :product="product" @click="productStore.setSelectedProducts(product)" />
-        </NuxtLink>
+        <WishlistItemCard
+          :product="product"
+          :link="`/products/${categoryName}/${product.id}`"
+          @set-product="productStore.setSelectedProducts(product)"
+        />
       </li>
     </ul>
   </div>
@@ -70,6 +72,7 @@ definePageMeta({
     color: white;
     font-weight: 700;
     font-size: 2rem;
+    margin-bottom: 40px;
   }
 }
 
@@ -89,5 +92,9 @@ definePageMeta({
   grid-template-columns: repeat(3, 1fr);
   align-items: stretch;
   gap: 1rem;
+
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 </style>

@@ -21,28 +21,14 @@
         <ClientOnly>
           <swiper-container ref="containerPopular">
             <swiper-slide v-for="(product, i) in popularCards" :key="i">
-              <NuxtLink
-                :to="`/products/${product.category.group.toLowerCase()}/${product.id}`"
+              <ItemCard
+                :link="`/products/${product.category.group.toLowerCase()}/${product.id}`"
+                :product="product"
                 class="card"
-              >
-                <ItemCard :product="product" @click="productStore.setSelectedProducts(product)" />
-              </NuxtLink>
+                @click="productStore.setSelectedProducts(product)"
+              />
             </swiper-slide>
           </swiper-container>
-          <!-- <div
-            class="carousel"
-            ref="carouselRef"
-            :style="{ transform: `translateX(${translateX}px)` }"
-          >
-            <div v-for="product in popularCards" :key="product.id">
-              <NuxtLink :to="`/products/${product.popular.group.toLowerCase()}/${product.id}`">
-                <ItemCard
-                  :product="product"
-                  @click="productStore.setSelectedProducts(product)"
-                />
-              </NuxtLink>
-          </div>
-        </div> -->
         </ClientOnly>
       </div>
     </div>
@@ -76,16 +62,6 @@ const swiper = useSwiper(containerPopular, {
       slidesPerView: 3,
       spaceBetween: 10
     }
-  },
-  creativeEffect: {
-    prev: {
-      shadow: true,
-      translate: [0, 0, -400]
-    },
-    next: {
-      shadow: true,
-      translate: [0, 0, -400]
-    }
   }
 });
 
@@ -106,6 +82,7 @@ onMounted(async () => {
 .product_page_popular {
   overflow: hidden;
   padding-block: 109px;
+  max-width: 100%;
 
   @media screen and (max-width: 1024px) {
     padding-block: 64px;
@@ -228,7 +205,6 @@ swiper-container::part(container) {
 }
 
 .card {
-  background: #222;
   color: white;
   align-items: center;
   justify-content: center;
