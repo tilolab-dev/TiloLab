@@ -47,20 +47,43 @@
         />
       </li>
     </ul>
+
+    <div class="categories_footer">
+      <ShowMoreBtn :link="`/products/${categoryName}`">
+        Переглянути всі
+        <AngleDownIcon />
+      </ShowMoreBtn>
+
+      <Pagination
+        :current-page="currentPage"
+        :total-pages="totalPages"
+        @page-change="handlePageChange"
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { useIndexStore } from "@/store/index-store";
-import { useProductStore } from "@/store/product-store";
-import { ref } from "vue";
+// Component imports
+import AngleDownIcon from "~/assets/icons/angle-down.svg";
 import ItemCard from "@/components/ItemCard.vue";
 import Loader from "@/components/shared/Loader.vue";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
 import DoubleRange from "@/components/DoubleRange.vue";
+import ShowMoreBtn from "@/components/shared/ShowMoreBtn.vue";
+import Pagination from "@/components/shared/Pagination.vue";
+
+// Store imports
+import { useIndexStore } from "@/store/index-store";
+import { useProductStore } from "@/store/product-store";
+
+// Utility imports
+import { ref, onMounted, computed } from "vue";
 
 const fetchedProducts = ref([]);
 const categoryName = ref("");
+const currentPage = ref(1);
+const totalPages = ref(12); // Mock total pages for demonstration
 
 const indexStore = useIndexStore();
 const productStore = useProductStore();
@@ -91,6 +114,12 @@ onMounted(async () => {
   }
 });
 
+const handlePageChange = (page) => {
+  currentPage.value = page;
+  // In a real implementation, this would trigger an API call
+  console.log("Page changed to:", page);
+};
+
 definePageMeta({
   layout: "products"
 });
@@ -103,6 +132,7 @@ definePageMeta({
 }
 
 .page_title {
+  text-transform: uppercase;
   h1 {
     color: white;
     font-weight: 700;
@@ -180,6 +210,23 @@ definePageMeta({
       color: var(--accent-color);
       padding-block: 5px;
     }
+  }
+}
+
+.categories_footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 70px;
+
+  .show-more-link {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .pagination {
+    flex-grow: 0;
+    justify-content: flex-end;
   }
 }
 </style>

@@ -4,21 +4,19 @@
       <div class="popular_head">
         <div class="head_content">
           <h5 class="left_content">Створюйте момент удвох</h5>
-          <div class="right_content">
-            <p class="popular_description">
-              Обирай те, що допомагає краще <br />
-              відчувати себе й своє тіло.
-            </p>
+          <p class="popular_description">
+            Обирай те, що допомагає краще <br />
+            відчувати себе й своє тіло.
+          </p>
+        </div>
 
-            <div class="button_items">
-              <button @click="swiper.prev()">
-                <AngleLeftIcon />
-              </button>
-              <button @click="swiper.next()">
-                <AngleRightIcon />
-              </button>
-            </div>
-          </div>
+        <div class="button_items">
+          <button @click="swiper.prev()">
+            <AngleLeftIcon />
+          </button>
+          <button @click="swiper.next()">
+            <AngleRightIcon />
+          </button>
         </div>
       </div>
 
@@ -34,21 +32,15 @@
               />
             </swiper-slide>
           </swiper-container>
-          <!-- <div
-            class="carousel"
-            ref="carouselRef"
-            :style="{ transform: `translateX(${translateX}px)` }"
-          >
-            <div v-for="product in popularCards" :key="product.id">
-              <NuxtLink :to="`/products/${product.popular.group.toLowerCase()}/${product.id}`">
-                <ItemCard
-                  :product="product"
-                  @click="productStore.setSelectedProducts(product)"
-                />
-              </NuxtLink>
-          </div>
-        </div> -->
         </ClientOnly>
+      </div>
+
+      <div class="popular_footer">
+        <ShowMoreBtn :link="'/products'">
+          Переглянути всі
+
+          <AngleRightIcon />
+        </ShowMoreBtn>
       </div>
     </div>
   </div>
@@ -57,6 +49,7 @@
 <script setup>
 import AngleLeftIcon from "~/assets/icons/angle-left.svg";
 import AngleRightIcon from "~/assets/icons/angle-right.svg";
+import ShowMoreBtn from "~/components/shared/ShowMoreBtn.vue";
 
 import { ref, onMounted } from "vue";
 import { useProductStore } from "@/store/product-store";
@@ -99,8 +92,12 @@ onMounted(async () => {
     const getProducts = await $fetch("/api/products");
 
     popularCards.value = getProducts.data;
-    popularCards.value = [...popularCards.value, ...popularCards.value];
-    popularCards.value = [...popularCards.value, ...popularCards.value];
+    popularCards.value = [
+      ...popularCards.value,
+      ...popularCards.value,
+      ...popularCards.value,
+      ...popularCards.value
+    ];
   } catch (err) {
     console.log(err);
   }
@@ -298,5 +295,11 @@ swiper-container::part(container) {
     width: 5px;
     height: 13px;
   }
+}
+
+.popular_footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
 }
 </style>
