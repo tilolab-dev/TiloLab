@@ -2,25 +2,26 @@
   <div class="index_categories">
     <div ref="containerRef" class="container">
       <div class="categories_head">
-        <h4 class="head_title">Будь у моменті.</h4>
-
         <div class="head_content">
-          <h5 class="left_content">Створюйте момент удвох</h5>
+          <div class="left_content">
+            <h4 class="head_title">Будь у моменті.</h4>
+            <h5 class="left_content">Створюйте момент удвох</h5>
+          </div>
           <div class="right_content">
             <p class="category_description">
               Обирай те, що допомагає краще <br />
               відчувати себе й своє тіло.
             </p>
-
-            <div class="button_items">
-              <button @click="swiper.prev()">
-                <AngleLeftIcon />
-              </button>
-              <button @click="swiper.next()">
-                <AngleRightIcon />
-              </button>
-            </div>
           </div>
+        </div>
+
+        <div class="button_items">
+          <button @click="swiper.prev()">
+            <AngleLeftIcon />
+          </button>
+          <button @click="swiper.next()">
+            <AngleRightIcon />
+          </button>
         </div>
       </div>
 
@@ -150,14 +151,13 @@ onMounted(async () => {
 .categories_head {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 .head_title,
 .left_content {
   color: var(--text-color);
-  font-family: "Montserrat", sans-serif;
   font-size: 1.875rem;
   font-style: normal;
   font-weight: 500;
@@ -178,6 +178,10 @@ onMounted(async () => {
   }
 }
 
+.left_content {
+  font-style: italic;
+}
+
 .right_content {
   @media screen and (max-width: 480px) {
     width: 100%;
@@ -186,10 +190,6 @@ onMounted(async () => {
       display: none;
     }
   }
-}
-
-.head_title {
-  font-style: italic;
 }
 
 .category_description {
