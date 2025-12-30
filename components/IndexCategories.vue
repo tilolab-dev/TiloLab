@@ -29,7 +29,20 @@
           <swiper-container ref="containerRef">
             <swiper-slide v-for="(slide, idx) in slides" :key="idx" class="card">
               <NuxtLink :to="`/products/${slide.group.toLowerCase()}`" class="card">
-                <NuxtImg :src="slide.categoryImg" :alt="`card ${idx}`" class="card_img" lazy />
+                <NuxtImg
+                  v-if="slide.categoryImg"
+                  :src="slide.categoryImg"
+                  :alt="`card ${idx}`"
+                  class="card_img"
+                  lazy
+                />
+
+                <img
+                  v-else
+                  alt="No Image"
+                  src="https://placehold.co/384x488/000000/ff86bb?font=montserrat&text=No+Image"
+                  class="card_img"
+                />
 
                 <span class="card_title">
                   {{ slide.translations[0].title }}
@@ -229,7 +242,6 @@ swiper-container::part(container) {
 }
 
 .card {
-  background: #222;
   color: white;
   display: grid;
   grid-template-rows: 488px;

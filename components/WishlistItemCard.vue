@@ -1,18 +1,30 @@
 <template>
   <div class="wishlist_item_card_wrapper">
     <div class="remove_button">
-      <SvgIcon name="close" size="micro" />
-      <span>х Видалити</span>
+      <CloseIcon class="remove_icon" />
+
+      <span>Видалити</span>
     </div>
 
     <div class="wishlist_item_card">
       <div :v-if="props.product.discountPercent !== 0" class="action_label">Акція</div>
 
-      <div class="img_container">
-        <img :src="props.product.img[0].path" alt="product" />
-      </div>
+      <NuxtLink :to="props.link" class="img_container">
+        <img v-if="props.product.img[0].path" :src="props.product.img[0].path" alt="product" />
+
+        <img
+          v-else
+          alt="No Image"
+          src="https://placehold.co/384x488/000000/ff86bb?font=montserrat&text=No+Image"
+          class="card_img"
+        />
+      </NuxtLink>
       <div class="description_content">
-        <h3>{{ props.product.translations[0].title }}</h3>
+        <NuxtLink :to="props.link">
+          <h3>
+            {{ props.product.translations[0].title }}
+          </h3>
+        </NuxtLink>
         <div class="price_content">
           <div
             class="price"
@@ -38,11 +50,17 @@
 // const modalStore = useModalStore();
 
 // let counter = ref(0);
-import SvgIcon from "@/components/shared/SvgIcon.vue";
+// import SvgIcon from "@/components/shared/SvgIcon.vue";
+
+import CloseIcon from "~/assets/icons/close-icon.svg";
 
 const props = defineProps({
   product: {
     type: Object,
+    required: true
+  },
+  link: {
+    type: String,
     required: true
   }
 });
@@ -52,10 +70,6 @@ const discountedPrice = computed(() => {
   const d = props.product.discountPercent;
   return Math.round(p - (p * d) / 100);
 });
-
-// const selectProduct = (product) => {
-//   productStore.setSelectedProducts(product);
-// };
 
 // const counterControl = (event, operator, quantity) => {
 //   event.preventDefault();
@@ -133,6 +147,7 @@ const discountedPrice = computed(() => {
     align-items: flex-start;
     transition: all ease 0.3s;
     width: 100%;
+    height: 100%;
     gap: 0.5rem;
     flex: 1;
   }
@@ -149,6 +164,20 @@ const discountedPrice = computed(() => {
   }
   .discount_price {
     color: var(--accent-color);
+  }
+}
+
+.remove_button {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 12px;
+  .remove_icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+    stroke: var(--accent-color);
   }
 }
 </style>

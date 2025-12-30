@@ -40,9 +40,11 @@
     </div>
     <ul v-else class="product_wrapper">
       <li v-for="product in fetchedProducts" :key="product.id">
-        <NuxtLink :to="`/products/${categoryName}/${product.id}`">
-          <ItemCard :product="product" @click="productStore.setSelectedProducts(product)" />
-        </NuxtLink>
+        <ItemCard
+          :link="`/products/${categoryName}/${product.id}`"
+          :product="product"
+          @set-product="productStore.setSelectedProducts(product)"
+        />
       </li>
     </ul>
   </div>
