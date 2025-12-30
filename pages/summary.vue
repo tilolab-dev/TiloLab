@@ -65,7 +65,7 @@
             </div>
           </div>
         </div>
-        <button class="summary_btn">Повернутися до каталогу</button>
+        <NuxtLink to="/" class="summary_btn">Повернутися до каталогу</NuxtLink>
       </div>
     </div>
   </section>
@@ -398,6 +398,7 @@
 
 .summary_btn {
   @include mixins.accentBtn;
+  text-align: center;
   cursor: pointer;
   width: 100%;
 }

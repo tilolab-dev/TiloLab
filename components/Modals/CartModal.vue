@@ -47,10 +47,10 @@
           </div>
 
           <div class="cart_buttons">
-            <button class="accent_btn">Оформити замовлення</button>
-            <NuxtLink to="/cart" class="cart_btn" @click="modalStore.closeModal()">
+            <NuxtLink to="/checkout" class="accent_btn">Оформити замовлення</NuxtLink>
+            <!-- <NuxtLink to="/cart" class="cart_btn" @click="modalStore.closeModal()">
               Переглянути кошик
-            </NuxtLink>
+            </NuxtLink> -->
           </div>
         </div>
       </div>
@@ -98,7 +98,7 @@ const closeCart = () => {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 // border-color: #302029
 
 .cart_inner_overlay {
