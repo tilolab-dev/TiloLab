@@ -11,7 +11,14 @@
           <div v-if="slides.length > 0" class="product_id_preview">
             <div class="main_img">
               <ClientOnly>
-                <swiper-container ref="containerMainRef">
+                <swiper-container
+                  ref="containerMainRef"
+                  :key="swiperKey"
+                  class="swiper-main"
+                  :slides-per-view="1"
+                  :space-between="10"
+                  thumbs-swiper=".swiper-gallery"
+                >
                   <swiper-slide v-for="slide in slides" :key="slide.id">
                     <NuxtImg :src="slide.src" :alt="slide.title" />
                   </swiper-slide>
@@ -21,7 +28,20 @@
 
             <div class="img_gallery">
               <ClientOnly>
-                <swiper-container ref="containerGalleryRef">
+                <swiper-container
+                  ref="containerGalleryRef"
+                  :key="swiperKey"
+                  class="swiper-gallery"
+                  :slides-per-view="3"
+                  :space-between="10"
+                  :watch-slides-progress="true"
+                  :free-mode="true"
+                  :breakpoints="{
+                    320: { slidesPerView: 3, spaceBetween: 8 },
+                    480: { slidesPerView: 2.5, spaceBetween: 10 },
+                    1024: { slidesPerView: 3.1, spaceBetween: 10 }
+                  }"
+                >
                   <swiper-slide v-for="slide in slides" :key="slide.id">
                     <NuxtImg :src="slide.src" :alt="slide.title" />
                   </swiper-slide>
@@ -49,13 +69,13 @@
               </div>
 
               <div class="wish_list">
-                <SvgIcon name="header-heart" size="big" fill="var(--text-color)" />
+                <HeartIcon />
 
                 <span> Додати до списку бажань </span>
               </div>
 
               <div class="availability">
-                <SvgIcon name="arrow-down" size="big" fill="var(--accent-color)" />
+                <CheckIcon />
 
                 <span> {{ productStore.selectedProducts.stockValue }} в наявності </span>
               </div>
@@ -102,13 +122,22 @@
             </div>
 
             <div class="product_id_info_description">
-              <div class="head">
+              <div class="head" @click="toggleDescription">
                 <h3>Опис</h3>
-                <button>
-                  <SvgIcon name="arrow-down" size="big" fill="var(--text-color)" />
+                <button
+                  :class="{
+                    description_collapsed: isDescriptionCollapsed
+                  }"
+                >
+                  <AngleDown />
                 </button>
               </div>
-              <p>
+              <p
+                class="description_text"
+                :class="{
+                  description_collapsed: isDescriptionCollapsed
+                }"
+              >
                 {{ productStore.selectedProducts.translations[0].productDescription }}
               </p>
             </div>
@@ -124,13 +153,16 @@
 <script setup>
 import ProductPagePopular from "@/components/ProductPagePopular.vue";
 
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useProductStore } from "@/store/product-store";
 import { useCartStore } from "@/store/cart-store";
 import { useRoute } from "vue-router";
 // components
 import BreadCrumbs from "@/components/shared/BreadCrumbs.vue";
-import SvgIcon from "@/components/shared/SvgIcon.vue";
+
+import HeartIcon from "~/assets/icons/heart.svg";
+import AngleDown from "~/assets/icons/angle-down.svg";
+import CheckIcon from "~/assets/icons/check.svg";
 
 // stores
 const productStore = useProductStore();
@@ -141,33 +173,15 @@ const containerMainRef = ref(null);
 const containerGalleryRef = ref(null);
 const productImages = ref([]);
 const loadState = ref(true);
+const swiperKey = ref(0);
+const isDescriptionCollapsed = ref(false);
 
 // routes
 const route = useRoute();
 
-// swiper
-const swiperGallery = useSwiper(containerGalleryRef, {
-  effect: "creative",
-  slidesPerView: 1,
-  spaceBetween: 20,
-  freeMode: true,
-  watchSlidesProgress: true,
-  breakpoints: {
-    1025: {
-      slidesPerView: 3.5,
-      spaceBetween: 10
-    }
-  }
-});
-
-const swiperMain = useSwiper(containerMainRef, {
-  effect: "creative",
-  slidesPerView: 1,
-  spaceBetween: 20,
-  thumbs: {
-    swiper: swiperGallery.value
-  }
-});
+const toggleDescription = () => {
+  isDescriptionCollapsed.value = !isDescriptionCollapsed.value;
+};
 
 const slides = computed(() => {
   const product = productStore.selectedProducts;
@@ -182,7 +196,7 @@ const slides = computed(() => {
     title: product.translations?.[0]?.title ?? ""
   }));
 
-  return computedSlides;
+  return [...computedSlides, ...computedSlides, ...computedSlides, ...computedSlides];
 });
 
 const routeId = route.params.productId;
@@ -200,15 +214,14 @@ const fetchProductById = async () => {
     productImages.value = Array.isArray(res.data.images) ? res.data.images : [];
 
     productImages.value = [...productImages.value, ...productImages.value];
-  } catch (err) {
-    console.error(err);
+  } catch {
+    // Handle error silently or show user feedback
   }
 };
 
 onMounted(async () => {
   if (productStore.selectedProducts) {
     loadState.value = false;
-    return;
   } else if (routeId) {
     await fetchProductById();
     loadState.value = false;
@@ -216,16 +229,12 @@ onMounted(async () => {
     navigateTo("/404");
   }
 
-  watch(
-    () => [swiperMain.value, swiperGallery.value],
-    ([main, gallery]) => {
-      if (main && gallery) {
-        main.controller.control = gallery;
-        gallery.controller.control = main;
-      }
-    },
-    { immediate: true }
-  );
+  // Force re-initialization of swipers when route changes
+  swiperKey.value += 1;
+});
+
+onUnmounted(() => {
+  // Clean up will be handled automatically by key change
 });
 </script>
 
@@ -253,6 +262,7 @@ onMounted(async () => {
   padding-bottom: 10px;
   scrollbar-width: none;
   max-width: 100%;
+  width: 100%;
 
   &::-webkit-scrollbar {
     display: none;
@@ -284,13 +294,29 @@ onMounted(async () => {
 }
 
 .product_id_main {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
   position: relative;
   gap: 5rem;
   width: 100%;
   height: 100%;
+
+  @media screen and (max-width: 1440px) {
+    gap: 20px;
+  }
+
+  @media (max-width: 1024px) {
+    gap: 10px;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  @media (max-width: 480px) {
+    gap: 6px;
+  }
 }
 
 .product_id_preview {
@@ -300,9 +326,16 @@ onMounted(async () => {
   align-items: flex-start;
   width: 100%;
   max-width: 600px;
-  height: 100%;
   gap: 1rem;
   flex: 1;
+
+  @media screen and (max-width: 1024px) {
+    max-width: 448px;
+  }
+
+  @media screen and (max-width: 768px) {
+    max-width: calc(100vw - 30px);
+  }
 
   .main_img {
     width: 100%;
@@ -361,14 +394,19 @@ onMounted(async () => {
       gap: 1rem;
       cursor: pointer;
 
+      svg {
+        width: 23px;
+        height: 21px;
+      }
+
       span {
         font-size: 1.4rem;
         font-weight: 500;
       }
 
       @media screen and (min-width: 1024px) {
-        &:hover svg {
-          fill: var(--accent-color);
+        &:hover svg path {
+          stroke: var(--accent-color);
           transition: all ease 0.3s;
         }
 
@@ -388,6 +426,11 @@ onMounted(async () => {
       span {
         font-size: 1.4rem;
         font-weight: 500;
+      }
+
+      svg {
+        width: 20px;
+        height: 20px;
       }
     }
 
@@ -469,11 +512,93 @@ onMounted(async () => {
         font-size: 1.7rem;
         font-weight: 500;
       }
+
+      button {
+        svg {
+          width: 12px;
+          height: 5px;
+
+          path {
+            stroke: var(--text-color);
+          }
+        }
+
+        transform: rotate(180deg);
+        transition: transform 0.3s ease;
+
+        &.description_collapsed {
+          transform: rotate(0deg);
+        }
+      }
     }
 
     p {
       font-size: 1.4rem;
+      height: auto;
+      transition: height 0.3s ease;
+
+      &.description_collapsed {
+        height: 0;
+        overflow: hidden;
+      }
     }
   }
+}
+
+.swiper-main {
+  width: 100%;
+  height: 621px;
+  border-radius: 8px;
+  overflow: hidden;
+
+  @media screen and (max-width: 1024px) {
+    height: 465px;
+  }
+
+  @media screen and (max-width: 768px) {
+    height: 365px;
+  }
+
+  @media screen and (max-width: 480px) {
+    height: 300px;
+  }
+
+  swiper-slide {
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.swiper-gallery {
+  width: 100%;
+  height: 194px;
+
+  swiper-slide {
+    width: 25%;
+    height: 100%;
+    opacity: 0.6;
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: opacity 0.3s ease;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.swiper-gallery .swiper-slide-thumb-active {
+  opacity: 1 !important;
+  border: 2px solid var(--accent-color);
 }
 </style>

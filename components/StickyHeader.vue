@@ -86,7 +86,6 @@ import ProfileIcon from "~/assets/icons/profile.svg";
 import HeartIcon from "~/assets/icons/heart.svg";
 import CartIcon from "~/assets/icons/cart.svg";
 import BurgerIcon from "~/assets/icons/burger.svg";
-// import CloseIcon from "~/assets/icons/close-icon.svg";
 
 import { ref, onMounted, watch } from "vue";
 // import { useModalStore, useIndexStore, useCartStore,  } from "#imports";
@@ -230,11 +229,17 @@ onMounted(() => {
         width: 100%;
         background: var(--transparent-fill);
         color: white;
-        padding: 5px 7px;
+        padding: 11px 12px;
         border-radius: 4px;
         backdrop-filter: blur(2px);
+        border: 1px solid transparent;
+
         @media screen and (max-width: 480px) {
           display: none;
+        }
+
+        &:hover {
+          border: 1px solid rgba(255, 255, 255, 0.5);
         }
       }
       input::placeholder {
