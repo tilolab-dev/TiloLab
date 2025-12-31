@@ -1145,6 +1145,7 @@ useHead({
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          max-height: 80px;
           align-items: flex-start;
         }
       }
