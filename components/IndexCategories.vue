@@ -66,10 +66,12 @@ const containerRef = ref(null);
 const categories = ref([]);
 
 const swiper = useSwiper(containerRef, {
-  effect: "creative",
-  slidesPerView: 1,
+  slidesPerView: 2,
   spaceBetween: 20,
   breakpoints: {
+    320: {
+      slidesPerView: 2
+    },
     480: {
       slidesPerView: 2
     },
@@ -79,16 +81,6 @@ const swiper = useSwiper(containerRef, {
     1025: {
       slidesPerView: 3,
       spaceBetween: 10
-    }
-  },
-  creativeEffect: {
-    prev: {
-      shadow: true,
-      translate: [0, 0, -400]
-    },
-    next: {
-      shadow: true,
-      translate: [0, 0, -400]
     }
   }
 });
@@ -257,6 +249,15 @@ swiper-container::part(container) {
     }
   }
 
+  @media screen and (max-width: 768px) {
+    grid-template-rows: 260px;
+    gap: 10px;
+  }
+
+  @media screen and (max-width: 480px) {
+    gap: 8px;
+  }
+
   img {
     width: 100%;
     height: 100%;
@@ -289,6 +290,7 @@ swiper-container::part(container) {
   @media screen and (max-width: 480px) {
     min-width: 208px;
     height: 269px;
+    font-size: 24px;
   }
 }
 
