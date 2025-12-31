@@ -47,7 +47,7 @@
           </div>
 
           <div class="cart_buttons">
-            <NuxtLink to="/checkout" class="accent_btn">Оформити замовлення</NuxtLink>
+            <button class="accent_btn" @click="goToCheckout">Оформити замовлення</button>
             <!-- <NuxtLink to="/cart" class="cart_btn" @click="modalStore.closeModal()">
               Переглянути кошик
             </NuxtLink> -->
@@ -95,6 +95,12 @@ const closeCart = () => {
       modalStore.closeModal();
     }
   });
+};
+const goToCheckout = () => {
+  navigateTo("/checkout");
+  setTimeout(() => {
+    closeCart();
+  }, 50);
 };
 </script>
 
