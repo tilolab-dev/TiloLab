@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     compressPublicAssets: true
   },
   build: {
-    transpile: ["@supabase/supabase-js"]
+    transpile: ["@supabase/supabase-js", "gsap"]
   },
   imports: {
     dirs: ["helpers"]
@@ -75,6 +75,9 @@ export default defineNuxtConfig({
           ]
         }
       })
-    ]
+    ],
+    optimizeDeps: {
+      include: ["gsap"]
+    }
   }
 });

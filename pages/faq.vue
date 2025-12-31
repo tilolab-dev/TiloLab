@@ -123,7 +123,14 @@
               </li>
             </ul>
           </div>
-          <NuxtImg class="sectionImg" src="./images/index-img/banner.webp" alt="preview" lazy />
+          <NuxtImg
+            class="sectionImg"
+            src="./images/index-img/banner.webp"
+            quality="80"
+            alt="preview"
+            priority
+            lazy
+          />
         </div>
       </div>
     </div>

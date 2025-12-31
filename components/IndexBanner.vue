@@ -1,5 +1,22 @@
 <template>
   <section class="index_banner">
+    <NuxtImg
+      src="/images/index-img/banner.webp"
+      class="banner_img"
+      quality="80"
+      width="1200"
+      height="600"
+      alt="banner"
+      priority
+      lazy
+      sizes="(max-width: 480px) 480px, (max-width: 1024px) 1024px, 1200px"
+    />
+    <!-- ref="imgRef" -->
+
+    <!-- style="transform: scale(1.15); opacity: 0.7" -->
+
+    <div class="banner_overlay"></div>
+
     <div class="container">
       <div class="banner_content">
         <h3 class="banner_title">
@@ -41,6 +58,24 @@
   }
 }
 
+.banner_img {
+  position: absolute;
+  will-change: transform;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.banner_overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%);
+  z-index: 2;
+}
+
 .banner_content {
   width: 100%;
   height: 100%;
@@ -48,7 +83,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  position: relative;
   gap: 1rem;
+  z-index: 1;
 }
 
 .banner_title {

@@ -26,10 +26,24 @@
               </p>
             </div>
           </div>
-          <NuxtImg class="main_img" src="./images/index-img/banner.webp" alt="preview" lazy />
+          <NuxtImg
+            class="main_img"
+            src="./images/index-img/banner.webp"
+            alt="preview"
+            quality="80"
+            lazy
+            priority
+          />
         </div>
         <div class="about_us_content_secondary">
-          <NuxtImg class="secondary_img" src="./images/index-img/banner.webp" alt="preview" lazy />
+          <NuxtImg
+            class="secondary_img"
+            src="./images/index-img/banner.webp"
+            quality="80"
+            alt="preview"
+            priority
+            lazy
+          />
           <div class="secondary_text">
             <p>
               У Tilo Lab ми прагнемо створити простір, де кожен може вільно й безпечно пізнавати
