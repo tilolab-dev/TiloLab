@@ -98,10 +98,17 @@ const rangeSliderHandler = (value) => {
     padding: 2px 0;
   }
   .thumb::before {
-    background: var(--accent-color) !important;
-
+    background-image: url(/_nuxt/assets/icons/range-control-icon.svg);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    border-radius: initial;
+    overflow: visible;
+    background-color: transparent;
     box-shadow: none;
     border: none;
+    width: 14.839px;
+    height: 30.894px;
+    margin: -17px -8px;
   }
 }
 

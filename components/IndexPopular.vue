@@ -60,10 +60,12 @@ const popularCards = ref([]);
 const productStore = useProductStore();
 
 const swiper = useSwiper(containerPopular, {
-  effect: "creative",
-  slidesPerView: 1,
+  slidesPerView: 2,
   spaceBetween: 20,
   breakpoints: {
+    320: {
+      slidesPerView: 2
+    },
     480: {
       slidesPerView: 2
     },
@@ -73,16 +75,6 @@ const swiper = useSwiper(containerPopular, {
     1025: {
       slidesPerView: 3,
       spaceBetween: 10
-    }
-  },
-  creativeEffect: {
-    prev: {
-      shadow: true,
-      translate: [0, 0, -400]
-    },
-    next: {
-      shadow: true,
-      translate: [0, 0, -400]
     }
   }
 });
@@ -267,8 +259,7 @@ swiper-container::part(container) {
   }
 
   @media screen and (max-width: 480px) {
-    min-width: 208px;
-    height: 269px;
+    grid-template-rows: 133px 1fr;
   }
 }
 

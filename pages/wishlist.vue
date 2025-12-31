@@ -61,7 +61,9 @@ definePageMeta({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@use "@/style/mixins.scss" as mixins;
+
 .wishlist {
   padding: 20px 0 150px;
   position: relative;
@@ -69,10 +71,8 @@ definePageMeta({
 
 .page_title {
   h1 {
-    color: white;
-    font-weight: 700;
-    font-size: 2rem;
     margin-bottom: 40px;
+    @include mixins.titleText;
   }
 }
 

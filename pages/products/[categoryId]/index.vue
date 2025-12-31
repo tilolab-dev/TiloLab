@@ -156,6 +156,10 @@ definePageMeta({
   grid-template-columns: repeat(3, 1fr);
   align-items: stretch;
   gap: 1rem;
+
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .filter_category {
@@ -218,6 +222,11 @@ definePageMeta({
   justify-content: space-between;
   align-items: center;
   margin-top: 70px;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column-reverse;
+    gap: 32px;
+  }
 
   .show-more-link {
     flex: 1;
