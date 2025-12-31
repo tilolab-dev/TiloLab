@@ -109,6 +109,11 @@ const discountedPrice = computed(() => {
     }
   }
 
+  @media screen and (max-width: 768px) {
+    grid-template-rows: 1fr 80px;
+    gap: 10px;
+  }
+
   .img_container {
     width: 100%;
     height: 100%;
@@ -161,9 +166,14 @@ const discountedPrice = computed(() => {
 
     font-size: 1.6rem;
     font-weight: 600;
+
+    @media screen and (max-width: 768px) {
+      font-size: 15px;
+      gap: 8px;
+    }
   }
   .discount_price {
-    color: var(--accent-color);
+    color: var(--discount-price);
   }
 }
 
