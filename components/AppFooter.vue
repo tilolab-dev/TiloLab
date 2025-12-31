@@ -62,9 +62,15 @@
           <nav>
             <h3>Навігація</h3>
             <ul>
-              <li>Про нас</li>
-              <li>Каталог</li>
-              <li>FAQ</li>
+              <li>
+                <NuxtLink to="/about-us"> Про нас </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink to="/products"> Каталог </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink to="/faq"> FAQ </NuxtLink>
+              </li>
             </ul>
           </nav>
         </div>
