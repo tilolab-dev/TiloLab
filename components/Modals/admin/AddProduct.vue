@@ -1,5 +1,8 @@
 <template>
   <div class="add_product_content">
+    <div v-if="loaderState" class="loader_content">
+      <SharedLoader />
+    </div>
     <div class="add_product">
       <div class="modal_wrapper">
         <div class="add_image">
@@ -395,6 +398,8 @@ const { handleFileUpload } = useFileUpload(emit);
 
 const fetchedCategories = ref([]);
 
+const loaderState = ref(false);
+
 const productCategory = ref("");
 const productNameUk = ref("");
 const productManufacture = ref("");
@@ -599,6 +604,7 @@ const addNewProduct = async () => {
 
   // UPLOAD PRODUCT FILE
   const uploadProductFiles = async () => {
+    loaderState.value = true;
     const formData = new FormData();
 
     try {
@@ -749,6 +755,8 @@ const addNewProduct = async () => {
 
       clearModal();
 
+      loaderState.value = false;
+
       alert("Товар створений успішно");
 
       //   emit("tooltip", {
@@ -796,6 +804,17 @@ onMounted(async () => {
   height: fit-content;
   color: var(--text-grey);
   overflow: hidden;
+  .loader_content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(7px);
+  }
 }
 
 .add_product {
