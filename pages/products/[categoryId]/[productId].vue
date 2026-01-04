@@ -7,7 +7,7 @@
       >
         <BreadCrumbs />
 
-        <div class="product_id_main">
+        <div v-if="!loadState" class="product_id_main">
           <div v-if="slides.length > 0" class="product_id_preview">
             <div class="main_img">
               <ClientOnly>
@@ -143,6 +143,8 @@
           </div>
         </div>
 
+        <SharedLoader v-else />
+
         <ProductPagePopular />
       </div>
     </div>
@@ -216,14 +218,14 @@ const fetchProductById = async () => {
 
     productImages.value = Array.isArray(res.data.images) ? res.data.images : [];
 
-    productImages.value = [...productImages.value, ...productImages.value];
+    return productImages.value;
   } catch {
     // Handle error silently or show user feedback
   }
 };
 
 onMounted(async () => {
-  if (productStore.selectedProducts) {
+  if (productStore.selectedProducts.id === routeId) {
     loadState.value = false;
   } else if (routeId) {
     await fetchProductById();
