@@ -3,7 +3,7 @@ import { toRaw } from "vue";
 export const useFileUpload = (emit: any) => {
   console.log(emit);
   const handleFileUpload = (event: any, type: any, state: any, length?: any) => {
-    const accessedFormat = ["svg", "png"];
+    const accessedFormat = ["svg", "png", "webp"];
     const files = Array.from(event.target.files);
 
     if (files.length + length > 5) {
@@ -29,7 +29,7 @@ export const useFileUpload = (emit: any) => {
     files.forEach((file: any) => {
       const fileExtension = file.name.split(".").pop().toLowerCase();
       if (!accessedFormat.includes(fileExtension)) {
-        alert("Файл повинен бути формату .svg .png");
+        alert("Файл повинен бути формату .svg .png .webp");
         // emit("tooltip", {
         //   status: "error",
         //   message: "Файл повинен бути формату .svg .png",
