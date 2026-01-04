@@ -38,9 +38,6 @@
   height: auto;
   position: relative;
   padding-block: 352px;
-  background:
-    linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%),
-    url("../public/images/index-img/banner.webp") lightgray 50% / cover no-repeat;
 
   @media screen and (max-width: 1024px) {
     padding-block: 220px;
@@ -85,7 +82,7 @@
   align-items: flex-start;
   position: relative;
   gap: 1rem;
-  z-index: 1;
+  z-index: 3;
 }
 
 .banner_title {
