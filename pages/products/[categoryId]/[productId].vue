@@ -26,7 +26,7 @@
               </ClientOnly>
             </div>
 
-            <div class="img_gallery">
+            <div v-if="slides.length > 1" class="img_gallery">
               <ClientOnly>
                 <swiper-container
                   ref="containerGalleryRef"
@@ -195,13 +195,11 @@ const slides = computed(() => {
     return [];
   }
 
-  const computedSlides = product.img.map((img, idx) => ({
+  return product.img.map((img, idx) => ({
     id: idx,
     src: img.path,
     title: product.translations?.[0]?.title ?? ""
   }));
-
-  return [...computedSlides, ...computedSlides, ...computedSlides, ...computedSlides];
 });
 
 const routeId = route.params.productId;
