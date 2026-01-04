@@ -98,7 +98,7 @@ const rangeSliderHandler = (value) => {
     padding: 2px 0;
   }
   .thumb::before {
-    background-image: url(/_nuxt/assets/icons/range-control-icon.svg);
+    background-image: url(/assets/icons/range-control-icon.svg);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     border-radius: initial;
