@@ -64,7 +64,7 @@
                   v-if="productStore.selectedProducts.discountPercent != 0"
                   class="discount_accent"
                 >
-                  9999 грн
+                  {{ discountedPrice }} грн
                 </span>
               </div>
 
@@ -114,8 +114,7 @@
                 <li>
                   <span>
                     <strong> Країна виробник: </strong>
-                    <!-- {{ productStore.selectedProducts.translations[0].productMaterial }} -->
-                    ...
+                    {{ productStore.selectedProducts.translations[0].productManufacture }}
                   </span>
                 </li>
               </ul>
@@ -175,6 +174,12 @@ const productImages = ref([]);
 const loadState = ref(true);
 const swiperKey = ref(0);
 const isDescriptionCollapsed = ref(false);
+
+const discountedPrice = computed(() => {
+  const p = productStore.selectedProducts.productPrice;
+  const d = productStore.selectedProducts.discountPercent;
+  return Math.round(p - (p * d) / 100);
+});
 
 // routes
 const route = useRoute();
