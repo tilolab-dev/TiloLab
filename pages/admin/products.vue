@@ -152,7 +152,7 @@
                       <th class="t_head_cell"></th>
                     </tr>
                   </thead>
-                  <tbody v-if="!loadingProductState" class="t_body">
+                  <tbody v-if="loadingProductState" class="t_body">
                     <!-- <div > -->
                     <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
                       <!-- Author -->
@@ -188,49 +188,26 @@
                   <tbody v-else class="t_body">
                     <!-- v-for="product in fetchedProducts" -->
 
-                    <tr v-for="(product, i) in 6" :key="i">
+                    <tr v-for="(product, i) in 20" :key="i">
                       <td class="table_row">
                         <div class="table_main">
                           <img src="/images/item.png" alt="item" />
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">
-                            <!-- {{
-                                    product.translations.find(
-                                      (translation) =>
-                                        translation.language === "uk"
-                                    ).title
-                                  }} -->
-                            title
-                          </h6>
+                          <h6 class="mb-0 text-sm leading-normal dark:text-white">title</h6>
                         </div>
                       </td>
                       <td>
-                        <p>
-                          <!-- {{ `${product.price} UAH` }} -->
-                          price UAH
-                        </p>
+                        <p>price UAH</p>
                       </td>
                       <td>
-                        <!-- v-if="product.visible" -->
-
                         <p>Активний</p>
-
-                        <!-- <p
-                              v-else
-                              class="text-xs font-semibold leading-tight dark:text-white dark:opacity-60"
-                              >Не активний
-                            </p> -->
                       </td>
                       <td>
-                        <p>
-                          <!-- {{ product.category.group }} -->
-                          product category
-                        </p>
+                        <p>product category</p>
                       </td>
                       <td>
                         <button
                           class="inline-block px-5 py-2.5 mb-0 font-bold text-[var(-dark-color)] text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-normal text-sm ease-in bg-150 tracking-tight-rem bg-x-25"
                         >
-                          <!-- <i class="text-xs leading-tight fa fa-ellipsis-v dark:text-white dark:opacity-60"></i> -->
                           Edit
                         </button>
                       </td>
@@ -368,12 +345,16 @@ onMounted(() => {
 <style scoped lang="scss">
 .product_section {
   height: 100vh;
+  position: relative;
 
   .product_container {
-    margin-inline: 10px;
+    // margin-inline: 10px;
     padding-bottom: 2px;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
   }
 
   .top_block {
@@ -396,7 +377,7 @@ onMounted(() => {
       padding: 0 1rem;
 
       &_nav {
-        background: #d5ddeb;
+        background: var(--bg-color);
         border-radius: 5px;
         padding: 8px 12px;
         display: flex;
@@ -409,7 +390,7 @@ onMounted(() => {
         }
 
         .el-active {
-          background: rgb(111, 110, 110);
+          background: var(--btn-color);
           border-radius: 3px;
           transition: all ease 0.3s;
           z-index: 5;
@@ -422,7 +403,6 @@ onMounted(() => {
 
           @media screen and (min-width: 1024px) {
             &:hover {
-              background: rgb(69, 69, 69);
               transition: all ease 0.3s;
               span {
                 color: var(--bg-color);
@@ -472,8 +452,8 @@ onMounted(() => {
       align-items: center;
       justify-content: center;
       padding: 5px;
-      border: 1px solid rgb(93, 92, 92);
-      background: rgb(93, 92, 92);
+      border: 1px solid var(--border-color);
+      background: var(--btn-color);
       border-radius: 5px;
       cursor: pointer;
     }
@@ -481,20 +461,26 @@ onMounted(() => {
 
   .info_content {
     width: 100%;
+    height: 100%;
     padding: 24px;
     margin: 0 auto;
+    position: relative;
+    overflow: hidden;
 
     &_wrapper {
       display: flex;
       flex-wrap: wrap;
+      height: 100%;
+      position: relative;
 
       .wrapper_content {
         flex: none;
         width: 100%;
         max-width: 100%;
+        max-height: 100%;
         padding-left: 0.75rem;
         padding-right: 0.75rem;
-
+        border: 1px solid var(--border-color);
         position: relative;
         display: flex;
         flex-direction: column;
@@ -502,8 +488,7 @@ onMounted(() => {
         margin-bottom: 1.5rem;
         overflow: hidden;
         word-break: break-word;
-        background: #ffffff;
-        border: 0 solid transparent;
+        background: rgb(6, 5, 6);
         box-shadow:
           0 20px 25px -5px rgba(0, 0, 0, 0.1),
           0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -511,7 +496,6 @@ onMounted(() => {
         background-clip: border-box;
         .table_name {
           padding: 1.5rem;
-          padding-bottom: 0;
           margin-bottom: 0;
           border-bottom: 0px solid transparent;
           border-top-left-radius: 1rem;
@@ -522,6 +506,7 @@ onMounted(() => {
           padding-left: 0;
           padding-right: 0;
           padding-top: 0;
+          overflow-y: scroll;
           padding-bottom: 0.5rem;
           .table_inner {
             padding: 0;
@@ -539,7 +524,7 @@ onMounted(() => {
                 &_cell {
                   padding-left: 1.5rem;
                   padding-right: 1.5rem;
-                  padding-top: 0.75rem;
+                  // padding-top: 0.75rem;
                   padding-bottom: 0.75rem;
                   font-weight: 700;
                   text-align: left;
@@ -549,7 +534,7 @@ onMounted(() => {
                   border-bottom-width: 1px;
                   border-bottom-style: solid;
                   box-shadow: none;
-                  color: #94a3b8;
+                  color: var(--dark-text);
                   font-size: 0.75rem;
                   letter-spacing: normal;
                   white-space: nowrap;
@@ -654,12 +639,10 @@ onMounted(() => {
                 }
 
                 .table_row {
-                  padding: 0.5rem;
+                  padding: 12px 8px;
                   vertical-align: middle;
                   background: transparent;
-                  border-bottom-width: 1px;
-                  border-bottom-style: solid;
-                  border-bottom-color: inherit;
+                  border-bottom: 1px solid rgba(63, 63, 63, 0.7);
                   white-space: nowrap;
                   box-shadow: transparent;
                   .table_main {
@@ -686,7 +669,7 @@ onMounted(() => {
                     font-size: 1rem;
                     font-weight: 700;
                     line-height: 1.5;
-                    color: #1f2937;
+                    color: var(--text-grey);
                     text-transform: capitalize;
                   }
                 }
@@ -694,8 +677,7 @@ onMounted(() => {
                   padding: 0.5rem;
                   vertical-align: middle;
                   background: transparent;
-                  border-bottom: 1px solid;
-                  border-bottom-color: inherit;
+                  border-bottom: 1px solid rgba(63, 63, 63, 0.7);
                   white-space: nowrap;
                   box-shadow: transparent;
                   p {
@@ -703,7 +685,7 @@ onMounted(() => {
                     font-size: 0.875rem;
                     font-weight: 600;
                     line-height: 1.5;
-                    color: #1f2937;
+                    color: var(--text-grey);
                   }
                   button {
                     display: inline-block;
@@ -713,7 +695,7 @@ onMounted(() => {
                     padding-bottom: 0.625rem;
                     margin-bottom: 0;
                     font-weight: 700;
-                    color: var(--dark-color);
+                    color: var(--text-grey);
                     text-align: center;
                     text-transform: uppercase;
                     vertical-align: middle;

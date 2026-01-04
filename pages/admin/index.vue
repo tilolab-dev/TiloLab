@@ -1,7 +1,4 @@
 <template>
-  <!-- <main class="relative h-full max-h-screen transition-all duration-200 ease-in-out xl:ml-72 rounded-xl"> -->
-  <!-- Navbar -->
-
   <div class="admin_page">
     <nav class="admin_page_nav" navbar-main navbar-scroll="false">
       <div class="nav_content">
@@ -15,43 +12,9 @@
           </ol>
           <h6>Dashboard</h6>
         </nav>
-
+        <!-- RIGHT SIDE ITEMS -->
         <div class="flex items-end mt-2 sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
-          <!-- <div class="flex items-center md:ml-auto md:pr-4">
-              <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease max-sm:hidden">
-                <span class="text-sm ease leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
-                  <i class="fas fa-search"></i>
-                </span>
-                <input type="text" class="pl-9 text-sm focus:shadow-primary-outline ease w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 dark:bg-slate-850 dark:text-white bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:transition-shadow" placeholder="Type here..." />
-              </div>
-            </div> -->
-          <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full gap-2">
-            <!-- <li class="flex items-center">
-                <a href="./pages/sign-in.html" class="block px-0 py-2 text-sm font-semibold text-white transition-all ease-nav-brand">
-                  <i class="fa fa-user sm:mr-1"></i>
-                  <span class="hidden sm:inline">Sign In</span>
-                </a>
-              </li>
-              <li class="flex items-center xl:hidden"> -->
-
-            <!-- <DashBurger/> -->
-
-            <!-- </li>
-              <li class="flex items-center pl-4 xl:hidden">
-                <a href="javascript:;" class="block p-0 text-sm text-white transition-all ease-nav-brand" sidenav-trigger>
-                  <div class="w-4.5 overflow-hidden">
-                    <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
-                    <i class="ease mb-0.75 relative block h-0.5 rounded-sm bg-white transition-all"></i>
-                    <i class="ease relative block h-0.5 rounded-sm bg-white transition-all"></i>
-                  </div>
-                </a>
-              </li> -->
-            <!-- <li class="flex items-center px-4">
-                <a href="javascript:;" class="p-0 text-sm text-white transition-all ease-nav-brand">
-                  <i fixed-plugin-button-nav class="cursor-pointer fa fa-cog"></i>
-                </a>
-              </li> -->
-          </ul>
+          <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full gap-2"></ul>
         </div>
       </div>
     </nav>
@@ -177,69 +140,20 @@
         <div class="w-full max-w-full px-3 lg:w-5/12 lg:flex-none">
           <div slider class="relative w-full h-full overflow-hidden rounded-2xl">
             <!-- slide 1 -->
-            <div slide class="absolute w-full h-full transition-all duration-500">
-              <!-- <img class="object-cover h-full" src="./assets/img/carousel-1.jpg" alt="carousel image" /> -->
-              <div
-                class="block text-start ml-12 left-0 bottom-0 absolute right-[15%] pt-5 pb-5 text-white"
-              >
-                <div
-                  class="inline-block w-8 h-8 mb-4 text-center text-black bg-white bg-center rounded-lg fill-current stroke-none"
-                >
-                  <i class="top-0.75 text-xxs relative text-slate-700 ni ni-camera-compact"></i>
-                </div>
-                <h5 class="mb-1 text-white">Get started with Argon</h5>
-                <p class="dark:opacity-80">
-                  There’s nothing I really wanted to do in life that I wasn’t able to get good at.
-                </p>
-              </div>
-            </div>
 
             <!-- slide 2 -->
-            <div slide class="absolute w-full h-full transition-all duration-500">
-              <!-- <img class="object-cover h-full" src="./assets/img/carousel-2.jpg" alt="carousel image" /> -->
-              <div
-                class="block text-start ml-12 left-0 bottom-0 absolute right-[15%] pt-5 pb-5 text-white"
-              >
-                <div
-                  class="inline-block w-8 h-8 mb-4 text-center text-black bg-white bg-center rounded-lg fill-current stroke-none"
-                >
-                  <i class="top-0.75 text-xxs relative text-slate-700 ni ni-bulb-61"></i>
-                </div>
-                <h5 class="mb-1 text-white">Faster way to create web pages</h5>
-                <p class="dark:opacity-80">
-                  That’s my skill. I’m not really specifically talented at anything except for the
-                  ability to learn.
-                </p>
-              </div>
-            </div>
 
             <!-- slide 3 -->
-            <div slide class="absolute w-full h-full transition-all duration-500">
-              <!-- <img class="object-cover h-full" src="./assets/img/carousel-3.jpg" alt="carousel image" /> -->
-              <div
-                class="block text-start ml-12 left-0 bottom-0 absolute right-[15%] pt-5 pb-5 text-white"
-              >
-                <div
-                  class="inline-block w-8 h-8 mb-4 text-center text-black bg-white bg-center rounded-lg fill-current stroke-none"
-                >
-                  <i class="top-0.75 text-xxs relative text-slate-700 ni ni-trophy"></i>
-                </div>
-                <h5 class="mb-1 text-white">Share with us your design tips!</h5>
-                <p class="dark:opacity-80">
-                  Don’t be afraid to be wrong because you can’t learn anything from a compliment.
-                </p>
-              </div>
-            </div>
 
             <!-- Control buttons -->
-            <button
+            <!-- <button
               btn-next
               class="absolute z-10 w-10 h-10 p-2 text-lg text-white border-none opacity-50 cursor-pointer hover:opacity-100 far fa-chevron-right active:scale-110 top-6 right-4"
             ></button>
             <button
               btn-prev
               class="absolute z-10 w-10 h-10 p-2 text-lg text-white border-none opacity-50 cursor-pointer hover:opacity-100 far fa-chevron-left active:scale-110 top-6 right-16"
-            ></button>
+            ></button> -->
           </div>
         </div>
       </div>
@@ -866,6 +780,8 @@ definePageMeta({
       flex-wrap: wrap;
       margin-left: -0.75rem;
       margin-right: -0.75rem;
+      align-items: stretch;
+      position: relative;
 
       &_item {
         width: 100%;
@@ -873,6 +789,8 @@ definePageMeta({
         padding-left: 0.75rem;
         padding-right: 0.75rem;
         margin-bottom: 1.5rem;
+        height: -webkit-fill-available;
+        position: relative;
 
         @media (min-width: 640px) {
           width: 50%;
@@ -890,12 +808,13 @@ definePageMeta({
         flex-direction: column;
         min-width: 0;
         word-break: break-word;
-        background-color: #fff;
+        background-color: rgba(13, 12, 13, 0.75);
         box-shadow:
           0 10px 15px -3px rgba(0, 0, 0, 0.1),
           0 4px 6px -2px rgba(0, 0, 0, 0.05);
         border-radius: 1rem;
         background-clip: border-box;
+        height: 100%;
 
         &.dark {
           background-color: #111827;
