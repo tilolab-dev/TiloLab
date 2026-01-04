@@ -12,21 +12,16 @@
       <div class="sidebar_main">
         <div class="sidebar_top">
           <div class="sidebar_top_content" target="_blank">
-            <!-- <img
-              src="../public//img/only-dog.png"
-              class="h-auto w-[40px] transition-all duration-200 dark:inline ease-nav-brand bg-[var(--light-color)] p-1 rounded-lg"
-              alt="main_logo"
-            /> -->
+            <div class="logo">
+              Tilo <br />
+              Lab
+            </div>
             <div class="title_wrapper">
               <span class="title_accent"> Панель керування </span>
               <span> https://www.tilo-lab.com.ua </span>
             </div>
           </div>
         </div>
-        <!-- dark:bg-gradient-to-r dark:from-transparent dark:via-white dark:to-transparent -->
-        <hr
-          class="h-px mt-0 bg-transparent bg-gradient-to-r from-transparent via-black/40 to-transparent"
-        />
 
         <div class="sidebar_links">
           <ul class="sidebar_links_wrapper">
@@ -39,12 +34,13 @@
               <NuxtLink :to="item.linkPath">
                 <div
                   class="item_wrapper"
-                  :class="{
-                    'text-white bg-[var(--primary-color)]': activePage === item.activePage
-                  }"
+                  :class="activePage === item.activePage ? 'item_wrapper_active' : ''"
                 >
                   <div class="image_content">
                     <!-- <img src="@/public/img/icons/house.png" alt="option" /> -->
+                    <!-- <AdminHome /> -->
+                    <!-- <item.imgPath /> -->
+                    <component :is="item.componentName" />
                   </div>
                   <span class="text_content">
                     {{ item.title }}
@@ -66,12 +62,11 @@
               <NuxtLink :to="item.linkPath">
                 <div
                   class="item_wrapper"
-                  :class="{
-                    'text-white bg-[var(--primary-color)]': activePage === item.activePage
-                  }"
+                  :class="activePage === item.activePage ? 'item_wrapper_active' : ''"
                 >
                   <div class="image_content">
                     <!-- <img src="@/public/img/icons/house.png" alt="option" /> -->
+                    <component :is="item.componentName" />
                   </div>
                   <span class="text_content">
                     {{ item.title }}
@@ -124,6 +119,16 @@
 </template>
 
 <script setup>
+// ICONS
+import AdminHome from "~/assets/icons/admin-home.svg";
+import AdminAnalytics from "~/assets/icons/admin-analytics.svg";
+import AdminPayments from "~/assets/icons/admin-payments.svg";
+import AdminUsers from "~/assets/icons/admin-users.svg";
+import AdminOrders from "~/assets/icons/admin-orders.svg";
+import AdminProducts from "~/assets/icons/admin-products.svg";
+import AdminNotifications from "~/assets/icons/admin-notifications.svg";
+import AdminSettings from "~/assets/icons/admin-settings.svg";
+
 import { computed, ref } from "vue";
 import Modal from "~/components/Modals/Modal.vue";
 // import Tooltips from "~/components/shared/Tooltips.vue";
@@ -137,56 +142,56 @@ const linksData = ref([
     activePage: "index",
     title: "Головна",
     linkPath: "/admin",
-    imgPath: "/img/icons/home.png"
+    componentName: AdminHome
   },
   {
     id: 2,
     activePage: "analytics",
     title: "Аналітика",
     linkPath: "/admin/analytics",
-    imgPath: "/img/icons/analytics.png"
+    componentName: AdminAnalytics
   },
   {
     id: 3,
     activePage: "buyers",
     title: "Покупці",
     linkPath: "/admin/buyers",
-    imgPath: "/img/icons/buyers.png"
+    componentName: AdminUsers
   },
   {
     id: 4,
     activePage: "notifications",
     title: "Повідомлення",
     linkPath: "/admin/notifications",
-    imgPath: "/img/icons/notification.png"
+    componentName: AdminNotifications
   },
   {
     id: 5,
     activePage: "orders",
     title: "Замовлення",
     linkPath: "/admin/orders",
-    imgPath: "/img/icons/order.png"
+    componentName: AdminOrders
   },
   {
     id: 6,
     activePage: "payment",
     title: "Оплата",
-    linkPath: "/admin/payment",
-    imgPath: "/img/icons/cash-payment.png"
+    linkPath: "/admin/payments",
+    componentName: AdminPayments
   },
   {
     id: 7,
     activePage: "products",
     title: "Товари",
     linkPath: "/admin/products",
-    imgPath: "/img/icons/products.png"
+    componentName: AdminProducts
   },
   {
     id: 8,
     activePage: "settings",
     title: "Налаштування",
     linkPath: "/admin/settings",
-    imgPath: "/img/icons/setting.png"
+    componentName: AdminSettings
   }
 ]);
 
@@ -235,6 +240,7 @@ const closeSidebar = () => {
 </script>
 
 <style lang="scss">
+@use "@/style/mixins.scss" as mixins;
 .admin_layout {
   margin: 0;
   font-family: var(--font-sans, ui-sans-serif, system-ui);
@@ -242,8 +248,8 @@ const closeSidebar = () => {
   -webkit-font-smoothing: antialiased;
   font-weight: 400;
   line-height: 1.5;
-  background-color: #f9fafb;
-  color: #64748b;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 
   // Dark mode
   //   @media (prefers-color-scheme: dark) {
@@ -255,8 +261,12 @@ const closeSidebar = () => {
 .admin_head_bg {
   position: absolute;
   width: 100%;
-  background-color: lightgray;
+  // background-color: lightgray;
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.75) 100%),
+    url("../public/images/index-img/banner.webp") lightgray 50% / cover no-repeat;
   min-height: 18rem;
+  background-position-y: 45%;
 
   // @media (prefers-color-scheme: dark) {
   //   background-color: var(--main-dark-color);
@@ -279,13 +289,15 @@ const closeSidebar = () => {
   -webkit-font-smoothing: antialiased;
   transition: transform 200ms;
   transform: translateX(-100%);
-  background-color: #ffffff;
-  border: 0;
+  background-color: rgba(45, 25, 35, 0.45);
+  border: 1px solid rgba(255, 134, 187, 0.15);
+  // border: 0;
   box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
   max-width: 16rem;
   transition-timing-function: var(--ease-nav-brand);
+  backdrop-filter: blur(10px);
   z-index: 990;
   border-radius: 1rem;
 
@@ -308,19 +320,29 @@ const closeSidebar = () => {
   }
 
   .sidebar_top {
-    height: 5rem;
+    height: auto;
+    border-bottom: 2px solid rgba(255, 169, 214, 0.3);
 
     &_content {
-      padding-inline: 0.5rem;
-      padding-block: 1.5rem;
+      padding-inline: 5px;
+      padding-block: 15px;
       margin: 0;
       font-size: 0.875rem;
       white-space: nowrap;
-      color: #334155;
+      color: rgba(255, 255, 255, 0.75);
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 0.5rem;
+      gap: 5px;
+      .logo {
+        background: var(--bg-color);
+        border-radius: 50%;
+        @include mixins.mainText;
+        font-size: 0.8rem;
+        border: 1px solid rgba(255, 134, 187, 0.15);
+        line-height: 1;
+        padding: 10px;
+      }
 
       .title_wrapper {
         margin-left: 0.25rem;
@@ -336,13 +358,15 @@ const closeSidebar = () => {
       }
     }
   }
-
+  hr {
+    color: var(--border-color);
+  }
   .sidebar_links {
     display: block;
     align-items: center;
     width: auto;
     max-height: 100vh;
-    overflow: auto;
+    /* overflow: auto; */
     height: var(--h-sidenav);
     flex-grow: 1;
     flex-basis: 100%;
@@ -401,6 +425,8 @@ const closeSidebar = () => {
       background-position: center;
       stroke: 0;
       text-align: center;
+      fill: var(--accent-grey);
+      transition: all ease 0.3s;
 
       @media (min-width: 1280px) {
         padding: 0.375rem;
@@ -413,6 +439,18 @@ const closeSidebar = () => {
       opacity: 1;
       pointer-events: none;
       transition-timing-function: ease;
+      color: var(--dark-text);
+    }
+
+    .item_wrapper_active {
+      background-color: var(--bg-color);
+      .image_content {
+        fill: var(--accent-red);
+        transition: all ease 0.3s;
+      }
+      .text_content {
+        color: var(--text-grey);
+      }
     }
   }
 }
