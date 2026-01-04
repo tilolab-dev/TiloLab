@@ -4,7 +4,8 @@
       <div class="top_row flex justify-between items-center">
         <h2>Додати категорію</h2>
         <button @click="modalStore.closeModal">
-          <SvgIcon name="close-btn" size="micro" fill="var(--dark-color)" />
+          <!-- <SvgIcon name="close-btn" size="micro" fill="" /> -->
+          <CloseIcon />
         </button>
       </div>
       <div class="main_modal flex flex-col gap-2 mt-5">
@@ -71,13 +72,24 @@
             Показувати групу на сайті? (опціонально)
           </span>
 
-          <input v-model="categoryVisible" class="checkbox_input" type="checkbox" />
+          <input id="categoryCheckbox" v-model="categoryVisible" type="checkbox" />
+          <label for="categoryCheckbox" class="checkbox-elem">
+            <!-- <div class="radio-btn"></div> -->
+          </label>
+
+          <!-- <input
+            id="categoryCheckbox"
+            v-model="categoryVisible"
+            class="checkbox_input"
+            type="checkbox"
+          />
+          <label for="categoryCheckbox" class=""></label> -->
         </div>
       </div>
       <div class="button-group flex justify-end items-center gap-2 w-full">
-        <button @click="testAlertHandler">Test Alert</button>
-        <button @click="getData">get cat</button>
-        <button @click="shareData">Скасувати</button>
+        <!-- <button @click="testAlertHandler">Test Alert</button> -->
+        <!-- <button @click="getData">get cat</button> -->
+        <button class="closeModal" @click="shareData">Скасувати</button>
         <button class="addItem" @click="addNewCategory">Додати</button>
       </div>
     </div>
@@ -91,6 +103,7 @@ import { useModalStore } from "@/store/modal-store";
 // import { transliterate } from "@/utils/transliterate";
 
 import SvgIcon from "@/components/shared/SvgIcon.vue";
+import CloseIcon from "~/assets/icons/close-icon.svg";
 
 const modalStore = useModalStore();
 const emit = defineEmits([]);
@@ -164,9 +177,9 @@ const resetForm = () => {
 //   }, 1000);
 // };
 
-const testAlertHandler = () => {
-  alert("Категорія успішно додана");
-};
+// const testAlertHandler = () => {
+//   alert("Категорія успішно додана");
+// };
 
 const addNewCategory = () => {
   //   if (
@@ -231,8 +244,6 @@ const addNewCategory = () => {
 
   const translitString = transliterate(categoryNameUk.value);
   const categoryName = translitString.trim().replaceAll(" ", "-").toLowerCase();
-
-  console.log(categoryName, "categoryName");
 
   const uploadCategoryFile = async () => {
     const formData = new FormData();
@@ -409,14 +420,14 @@ const shareData = async () => {
   });
 };
 
-const getData = async () => {
-  try {
-    const resData = await $fetch("/api/category");
-    console.log(resData, "resData from getData");
-  } catch (error) {
-    console.log(error.message, "error from getData");
-  }
-};
+// const getData = async () => {
+//   try {
+//     const resData = await $fetch("/api/category");
+//     console.log(resData, "resData from getData");
+//   } catch (error) {
+//     console.log(error.message, "error from getData");
+//   }
+// };
 </script>
 
 <style scoped lang="scss">
@@ -424,14 +435,39 @@ const getData = async () => {
   position: fixed;
   top: 30%;
   transform: translateY(-50%);
-  background: white;
-  /* padding: 20px; */
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
   border-radius: 10px;
   overflow-x: hidden;
   height: fit-content;
-  /* min-height: 500px; */
   position: relative;
   overflow: hidden;
+}
+.top_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    cursor: pointer;
+  }
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--accent-grey);
+    transition: all ease 0.3s;
+
+    @media screen and (min-width: 1024px) {
+      &:hover {
+        stroke: var(--accent-red);
+        transition: all ease 0.3s;
+      }
+    }
+    @media screen and (max-width: 1024px) {
+      & {
+        stroke: var(--accent-red);
+      }
+    }
+  }
 }
 .add_category {
   position: relative;
@@ -442,24 +478,28 @@ const getData = async () => {
   h2 {
     font-size: 1.5rem;
     line-height: 2rem;
-    color: rgb(79, 79, 79);
+    color: var(--text-grey);
     font-weight: 700;
   }
 
   input {
-    border: 1px solid rgb(79, 79, 79);
+    // border: 1px solid rgb(79, 79, 79);
+    border: 1px solid rgba(255, 169, 214, 0.3);
+    background: black;
     border-radius: 10px;
-    padding: 5px 10px;
+    padding: 10px 5px;
     width: 100%;
-    color: darkgrey;
+    color: var(--text-grey);
     margin-top: 10px;
   }
 
   textarea {
-    border: 1px solid rgb(79, 79, 79);
+    border: 1px solid rgba(255, 169, 214, 0.3);
+    background: black;
     resize: none;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
+    border-radius: 8px;
+    color: var(--text-grey);
+    padding: 10px 5px;
   }
 
   .top_row {
@@ -477,7 +517,7 @@ const getData = async () => {
   .default_text {
     font-size: 1rem;
     line-height: 1.5rem;
-    color: rgb(79, 79, 79);
+    color: var(--text-grey);
     font-weight: 700;
   }
   .icon_wrapper {
@@ -488,6 +528,10 @@ const getData = async () => {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      svg {
+        fill: var(--accent-color);
+      }
 
       img {
         width: 50px;
@@ -509,10 +553,14 @@ const getData = async () => {
       font-size: 0.75rem;
       font-weight: 600;
       text-align: center;
-      background-color: #cacaca;
-      border: 1px solid #777777;
-      color: #282828;
+      background-color: var(--btn-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
       cursor: pointer;
+
+      svg {
+        fill: var(--text-color);
+      }
     }
 
     .icon-file {
@@ -524,7 +572,7 @@ const getData = async () => {
     margin-top: 0.35rem;
     font-weight: 300;
     font-size: 0.8rem;
-    color: rgb(30, 30, 30);
+    color: var(--text-grey);
   }
 
   .category_description {
@@ -541,8 +589,18 @@ const getData = async () => {
     align-items: flex-start;
     gap: 10px;
 
-    .checkbox_input {
-      width: fit-content;
+    input {
+      display: none;
+    }
+    .checkbox-elem {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--accent-color);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    input[type="checkbox"]:checked + label {
+      border: 5px solid var(--accent-color);
     }
   }
 
@@ -555,7 +613,7 @@ const getData = async () => {
 
     button {
       // border: 1px solid var(--dark-color);
-      background: rgb(78, 78, 78);
+      // background: rgb(78, 78, 78);
       margin: 20px 0 20px;
       // @include mixins.defaultShadow;
       // @include mixins.descriptionText(500, var(--dark-color));
@@ -564,6 +622,14 @@ const getData = async () => {
       color: white;
       font-weight: 500;
       border-radius: 5px;
+    }
+    .closeModal {
+      background: black;
+      border: 1px solid rgba(255, 169, 214, 0.3);
+    }
+    .addItem {
+      background: var(--btn-color);
+      border: 1px solid var(--border-color);
     }
   }
 }

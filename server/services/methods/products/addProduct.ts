@@ -126,7 +126,8 @@ async function addProduct(event: any) {
             title: t.title,
             productDescription: t.description,
             productColor: t.productColor,
-            productMaterial: t.productMaterial
+            productMaterial: t.productMaterial,
+            productManufacture: t.productManufacture
           }))
         },
 

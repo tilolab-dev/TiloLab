@@ -13,7 +13,9 @@
                 <div class="picture third"></div>
               </div>
               <h2 class="img-title text-center">Завантажте файли зображення</h2>
-              <span class="text-center"> Зображення повинні бути в форматі .jpg, .png, .jpeg </span>
+              <span class="text-center">
+                Зображення повинні бути в форматі .jpg, .png, .jpeg, .webp
+              </span>
               <label for="product-file" class="icon_label">
                 <div class="btn_fill">Вибрати</div>
               </label>
@@ -40,7 +42,7 @@
               v-if="productFileState.productFilesPreview.value.length === 0"
               name="default-picture"
               size="large"
-              fill="var(--dark-color)"
+              fill="var(--border-color)"
             />
             <div
               v-for="(file, index) in productFileState.productFilesPreview.value"
@@ -60,7 +62,7 @@
           <div class="top_content">
             <h2 class="main_text">Інформація про товар</h2>
             <button @click="closeModal">
-              <SvgIcon name="close-btn" size="micro" fill="var(--dark-color)" />
+              <SvgIcon name="close-btn" size="micro" fill="var(--text-color)" />
             </button>
           </div>
 
@@ -129,15 +131,18 @@
                 <div class="checkbox">
                   <!-- <span> Відображати кількість товару на складі </span> -->
                   <input
+                    id="stockState"
                     v-model="productStockState"
                     type="checkbox"
                     value="false"
                     @change="productAvailability = !productAvailability"
                   />
+                  <label for="stockState" class="product_checkbox"></label>
                 </div>
                 <input
                   v-if="productAvailability"
                   v-model="productStockValue"
+                  class="product_availability"
                   type="number"
                   placeholder="Введіть наявну кількість товару на складі"
                 />
@@ -154,21 +159,25 @@
                     <strong> * </strong>
                   </span>
                   <input
+                    id="productPrice"
                     v-model="productPrice"
                     class="checkbox"
                     type="text"
                     placeholder="Введіть значення розміру"
                   />
+                  <label for="productPrice" class="product_checkbox"></label>
                 </div>
                 <div class="wrapper">
                   <span class="default_text"> Відображати товар на сайті </span>
                   <div class="checkbox-wrap flex items-center justify-start">
                     <input
+                      id="productVisibility"
                       v-model="productVisibility"
                       value="false"
                       class="checkbox"
                       type="checkbox"
                     />
+                    <label for="productVisibility" class="product_checkbox"></label>
                   </div>
                 </div>
                 <div class="wrapper">
@@ -177,11 +186,13 @@
                     <strong> * </strong>
                   </span>
                   <input
+                    id="productSize"
                     v-model="productSize"
                     class="checkbox"
                     type="text"
                     placeholder="Введіть значення розміру"
                   />
+                  <label for="productSize" class="product_checkbox"></label>
                 </div>
                 <div class="wrapper">
                   <h4 class="default_text">Матеріал товару</h4>
@@ -193,6 +204,20 @@
                         class=""
                         type="text"
                         placeholder="Введіть матеріал"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="wrapper">
+                  <h4 class="default_text">Країна виробник</h4>
+                  <div class="text-wrapper">
+                    <div class="wrapper">
+                      <span> Українська </span>
+                      <input
+                        v-model="productManufacture"
+                        class=""
+                        type="text"
+                        placeholder="Введіть країну виробника"
                       />
                     </div>
                   </div>
@@ -214,13 +239,20 @@
                 <div class="wrapper">
                   <span class="default_text"> Акційний товар </span>
                   <div class="checkbox-wrap flex items-center justify-start">
-                    <input v-model="discountState" class="checkbox" type="checkbox" />
+                    <input
+                      id="discountState"
+                      v-model="discountState"
+                      class="checkbox"
+                      type="checkbox"
+                    />
+                    <label for="discountState" class="product_checkbox"></label>
                   </div>
                 </div>
                 <div v-if="discountState" class="wrapper">
                   <span class="default_text"> Відсоток знижки </span>
-                  <div class="checkbox-wrap flex items-center justify-start">
+                  <div class="input-wrap flex items-center justify-start">
                     <input
+                      id="discountState"
                       v-model="productDiscountPersent"
                       class="discount-price"
                       type="number"
@@ -232,14 +264,14 @@
             </div>
 
             <div class="option add_new">
-              <h4 class="main_text">Додати опцію товару (макс. 10)</h4>
+              <h4 class="option_title">Додати опцію товару (макс. 10)</h4>
               <div class="add_new_wrap">
                 <div class="new_option">
                   <span class="default_text"> Додати файл </span>
                   <div class="new_option_wrapper">
                     <label for="option-upload" class="icon-label">
                       <span> Оберіть файл </span>
-                      <SvgIcon name="download-btn" size="micro" fill="black" />
+                      <SvgIcon name="download-btn" size="micro" fill="var(--border-color)" />
                     </label>
                     <div class="preview">
                       <!-- <img
@@ -277,13 +309,15 @@
                 <div class="new_option flex flex-col gap-2">
                   <div class="new_option_wrapper">
                     <span class="default_text"> Додати ціну для опційного товару </span>
-                    <div class="checkbox-wrap">
+                    <div class="checkbox_wrap">
                       <input
+                        id="optionPrice"
                         v-model="addOptionPrice"
                         value="false"
                         class="checkbox"
                         type="checkbox"
                       />
+                      <label for="optionPrice" class="product_checkbox"></label>
                     </div>
                   </div>
                 </div>
@@ -363,6 +397,7 @@ const fetchedCategories = ref([]);
 
 const productCategory = ref("");
 const productNameUk = ref("");
+const productManufacture = ref("");
 // const productNameEn = ref("");
 // const productNameRu = ref("");
 const productVisibility = ref(false); // Показывать товар на сайте
@@ -442,6 +477,7 @@ const clearModal = () => {
   productStockState.value = false;
   productStockValue.value = 0;
   productDiscountPersent.value = 0;
+  productManufacture.value = "";
   //   wholesalePrice.value = 0;
   //   wholesalePriceFrom.value = 0;
   //   counterQuantity.value = 1;
@@ -667,7 +703,8 @@ const addNewProduct = async () => {
             // wholesaleDescription: wholesaleDescriptionUk.value,
             productColor: productColorUk.value,
             // groupPackage: productUnitTypeUk.value,
-            productMaterial: productMaterialUk.value
+            productMaterial: productMaterialUk.value,
+            productManufacture: productManufacture.value
           }
           // {
           //   language: "en",
@@ -748,14 +785,16 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
+@use "@/style/mixins.scss" as mixins;
+
 .add_product_content {
   position: fixed;
   top: 0;
-  background: white;
+  background: var(--bg-color);
   border-radius: 10px;
   overflow-x: hidden;
   height: fit-content;
-
+  color: var(--text-grey);
   overflow: hidden;
 }
 
@@ -774,7 +813,8 @@ onMounted(async () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgb(27, 27, 27);
+    background: var(--btn-color);
+    border: 1px solid var(--border-color);
     color: white;
     font-weight: 600;
     padding: 0.5rem 1.25rem;
@@ -815,7 +855,7 @@ onMounted(async () => {
     &_content {
       border-width: 2px;
       border-style: dashed;
-      border-color: var(--main-dark-color);
+      border-color: var(--border-color);
       border-radius: 0.5rem;
       padding: 1.25rem;
       width: 100%;
@@ -834,6 +874,14 @@ onMounted(async () => {
       top: 2.5rem;
       width: 80%;
 
+      h2 {
+        @include mixins.subtitleText;
+      }
+
+      span {
+        @include mixins.mainText;
+      }
+
       .picture_container {
         position: relative;
         margin-bottom: 20px;
@@ -845,7 +893,7 @@ onMounted(async () => {
         width: clamp(50px, 10vw, 100px);
         height: clamp(70px, 12vw, 200px);
         max-height: clamp(70px, 15vh, 200px);
-        border: 1px solid black;
+        border: 1px solid var(--accent-color);
         border-radius: 10px;
         position: absolute;
         bottom: 0;
@@ -878,7 +926,7 @@ onMounted(async () => {
 
       .remove_btn {
         border-radius: 50%;
-        background-color: #ef4444;
+        background-color: var(--accent-red);
         width: 1.25rem;
         height: 1.25rem;
         position: absolute;
@@ -934,23 +982,22 @@ onMounted(async () => {
     position: relative;
 
     .main_text {
-      font-size: 1.5rem;
-      line-height: 2rem;
-      color: rgb(79, 79, 79);
-      font-weight: 700;
+      @include mixins.mainText;
     }
 
     .default_text {
-      font-size: 1rem;
-      line-height: 1.5rem;
-      color: rgb(79, 79, 79);
-      font-weight: 700;
+      @include mixins.mainText;
+      color: var(--grey-color);
     }
 
     .top_content {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      h2 {
+        @include mixins.subtitleText;
+        font-size: 1.5rem;
+      }
     }
 
     .header_description {
@@ -976,29 +1023,50 @@ onMounted(async () => {
     }
 
     input {
-      border: 1px solid black;
+      border: 1px solid var(--border-color);
+      background: black;
       border-radius: 10px;
       padding: 5px 10px;
       width: 100%;
-      color: black;
+      color: var(--text-grey);
+      transition: all ease 0.3s;
       margin-top: 1rem;
+
+      &:focus-visible {
+        border: 1px solid var(--accent-color);
+        transition: all ease 0.3s;
+      }
     }
     textarea {
-      border: 1px solid black;
+      border: 1px solid var(--border-color);
+      background: black;
       border-radius: 10px;
       height: 100px;
       padding: 5px 10px;
       width: 100%;
-      color: black;
+      color: var(--text-grey);
+      transition: all ease 0.3s;
       resize: none;
+      &:focus-visible {
+        border: 1px solid var(--accent-color);
+        transition: all ease 0.3s;
+      }
     }
 
     .option {
       display: flex;
       flex-direction: column;
+      border-top: 1px dashed var(--border-color);
+      margin-top: 20px;
+      padding-top: 20px;
       z-index: 1;
+      .option_title {
+        @include mixins.subtitleText;
+        font-size: 1.5rem;
+      }
       strong {
-        color: red;
+        color: var(--accent-red);
+        font-size: 1.5rem;
       }
     }
 
@@ -1012,6 +1080,15 @@ onMounted(async () => {
         select {
           width: 100%;
           height: 100%;
+          background: black;
+          color: var(--text-grey);
+          border: 1px solid var(--border-color);
+          transition: all ease 0.3s;
+          padding: 8px 10px;
+          outline: none;
+        }
+        select:focus-visible {
+          border: 1px solid var(--accent-color);
         }
       }
     }
@@ -1059,6 +1136,25 @@ onMounted(async () => {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
+        .checkbox-wrap {
+          input {
+            display: none;
+          }
+
+          .product_checkbox {
+            display: block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            cursor: pointer;
+          }
+
+          input:checked + label {
+            border: 5px solid var(--accent-color);
+          }
+        }
       }
     }
 
@@ -1069,6 +1165,23 @@ onMounted(async () => {
       gap: 1.25rem;
       width: auto;
       height: auto;
+      // display: none;
+
+      input {
+        display: none;
+      }
+
+      .product_checkbox {
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--accent-color);
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      input:checked + label {
+        border: 5px solid var(--accent-color);
+      }
     }
 
     .add_new {
@@ -1093,22 +1206,15 @@ onMounted(async () => {
           .hidden_input {
             display: none;
           }
-
-          label {
-            border: 1px solid black;
-            padding: 3px 5px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            gap: 0.8rem;
-
-            span {
-              font-size: 1rem;
-              font-weight: 500;
-              color: rgb(80, 80, 80);
-            }
+          .product_checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            cursor: pointer;
+          }
+          input[type="checkbox"]:checked + label {
+            border: 5px solid var(--accent-color);
           }
           .preview {
             padding: 0.25rem 0.5rem;
@@ -1118,12 +1224,26 @@ onMounted(async () => {
             }
           }
 
+          .icon-label {
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 8px;
+          }
+
           .checkbox_wrap {
             display: flex;
             justify-content: center;
             align-items: center;
             input {
               margin-top: unset;
+              display: none;
             }
           }
         }
@@ -1187,12 +1307,20 @@ onMounted(async () => {
       align-items: center;
       gap: 10px;
       button {
-        // @include mixins.defaultShadow;
-        // @include mixins.descriptionText(500, var(--dark-color));
         padding: 10px 20px;
+      }
+      .btn_transparent {
+        background: black;
+        color: white;
+        @include mixins.mainText;
+        border: 1px solid var(--border-color);
+      }
+      .btn_fill {
+        @include mixins.mainText;
       }
       .addItem {
         color: var(--bg-color);
+        @include mixins.mainText;
       }
     }
   }
