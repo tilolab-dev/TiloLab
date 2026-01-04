@@ -1,59 +1,111 @@
 <template>
-  <span class="loader"></span>
+  <div class="loader">
+    <div class="loader_wrapper">
+      <div>
+        <div class="bounceball"></div>
+        <div class="bounceball up"></div>
+      </div>
+    </div>
+  </div>
 </template>
 
-<style lang="scss">
+<script></script>
+
+<style lang="scss" scoped>
 .loader {
-  width: 33px;
-  height: 33px;
-  border-radius: 50%;
-  display: inline-block;
   position: relative;
-  border: 3px solid;
-  border-color: var(--dark-text) var(--dark-text) transparent transparent;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
-}
-.loader::after,
-.loader::before {
-  content: "";
-  box-sizing: border-box;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  border: 3px solid;
-  border-color: transparent transparent var(--accent-color) var(--accent-color);
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  box-sizing: border-box;
-  animation: rotationBack 0.5s linear infinite;
-  transform-origin: center center;
-}
-.loader::before {
-  width: 17px;
-  height: 17px;
-  border-color: var(--dark-text) var(--dark-text) transparent transparent;
-  animation: rotation 1.5s linear infinite;
+  display: flex;
+  min-height: 50px;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: auto;
+  padding-left: 20%;
+  gap: 1rem;
+  color: var(--text-color);
+  font-size: 1.2rem;
+
+  &_wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bounceball {
+    position: relative;
+    display: inline-block;
+    height: 37px;
+    width: 15px;
+    margin: 0 1px;
+  }
+
+  .bounceball:before {
+    position: absolute;
+    content: "";
+    display: block;
+    top: 0;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    transform-origin: 50%;
+    -webkit-animation: bounce 0.5s ease infinite alternate;
+    animation: bounce 0.5s ease infinite alternate;
+  }
+
+  .bounceball.up:before {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s;
+  }
+
+  .bounceball.down:before {
+    -webkit-animation-delay: 0.6s;
+    animation-delay: 0.6s;
+  }
 }
 
-@keyframes rotation {
+@-webkit-keyframes bounce {
   0% {
-    transform: rotate(0deg);
+    top: 30px;
+    height: 5px;
+    border-radius: 60px 60px 20px 20px;
+    transform: scaleX(2);
   }
-  100% {
-    transform: rotate(360deg);
+
+  35% {
+    height: 15px;
+    border-radius: 50%;
+    transform: scaleX(1);
+  }
+
+  to {
+    top: 0;
   }
 }
-@keyframes rotationBack {
+
+@keyframes bounce {
   0% {
-    transform: rotate(0deg);
+    top: 30px;
+    height: 5px;
+    border-radius: 60px 60px 20px 20px;
+    transform: scaleX(2);
   }
-  100% {
-    transform: rotate(-360deg);
+
+  35% {
+    height: 15px;
+    border-radius: 50%;
+    transform: scaleX(1);
+  }
+
+  to {
+    top: 0;
   }
 }
 </style>

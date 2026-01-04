@@ -116,15 +116,9 @@ onMounted(async () => {
   try {
     const getProducts = await $fetch("/api/products");
 
-    popularCards.value = getProducts.data;
-    popularCards.value = [
-      ...popularCards.value,
-      ...popularCards.value,
-      ...popularCards.value,
-      ...popularCards.value
-    ];
+    popularCards.value = getProducts?.data;
   } catch (err) {
-    console.log(err);
+    console.error("Failed to fetch popular products:", err);
   }
 });
 

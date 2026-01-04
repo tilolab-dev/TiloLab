@@ -90,10 +90,7 @@
     </div>
 
     <div class="header_catalog" :class="catalogBtnState ? 'header_catalog_active' : ''">
-      <div v-if="!loaderState" class="loader_wrapper">
-        <Loader />
-        Завантаження
-      </div>
+      <SharedLoader v-if="!loaderState" />
 
       <nav v-else>
         <NuxtLink
@@ -126,8 +123,6 @@ import { ref, onMounted, watch } from "vue";
 import { useModalStore } from "@/store/modal-store";
 import { useIndexStore } from "@/store/index-store";
 import { useCartStore } from "@/store/cart-store";
-
-import Loader from "./shared/Loader.vue";
 
 const catalogBtnState = ref(false);
 const burger = ref(false);
@@ -414,18 +409,6 @@ onMounted(() => {
   position: absolute;
   top: 0%;
 
-  .loader_wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    height: auto;
-    padding-left: 20%;
-    gap: 1rem;
-    color: var(--text-color);
-    font-size: 1.2rem;
-  }
-
   nav {
     display: flex;
     flex-direction: row;
@@ -437,6 +420,13 @@ onMounted(() => {
       color: white;
       font-weight: 500;
       cursor: pointer;
+      transition: color 0.3s ease;
+
+      @media screen and (min-width: 1024px) {
+        &:hover {
+          color: var(--accent-color);
+        }
+      }
     }
   }
 
