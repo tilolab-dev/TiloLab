@@ -3,10 +3,9 @@
     <div class="page_title">
       <h1>Ваш список бажань</h1>
     </div>
-    <div v-if="fetchedProducts.length === 0" class="loader_wrapper">
-      <Loader />
-      Завантаження
-    </div>
+
+    <SharedLoader v-if="fetchedProducts.length === 0" />
+
     <ul v-else class="product_wrapper">
       <li v-for="product in fetchedProducts" :key="product.id">
         <WishlistItemCard
@@ -24,7 +23,6 @@ import { useIndexStore } from "@/store/index-store";
 import { useProductStore } from "@/store/product-store";
 import { ref } from "vue";
 import WishlistItemCard from "@/components/WishlistItemCard.vue";
-import Loader from "@/components/shared/Loader.vue";
 
 const fetchedProducts = ref([]);
 const categoryName = ref("");

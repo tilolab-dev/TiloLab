@@ -34,10 +34,9 @@
         {{ currentCategory.translations[0].title }}
       </h1>
     </div>
-    <div v-if="fetchedProducts.length === 0" class="loader_wrapper">
-      <Loader />
-      Завантаження
-    </div>
+
+    <SharedLoader v-if="fetchedProducts.length === 0" />
+
     <ul v-else class="product_wrapper">
       <li v-for="product in fetchedProducts" :key="product.id">
         <ItemCard
@@ -48,7 +47,7 @@
       </li>
     </ul>
 
-    <div class="categories_footer">
+    <div v-if="fetchedProducts.length > 0" class="categories_footer">
       <ShowMoreBtn :link="`/products/${categoryName}`">
         Переглянути всі
         <AngleDownIcon />
@@ -67,7 +66,6 @@
 // Component imports
 import AngleDownIcon from "~/assets/icons/angle-down.svg";
 import ItemCard from "@/components/ItemCard.vue";
-import Loader from "@/components/shared/Loader.vue";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
 import DoubleRange from "@/components/DoubleRange.vue";
 import ShowMoreBtn from "@/components/shared/ShowMoreBtn.vue";
