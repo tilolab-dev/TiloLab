@@ -3,7 +3,11 @@
     <div :v-if="props.product.discountPercent !== 0" class="action_label">Акція</div>
 
     <NuxtLink :to="props.link" class="img_container">
-      <img v-if="props.product.img[0].path" :src="props.product.img[0].path" alt="product" />
+      <img
+        v-if="props.product.img && props.product.img[0] && props.product.img[0].path"
+        :src="props.product.img[0].path"
+        alt="product"
+      />
 
       <img
         v-else
