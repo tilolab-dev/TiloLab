@@ -175,7 +175,7 @@ const containerGalleryRef = ref(null);
 const productImages = ref([]);
 const loadState = ref(true);
 const swiperKey = ref(0);
-const isDescriptionCollapsed = ref(false);
+const isDescriptionCollapsed = ref(true);
 
 const discountedPrice = computed(() => {
   const p = productStore.selectedProducts.productPrice;
@@ -225,7 +225,7 @@ const fetchProductById = async () => {
 };
 
 onMounted(async () => {
-  if (productStore.selectedProducts.id === routeId) {
+  if (productStore?.selectedProducts?.id === routeId) {
     loadState.value = false;
   } else if (routeId) {
     await fetchProductById();
@@ -521,6 +521,7 @@ onUnmounted(() => {
       justify-content: space-between;
       align-items: center;
       width: 100%;
+      cursor: pointer;
 
       h3 {
         font-size: 1.7rem;

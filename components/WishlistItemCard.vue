@@ -7,7 +7,7 @@
     </div>
 
     <div class="wishlist_item_card">
-      <div :v-if="props.product.discountPercent !== 0" class="action_label">Акція</div>
+      <div v-if="hasDiscount" class="action_label">Акція</div>
 
       <NuxtLink :to="props.link" class="img_container">
         <img v-if="props.product.img[0].path" :src="props.product.img[0].path" alt="product" />
@@ -26,16 +26,11 @@
           </h3>
         </NuxtLink>
         <div class="price_content">
-          <div
-            class="price"
-            :style="props.product.discountPercent > 0 ? { 'text-decoration': 'line-through' } : {}"
-          >
+          <div class="price" :style="hasDiscount ? { 'text-decoration': 'line-through' } : {}">
             {{ props.product.productPrice }} грн
           </div>
 
-          <div v-if="props.product.discountPercent > 0" class="discount_price">
-            {{ discountedPrice }} грн
-          </div>
+          <div v-if="hasDiscount" class="discount_price">{{ discountedPrice }} грн</div>
         </div>
       </div>
     </div>
@@ -69,6 +64,11 @@ const discountedPrice = computed(() => {
   const p = props.product.productPrice;
   const d = props.product.discountPercent;
   return Math.round(p - (p * d) / 100);
+});
+
+const hasDiscount = computed(() => {
+  const percentNumber = Number(props.product.discountPercent);
+  return percentNumber && !isNaN(percentNumber) && percentNumber > 0;
 });
 
 // const counterControl = (event, operator, quantity) => {
