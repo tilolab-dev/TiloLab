@@ -1,6 +1,6 @@
 <template>
   <div class="item_card">
-    <div :v-if="props.product.discountPercent !== 0" class="action_label">Акція</div>
+    <div v-if="hasDiscount" class="action_label">Акція</div>
 
     <NuxtLink :to="props.link" class="img_container">
       <img
@@ -24,16 +24,11 @@
         </h3>
       </NuxtLink>
       <div class="price_content">
-        <div
-          class="price"
-          :style="props.product.discountPercent > 0 ? { 'text-decoration': 'line-through' } : {}"
-        >
+        <div class="price" :style="hasDiscount ? { 'text-decoration': 'line-through' } : {}">
           {{ props.product.productPrice }} грн
         </div>
 
-        <div v-if="props.product.discountPercent > 0" class="discount_price">
-          {{ discountedPrice }} грн
-        </div>
+        <div v-if="hasDiscount" class="discount_price">{{ discountedPrice }} грн</div>
       </div>
     </div>
   </div>
@@ -57,6 +52,11 @@ const props = defineProps({
     type: Object,
     required: true
   }
+});
+
+const hasDiscount = computed(() => {
+  const percentNumber = Number(props.product.discountPercent);
+  return percentNumber && !isNaN(percentNumber) && percentNumber > 0;
 });
 
 const discountedPrice = computed(() => {

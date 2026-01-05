@@ -9,30 +9,19 @@
             відчувати себе й своє тіло.
           </p>
         </div>
-
-        <div class="button_items">
-          <button @click="swiper.prev()">
-            <AngleLeftIcon />
-          </button>
-          <button @click="swiper.next()">
-            <AngleRightIcon />
-          </button>
-        </div>
       </div>
 
       <div class="popular_cards">
-        <ClientOnly>
-          <swiper-container ref="containerPopular">
-            <swiper-slide v-for="(product, i) in popularCards" :key="i">
-              <ItemCard
-                :product="product"
-                :link="`/products/${product.category.group.toLowerCase()}/${product.id}`"
-                class="card"
-                @click="productStore.setSelectedProducts(product)"
-              />
-            </swiper-slide>
-          </swiper-container>
-        </ClientOnly>
+        <SharedSwiperSlider :overflow-visible="true">
+          <swiper-slide v-for="(product, i) in popularCards" :key="i">
+            <ItemCard
+              :product="product"
+              :link="`/products/${product.category.group.toLowerCase()}/${product.id}`"
+              class="card"
+              @click="productStore.setSelectedProducts(product)"
+            />
+          </swiper-slide>
+        </SharedSwiperSlider>
       </div>
 
       <div class="popular_footer">
@@ -47,49 +36,21 @@
 </template>
 
 <script setup>
-import AngleLeftIcon from "~/assets/icons/angle-left.svg";
 import AngleRightIcon from "~/assets/icons/angle-right.svg";
 import ShowMoreBtn from "~/components/shared/ShowMoreBtn.vue";
 
 import { ref, onMounted } from "vue";
 import { useProductStore } from "@/store/product-store";
 
-const containerPopular = ref(null);
 const popularCards = ref([]);
 
 const productStore = useProductStore();
-
-const swiper = useSwiper(containerPopular, {
-  slidesPerView: 2,
-  spaceBetween: 20,
-  breakpoints: {
-    320: {
-      slidesPerView: 2
-    },
-    480: {
-      slidesPerView: 2
-    },
-    769: {
-      slidesPerView: 2.5
-    },
-    1025: {
-      slidesPerView: 3,
-      spaceBetween: 10
-    }
-  }
-});
 
 onMounted(async () => {
   try {
     const getProducts = await $fetch("/api/products");
 
     popularCards.value = getProducts.data;
-    popularCards.value = [
-      ...popularCards.value,
-      ...popularCards.value,
-      ...popularCards.value,
-      ...popularCards.value
-    ];
   } catch (err) {
     console.log(err);
   }
@@ -202,7 +163,7 @@ onMounted(async () => {
 .head_content {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 50px;
   width: 100%;
 
@@ -215,16 +176,8 @@ onMounted(async () => {
   }
 }
 
-swiper-container::part(container) {
-  @media screen and (min-width: 960px) {
-    overflow: visible !important;
-  }
-}
-
 .card {
   color: white;
-  align-items: center;
-  justify-content: center;
   font-size: 24px;
   position: relative;
   cursor: pointer;
@@ -260,31 +213,6 @@ swiper-container::part(container) {
 
   @media screen and (max-width: 480px) {
     grid-template-rows: 133px 1fr;
-  }
-}
-
-.button_items {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  color: var(--accent-color);
-  margin-top: 22px;
-
-  button {
-    padding: 5px;
-    aspect-ratio: 1 / 1;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-
-  @media screen and (max-width: 1024px) {
-    display: none;
-  }
-
-  svg {
-    width: 5px;
-    height: 13px;
   }
 }
 
