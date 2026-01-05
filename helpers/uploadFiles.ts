@@ -4,7 +4,9 @@ export const useFileUpload = (emit: any) => {
   console.log(emit);
   const handleFileUpload = (event: any, type: any, state: any, length?: any) => {
     const accessedFormat = ["svg", "png", "webp"];
-    const files = Array.from(event.target.files);
+    const files = Array.from(event.target.files) as any;
+
+    console.log(files[0], "files");
 
     if (files.length + length > 5) {
       alert("Максимальна кількість файлів 5");
