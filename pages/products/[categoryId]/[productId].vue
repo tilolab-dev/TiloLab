@@ -7,7 +7,7 @@
       >
         <BreadCrumbs />
 
-        <div class="product_id_main">
+        <div v-if="!loadState" class="product_id_main">
           <div v-if="slides.length > 0" class="product_id_preview">
             <div class="main_img">
               <ClientOnly>
@@ -26,7 +26,7 @@
               </ClientOnly>
             </div>
 
-            <div class="img_gallery">
+            <div v-if="slides.length > 1" class="img_gallery">
               <ClientOnly>
                 <swiper-container
                   ref="containerGalleryRef"
@@ -143,6 +143,8 @@
           </div>
         </div>
 
+        <SharedLoader v-else />
+
         <ProductPagePopular />
       </div>
     </div>
@@ -173,7 +175,7 @@ const containerGalleryRef = ref(null);
 const productImages = ref([]);
 const loadState = ref(true);
 const swiperKey = ref(0);
-const isDescriptionCollapsed = ref(false);
+const isDescriptionCollapsed = ref(true);
 
 const discountedPrice = computed(() => {
   const p = productStore.selectedProducts.productPrice;
@@ -195,13 +197,11 @@ const slides = computed(() => {
     return [];
   }
 
-  const computedSlides = product.img.map((img, idx) => ({
+  return product.img.map((img, idx) => ({
     id: idx,
     src: img.path,
     title: product.translations?.[0]?.title ?? ""
   }));
-
-  return [...computedSlides, ...computedSlides, ...computedSlides, ...computedSlides];
 });
 
 const routeId = route.params.productId;
@@ -218,14 +218,14 @@ const fetchProductById = async () => {
 
     productImages.value = Array.isArray(res.data.images) ? res.data.images : [];
 
-    productImages.value = [...productImages.value, ...productImages.value];
+    return productImages.value;
   } catch {
     // Handle error silently or show user feedback
   }
 };
 
 onMounted(async () => {
-  if (productStore.selectedProducts) {
+  if (productStore?.selectedProducts?.id === routeId) {
     loadState.value = false;
   } else if (routeId) {
     await fetchProductById();
@@ -521,6 +521,7 @@ onUnmounted(() => {
       justify-content: space-between;
       align-items: center;
       width: 100%;
+      cursor: pointer;
 
       h3 {
         font-size: 1.7rem;
