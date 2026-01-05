@@ -1,38 +1,20 @@
 <template>
   <section class="index_page">
-    <!-- HELLO WORLD -->
-    <!-- <SharedTransparentBtn
-            @click="console.log('ololo')"
-         >accent btn</SharedTransparentBtn>
-
-        <button
-            class="auth-btn"
-            @click="modalStore.showModal('AuthModal')"
-        >
-
-            Auth modal
-
-
-        </button> -->
     <IndexHero />
+
     <IndexCategories />
+
     <IndexPopular />
+
     <IndexBanner />
+
     <IndexCta />
   </section>
 </template>
 
-<script setup>
-// import { useModalStore } from "@/store/modal-store";
+<script setup></script>
 
-// const modalStore = useModalStore();
-</script>
-
-<style lang="scss">
-// .index_page .accent_btn{
-//     width: 100% ;
-// }
-
+<style lang="scss" scoped>
 .auth-btn {
   position: absolute;
   top: 20%;

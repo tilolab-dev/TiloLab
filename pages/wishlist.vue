@@ -73,18 +73,6 @@ definePageMeta({
     @include mixins.titleText;
   }
 }
-
-.loader_wrapper {
-  position: absolute;
-  width: 100%;
-  height: -webkit-fill-available;
-  transform: translateY(50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  color: white;
-}
 .product_wrapper {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
