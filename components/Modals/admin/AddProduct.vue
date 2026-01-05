@@ -25,6 +25,7 @@
 
               <input
                 id="product-file"
+                ref="productFileInput"
                 type="file"
                 class="hidden"
                 multiple
@@ -293,6 +294,7 @@
 
                     <input
                       id="option-upload"
+                      ref="optionFileInput"
                       type="file"
                       class="hidden_input"
                       @change="handleFileUpload($event, 'option', optionFileState)"
@@ -399,7 +401,8 @@ const { handleFileUpload } = useFileUpload(emit);
 const fetchedCategories = ref([]);
 
 const loaderState = ref(false);
-
+const optionFileInput = ref(null);
+const productFileInput = ref(null);
 const productCategory = ref("");
 const productNameUk = ref("");
 const productManufacture = ref("");
@@ -513,6 +516,8 @@ const clearModal = () => {
   //   productUnitTypeEn.value = "";
   //   productUnitTypeRu.value = "";
   productSize.value = "";
+  optionFileInput.value.value = "";
+  productFileInput.value.value = "";
   //   productWeight.value = "";
   //   productDensity.value = "";
   //   productCapacity.value = "";
@@ -521,7 +526,7 @@ const clearModal = () => {
 };
 
 const addNewOption = () => {
-  console.log(addOptionsRef.value.length, "option ref");
+  console.log(optionFileState.optionFilesPreview.value, "option ref");
   //   if (addOptionsRef.value.length > 9) {
   //     emit("tooltip", {
   //       status: "error",
@@ -531,14 +536,18 @@ const addNewOption = () => {
   //   }
 
   if (optionFileState.optionFilesPreview.value.length > 0) {
+    console.log("addNew1");
     if (
       addOptionTextUk.value
       //   addOptionTextEn.value &&
       //   addOptionTextRu.value
     ) {
+      console.log("addNew");
       addOptionsRef.value.push({
         file: toRaw(optionFileState.optionFiles.value),
         fileImg: optionFileState.optionFilesPreview.value,
+        // file: [...toRaw(optionFileState.optionFiles.value)],
+        // fileImg: [...optionFileState.optionFilesPreview.value],
         optionPrice: optionPrice.value,
         translations: [
           {
@@ -562,6 +571,8 @@ const addNewOption = () => {
     addOptionTextUk.value = "";
     // addOptionTextEn.value = "";
     // addOptionTextRu.value = "";
+    // optionFileState.optionReady.value = false;
+    optionFileInput.value.value = "";
     addOptionPrice.value = false;
     optionPrice.value = 0;
   }

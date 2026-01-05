@@ -327,6 +327,8 @@ const fetchProduct = async () => {
   try {
     const getProducts = await $fetch("/api/products");
 
+    console.log(getProducts);
+
     if (getProducts.data.length > 0) {
       fetchedProducts.value = getProducts.data.map((item) => item);
     }
