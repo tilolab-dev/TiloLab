@@ -16,15 +16,11 @@
         </button>
 
         <ul v-if="toggleCategory" class="categories_wrapper">
-          <li>Для неї</li>
-          <li>Для нього</li>
-          <li>Для пар</li>
-          <li>Інтимний догляд</li>
-          <li>Анальний секс</li>
-          <li>Фалоімітатори</li>
-          <li>Прелюдія</li>
-          <li>БДСМ</li>
-          <li>Косметика</li>
+          <li v-for="(item, index) in fetchCategories" :key="index">
+            <NuxtLink :to="`/products/${item.group.toLowerCase()}`">
+              {{ item.translations[0].title }}
+            </NuxtLink>
+          </li>
         </ul>
       </div>
     </div>
@@ -91,6 +87,8 @@ const route = useRoute();
 const categoryId = route.params.categoryId;
 
 const toggleCategory = ref(false);
+
+const fetchCategories = computed(() => indexStore.fetchedCategories);
 
 categoryName.value = categoryId;
 

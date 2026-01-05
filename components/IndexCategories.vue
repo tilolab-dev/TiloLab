@@ -14,44 +14,33 @@
             </p>
           </div>
         </div>
-
-        <div class="button_items">
-          <button @click="swiper.prev()">
-            <AngleLeftIcon />
-          </button>
-          <button @click="swiper.next()">
-            <AngleRightIcon />
-          </button>
-        </div>
       </div>
 
       <div class="categories_cards">
-        <ClientOnly>
-          <swiper-container ref="containerRef">
-            <swiper-slide v-for="(slide, idx) in slides" :key="idx" class="card">
-              <NuxtLink :to="`/products/${slide.group.toLowerCase()}`" class="card">
-                <NuxtImg
-                  v-if="slide.categoryImg"
-                  :src="slide.categoryImg"
-                  :alt="`card ${idx}`"
-                  class="card_img"
-                  lazy
-                />
+        <SharedSwiperSlider :overflow-visible="true">
+          <swiper-slide v-for="(slide, idx) in slides" :key="idx" class="card">
+            <NuxtLink :to="`/products/${slide.group.toLowerCase()}`" class="card">
+              <NuxtImg
+                v-if="slide.categoryImg"
+                :src="slide.categoryImg"
+                :alt="`card ${idx}`"
+                class="card_img"
+                lazy
+              />
 
-                <img
-                  v-else
-                  alt="No Image"
-                  src="https://placehold.co/384x488/000000/ff86bb?font=montserrat&text=No+Image"
-                  class="card_img"
-                />
+              <img
+                v-else
+                alt="No Image"
+                src="https://placehold.co/384x488/000000/ff86bb?font=montserrat&text=No+Image"
+                class="card_img"
+              />
 
-                <span class="card_title">
-                  {{ slide.translations[0].title }}
-                </span>
-              </NuxtLink>
-            </swiper-slide>
-          </swiper-container>
-        </ClientOnly>
+              <span class="card_title">
+                {{ slide.translations[0].title }}
+              </span>
+            </NuxtLink>
+          </swiper-slide>
+        </SharedSwiperSlider>
       </div>
     </div>
   </div>
@@ -59,31 +48,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import AngleLeftIcon from "~/assets/icons/angle-left.svg";
-import AngleRightIcon from "~/assets/icons/angle-right.svg";
-
-const containerRef = ref(null);
 const categories = ref([]);
-
-const swiper = useSwiper(containerRef, {
-  slidesPerView: 2,
-  spaceBetween: 20,
-  breakpoints: {
-    320: {
-      slidesPerView: 2
-    },
-    480: {
-      slidesPerView: 2
-    },
-    769: {
-      slidesPerView: 2.5
-    },
-    1025: {
-      slidesPerView: 3,
-      spaceBetween: 10
-    }
-  }
-});
 
 const slides = computed(() => categories.value);
 
@@ -93,7 +58,6 @@ onMounted(async () => {
 
     if (getCategories && getCategories.data) {
       categories.value = getCategories.data;
-      categories.value = [...categories.value, ...categories.value];
     }
   } catch (err) {
     console.log(err);
@@ -214,7 +178,7 @@ onMounted(async () => {
 .head_content {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 50px;
   width: 100%;
 
@@ -224,12 +188,6 @@ onMounted(async () => {
     justify-content: flex-start;
     align-items: flex-start;
     gap: 16px;
-  }
-}
-
-swiper-container::part(container) {
-  @media screen and (min-width: 960px) {
-    overflow: visible !important;
   }
 }
 
@@ -291,31 +249,6 @@ swiper-container::part(container) {
     min-width: 208px;
     height: 269px;
     font-size: 24px;
-  }
-}
-
-.button_items {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  color: var(--accent-color);
-  margin-top: 22px;
-
-  button {
-    padding: 5px;
-    aspect-ratio: 1 / 1;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-
-  @media screen and (max-width: 1024px) {
-    display: none;
-  }
-
-  svg {
-    width: 5px;
-    height: 13px;
   }
 }
 </style>
