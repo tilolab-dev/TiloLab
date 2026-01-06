@@ -34,6 +34,7 @@ import AddProduct from "@/components/Modals/admin/AddProduct.vue";
 // import AddCategory from '@/components/Modals/admin/AddCategory.vue';
 import AddCategory from "@/components/Modals/admin/AddCategory.vue";
 import DeleteCategory from "@/components/Modals/admin/DeleteCategory.vue";
+import DeleteProduct from "./admin/DeleteProduct.vue";
 
 const modalStore = useModalStore();
 const isVisible = computed(() => modalStore.isVisible);
@@ -48,6 +49,7 @@ const modalComponents = {
   AddProduct,
   AddCategory,
   DeleteCategory,
+  DeleteProduct,
   //   ProductToCart,
   AuthModal,
   BurgerMenu,

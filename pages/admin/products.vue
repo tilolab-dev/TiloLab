@@ -63,14 +63,15 @@
                 <table class="table_wrapper">
                   <thead class="t_head">
                     <tr>
-                      <th class="t_head_cell">Author</th>
-                      <th class="t_head_cell">Function</th>
-                      <th class="t_head_cell">Status</th>
-                      <th class="t_head_cell">Employed</th>
+                      <th class="t_head_cell">Назва категорії</th>
+                      <th class="t_head_cell">Кількість товарів</th>
+                      <th class="t_head_cell"></th>
+                      <th class="t_head_cell">Статус</th>
+
                       <th class="t_head_cell"></th>
                     </tr>
                   </thead>
-                  <tbody v-if="!loadingCategoryState" class="t_body">
+                  <tbody v-if="loadingCategoryState" class="t_body">
                     <!-- Skeleton -->
                     <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
                       <!-- Author -->
@@ -106,28 +107,38 @@
                   <tbody v-else class="t_body">
                     <!-- v-for="category in fetchedCategories" -->
 
-                    <tr v-for="(item, i) in 6" :key="i">
+                    <tr v-for="(item, i) in fetchedCategories" :key="i">
                       <td class="table_row">
                         <div class="table_main">
-                          <img src="/images/item.png" alt="user1" />
+                          <img :src="item.categoryImg" alt="user1" />
                           <div class="table_main_wrapper">
-                            <h6>John Michael</h6>
-                            <p>john@creative-tim.com</p>
+                            <h6>{{ item.translations[0].title }}</h6>
                           </div>
                         </div>
                       </td>
                       <td>
-                        <p>Manager</p>
-                        <p>Organization</p>
+                        <p>{{ item.products.length }}</p>
                       </td>
-                      <td>
+                      <!-- <td>
                         <span> Online </span>
+                      </td> -->
+                      <td>
+                        <!-- <span> 23/04/18 </span> -->
                       </td>
                       <td>
-                        <span> 23/04/18 </span>
+                        <p v-if="item.visible">Активна категорія</p>
+                        <p v-else>Неактивна категорія</p>
                       </td>
-                      <td>
-                        <button>Edit</button>
+                      <td class="button_cell">
+                        <div class="table_btn_wrap">
+                          <button class="edit_btn">Редагувати</button>
+                          <button
+                            class="delete_btn"
+                            @click="modalStore.showModal('DeleteCategory', { item })"
+                          >
+                            <CloseIcon />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -213,7 +224,6 @@
                           >
                             {{ product.productPrice }} UAH
                           </span>
-                          <!-- <br /> -->
                           <span v-if="product.discountPercent > 0" class="discount_price">
                             {{
                               Math.round(
@@ -243,12 +253,11 @@
                       </td>
                       <td class="button_cell">
                         <div class="table_btn_wrap">
+                          <button class="edit_btn">Редагувати</button>
                           <button
-                            class="edit_btn inline-block px-5 py-2.5 mb-0 font-bold text-[var(-dark-color)] text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-normal text-sm ease-in bg-150 tracking-tight-rem bg-x-25"
+                            class="delete_btn"
+                            @click="modalStore.showModal('DeleteProduct', { product })"
                           >
-                            Редагувати
-                          </button>
-                          <button class="delete_btn" @click="deleteProduct(product.id)">
                             <CloseIcon />
                           </button>
                         </div>
@@ -273,20 +282,24 @@ import CloseIcon from "~/assets/icons/close-icon.svg";
 import { onMounted, ref, watch } from "vue";
 // import SvgIcon from "@/components/shared/SvgIcon.vue";
 import { useModalStore } from "@store/modal-store";
+import { useProductStore } from "@store/product-store";
+import { useCategoryStore } from "@/store/category-store";
 // import DashBurger from "@/components/shared/DashBurger.vue";
 import gsap from "gsap";
 
 const modalStore = useModalStore();
+const productStore = useProductStore();
+const categoryStore = useCategoryStore();
 
 const loadingCategoryState = ref(false);
-const fetchedCategories = ref([]);
 const categoryElem = ref(null);
 const loadingProductState = ref(false);
-const fetchedProducts = ref([]);
 const productElem = ref(null);
-// const productCategoryElem = ref(null);
 
 const activeGroup = ref("products");
+
+const fetchedProducts = computed(() => productStore.productList);
+const fetchedCategories = computed(() => categoryStore.categoryList);
 
 watch(fetchedCategories, async () => {
   if (categoryElem.value) {
@@ -319,81 +332,27 @@ definePageMeta({
   layout: "admin"
 });
 
-const showGroup = (group) => {
+const showGroup = async (group) => {
   switch (group) {
     case "products":
-      fetchProduct();
+      loadingCategoryState.value = true;
+      await productStore.fetchProducts();
       activeGroup.value = "products";
+      loadingCategoryState.value = false;
       break;
     case "categories":
-      fetchCategory();
+      loadingCategoryState.value = true;
+      await categoryStore.getCategories();
       activeGroup.value = "categories";
+      loadingCategoryState.value = false;
       break;
   }
 };
 
-// const deleteCategory = (category) => {
-//   modalStore.showModal("DeleteCategory", {
-//     categoryId: category.id,
-//     categoryName: category.language.title
-//   });
-// };
-
-const deleteProduct = async (productId) => {
-  try {
-    const deleteProduct = await $fetch(`/api/products/${productId}`, {
-      method: "DELETE",
-      body: {
-        id: productId
-      }
-    });
-
-    if (deleteProduct.statusCode === 200) {
-      console.log(deleteProduct);
-      alert("Товар успішно видалено");
-    }
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-const fetchCategory = async () => {
-  loadingCategoryState.value = true;
-  try {
-    const getCategories = await $fetch("/api/category");
-
-    if (getCategories.data.length > 0) {
-      fetchedCategories.value = getCategories.data.map((item) => ({
-        ...item,
-        language: item.translations.find((translation) => translation.language === "uk")
-      }));
-    }
-    loadingCategoryState.value = false;
-  } catch (error) {
-    console.log(error.message, "Something went wrong");
-  }
-};
-
-const fetchProduct = async () => {
+onMounted(async () => {
   loadingProductState.value = true;
-
-  try {
-    const getProducts = await $fetch("/api/products");
-
-    console.log(getProducts);
-
-    if (getProducts.data.length > 0) {
-      fetchedProducts.value = getProducts.data.map((item) => item);
-    }
-
-    loadingProductState.value = false;
-  } catch (error) {
-    console.log(error.message, "Something went wrong");
-  }
-};
-
-onMounted(() => {
-  fetchProduct();
+  await productStore.fetchProducts();
+  loadingProductState.value = false;
 });
 </script>
 
@@ -536,6 +495,7 @@ onMounted(() => {
         padding-left: 0.75rem;
         padding-right: 0.75rem;
         border: 1px solid var(--border-color);
+        padding-bottom: 10px;
         position: relative;
         display: flex;
         flex-direction: column;
@@ -730,6 +690,11 @@ onMounted(() => {
                   border-bottom: 1px solid rgba(63, 63, 63, 0.7);
                   white-space: nowrap;
                   box-shadow: transparent;
+                  p {
+                    text-align: center;
+                    @include mixins.mainText;
+                    font-size: 0.8rem;
+                  }
                   .price_option {
                     display: flex;
                     flex-direction: column;

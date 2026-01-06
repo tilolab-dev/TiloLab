@@ -16,4 +16,29 @@
     --link-color-hover: rgb(255, 159, 200);
     --link-color-active: var(--btn-color-active);
     --discount-price: #FF0070;
-}
+
+
+    --error-bg: rgb(36 14 24);
+    --error-border: rgb(255 64 128);
+    --error-text: rgb(255 142 192);
+
+    --error-btn: rgba(255, 64, 128, 0.35);
+    --error-btn-hover: rgba(255, 64, 128, 0.55);
+    --error-btn-active: rgb(255 64 128);
+
+    --warning-bg: rgb(36 22 14);
+    --warning-border: rgb(255 170 85);
+    --warning-text: rgb(255 208 160);
+
+    --warning-btn: rgba(255, 170, 85, 0.35);
+    --warning-btn-hover: rgba(255, 170, 85, 0.55);
+    --warning-btn-active: rgb(255 170 85);
+
+    --success-bg: rgb(10 28 28);
+    --success-border: rgb(64 224 208);
+    --success-text: rgb(160 255 240);
+
+    --success-btn: rgba(64, 224, 208, 0.35);
+    --success-btn-hover: rgba(64, 224, 208, 0.55);
+    --success-btn-active: rgb(64 224 208);
+    }

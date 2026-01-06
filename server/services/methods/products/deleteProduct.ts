@@ -1,7 +1,8 @@
 import { prisma } from "@/prisma/prisma";
 
-async function deleteProduct(event: any) {
-  const productId = await readBody<{ productId: number }>(event);
+async function deleteProduct(productId: string) {
+  console.log(typeof productId, "productId");
+  // const productId = await readBody<{ productId: number }>(event);
 
   console.log(productId, "productId");
 
@@ -14,7 +15,7 @@ async function deleteProduct(event: any) {
   try {
     const deleteProduct = await prisma.product.delete({
       where: {
-        id: productId.productId
+        id: +productId
       }
     });
 
