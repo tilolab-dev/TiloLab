@@ -39,8 +39,12 @@
           </div>
         </div>
         <div class="adding_content">
-          <button class="text-nowrap" @click="openPopup('AddCategory')">Додати категорію</button>
-          <button class="text-nowrap" @click="openPopup('AddProduct')">Додати товар</button>
+          <button class="text-nowrap" @click="modalStore.showModal('AddCategory')">
+            Додати категорію
+          </button>
+          <button class="text-nowrap" @click="modalStore.showModal('AddProduct')">
+            Додати товар
+          </button>
           <!-- <button>
                 <SvgIcon name="burger-menu" size="micro" fill="var(--dark-color)" />
             </button> -->
@@ -149,6 +153,7 @@
                       <th class="t_head_cell">Ціна</th>
                       <th class="t_head_cell">Статус товару</th>
                       <th class="t_head_cell">Категорія</th>
+                      <th class="t_head_cell">Залишок</th>
                       <th class="t_head_cell"></th>
                     </tr>
                   </thead>
@@ -188,28 +193,65 @@
                   <tbody v-else class="t_body">
                     <!-- v-for="product in fetchedProducts" -->
 
-                    <tr v-for="(product, i) in 20" :key="i">
+                    <tr v-for="(product, i) in fetchedProducts" :key="i">
                       <td class="table_row">
                         <div class="table_main">
-                          <img src="/images/item.png" alt="item" />
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">title</h6>
+                          <img :src="product.img[0].path" alt="item" />
+                          <h6>
+                            {{ product.translations[0].title }}
+                          </h6>
                         </div>
                       </td>
                       <td>
-                        <p>price UAH</p>
+                        <div class="product_option price_option">
+                          <span
+                            class="price"
+                            :style="{
+                              textDecoration: product.discountPercent > 0 ? 'line-through' : '',
+                              color: product.discountPercent > 0 ? 'var(--accent-red)' : ''
+                            }"
+                          >
+                            {{ product.productPrice }} UAH
+                          </span>
+                          <!-- <br /> -->
+                          <span v-if="product.discountPercent > 0" class="discount_price">
+                            {{
+                              Math.round(
+                                product.productPrice -
+                                  (product.productPrice * product.discountPercent) / 100
+                              )
+                            }}
+                            UAH
+                          </span>
+                        </div>
                       </td>
                       <td>
-                        <p>Активний</p>
+                        <div class="product_option">
+                          <span v-if="product.visible">Активний</span>
+                          <span v-else>Не активний</span>
+                        </div>
                       </td>
                       <td>
-                        <p>product category</p>
+                        <div class="product_option">
+                          {{ product.category.group }}
+                        </div>
                       </td>
                       <td>
-                        <button
-                          class="inline-block px-5 py-2.5 mb-0 font-bold text-[var(-dark-color)] text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-normal text-sm ease-in bg-150 tracking-tight-rem bg-x-25"
-                        >
-                          Edit
-                        </button>
+                        <div class="product_quantity">
+                          {{ product.stockValue }}
+                        </div>
+                      </td>
+                      <td class="button_cell">
+                        <div class="table_btn_wrap">
+                          <button
+                            class="edit_btn inline-block px-5 py-2.5 mb-0 font-bold text-[var(-dark-color)] text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-normal text-sm ease-in bg-150 tracking-tight-rem bg-x-25"
+                          >
+                            Редагувати
+                          </button>
+                          <button class="delete_btn" @click="deleteProduct(product.id)">
+                            <CloseIcon />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -224,6 +266,10 @@
 </template>
 
 <script setup>
+// ICONS
+
+import CloseIcon from "~/assets/icons/close-icon.svg";
+
 import { onMounted, ref, watch } from "vue";
 // import SvgIcon from "@/components/shared/SvgIcon.vue";
 import { useModalStore } from "@store/modal-store";
@@ -241,17 +287,6 @@ const productElem = ref(null);
 // const productCategoryElem = ref(null);
 
 const activeGroup = ref("products");
-
-const openPopup = (modal) => {
-  switch (modal) {
-    case "AddProduct":
-      modalStore.showModal("AddProduct");
-      break;
-    case "AddCategory":
-      modalStore.showModal("AddCategory");
-      break;
-  }
-};
 
 watch(fetchedCategories, async () => {
   if (categoryElem.value) {
@@ -304,6 +339,24 @@ const showGroup = (group) => {
 //   });
 // };
 
+const deleteProduct = async (productId) => {
+  try {
+    const deleteProduct = await $fetch(`/api/products/${productId}`, {
+      method: "DELETE",
+      body: {
+        id: productId
+      }
+    });
+
+    if (deleteProduct.statusCode === 200) {
+      console.log(deleteProduct);
+      alert("Товар успішно видалено");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const fetchCategory = async () => {
   loadingCategoryState.value = true;
   try {
@@ -345,12 +398,12 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+@use "@/style/mixins.scss" as mixins;
 .product_section {
   height: 100vh;
   position: relative;
 
   .product_container {
-    // margin-inline: 10px;
     padding-bottom: 2px;
     display: flex;
     flex-direction: column;
@@ -526,7 +579,6 @@ onMounted(() => {
                 &_cell {
                   padding-left: 1.5rem;
                   padding-right: 1.5rem;
-                  // padding-top: 0.75rem;
                   padding-bottom: 0.75rem;
                   font-weight: 700;
                   text-align: left;
@@ -540,6 +592,7 @@ onMounted(() => {
                   font-size: 0.75rem;
                   letter-spacing: normal;
                   white-space: nowrap;
+                  text-align: center;
                   opacity: 0.7;
                 }
               }
@@ -584,11 +637,6 @@ onMounted(() => {
 
                   .skeleton_item {
                     background-color: #d1d5db;
-                    // background-color: #4b5563;
-
-                    // @media (prefers-color-scheme: dark) {
-                    //     background-color: #4b5563;
-                    // }
 
                     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
                   }
@@ -667,12 +715,12 @@ onMounted(() => {
                     background: rgb(245, 179, 179);
                   }
                   h6 {
-                    margin-bottom: 0;
-                    font-size: 1rem;
-                    font-weight: 700;
-                    line-height: 1.5;
-                    color: var(--text-grey);
-                    text-transform: capitalize;
+                    @include mixins.mainText;
+                    font-size: 0.8rem;
+                    max-width: 200px;
+                    white-space: normal;
+                    overflow-wrap: normal;
+                    word-break: normal;
                   }
                 }
                 td {
@@ -682,12 +730,29 @@ onMounted(() => {
                   border-bottom: 1px solid rgba(63, 63, 63, 0.7);
                   white-space: nowrap;
                   box-shadow: transparent;
-                  p {
-                    margin-bottom: 0;
-                    font-size: 0.875rem;
-                    font-weight: 600;
-                    line-height: 1.5;
-                    color: var(--text-grey);
+                  .price_option {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 5px;
+                  }
+                  .product_quantity {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    @include mixins.mainText;
+                    font-size: 0.8rem;
+                  }
+                  .product_option {
+                    width: 100%;
+                    height: auto;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    @include mixins.mainText;
+                    font-size: 0.8rem;
                   }
                   button {
                     display: inline-block;
@@ -712,6 +777,43 @@ onMounted(() => {
                     background-position-x: 25%;
                     letter-spacing: -0.0625rem;
                   }
+                  .edit_btn {
+                    @include mixins.accentBtn;
+                    padding: 4px 10px;
+                    font-size: 0.7rem;
+                  }
+                  .delete_btn {
+                    width: 25px;
+                    height: 25px;
+                    background: rgb(84, 28, 21);
+                    border: 1px solid rgb(140, 49, 37);
+                    border-radius: 3px;
+                    position: relative;
+                    cursor: pointer;
+                    padding: 0;
+                    svg {
+                      width: 20px;
+                      height: 20px;
+                      stroke: var(--text-color);
+                      padding: 5px;
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+                    }
+                    @media screen and (min-width: 1024px) {
+                      &:hover {
+                        background: rgb(108, 37, 27);
+                        border: 1px solid rgb(164, 59, 45);
+                      }
+                    }
+                  }
+                }
+                .button_cell .table_btn_wrap {
+                  display: flex;
+                  align-items: stretch;
+                  justify-content: center;
+                  gap: 10px;
                 }
               }
             }

@@ -135,6 +135,7 @@ import Modal from "~/components/Modals/Modal.vue";
 import { useModalStore } from "@/store/modal-store";
 // useIndexStore
 import { useIndexStore } from "@/store/index-store";
+import { markRaw } from "vue";
 
 const linksData = ref([
   {
@@ -142,56 +143,56 @@ const linksData = ref([
     activePage: "index",
     title: "Головна",
     linkPath: "/admin",
-    componentName: AdminHome
+    componentName: markRaw(AdminHome)
   },
   {
     id: 2,
     activePage: "analytics",
     title: "Аналітика",
     linkPath: "/admin/analytics",
-    componentName: AdminAnalytics
+    componentName: markRaw(AdminAnalytics)
   },
   {
     id: 3,
     activePage: "buyers",
     title: "Покупці",
     linkPath: "/admin/buyers",
-    componentName: AdminUsers
+    componentName: markRaw(AdminUsers)
   },
   {
     id: 4,
     activePage: "notifications",
     title: "Повідомлення",
     linkPath: "/admin/notifications",
-    componentName: AdminNotifications
+    componentName: markRaw(AdminNotifications)
   },
   {
     id: 5,
     activePage: "orders",
     title: "Замовлення",
     linkPath: "/admin/orders",
-    componentName: AdminOrders
+    componentName: markRaw(AdminOrders)
   },
   {
     id: 6,
     activePage: "payment",
     title: "Оплата",
     linkPath: "/admin/payments",
-    componentName: AdminPayments
+    componentName: markRaw(AdminPayments)
   },
   {
     id: 7,
     activePage: "products",
     title: "Товари",
     linkPath: "/admin/products",
-    componentName: AdminProducts
+    componentName: markRaw(AdminProducts)
   },
   {
     id: 8,
     activePage: "settings",
     title: "Налаштування",
     linkPath: "/admin/settings",
-    componentName: AdminSettings
+    componentName: markRaw(AdminSettings)
   }
 ]);
 

@@ -180,7 +180,7 @@
 
 <script setup>
 // import SvgIcon from "../shared/SvgIcon.vue";
-import { ref, onMounted, onUnmounted, defineEmits, watch } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
 import { useModalStore } from "@/store/modal-store";
 import { useAuthStore } from "@/store/auth-store";
 import gsap from "gsap";
