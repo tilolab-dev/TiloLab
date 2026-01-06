@@ -1,14 +1,14 @@
 <template>
-  <div class="delete_category_content">
-    <div class="delete_category_wrapper">
+  <div class="delete_product_content">
+    <div class="delete_product_wrapper">
       <div class="close_button_wrapper">
         <button @click="modalStore.closeModal">
           <CloseIcon />
         </button>
       </div>
-      <h2 class="delete_category_title">
-        Підтвердіть видалення категоріі !
-        <strong> {{ modalProps.item.translations[0].title }}. </strong>
+      <h2 class="delete_product_title">
+        Підтвердіть видалення товару !
+        <strong> {{ modalProps.product.translations[0].title }}. </strong>
       </h2>
 
       <div class="delete_note">
@@ -18,8 +18,8 @@
           </div>
           <div class="text_note">
             <p>
-              Категорію буде видалена без можливості відновлення. <br />
-              Ви впевнені, що хочете видалити категорію?
+              Товар буде видалений без можливості відновлення. <br />
+              Ви впевнені, що хочете видалити товар?
             </p>
           </div>
         </div>
@@ -34,43 +34,32 @@
 </template>
 
 <script setup>
+import { useModalStore } from "@/store/modal-store";
+import { useProductStore } from "@store/product-store";
 import CloseIcon from "~/assets/icons/close-icon.svg";
 import ErrorIcon from "~/assets/icons/error.svg";
 
-import { useModalStore } from "@/store/modal-store";
-
 const modalStore = useModalStore();
+const productStore = useProductStore();
 
 const modalProps = defineProps({
-  item: {
+  product: {
     type: Object,
     required: true
   }
 });
 
-console.log(modalProps.item, "props");
+const deleteProduct = async (productId) => {
+  await productStore.deleteProduct(productId);
 
-// const deleteCategory = async () => {
-//   try {
-//     const deleteCatResponse = await $fetch("/api/category", {
-//       method: "DELETE",
-//       body: {
-//         id: props.categoryId,
-//         name: props.categoryName
-//       }
-//     });
-
-//     console.log(deleteCatResponse, "readBody");
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+  modalStore.closeModal();
+};
 </script>
 
 <style lang="scss">
 @use "@/style/mixins.scss" as mixins;
 
-.delete_category_content {
+.delete_product_content {
   position: fixed;
   top: 30%;
   transform: translateY(-50%);
@@ -117,7 +106,7 @@ console.log(modalProps.item, "props");
   }
 }
 
-.delete_category_wrapper {
+.delete_product_wrapper {
   padding-block: 10px;
   display: flex;
   flex-direction: column;
@@ -127,7 +116,7 @@ console.log(modalProps.item, "props");
   width: 100%;
   height: 100%;
 
-  .delete_category_title {
+  .delete_product_title {
     width: 100%;
     @include mixins.subtitleText;
     font-size: 1rem;
