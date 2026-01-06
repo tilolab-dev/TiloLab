@@ -2,7 +2,7 @@
   <h1>Налаштування</h1>
 </template>
 
-<script>
+<script setup>
 definePageMeta({
   layout: "admin"
 });

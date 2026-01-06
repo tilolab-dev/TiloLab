@@ -1,5 +1,5 @@
 import { defineEventHandler } from "h3";
-import { addProduct, getProducts } from "@/server/services/productsServices";
+import { addProduct, deleteProduct, getProducts } from "@/server/services/productsServices";
 
 export default defineEventHandler((event) => {
   const method = event.node.req.method;
@@ -14,7 +14,7 @@ export default defineEventHandler((event) => {
       //     return;
       //     // return getProductById(event)
       // } else {
-      return getProducts(event);
+      return getProducts();
     // }
 
     case "POST":
@@ -23,8 +23,7 @@ export default defineEventHandler((event) => {
       // return await updateUser();
       break;
     case "DELETE":
-      // return await deleteUser();
-      break;
+      return deleteProduct(event);
     default:
       return { message: "Method not defined" };
   }

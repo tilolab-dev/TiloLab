@@ -1,8 +1,7 @@
 import { prisma } from "@/prisma/prisma";
 // import redisClient from "../../../../utils/redisClient";
 
-async function getProducts(event: any) {
-  console.log(event);
+async function getProducts() {
   // const page = 1;
   // const pageSize = 10;
 

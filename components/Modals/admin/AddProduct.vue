@@ -507,6 +507,7 @@ const clearModal = () => {
   discountState.value = false;
   productAvailability.value = false;
   productMaterialUk.value = "";
+  price.value = 0;
   //   productMaterialEn.value = "";
   //   productMaterialRu.value = "";
   productColorUk.value = "";
