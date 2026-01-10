@@ -2,10 +2,11 @@
   <section class="public_offer">
     <div class="container">
       <div class="legal_title">
-        <h1>Публічна оферта</h1>
+        <h1>Обмін і гарантія</h1>
       </div>
 
-      <div class="legal_content">
+      В розробці
+      <!-- <div class="legal_content">
         <ol class="legal_main_list">
           <li>
             <h3>Загальні положення</h3>
@@ -192,7 +193,7 @@
             </ol>
           </li>
         </ol>
-      </div>
+      </div> -->
     </div>
   </section>
 </template>
