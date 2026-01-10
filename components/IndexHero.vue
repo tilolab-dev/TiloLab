@@ -23,7 +23,9 @@
           до тіла, а не про сором.
         </h1>
 
-        <SharedAccentBtn class="hero_btn"> Обрати девайс </SharedAccentBtn>
+        <NuxtLink to="/products" class="hero_btn">
+          <SharedAccentBtn class="hero_btn"> Обрати девайс </SharedAccentBtn>
+        </NuxtLink>
       </div>
     </div>
   </section>
