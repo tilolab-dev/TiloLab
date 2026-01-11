@@ -8,7 +8,7 @@
     <main class="main_content">
       <div class="container">
         <div class="product-head">
-          <BreadCrumbs />
+          <BreadCrumbs :links="breadCrumbLinks" />
         </div>
         <!--MAIN -->
         <div class="products-wrapper">
@@ -44,12 +44,51 @@ const indexStore = useIndexStore();
 const currentModal = computed(() => modalStore.currentModal);
 const modalProps = computed(() => modalStore.modalProps);
 
-// const fetchedProducts = ref([]);
-
 const fetchedAllCategories = ref([]);
 
 const fetchCategory = computed(() => indexStore.fetchedCategories);
 fetchedAllCategories.value = fetchCategory.value;
+
+const route = useRoute();
+
+const breadCrumbLinks = computed(() => {
+  const links = [];
+  const pathSegments = route.path.split("/").filter((segment) => segment);
+
+  // Handle products pages
+  if (route.path.startsWith("/products")) {
+    // Add "Продукти" link
+    links.push({ name: "Продукти", url: "/products" });
+
+    // If we have a category
+    if (pathSegments.length > 1) {
+      const categoryId = pathSegments[1];
+      const category = indexStore.fetchedCategories.find(
+        (cat) => cat.group.toLowerCase() === categoryId.toLowerCase()
+      );
+
+      if (category) {
+        links.push({
+          name: category.translations[0]?.title || categoryId,
+          url: `/products/${categoryId}`
+        });
+      }
+
+      // If we have a product ID, add it as non-link (last item)
+      if (pathSegments.length > 2) {
+        const productId = pathSegments[2];
+        // For product pages, we could fetch product name here if needed
+        // For now, using the product ID
+        links.push({
+          name: productId,
+          url: route.fullPath
+        });
+      }
+    }
+  }
+
+  return links;
+});
 
 // const categories = ref(true);
 // const filters = ref(true);
