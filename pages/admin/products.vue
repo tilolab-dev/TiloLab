@@ -207,9 +207,11 @@
                     <tr v-for="(product, i) in fetchedProducts" :key="i">
                       <td class="table_row">
                         <div class="table_main">
-                          <img :src="product.img[0].path" alt="item" />
+                          <img v-if="product.img?.length" :src="product.img[0].path" alt="item" />
+                          <div v-else class="fallback_img"></div>
                           <h6>
-                            {{ product.translations[0].title }}
+                            <!-- {{ product.translations[0].title }} -->
+                            {{ product.translations?.[0]?.title ?? "" }}
                           </h6>
                         </div>
                       </td>
@@ -243,7 +245,7 @@
                       </td>
                       <td>
                         <div class="product_option">
-                          {{ product.category.group }}
+                          {{ product.category?.group ?? "" }}
                         </div>
                       </td>
                       <td>
@@ -253,7 +255,12 @@
                       </td>
                       <td class="button_cell">
                         <div class="table_btn_wrap">
-                          <button class="edit_btn">Редагувати</button>
+                          <button
+                            class="edit_btn"
+                            @click="modalStore.showModal('UpdateProduct', { product })"
+                          >
+                            Редагувати
+                          </button>
                           <button
                             class="delete_btn"
                             @click="modalStore.showModal('DeleteProduct', { product })"
@@ -669,10 +676,17 @@ onMounted(async () => {
                     font-size: 0.875rem;
                     color: #ffffff;
                     transition: all 0.2s ease-in-out;
-                    border-radius: 9999px;
+                    border-radius: 50%;
                     height: 3rem;
                     width: 3rem;
                     background: rgb(245, 179, 179);
+                  }
+                  .fallback_img {
+                    height: 3rem;
+                    width: 3rem;
+                    background: rgb(245, 179, 179);
+                    border-radius: 50%;
+                    margin-right: 10px;
                   }
                   h6 {
                     @include mixins.mainText;

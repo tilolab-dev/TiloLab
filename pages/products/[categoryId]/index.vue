@@ -31,7 +31,17 @@
       </h1>
     </div>
 
-    <SharedLoader v-if="fetchedProducts.length === 0" />
+    <ClientOnly v-if="loaderState">
+      <div class="loader_cards">
+        <div v-for="(card, i) in 6" :key="i" class="loader_cards_item">
+          <SharedLoader />
+        </div>
+      </div>
+    </ClientOnly>
+
+    <div v-else-if="fetchedProducts.length === 0" class="empty_data_layout">
+      <h3>В цій категорії поки ще немае товарів...</h3>
+    </div>
 
     <ul v-else class="product_wrapper">
       <li v-for="product in fetchedProducts" :key="product.id">
@@ -78,6 +88,7 @@ const fetchedProducts = ref([]);
 const categoryName = ref("");
 const currentPage = ref(1);
 const totalPages = ref(12); // Mock total pages for demonstration
+const loaderState = ref(false);
 
 const indexStore = useIndexStore();
 const productStore = useProductStore();
@@ -99,15 +110,20 @@ const currentCategory = computed(() => {
 });
 
 onMounted(async () => {
+  loaderState.value = true;
   const categoryId = currentCategory.value.id;
 
   try {
     const getProductsByCategory = await $fetch(`/api/category?categoryId=${categoryId}`);
 
     fetchedProducts.value = getProductsByCategory.data;
+    // console.log(getProductsByCategory);
   } catch (err) {
     console.log(err);
   }
+
+  console.log(fetchedProducts.value);
+  loaderState.value = false;
 });
 
 const handlePageChange = (page) => {
@@ -122,6 +138,8 @@ definePageMeta({
 </script>
 
 <style lang="scss">
+@use "@/style/mixins.scss" as mixins;
+
 .category_product_wrapper {
   padding: 20px 0 150px;
   position: relative;
@@ -134,6 +152,32 @@ definePageMeta({
     font-weight: 700;
     font-size: 2rem;
   }
+}
+
+.loader_cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  &_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 30dvh;
+    background: rgb(29, 27, 29);
+  }
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.empty_data_layout {
+  width: 100%;
+  height: 50dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include mixins.subtitleText;
 }
 .product_wrapper {
   display: grid;

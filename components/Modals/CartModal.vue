@@ -12,28 +12,66 @@
             <div v-if="cartStore.cart.length === 0" class="empty_cart">
               <p>Кошик порожній</p>
             </div>
-            <div v-for="(item, i) in cartStore.cart" v-else :key="i" class="cart_item">
+            <div
+              v-for="item in cartStore.cart"
+              v-else
+              :key="item.product.id"
+              ref="items"
+              :data-id="item.product.id"
+              class="cart_item"
+            >
               <div class="cart_item_main">
                 <div class="details">
-                  <img :src="item.img[0].path" alt="item-img" />
+                  <img :src="item.product.img?.[0]?.path" alt="item-img" />
                   <div class="cart_item_description">
                     <p>
-                      {{ item.translations[0].title }}
+                      {{ item.product.translations[0].title }}
                     </p>
-                    <span>
-                      {{ item.productPrice }}
+                    <span v-if="item.quantity === 1">
+                      {{ item.product.productPrice }}
                       грн.
+                    </span>
+                    <span v-else>
+                      {{
+                        `${item.quantity}x ${item.product.productPrice} = ${item.productTotalPrice}`
+                      }}
+                      грн
                     </span>
                   </div>
                 </div>
 
-                <button class="remove_product" @click="cartStore.removeProduct(item)">x</button>
+                <!-- <button class="remove_product" @click="cartStore.removeProduct(item)">x</button> -->
+                <button class="remove_product" @click="removeItem(item.product.id)">x</button>
               </div>
               <div class="cart_item_counter">
                 <div class="cart_item_counter_content">
-                  <button class="counter_btn">-</button>
-                  <span class="counter_value"> 1 </span>
-                  <button class="counter_btn">+</button>
+                  <button
+                    :class="item.quantity === 1 ? 'counter_btn_disabled' : ''"
+                    class="counter_btn"
+                    @click="decrement(item)"
+                  >
+                    -
+                  </button>
+                  <!-- v-model.number="item.quantity" -->
+
+                  <input
+                    v-model="item.quantity"
+                    class="counter_value"
+                    type="number"
+                    min="1"
+                    @blur="onBlur(item)"
+                  />
+
+                  <!-- <label :for="`counter-input-${item.product.id}`" class="counter_value">{{
+                    item.quantity
+                  }}</label> -->
+
+                  <!-- <span class="counter_value"> {{ item.quantity }} </span> -->
+                  <button class="counter_btn" @click="increment(item)">
+                    <!-- @click="cartStore.updateProduct(item.product.id, 'increment')" -->
+
+                    +
+                  </button>
                 </div>
               </div>
             </div>
@@ -43,7 +81,7 @@
         <div v-if="cartStore.cart.length !== 0" class="cart_bottom">
           <div class="cart_summary">
             <span class="cart_summary_text"> загалом: </span>
-            <span> 0 </span>
+            <span> {{ cartStore.totalPrice }} грн </span>
           </div>
 
           <div class="cart_buttons">
@@ -66,10 +104,64 @@ import gsap from "gsap";
 
 const modalStore = useModalStore();
 const cartStore = useCartStore();
+const items = ref([]);
 
 const cartRef = ref(null);
 
+// const onBlur = (item) => {
+//   if (!item.quantity || item.quantity < 1) {
+//     item.quantity = 1;
+//   }
+
+//   const newPrice = item.quantity * Number(item.product.productPrice);
+
+//   cartStore.updateProduct(item.product.id, item.quantity, newPrice);
+// };
+
+const onBlur = (item) => {
+  if (!item.quantity || item.quantity < 1) {
+    item.quantity = 1;
+  }
+  recalc(item);
+};
+
+const decrement = (item) => {
+  if (item.quantity > 1) {
+    item.quantity--;
+    recalc(item);
+  }
+};
+
+const increment = (item) => {
+  item.quantity++;
+  recalc(item);
+};
+
+const recalc = (item) => {
+  const newPrice = item.quantity * Number(item.product.productPrice);
+  cartStore.updateProduct(item.product.id, item.quantity, newPrice);
+};
+
+// const updateProductHandler = (productId, quantity, newPrice) => {
+// console.log(productId, quantity, newPrice);
+// item, operator
+// const product = cartStore.cart.find((el) => el.product.id === item.id);
+// const productId = product.product.id;
+// const totalPrice = product.productTotalPrice;
+// const quantity = product.quantity;
+// const increment = () => {
+//   console.log(totalPrice, quantity, productId);
+//   console.log("increment function");
+//   cartStore.updateProduct(productId);
+// };
+// const decrement = () => {
+//   console.log("decrement function");
+// };
+// operator === "increment" ? increment() : decrement();
+// };
+
 onMounted(() => {
+  console.log(cartStore.cart);
   gsap.fromTo(
     cartRef.value,
     {
@@ -83,7 +175,46 @@ onMounted(() => {
       ease: "power3.out"
     }
   );
+  gsap.from(items.value, {
+    y: -40,
+    delay: 0.3,
+    opacity: 0,
+    duration: 0.6,
+    ease: "power3.out",
+    stagger: 0.1
+  });
 });
+
+const removeItem = (id) => {
+  const el = items.value.find((e) => +e.dataset.id === id);
+
+  if (!el) {
+    console.log("id not found");
+    return;
+  }
+  // console.log("click2", el, id);
+
+  gsap.to(el, {
+    x: 120,
+    opacity: 0,
+    duration: 0.3,
+    ease: "power2.in",
+    onComplete() {
+      gsap.to(el, {
+        height: 0,
+        marginTop: 0,
+        marginBottom: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
+        duration: 0.25,
+        ease: "power2.in",
+        onComplete() {
+          cartStore.removeProduct(id);
+        }
+      });
+    }
+  });
+};
 
 const closeCart = () => {
   gsap.to(cartRef.value, {
@@ -119,7 +250,7 @@ const goToCheckout = () => {
   width: clamp(300px, 20vw, 400px);
   border: 1px solid #302029;
   background: var(--bg-color);
-  padding: 20px;
+  padding: 20px 0 20px 20px;
 
   min-height: 500px;
   max-height: 80vh;
@@ -130,6 +261,8 @@ const goToCheckout = () => {
 
   display: flex;
   flex-direction: column;
+
+  overflow: hidden;
 }
 .cart {
   color: var(--text-color);
@@ -160,6 +293,7 @@ const goToCheckout = () => {
   align-items: center;
   width: 100%;
   height: fit-content;
+  padding-right: 20px;
   z-index: 1;
 
   h1 {
@@ -183,16 +317,17 @@ const goToCheckout = () => {
 }
 
 .cart_content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: flex-start;
+  // justify-content: flex-start;
+  display: block;
   width: 100%;
   height: fit-content;
   max-height: 55dvh;
   padding-bottom: 2rem;
+  padding-right: 20px;
   overflow-y: auto;
-  gap: 1rem;
 }
 
 .empty_cart {
@@ -211,14 +346,16 @@ const goToCheckout = () => {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  padding-bottom: 15px;
+  overflow: hidden;
   gap: 1rem;
 
   &_main {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    height: fit-content;
-    overflow: hidden;
+    align-items: stretch;
+    // height: fit-content;
+    // overflow: hidden;
     width: 100%;
     gap: 0.5rem;
 
@@ -245,10 +382,10 @@ const goToCheckout = () => {
     }
 
     img {
-      width: 35%;
-      height: 35%;
+      width: 80px;
+      height: 80px;
       aspect-ratio: 1 / 1;
-      object-fit: contain;
+      object-fit: cover;
     }
 
     p {
@@ -258,6 +395,7 @@ const goToCheckout = () => {
 
     span {
       font-size: 1rem;
+      white-space: nowrap;
     }
   }
 
@@ -275,9 +413,15 @@ const goToCheckout = () => {
       gap: 0.8rem;
     }
 
+    // .counter_input {
+    //   display: none;
+    // }
+
     .counter_value {
       font-size: 0.8rem;
       font-weight: 600;
+      width: 30px;
+      text-align: center;
     }
   }
 
@@ -309,6 +453,7 @@ const goToCheckout = () => {
   align-items: center;
   width: 100%;
   height: fit-content;
+  padding-right: 20px;
   gap: 1rem;
 
   &_text {

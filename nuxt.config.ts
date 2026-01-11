@@ -25,9 +25,13 @@ export default defineNuxtConfig({
   runtimeConfig: {
     api_secret_path: process.env.API_SECRET_PATH,
     api_secret_key: process.env.API_SECRET_KEY,
+    api_service_role_key: process.env.API_SERVICE_ROLE_KEY,
+    bank_api_key: process.env.BANK_API_KEY,
+    nova_post_api: process.env.NEW_POST_API,
 
     public: {
-      api_base_url: process.env.API_BASE_URL
+      api_base_url: process.env.API_BASE_URL,
+      nova_post_uri: process.env.NOVA_POST_URI
     }
   },
   css: [
