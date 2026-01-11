@@ -32,7 +32,7 @@ const productStore = useProductStore();
 
 const route = useRoute();
 
-const categoryId = route.params.categoryId || "dlya-neyi";
+const categoryId = route.params.categoryId || "test-category";
 
 categoryName.value = categoryId;
 
@@ -43,12 +43,14 @@ const currentCategory = computed(() => {
 });
 
 onMounted(async () => {
-  const categoryId = currentCategory?.value?.id || "dlya-neyi";
+  const categoryId = currentCategory?.value?.id || "test-category";
 
   try {
     const getProductsByCategory = await $fetch(`/api/category?categoryId=${categoryId}`);
 
     fetchedProducts.value = getProductsByCategory.data;
+
+    console.log(fetchedProducts.value);
   } catch (err) {
     console.log(err);
   }
