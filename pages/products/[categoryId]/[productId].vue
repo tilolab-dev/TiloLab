@@ -1,169 +1,173 @@
 <template>
   <div class="product_id">
     <div class="container">
-      <div
-        v-if="!loadState && productStore.selectedProducts?.translations"
-        class="product_id_wrapper"
-      >
+      <div class="product_id_wrapper">
         <BreadCrumbs :links="breadCrumbLinks" />
 
-        <div v-if="!loadState" class="product_id_main">
-          <div v-if="slides.length > 0" class="product_id_preview">
-            <div class="main_img">
-              <ClientOnly>
-                <swiper-container
-                  ref="containerMainRef"
-                  :key="swiperKey"
-                  class="swiper-main"
-                  :slides-per-view="1"
-                  :space-between="10"
-                  thumbs-swiper=".swiper-gallery"
-                >
-                  <swiper-slide v-for="slide in slides" :key="slide.id">
-                    <NuxtImg :src="slide.src" :alt="slide.title" />
-                  </swiper-slide>
-                </swiper-container>
-              </ClientOnly>
-            </div>
+        <SharedLoader v-if="loadState" />
 
-            <div v-if="slides.length > 1" class="img_gallery">
-              <ClientOnly>
-                <swiper-container
-                  ref="containerGalleryRef"
-                  :key="swiperKey"
-                  class="swiper-gallery"
-                  :slides-per-view="3"
-                  :space-between="10"
-                  :watch-slides-progress="true"
-                  :free-mode="true"
-                  :breakpoints="{
-                    320: { slidesPerView: 3, spaceBetween: 8 },
-                    480: { slidesPerView: 2.5, spaceBetween: 10 },
-                    1024: { slidesPerView: 3.1, spaceBetween: 10 }
-                  }"
-                >
-                  <swiper-slide v-for="slide in slides" :key="slide.id">
-                    <NuxtImg :src="slide.src" :alt="slide.title" />
-                  </swiper-slide>
-                </swiper-container>
-              </ClientOnly>
-            </div>
-          </div>
-          <div v-else class="img_gallery_placeholder">
-            <p>No images available</p>
-          </div>
-
-          <div class="product_id_info">
-            <div class="product_id_info_main">
-              <h3>
-                {{ productStore.selectedProducts.translations[0].title }}
-              </h3>
-              <div class="product_price">
-                <span> {{ productStore.selectedProducts.productPrice }} грн </span>
-                <span
-                  v-if="productStore.selectedProducts.discountPercent != 0"
-                  class="discount_accent"
-                >
-                  {{ discountedPrice }} грн
-                </span>
-              </div>
-
-              <div class="wish_list">
-                <HeartIcon />
-
-                <span> Додати до списку бажань </span>
-              </div>
-
-              <div class="availability">
-                <CheckIcon />
-
-                <span> {{ productStore.selectedProducts.stockValue }} в наявності </span>
-              </div>
-
-              <div class="product_quantity">
-                <div class="product_quantity_head">Кількість товару:</div>
-                <div class="product_quantity_counter">
-                  <button
-                    :class="counter === 1 ? 'counter_disabled' : ''"
-                    @click="counter > 1 ? counter-- : counter"
+        <template v-else>
+          <div v-if="productStore.selectedProducts?.translations" class="product_id_main">
+            <div v-if="slides.length > 0" class="product_id_preview">
+              <div class="main_img">
+                <ClientOnly>
+                  <swiper-container
+                    ref="containerMainRef"
+                    :key="swiperKey"
+                    class="swiper-main"
+                    :slides-per-view="1"
+                    :space-between="10"
+                    thumbs-swiper=".swiper-gallery"
                   >
-                    <MinusIcon />
-                  </button>
-                  <input
-                    v-model="counter"
-                    class="quantity"
-                    type="number"
-                    min="1"
-                    @blur="counterValidate"
-                  />
-                  <button @click="counter">
-                    <PlusIcon />
-                  </button>
+                    <swiper-slide v-for="slide in slides" :key="slide.id">
+                      <NuxtImg :src="slide.src" :alt="slide.title" />
+                    </swiper-slide>
+                  </swiper-container>
+                </ClientOnly>
+              </div>
+
+              <div v-if="slides.length > 1" class="img_gallery">
+                <ClientOnly>
+                  <swiper-container
+                    ref="containerGalleryRef"
+                    :key="swiperKey"
+                    class="swiper-gallery"
+                    :slides-per-view="3"
+                    :space-between="10"
+                    :watch-slides-progress="true"
+                    :free-mode="true"
+                    :breakpoints="{
+                      320: { slidesPerView: 3, spaceBetween: 8 },
+                      480: { slidesPerView: 2.5, spaceBetween: 10 },
+                      1024: { slidesPerView: 3.1, spaceBetween: 10 }
+                    }"
+                  >
+                    <swiper-slide v-for="slide in slides" :key="slide.id">
+                      <NuxtImg :src="slide.src" :alt="slide.title" />
+                    </swiper-slide>
+                  </swiper-container>
+                </ClientOnly>
+              </div>
+            </div>
+            <div v-else class="img_gallery_placeholder">
+              <p>No images available</p>
+            </div>
+
+            <div class="product_id_info">
+              <div class="product_id_info_main">
+                <h3>
+                  {{ productStore.selectedProducts.translations[0].title }}
+                </h3>
+                <div class="product_price">
+                  <span> {{ productStore.selectedProducts.productPrice }} грн </span>
+                  <span
+                    v-if="productStore.selectedProducts.discountPercent != 0"
+                    class="discount_accent"
+                  >
+                    {{ discountedPrice }} грн
+                  </span>
+                </div>
+
+                <div class="wish_list">
+                  <HeartIcon />
+
+                  <span> Додати до списку бажань </span>
+                </div>
+
+                <div class="availability">
+                  <CheckIcon />
+
+                  <span> {{ productStore.selectedProducts.stockValue }} в наявності </span>
+                </div>
+
+                <div class="product_quantity">
+                  <div class="product_quantity_head">Кількість товару:</div>
+                  <div class="product_quantity_counter">
+                    <button
+                      :class="counter === 1 ? 'counter_disabled' : ''"
+                      @click="counter > 1 ? counter-- : counter"
+                    >
+                      <MinusIcon />
+                    </button>
+                    <input
+                      v-model="counter"
+                      class="quantity"
+                      type="number"
+                      min="1"
+                      @blur="counterValidate"
+                    />
+                    <button @click="counter">
+                      <PlusIcon />
+                    </button>
+                  </div>
+                </div>
+
+                <div class="cart_btn">
+                  <button @click="addToCart">Додати в кошик</button>
                 </div>
               </div>
 
-              <div class="cart_btn">
-                <button @click="addToCart">Додати в кошик</button>
+              <div class="product_id_info_characteristics">
+                <div class="head">
+                  <h3>Характеристики</h3>
+                </div>
+
+                <ul>
+                  <li>
+                    <span>
+                      <strong> Колір: </strong>
+                      {{ productStore.selectedProducts.translations[0].productColor }}
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <strong> Матеріал: </strong>
+                      {{ productStore.selectedProducts.translations[0].productMaterial }}
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <strong> Розмір: </strong>
+                      {{ productStore.selectedProducts.productSize }}
+                    </span>
+                  </li>
+                  <li>
+                    <span>
+                      <strong> Країна виробник: </strong>
+                      {{ productStore.selectedProducts.translations[0].productManufacture }}
+                    </span>
+                  </li>
+                </ul>
               </div>
-            </div>
 
-            <div class="product_id_info_characteristics">
-              <div class="head">
-                <h3>Характеристики</h3>
-              </div>
-
-              <ul>
-                <li>
-                  <span>
-                    <strong> Колір: </strong>
-                    {{ productStore.selectedProducts.translations[0].productColor }}
-                  </span>
-                </li>
-                <li>
-                  <span>
-                    <strong> Матеріал: </strong>
-                    {{ productStore.selectedProducts.translations[0].productMaterial }}
-                  </span>
-                </li>
-                <li>
-                  <span>
-                    <strong> Розмір: </strong>
-                    {{ productStore.selectedProducts.productSize }}
-                  </span>
-                </li>
-                <li>
-                  <span>
-                    <strong> Країна виробник: </strong>
-                    {{ productStore.selectedProducts.translations[0].productManufacture }}
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            <div class="product_id_info_description">
-              <div class="head" @click="toggleDescription">
-                <h3>Опис</h3>
-                <button
+              <div class="product_id_info_description">
+                <div class="head" @click="toggleDescription">
+                  <h3>Опис</h3>
+                  <button
+                    :class="{
+                      description_collapsed: isDescriptionCollapsed
+                    }"
+                  >
+                    <AngleDown />
+                  </button>
+                </div>
+                <p
+                  class="description_text"
                   :class="{
                     description_collapsed: isDescriptionCollapsed
                   }"
                 >
-                  <AngleDown />
-                </button>
+                  {{ productStore.selectedProducts.translations[0].productDescription }}
+                </p>
               </div>
-              <p
-                class="description_text"
-                :class="{
-                  description_collapsed: isDescriptionCollapsed
-                }"
-              >
-                {{ productStore.selectedProducts.translations[0].productDescription }}
-              </p>
             </div>
           </div>
-        </div>
 
-        <SharedLoader v-else />
+          <div v-else class="product_id_not_found">
+            <h2>Продукт не знайдено</h2>
+            <NuxtLink to="/">Перейти на головну</NuxtLink>
+          </div>
+        </template>
 
         <ProductPagePopular />
       </div>
@@ -288,9 +292,9 @@ const fetchProductById = async () => {
   try {
     const res = await $fetch(`/api/products/${routeId}`);
 
-    if (!res?.data) {
-      return navigateTo("/404");
-    }
+    // if (!res?.data) {
+    //   return navigateTo("/404");
+    // }
 
     productStore.setSelectedProducts(res.data);
 
@@ -299,6 +303,8 @@ const fetchProductById = async () => {
     return productImages.value;
   } catch {
     // Handle error silently or show user feedback
+  } finally {
+    loadState.value = false;
   }
 };
 
@@ -309,14 +315,14 @@ const addToCart = () => {
 };
 
 onMounted(async () => {
-  if (productStore?.selectedProducts?.id === routeId) {
-    loadState.value = false;
-  } else if (routeId) {
-    await fetchProductById();
-    loadState.value = false;
-  } else {
-    navigateTo("/404");
-  }
+  // if (productStore?.selectedProducts?.id === routeId) {
+  //   loadState.value = false;
+  // } else if (routeId) {
+  await fetchProductById();
+  // loadState.value = false;
+  // } else {
+  //   navigateTo("/404");
+  // }
 
   // Force re-initialization of swipers when route changes
   swiperKey.value += 1;
@@ -701,6 +707,14 @@ onUnmounted(() => {
       }
     }
   }
+}
+
+.product_id_not_found {
+  text-align: center;
+  margin: 2rem auto;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--text-color);
 }
 
 .swiper-main {

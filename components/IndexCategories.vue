@@ -18,7 +18,7 @@
 
       <div class="categories_cards">
         <SharedSwiperSlider :overflow-visible="true">
-          <swiper-slide v-for="(slide, idx) in slides" :key="idx" class="card">
+          <swiper-slide v-for="(slide, idx) in fetchCategories" :key="idx" class="card">
             <NuxtLink :to="`/products/${slide.group.toLowerCase()}`" class="card">
               <NuxtImg
                 v-if="slide.categoryImg"
@@ -48,22 +48,18 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { useIndexStore } from "@/store/index-store";
+
+const indexStore = useIndexStore();
 const categories = ref([]);
+const loaderState = ref(false);
 
 const slides = computed(() => categories.value);
 
+const fetchCategories = computed(() => indexStore.fetchedCategories);
+
 onMounted(async () => {
-  try {
-    const getCategories = await $fetch("/api/category");
-
-    if (getCategories && getCategories.data) {
-      categories.value = getCategories.data;
-
-      console.log(categories.value);
-    }
-  } catch (err) {
-    console.log(err);
-  }
+  loaderState.value = fetchCategories?.value?.length > 0;
 });
 </script>
 
