@@ -123,7 +123,7 @@ const categoryTextUk = ref("");
 const categoryVisible = ref(false);
 
 const handleFileUpload = (event) => {
-  const accessedFormat = ["svg", "png"];
+  const accessedFormat = ["svg", "png", "webp"];
   const selectedFile = event.target.files[0];
   const accessedFile = accessedFormat.some((item) => selectedFile.name.includes(item));
 

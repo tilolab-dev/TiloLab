@@ -18,11 +18,7 @@
 <script setup>
 import { useModalStore } from "@/store/modal-store";
 
-// import LangModal from '~/components/Modals/LangModal.vue';
-// import ThemeModal from '~/components/Modals/ThemeModal.vue';
-// import ProductToCart from './ProductToCart.vue';
 import AuthModal from "./AuthModal.vue";
-// import ChangeUserData from './ChangeUserData.vue';
 import CartModal from "./CartModal.vue";
 import WishlistModal from "../WishlistModal.vue";
 import BurgerMenu from "./BurgerMenu.vue";
@@ -31,8 +27,8 @@ import LogOut from "./LogOut.vue";
 // ADMIN
 
 import AddProduct from "@/components/Modals/admin/AddProduct.vue";
-// import AddCategory from '@/components/Modals/admin/AddCategory.vue';
 import AddCategory from "@/components/Modals/admin/AddCategory.vue";
+import UpdateProduct from "./admin/UpdateProduct.vue";
 import DeleteCategory from "@/components/Modals/admin/DeleteCategory.vue";
 import DeleteProduct from "./admin/DeleteProduct.vue";
 
@@ -50,6 +46,7 @@ const modalComponents = {
   AddCategory,
   DeleteCategory,
   DeleteProduct,
+  UpdateProduct,
   //   ProductToCart,
   AuthModal,
   BurgerMenu,

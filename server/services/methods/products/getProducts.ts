@@ -28,7 +28,11 @@ async function getProducts() {
           }
         },
         translations: true,
-        category: true
+        category: {
+          include: {
+            translations: true
+          }
+        }
       }
     });
 

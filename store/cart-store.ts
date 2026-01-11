@@ -1,47 +1,64 @@
 import { defineStore } from "pinia";
+import type { IProduct } from "@/types/product";
 
-// interface IProduct {
-//   price: string;
-//   quantity: string;
-// }
+interface ICartItem {
+  product: IProduct;
+  quantity: number;
+  productTotalPrice: number;
+}
 
 export const useCartStore = defineStore("cart", {
   state: () => ({
-    cart: [] as any,
+    cart: [] as ICartItem[],
     totalPrice: 0
   }),
 
   getters: {},
   actions: {
-    addProduct(product: any) {
-      this.cart.push(product);
-      this.totalPrice = this.cart.reduce(
-        (acc: number, product: any) => acc + product.totalPrice,
-        0
-      );
-      this.saveCart();
-    },
-    removeProduct(product: any) {
-      this.cart = this.cart.filter((item: any) => item.id !== product.id);
-      this.totalPrice = this.cart.reduce(
-        (acc: number, product: any) => acc + product.totalPrice,
-        0
-      );
-      this.saveCart();
-    },
-    updateProduct(product: any, newPrice: number, newQuantity: number) {
-      const foundProduct: any = this.cart.find((item: any) => item.id === product.id);
-
-      if (foundProduct) {
-        ((foundProduct.totalPrice = newPrice), (foundProduct.quantityProducts = newQuantity));
-
-        this.totalPrice = this.cart.reduce(
-          (acc: number, product: any) => acc + product.totalPrice,
-          0
-        );
-
-        this.saveCart();
+    addProduct(product: IProduct, quantity: number, productTotalPrice: number) {
+      const item = this.cart.find((el) => el.product.id === product.id);
+      if (item) {
+        item.quantity += quantity;
+        item.productTotalPrice += productTotalPrice;
+      } else {
+        this.cart.push({
+          product,
+          quantity,
+          productTotalPrice
+        });
       }
+      this.totalPrice = this.cart.reduce(
+        (acc: number, item: ICartItem) => acc + item.productTotalPrice,
+        0
+      );
+      this.saveCart();
+    },
+    removeProduct(productId: number) {
+      // this.cart = [];
+
+      // productId: number
+      // console.log(this.cart, "1");
+
+      this.cart = this.cart.filter((item: any) => item.product.id !== productId);
+
+      // console.log(this.cart, "2");
+      this.totalPrice = this.cart.reduce(
+        (acc: number, item: ICartItem) => acc + +item.product.productPrice * item.quantity,
+        0
+      );
+      this.saveCart();
+    },
+    updateProduct(productId: number, newQuantity: number, newPrice: number) {
+      const foundProduct: any = this.cart.find((item: any) => item.product.id === productId);
+
+      foundProduct.productTotalPrice = newPrice;
+
+      this.totalPrice = this.cart.reduce(
+        (acc: number, item: ICartItem) => acc + +item.product.productPrice * item.quantity,
+        0
+      );
+
+      this.saveCart();
     },
     clearCart() {
       this.cart = [];
