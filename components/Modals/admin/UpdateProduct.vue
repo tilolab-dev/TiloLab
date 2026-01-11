@@ -3,14 +3,21 @@
     <div v-if="loaderState" class="loader_content">
       <SharedLoader />
     </div>
+
+    <!-- <div  class="error_content"> -->
+    <SharedError v-if="errorState.error" @close="closeError" @confirm="confirmError">
+      <template #title> {{ errorState.title }}</template>
+      <template #text1>{{ errorState.text1 }}</template>
+      <template #text2>{{ errorState.text2 }}</template>
+    </SharedError>
+    <!-- </div> -->
+
     <div class="add_product">
       <div class="modal_wrapper">
         <div class="add_image">
           <div class="add_image_content">
-            <div
-              class="add_image_wrapper flex items-center justify-center flex-col relative top-10 w-4/5"
-            >
-              <div class="picture_container relative mb-5">
+            <div class="add_image_wrapper">
+              <div class="picture_container">
                 <div class="picture first"></div>
                 <div class="picture second"></div>
                 <div class="picture third"></div>
@@ -38,6 +45,27 @@
                   )
                 "
               />
+
+              <ul class="current_product_files">
+                <li v-for="(img, i) in currentProductFiles" :key="i">
+                  <div class="img_wrapper">
+                    <button
+                      @click="
+                        errorHandler(
+                          'Видалити зображення',
+                          'Файл буде видалено остаточно,',
+                          'Ви впевнені що хочете видалити файл?',
+                          'removeProductImgDB',
+                          img
+                        )
+                      "
+                    >
+                      <CloseIcon />
+                    </button>
+                    <img :src="img.path" alt="current_file" />
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
 
@@ -72,7 +100,15 @@
 
           <div class="header_description">
             <span class="default_text">
-              Основна інформація картки товару. Поля відмічені "
+              Основна інформація картки товару
+              <!-- </span>
+                        <span class="
+                            text-[var(--dark-color)]
+                            font-sm
+                            text-base
+                        "> -->
+
+              Поля відмічені "
               <strong class="accent_text text-red-500"> * </strong>
               " обовʼязкові для заповнення
             </span>
@@ -82,13 +118,15 @@
               <div class="main_option_content">
                 <h4 class="default_text">Оберіть категорію товару:<strong> * </strong></h4>
                 <select id="wholesaleType" v-model="productCategory" name="wholesaleType">
-                  <option disabled selected value>-- Виберіть категорію --</option>
+                  <option selected value>
+                    -- {{ modalProps.product.category.translations[0].title }} --
+                  </option>
                   <option
                     v-for="(category, index) in fetchedCategories"
                     :key="index"
                     :value="category.id"
                   >
-                    {{ category.itemLanguage.title }}
+                    {{ category.translations[0].title }}
                   </option>
                 </select>
               </div>
@@ -259,6 +297,46 @@
               </div>
             </div>
 
+            <div v-if="currentOptionFiles.length > 0" class="option add_new">
+              <h4 class="option_title">Опції товару:</h4>
+
+              <div class="added_options">
+                <ul class="added_options_list">
+                  <li
+                    v-for="(option, index) in currentOptionFiles"
+                    :key="index"
+                    class="added_options_item"
+                  >
+                    <img :src="option.optionImg" alt="img" width="25px" />
+                    <div class="separator"></div>
+                    <span>
+                      {{ option.translations[0].optionInfo }}
+                    </span>
+                    <div class="separator"></div>
+                    <span v-if="option.optionPrice !== 0">
+                      {{ option.optionPrice }}
+                      UAH
+                    </span>
+                    <div v-if="option.optionPrice !== 0" class="separator"></div>
+
+                    <button
+                      @click="
+                        errorHandler(
+                          'Видалити опцію',
+                          'Опцію буде видалено остаточно',
+                          `Ви впевнені, що бажаєте видалити опцію ${option.translations[0].optionInfo} з товару?`,
+                          'removeOptionDB',
+                          option
+                        )
+                      "
+                    >
+                      <SvgIcon name="close-btn" size="micro" fill="rgb(25, 25, 25)" />
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
             <div class="option add_new">
               <h4 class="option_title">Додати опцію товару (макс. 10)</h4>
               <div class="add_new_wrap">
@@ -374,16 +452,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted, toRaw } from "vue";
-// import { transliterate } from "@/utils/transliterate";
-
-// import bagImg from '@/public/img/bag.png';
-
+import { ref, onMounted, toRaw, reactive } from "vue";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
+import CloseIcon from "~/assets/icons/close-icon.svg";
 import { useModalStore } from "@/store/modal-store";
+import { useCategoryStore } from "@/store/category-store";
 import { useProductStore } from "@/store/product-store";
 
 const modalStore = useModalStore();
+const categoryStore = useCategoryStore();
 const productStore = useProductStore();
 
 const emit = defineEmits(["addNewItem", "tooltip"]);
@@ -394,59 +471,120 @@ const { handleFileUpload } = useFileUpload(emit);
 
 const fetchedCategories = ref([]);
 
+const currentProductFiles = ref([]);
+const currentOptionFiles = ref([]);
+
 const loaderState = ref(false);
 const optionFileInput = ref(null);
 const productFileInput = ref(null);
 const productCategory = ref("");
 const productNameUk = ref("");
 const productManufacture = ref("");
-// const productNameEn = ref("");
-// const productNameRu = ref("");
 const productVisibility = ref(false); // Показывать товар на сайте
 const productDescriptionUk = ref("");
-// const productDescriptionEn = ref("");
-// const productDescriptionRu = ref("");
-const productStockState = ref(false); // Показывать колличество товарв на сайте
-const productStockValue = ref(0); // Значение колличества товаров на сайте
-// const counterQuantity = ref(1); // Значение минимального колличества единиц
+const productStockState = ref(false);
+const productStockValue = ref(0);
 const price = ref(0); // Стандартная цена
-// const wholesaleOnly = ref(false); // Значение продажи товара только оптом
-// const wholesalePrice = ref(0); // Оптовая цена
-// const wholesalePriceFrom = ref(0); // Оптовая цена действует от
-// const wholesaleDescriptionUk = ref("");
-// const wholesaleDescriptionEn = ref("");
-// const wholesaleDescriptionRu = ref("");
-// const packageType = ref("Bag"); // Значение типа упаковки
 const productAvailability = ref(false);
 const productDiscountPersent = ref(0); // процент скидки
 const productPrice = ref(null);
 const productMaterialUk = ref("");
-// const productMaterialEn = ref("");
-// const productMaterialRu = ref("");
 const productColorUk = ref("");
-// const productColorEn = ref("");
-// const productColorRu = ref("");
-// const productUnitTypeUk = ref("");
-// const productUnitTypeEn = ref("");
-// const productUnitTypeRu = ref("");
 
 const productSize = ref("");
-// const productWeight = ref("");
-// const productDensity = ref(""); //plotnost
-// const productCapacity = ref(""); //obem
-// const productQuantity = ref("");
-// const productGroupQuantity = ref("");
 
 // ADD OPTION
 const addOptionsRef = ref([]);
 const discountState = ref(false);
 const addOptionTextUk = ref("");
-// const addOptionTextEn = ref("");
-// const addOptionTextRu = ref("");
 const addOptionPrice = ref(false);
 const optionPrice = ref(0);
 
 // option file
+
+const errorState = reactive({
+  error: false,
+  title: "",
+  text1: "",
+  text2: "",
+  method: "",
+  item: null
+});
+
+const errorHandler = (title, text1, text2, method, item) => {
+  console.log(item);
+  errorState.error = true;
+  errorState.title = title;
+  errorState.text1 = text1;
+  errorState.text2 = text2;
+  errorState.method = method;
+  errorState.item = item;
+};
+const closeError = () => {
+  errorState.error = false;
+  errorState.title = "";
+  errorState.text1 = "";
+  errorState.text2 = "";
+  errorState.method = "";
+  errorState.item = null;
+};
+
+const deleteImgDb = async (item, filetype) => {
+  console.log(item);
+  loaderState.value = true;
+
+  try {
+    const deleteRes = await $fetch("/api/upload", {
+      method: "DELETE",
+      body: {
+        data: item,
+        type: filetype
+      }
+    });
+
+    await productStore.fetchProducts();
+
+    if (deleteRes.success) {
+      alert(deleteRes.message);
+      if (filetype === "productImg") {
+        console.log(filetype);
+        currentProductFiles.value = currentProductFiles.value.filter((productImg) => {
+          return productImg.id !== item.id;
+        });
+      } else {
+        currentOptionFiles.value = currentOptionFiles.value.filter((option) => {
+          return option.id !== item.id;
+        });
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+  loaderState.value = false;
+};
+
+const confirmError = () => {
+  // METHODS - 'removeProductImg', 'removeOption'
+  // TYPES - productImg, optionsImg
+  switch (errorState.method) {
+    case "removeProductImgDB":
+      deleteImgDb(errorState.item, "productImg");
+      // console.log(errorState.method);
+      break;
+    case "removeOptionDB":
+      //   removeOption(errorState.item);
+      deleteImgDb(errorState.item, "optionImg");
+      // console.log(errorState.method);
+
+      break;
+  }
+  errorState.error = false;
+  errorState.title = "";
+  errorState.text1 = "";
+  errorState.text2 = "";
+  errorState.method = "";
+  errorState.item = null;
+};
 
 const productFileState = {
   // product files
@@ -480,20 +618,8 @@ const clearModal = () => {
   productStockValue.value = 0;
   productDiscountPersent.value = 0;
   productManufacture.value = "";
-  //   wholesalePrice.value = 0;
-  //   wholesalePriceFrom.value = 0;
-  //   counterQuantity.value = 1;
-  //   packageType.value = "Bag";
-  //   wholesaleOnly.value = false;
   productNameUk.value = "";
   productDescriptionUk.value = "";
-  //   wholesaleDescriptionUk.value = "";
-  //   productNameEn.value = "";
-  //   productDescriptionEn.value = "";
-  //   wholesaleDescriptionEn.value = "";
-  //   productNameRu.value = "";
-  //   productDescriptionRu.value = "";
-  //   wholesaleDescriptionRu.value = "";
   addOptionsRef.value = [];
   optionFileState.optionFiles.value = [];
   optionFileState.optionFilesPreview.value = [];
@@ -501,63 +627,27 @@ const clearModal = () => {
   discountState.value = false;
   productAvailability.value = false;
   productMaterialUk.value = "";
-  productPrice.value = null;
   price.value = 0;
-  //   productMaterialEn.value = "";
-  //   productMaterialRu.value = "";
   productColorUk.value = "";
-  //   productColorEn.value = "";
-  //   productColorRu.value = "";
-  //   productUnitTypeUk.value = "";
-  //   productUnitTypeEn.value = "";
-  //   productUnitTypeRu.value = "";
   productSize.value = "";
   optionFileInput.value.value = "";
   productFileInput.value.value = "";
-  //   productWeight.value = "";
-  //   productDensity.value = "";
-  //   productCapacity.value = "";
-  //   productQuantity.value = "";
-  //   productGroupQuantity.value = "";
 };
 
 const addNewOption = () => {
   console.log(optionFileState.optionFilesPreview.value, "option ref");
-  //   if (addOptionsRef.value.length > 9) {
-  //     emit("tooltip", {
-  //       status: "error",
-  //       message: "Максимальна кількість опцій 10",
-  //     });
-  //     return;
-  //   }
 
   if (optionFileState.optionFilesPreview.value.length > 0) {
-    console.log("addNew1");
-    if (
-      addOptionTextUk.value
-      //   addOptionTextEn.value &&
-      //   addOptionTextRu.value
-    ) {
-      console.log("addNew");
+    if (addOptionTextUk.value) {
       addOptionsRef.value.push({
         file: toRaw(optionFileState.optionFiles.value),
         fileImg: optionFileState.optionFilesPreview.value,
-        // file: [...toRaw(optionFileState.optionFiles.value)],
-        // fileImg: [...optionFileState.optionFilesPreview.value],
         optionPrice: optionPrice.value,
         translations: [
           {
             language: "uk",
             optionInfo: addOptionTextUk.value
           }
-          //   {
-          //     language: "en",
-          //     optionInfo: addOptionTextEn.value,
-          //   },
-          //   {
-          //     language: "ru",
-          //     optionInfo: addOptionTextRu.value,
-          //   },
         ]
       });
     }
@@ -565,9 +655,6 @@ const addNewOption = () => {
     optionFileState.optionFiles.value = [];
     optionFileState.optionFilesPreview.value = [];
     addOptionTextUk.value = "";
-    // addOptionTextEn.value = "";
-    // addOptionTextRu.value = "";
-    // optionFileState.optionReady.value = false;
     optionFileInput.value.value = "";
     addOptionPrice.value = false;
     optionPrice.value = 0;
@@ -678,41 +765,35 @@ const addNewProduct = async () => {
     toRaw(addOptionsRef.value).map((elem, index) => {
       toRaw(elem.fileImg)[0] = optionImgPath[index];
     });
-    // const res = await $fetch("/api/products", {
 
-    const newProduct = productStore.addProduct({
-      // const res = await $fetch("/api/products", {
-      // method: "POST",
-      // body: {
-      categoryId: productCategory.value,
-      visibility: productVisibility.value,
-      img: productImgPath,
-      productPrice: productPrice.value,
-      stockState: productStockState.value,
-      stockValue: productStockValue.value,
-      discountPercent: productDiscountPersent.value,
-      productSize: productSize.value,
-      translations: [
-        {
-          language: "uk",
-          title: productNameUk.value,
-          description: productDescriptionUk.value,
-          productColor: productColorUk.value,
-          productMaterial: productMaterialUk.value,
-          productManufacture: productManufacture.value
-        }
-      ],
-      options: toRaw(addOptionsRef.value)
-      // }
+    const res = await $fetch("/api/products", {
+      method: "POST",
+      body: {
+        categoryId: productCategory.value,
+        visibility: productVisibility.value,
+        img: productImgPath,
+        productPrice: productPrice.value,
+        stockState: productStockState.value,
+        stockValue: productStockValue.value,
+        discountPercent: productDiscountPersent.value,
+        productSize: productSize.value,
+        translations: [
+          {
+            language: "uk",
+            title: productNameUk.value,
+            description: productDescriptionUk.value,
+            productColor: productColorUk.value,
+            productMaterial: productMaterialUk.value,
+            productManufacture: productManufacture.value
+          }
+        ],
+        options: toRaw(addOptionsRef.value)
+      }
     });
 
-    if (newProduct.statusCode === 200) {
-      alert("Товар успішно додано");
-    }
-
-    // return {
-    //   data: res
-    // };
+    return {
+      data: res
+    };
   };
 
   const uploadAllData = async () => {
@@ -724,9 +805,9 @@ const addNewProduct = async () => {
 
       console.log("Изображения загружены:", productImgPath, optionImgPath);
 
-      await uploadData(productImgPath, optionImgPath);
+      const result = await uploadData(productImgPath, optionImgPath);
 
-      // console.log("Данные загружены:", result);
+      console.log("Данные загружены:", result);
 
       clearModal();
 
@@ -751,19 +832,54 @@ const addNewProduct = async () => {
   uploadAllData();
 };
 
-onMounted(async () => {
-  try {
-    const getData = await $fetch("/api/category");
-
-    if (getData.data.length > 0) {
-      fetchedCategories.value = getData.data.map((item) => ({
-        ...item,
-        itemLanguage: item.translations.find((translation) => translation.language === "uk")
-      }));
-    }
-  } catch (error) {
-    console.log(error.message, "error from getData");
+const modalProps = defineProps({
+  product: {
+    type: Object,
+    required: true
   }
+});
+
+onMounted(async () => {
+  console.log(modalProps.product);
+
+  await categoryStore.getCategories();
+
+  console.log(categoryStore.categoryList);
+
+  fetchedCategories.value = categoryStore.categoryList;
+
+  currentProductFiles.value = modalProps.product.img;
+  currentOptionFiles.value = modalProps.product.options;
+  productNameUk.value = modalProps.product.translations[0].title;
+  productAvailability.value = modalProps.product.stockState;
+  productDescriptionUk.value = modalProps.product.translations[0].productDescription;
+  productStockState.value = modalProps.product.stockState;
+  productStockValue.value = modalProps.product.stockValue;
+  productPrice.value = modalProps.product.productPrice;
+  productVisibility.value = modalProps.product.visible;
+  productSize.value = modalProps.product.productSize;
+  productColorUk.value = modalProps.product.translations[0].productColor;
+  productMaterialUk.value = modalProps.product.translations[0].productMaterial;
+  productManufacture.value = modalProps.product.translations[0].productManufacture;
+
+  discountState.value = modalProps.product.discountPercent > 0 ? true : false;
+  productDiscountPersent.value = modalProps.product.discountPercent;
+
+  //   productCategory.value = modalProps.product.category.translations[0].title;
+  //   console.log(modalProps.product.category.translations[0].title);
+
+  //   try {
+  //     const getData = await $fetch("/api/category");
+
+  //     if (getData.data.length > 0) {
+  //       fetchedCategories.value = getData.data.map((item) => ({
+  //         ...item,
+  //         itemLanguage: item.translations.find((translation) => translation.language === "uk")
+  //       }));
+  //     }
+  //   } catch (error) {
+  //     console.log(error.message, "error from getData");
+  //   }
 });
 </script>
 
@@ -867,6 +983,51 @@ onMounted(async () => {
       position: relative;
       top: 2.5rem;
       width: 80%;
+
+      .current_product_files {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 20px;
+        gap: 5px;
+
+        .img_wrapper {
+          width: 100px;
+          height: 125px;
+          position: relative;
+          overflow: hidden;
+        }
+
+        button {
+          width: 25px;
+          height: 25px;
+          padding-bottom: 5px;
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          right: 0;
+
+          @media screen and (min-width: 1024px) {
+            &:hover svg {
+              stroke: var(--accent-red);
+              transition: all ease 0.3s;
+            }
+          }
+        }
+
+        svg {
+          width: 100%;
+          height: 100%;
+          stroke: var(--text-color);
+          transition: all ease 0.3s;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          padding-top: 25px;
+        }
+      }
 
       h2 {
         @include mixins.subtitleText;

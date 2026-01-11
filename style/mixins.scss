@@ -30,40 +30,39 @@
   font-weight: 500;
   cursor: pointer;
 
-   background-color: var(--btn-color);
+  background-color: var(--btn-color);
+  border: 1px solid var(--border-color);
+
+  @media screen and (min-width: 1024px) {
+    &:hover {
+      background-color: var(--btn-color-hover);
+      transition: all ease 0.3s;
+    }
+  }
+
+  &:active {
+    background-color: var(--btn-color-active);
+  }
+  @media screen and (min-width: 1024px) {
+    &:hover {
+      border: 1px solid var(--border-color);
+      transition: all ease 0.3s;
+    }
+  }
+  &:active {
     border: 1px solid var(--border-color);
-
-    @media screen and (min-width: 1024px) {
-        &:hover {
-            background-color: var(--btn-color-hover);
-            transition: all ease 0.3s;
-        }
-    }
-
-    &:active {
-        background-color: var(--btn-color-active);
-    }
-     @media screen and (min-width: 1024px) {
-      &:hover {
-          border: 1px solid var(--border-color);
-          transition: all ease 0.3s;
-      }
-    }
-    &:active {
-        border: 1px solid var(--border-color);
-    }
-    @media screen and (max-width: 1024px) {
-      font-size: 1.125rem;
-    }
-    @media screen and (max-width: 480px) {
-      padding: 12px 32px;
-      font-size: 1rem;
-    }
-    @media screen and (max-width: 375px) {
-      padding: 10px 32px;
-      font-size: 0.875rem;
-    }
-
+  }
+  @media screen and (max-width: 1024px) {
+    font-size: 1.125rem;
+  }
+  @media screen and (max-width: 480px) {
+    padding: 12px 32px;
+    font-size: 1rem;
+  }
+  @media screen and (max-width: 375px) {
+    padding: 10px 32px;
+    font-size: 0.875rem;
+  }
 }
 
 @mixin transparentBtn {
@@ -78,30 +77,30 @@
   cursor: pointer;
   color: white;
   @media screen and (min-width: 1024px) {
-      &:hover {
-          border: 1px solid var(--border-color);
-          transition: all ease 0.3s;
-      }
+    &:hover {
+      border: 1px solid var(--border-color);
+      transition: all ease 0.3s;
+    }
   }
   &:active {
-      border: 1px solid var(--border-color);
+    border: 1px solid var(--border-color);
   }
   @media screen and (max-width: 1024px) {
     font-size: 1.125rem;
   }
-    @media screen and (max-width: 480px) {
-      padding: 12px 32px;
-      font-size: 1rem;
-    }
-    @media screen and (max-width: 375px) {
-      padding: 10px 32px;
-      font-size: 0.875rem;
-    }
+  @media screen and (max-width: 480px) {
+    padding: 12px 32px;
+    font-size: 1rem;
+  }
+  @media screen and (max-width: 375px) {
+    padding: 10px 32px;
+    font-size: 0.875rem;
+  }
 }
 
 @mixin titleText {
   color: var(--text-color);
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 1.875rem;
   font-style: normal;
   font-weight: 500;
@@ -121,8 +120,8 @@
 }
 
 @mixin subtitleText {
-  color: var(--text-color, #FFF);
-  font-family: 'Montserrat', sans-serif;
+  color: var(--text-color, #fff);
+  font-family: "Montserrat", sans-serif;
   font-size: 1.125rem;
   font-style: normal;
   font-weight: 600;
@@ -144,8 +143,8 @@
 }
 
 @mixin mainText {
-  color: var(--text-color, #FFF);
-  font-family: 'Montserrat', sans-serif;
+  color: var(--text-color, #fff);
+  font-family: "Montserrat", sans-serif;
   font-size: 1.125rem;
   font-style: normal;
   font-weight: 500;
@@ -178,38 +177,36 @@
   @media screen and (max-width: 375px) {
     margin: 14px 0 52px;
   }
-
 }
 
 @mixin defaultInput {
-  input, input::placeholder {
-      color: var(--text-color);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 0.875rem;
-      font-style: normal;
-      font-weight: 500;
-      line-height: normal;
-      letter-spacing: 0.42px;
-      width: 100%;
-      height: auto;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.20);
-      padding: 12px 8px;
+  input,
+  input::placeholder {
+    color: var(--text-color);
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: 0.42px;
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px 8px;
 
-      @media screen and (max-width: 1024px) {
-        font-size: 0.75rem;
-      }
-      @media screen and (max-width: 480px) {
-        padding: 8px 4px;
-        font-size: 0.625rem;
-      }
+    @media screen and (max-width: 1024px) {
+      font-size: 0.75rem;
+    }
+    @media screen and (max-width: 480px) {
+      padding: 8px 4px;
+      font-size: 0.625rem;
+    }
   }
-  input::placeholder{
-    color: rgba(255, 255, 255, 0.50);
+  input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
     padding: 0;
     border-bottom: 0;
-   
   }
-
 }
 
 @mixin googleAuth {
@@ -221,32 +218,31 @@
   width: 100%;
   gap: 24px;
 
-  svg{
-      width: 36px;
-      height: 36px;
-      transition: all ease 0.3s;
-      transform: scale(1);
+  svg {
+    width: 36px;
+    height: 36px;
+    transition: all ease 0.3s;
+    transform: scale(1);
 
-      @media screen and (max-width: 1024px) {
-        width: 30px;
-        height: 30px;
-      }
-      @media screen and (max-width: 480px) {
-        width: 24px;
-        height: 24px;
-      }
+    @media screen and (max-width: 1024px) {
+      width: 30px;
+      height: 30px;
+    }
+    @media screen and (max-width: 480px) {
+      width: 24px;
+      height: 24px;
+    }
   }
   @media screen and (min-width: 1024px) {
-      &:hover svg{
-          transition: all ease 0.3s;
-          transform: scale(1.2);
-      }
-      
+    &:hover svg {
+      transition: all ease 0.3s;
+      transform: scale(1.2);
+    }
   }
   @media screen and (max-width: 1024px) {
-    span{
-        font-size: 0.75rem;
-      }
+    span {
+      font-size: 0.75rem;
+    }
   }
   @media screen and (max-width: 480px) {
     gap: 20px;
@@ -266,7 +262,7 @@
   cursor: pointer;
   position: relative;
 
-  svg{
+  svg {
     width: 25px;
     height: 25px;
 
@@ -297,7 +293,6 @@
     width: 24px;
     height: 24px;
   }
-  
 }
 
 @mixin legalPage {
@@ -321,7 +316,7 @@
       width: 85%;
     }
     @media screen and (max-width: 480px) {
-      width: 100%
+      width: 100%;
     }
   }
 
@@ -348,10 +343,10 @@
     }
     @media (max-width: 480px) {
       margin-bottom: 12px;
-      font-size: .9375rem;
+      font-size: 0.9375rem;
     }
     @media screen and (max-width: 375px) {
-      font-size: .875rem;
+      font-size: 0.875rem;
     }
   }
   ol,
@@ -385,7 +380,7 @@
       content: counter(section) ". ";
     }
     @media screen and (max-width: 1024px) {
-      margin-top: 14px
+      margin-top: 14px;
     }
     @media screen and (max-width: 375px) {
       margin-top: 10px;
@@ -406,28 +401,27 @@
   }
 
   .legal_inner_list {
-      margin-top: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-      gap: 16px;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
 
-      li {
-        @include mainText;
-        font-size: 1.0625rem;
-        color: #dbdbdb;
-        @media screen and (max-width: 480px) {
-          font-size: .875rem;
-        }
-        @media screen and (max-width: 375px) {
-          font-size: .8125rem;
-        }
+    li {
+      @include mainText;
+      font-size: 1.0625rem;
+      color: #dbdbdb;
+      @media screen and (max-width: 480px) {
+        font-size: 0.875rem;
       }
-      @media screen and (max-width: 1024px) {
-        gap: 8px;
+      @media screen and (max-width: 375px) {
+        font-size: 0.8125rem;
       }
-
+    }
+    @media screen and (max-width: 1024px) {
+      gap: 8px;
+    }
   }
   .legal_text_list {
     display: flex;
@@ -456,12 +450,12 @@
       @media screen and (max-width: 1024px) {
         font-size: 1.0625rem;
       }
-        @media screen and (max-width: 480px) {
-        font-size: .875rem;
-    }
-    @media screen and (max-width: 375px) {
-      font-size: .75rem;
-    }
+      @media screen and (max-width: 480px) {
+        font-size: 0.875rem;
+      }
+      @media screen and (max-width: 375px) {
+        font-size: 0.75rem;
+      }
     }
     @media screen and (max-width: 1024px) {
       padding-block: 12px;
@@ -470,6 +464,163 @@
     @media screen and (max-width: 480px) {
       padding-block: 8px;
       gap: 4px;
+    }
+  }
+}
+
+@mixin ErrorModal {
+  .error_content {
+    position: fixed;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    max-width: 50vw;
+    min-width: 35vw;
+    border-radius: 10px;
+    overflow-x: hidden;
+    height: fit-content;
+    position: relative;
+    overflow: hidden;
+
+    .error_note {
+      width: 100%;
+      height: auto;
+      padding-block: 15px;
+      background: var(--error-bg);
+      border-top: 1px solid var(--error-border);
+      border-bottom: 1px solid var(--error-border);
+
+      &_wrapper {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 20px;
+        padding-inline: 15px;
+        margin-bottom: 10px;
+      }
+
+      .error_icon {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgb(214, 34, 34);
+        border-radius: 3px;
+        svg {
+          width: 100%;
+          height: 100%;
+          padding: 3px;
+        }
+      }
+    }
+
+    .error_wrapper {
+      padding-block: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      height: 100%;
+
+      .error_title {
+        width: 100%;
+        @include subtitleText;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--text-grey);
+        padding-inline: 10px;
+        strong {
+          font-weight: 900;
+          color: var(--accent-red);
+          text-decoration: underline;
+        }
+      }
+
+      .close_button_wrapper {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-right: 10px;
+        width: 100%;
+        button {
+          width: 15px;
+          height: 15px;
+          background: transparent;
+          position: relative;
+          cursor: pointer;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--text-grey);
+            transition: all ease 0.3s;
+          }
+          @media screen and (min-width: 1024px) {
+            &:hover {
+              svg {
+                transition: all ease 0.3s;
+                stroke: var(--error-border);
+              }
+            }
+          }
+          @media screen and (max-width: 1024px) {
+            & {
+              svg {
+                stroke: var(--error-border);
+              }
+            }
+          }
+        }
+      }
+
+      .button_wrapper {
+        display: flex;
+        justify-content: center;
+        padding-inline: 10px;
+        margin-top: 15px;
+        align-items: center;
+        width: 100%;
+        height: auto;
+        gap: 10px;
+
+        .delete_btn {
+          background: var(--error-btn);
+          border: 1px solid var(--error-border);
+          transition: all ease 0.3s;
+          border-radius: 3px;
+
+          @media screen and (min-width: 1024px) {
+            &:hover {
+              background: var(--error-btn-hover);
+              border: 1px solid var(--error-border);
+              transition: all ease 0.3s;
+            }
+          }
+        }
+
+        .cancel_btn {
+          border: 1px solid var(--dark-text);
+          border-radius: 3px;
+          @media screen and (min-width: 1024px) {
+            &:hover {
+              background: var(--btn-color);
+              border: 1px solid var(--border-color);
+              transition: all ease 0.3s;
+            }
+          }
+        }
+
+        button {
+          flex: 1;
+          @include mainText;
+          font-size: 1rem;
+          cursor: pointer;
+        }
+      }
     }
   }
 }

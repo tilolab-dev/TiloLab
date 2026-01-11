@@ -8,24 +8,59 @@
             <div class="user_info_main">
               <div class="checkout_subtitle">Дані отримувача</div>
               <div class="main_input">
-                <input type="text" placeholder="Прізвище та ім’я" />
-                <input type="text" placeholder="Телефон" />
-                <input type="text" placeholder="Електронна пошта" />
-                <input type="text" placeholder="Місто" />
+                <input v-model="name" type="text" placeholder="Ім’я" />
+                <input v-model="surname" type="text" placeholder="Прізвище" />
+                <input v-model="phone" type="text" placeholder="Телефон" />
+                <input v-model="email" type="text" placeholder="Електронна пошта" />
+                <input v-model="cityRef" type="text" placeholder="Місто" @input="getCitiesNp" />
+                <!-- :value="selectedCity !== null ? `${selectedCity.Present}` : ''" -->
+
+                <ul v-if="fetchedCity.length > 0" class="fetched_list">
+                  <li
+                    v-for="(el, i) in fetchedCity"
+                    :key="i"
+                    @click="((cityRef = el.MainDescription), (fetchedCity = []))"
+                  >
+                    {{ el.Present }}
+                  </li>
+                </ul>
               </div>
             </div>
             <div class="user_info_delivery">
               <div class="checkout_subtitle">Доставка</div>
               <div class="radio_wrapper">
-                <input id="menu1" type="radio" name="accordeon" checked />
+                <input
+                  id="menu1"
+                  v-model="selectedDelivery"
+                  type="radio"
+                  name="accordeon"
+                  checked
+                  @click="getPostOfficeNp(e, 'reload')"
+                />
                 <label for="menu1" class="radio-elem">
                   <div class="radio-btn"></div>
                   <span>Відділення Нової пошти</span>
                 </label>
                 <div class="delivery_wrapper">
-                  <input type="text" placeholder="Оберіть місто" />
+                  <input
+                    v-model="postAddress"
+                    type="text"
+                    placeholder="Введіть номер відділення"
+                    @input="getPostOfficeNp"
+                  />
+                  <ul v-if="postAddressList.length > 0" class="fetched_list">
+                    <li
+                      v-for="(el, i) in postAddressList"
+                      :key="i"
+                      @click="((postAddress = el.Description), (postAddressList = []))"
+                    >
+                      {{ el.Description }}
+                    </li>
+                  </ul>
                   <span>За тарифами перевізника</span>
                 </div>
+
+                <!-- v-model="" -->
 
                 <input id="menu2" type="radio" name="accordeon" />
                 <label for="menu2" class="radio-elem">
@@ -33,17 +68,31 @@
                   <span>Поштомат Нової пошти</span>
                 </label>
                 <div class="delivery_wrapper">
-                  <input type="text" placeholder="Оберіть місто" />
+                  <input
+                    v-model="postomatNumber"
+                    type="text"
+                    placeholder="Введіть номер поштомату"
+                    @input="(e) => getPostomatsNp(e, 'reload')"
+                  />
+                  <ul v-if="postomatList.length > 0" class="fetched_list">
+                    <li
+                      v-for="(el, i) in postomatList"
+                      :key="i"
+                      @click="((postomatNumber = el.ShortAddress), (postomatList = []))"
+                    >
+                      {{ el.Description }}
+                    </li>
+                  </ul>
                   <span>За тарифами перевізника</span>
                 </div>
 
                 <input id="menu3" type="radio" name="accordeon" />
-                <label for="menu3" class="radio-elem">
+                <label v-if="cityRef === 'Київ'" for="menu3" class="radio-elem">
                   <div class="radio-btn"></div>
-                  <span>Кур'єрська доставка</span>
+                  <span>Кур'єрська доставка (м. Київ)</span>
                 </label>
                 <div class="delivery_wrapper">
-                  <input type="text" placeholder="Оберіть місто" />
+                  <input type="text" placeholder="Введіть адресу" />
                   <span>За тарифами перевізника</span>
                 </div>
               </div>
@@ -75,11 +124,20 @@
             <ul>
               <li>
                 <div class="list_option">Товарів на суму:</div>
-                <div class="list_value">3 850 грн</div>
+                <div class="list_value">
+                  <span v-if="isMounted"> {{ cartStore.totalPrice }} грн </span>
+                  <span v-else> 0 грн </span>
+                </div>
               </li>
               <li>
                 <div class="list_option">Доставка:</div>
-                <div class="list_value">за тарифами перевізника (оплачується окремо)</div>
+                <div class="list_value">
+                  за тарифами перевізника (оплачується окремо) <br />
+                  <span v-if="isMounted">
+                    {{ deliveryPrice }}
+                  </span>
+                  <span v-else> 0 грн </span>
+                </div>
               </li>
             </ul>
           </div>
@@ -87,7 +145,11 @@
           <div class="payment_block">
             <div class="payment_info">
               <div class="payment_option">До сплати:</div>
-              <div class="payment_option">3 850 грн</div>
+
+              <div class="payment_option">
+                <span v-if="isMounted"> {{ totalDeliveryPrice }} грн </span>
+                <span v-else> 0 грн </span>
+              </div>
             </div>
             <NuxtLink to="/summary">Замовлення підтверджую</NuxtLink>
           </div>
@@ -95,35 +157,40 @@
         <div class="checkout_content_cart">
           <div class="cart_wrapper">
             <h2>Ваш кошик</h2>
-            <ul class="cart_items">
-              <li v-for="(item, i) in cartItemData" :key="i" class="cart_item">
-                <div class="cart_item_main">
-                  <img :src="item.itemImg" alt="preview" />
-                  <div class="main_wrapper">
-                    <p>{{ item.productName }}</p>
-                    <span class="mobile_price"> {{ item.productPrice }} грн</span>
+            <ClientOnly>
+              <ul class="cart_items">
+                <li v-for="(item, i) in cartStore.cart" :key="i" class="cart_item">
+                  <div class="cart_item_main">
+                    <img :src="item.product.img[0].path" alt="preview" />
+                    <div class="main_wrapper">
+                      <p>{{ item.product.translations[0].title }}</p>
+                      <span class="mobile_price"> {{ item.product.productPrice }} грн</span>
+                    </div>
                   </div>
-                </div>
-                <div class="cart_item_values">
-                  <span class="price">{{ item.productPrice }} грн</span>
-                  <div class="quantity_btn">
-                    <button>
-                      <MinusIcon />
-                    </button>
-                    <span>{{ item.productQuantity }}</span>
-                    <button>
-                      <PlusIcon />
+                  <div class="cart_item_values">
+                    <span class="price">{{ item.product.productPrice }} грн</span>
+                    <div class="quantity_btn">
+                      <button>
+                        <MinusIcon />
+                      </button>
+                      <span>{{ item.quantity }}</span>
+                      <button>
+                        <PlusIcon />
+                      </button>
+                    </div>
+                    <button class="close_btn">
+                      <CloseIcon />
                     </button>
                   </div>
-                  <button class="close_btn">
-                    <CloseIcon />
-                  </button>
-                </div>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            </ClientOnly>
+
             <div class="cart_summary">
               <span>Всього:</span>
-              <span>4435 грн.</span>
+
+              <span v-if="isMounted"> {{ cartStore.totalPrice }} грн </span>
+              <span v-else> 0 грн </span>
             </div>
           </div>
         </div>
@@ -133,28 +200,7 @@
 </template>
 
 <script setup>
-const cartItemData = [
-  {
-    itemImg: "/images/popular/popular1.webp",
-    productName: "Секс-девайс",
-    productQuantity: 1,
-    productPrice: 100
-  },
-  {
-    itemImg: "/images/popular/popular1.webp",
-    productName: "Секс-девайс",
-    productQuantity: 1,
-    productPrice: 100
-  },
-  {
-    itemImg: "/images/popular/popular1.webp",
-    productName: "Секс-девайс",
-    productQuantity: 1,
-    productPrice: 100
-  }
-];
-
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, computed } from "vue";
 import CloseIcon from "~/assets/icons/close-icon.svg";
 import MinusIcon from "~/assets/icons/minus-icon.svg";
 import PlusIcon from "~/assets/icons/plus-icon.svg";
@@ -165,37 +211,42 @@ import PlusIcon from "~/assets/icons/plus-icon.svg";
 // import ToggleBtn from "@/components/shared/ToggleBtn.vue";
 // import Tooltips from "@/components/shared/Tooltips.vue";
 // import DeliverySelector from "~/components/DeliverySelector.vue";
-import { useAuthStore } from "@/store/auth-store";
+// import { useAuthStore } from "@/store/auth-store";
 import { useCartStore } from "@/store/cart-store";
 
-// const cityRef = ref("");
-// const cityName = ref("");
-// const fetchedCity = ref([]);
+const cityRef = ref("");
+// const selectedCity = ref(null);
+const fetchedCity = ref([]);
 // const unknownCity = ref(false);
+
+const isMounted = ref(false);
 
 const name = ref("");
 const surname = ref("");
-const familyName = ref("");
 const phone = ref("");
 const email = ref("");
 const deliveryMethod = ref("nova-post");
 const selectedDelivery = ref("");
 // const paymentMethod = ref("");
 
-const contactInfoState = ref(false);
+// const contactInfoState = ref(false);
 const deliveryAddressState = ref(false);
 const courierDeliveryState = ref(false);
+
+const deliveryPrice = ref(100);
 // const saveDeliveryAddress = ref(false);
 
 // const checkoutProducts = ref([]);
 
-const checkout = ref({
-  totalProducts: 0,
-  discount: 0,
-  totalPrice: 0
-});
+const totalDeliveryPrice = computed(() => deliveryPrice.value + cartStore.totalPrice);
 
-// let timerId = null;
+// const checkout = ref({
+//   totalProducts: 0,
+//   discount: 0,
+//   totalPrice: 0
+// });
+
+let timerId = null;
 
 // const date = new Date();
 // const day = date.getDate();
@@ -213,7 +264,7 @@ const postAddressList = ref([]);
 const preventReloadBox = ref(false);
 
 const cartStore = useCartStore();
-const authStore = useAuthStore();
+// const authStore = useAuthStore();
 
 // const getFormattedHours = (h) => (h < 10 ? "0" + h : h);
 // const getFormattedMonth = (m) => (m < 10 ? "0" + m : m);
@@ -257,19 +308,21 @@ const authStore = useAuthStore();
 // };
 
 onMounted(() => {
-  if (authStore.user) {
-    name.value = authStore.user.username;
-    surname.value = authStore.user.userSurname;
-    familyName.value = authStore.user.userFamily;
-    phone.value = authStore.user.phoneNumber;
-    email.value = authStore.user.email;
-    contactInfoState.value = false;
-  } else {
-    contactInfoState.value = true;
-  }
-  checkout.value.totalProducts = cartStore.totalPrice;
-  checkout.value.totalPrice =
-    cartStore.totalPrice > 2000 ? cartStore.totalPrice : cartStore.totalPrice + 200;
+  isMounted.value = true;
+
+  // if (authStore.user) {
+  //   name.value = authStore.user.username;
+  //   surname.value = authStore.user.userSurname;
+  //   familyName.value = authStore.user.userFamily;
+  //   phone.value = authStore.user.phoneNumber;
+  //   email.value = authStore.user.email;
+  //   contactInfoState.value = false;
+  // } else {
+  //   contactInfoState.value = true;
+  // }
+  // checkout.value.totalProducts = cartStore.totalPrice;
+  // checkout.value.totalPrice =
+  //   cartStore.totalPrice > 2000 ? cartStore.totalPrice : cartStore.totalPrice + 200;
 });
 
 // const deliveryTime = computed(() => {
@@ -470,175 +523,19 @@ watch(deliveryMethod, () => {
 //   }
 // };
 
-// const debounce = (string, fn) => {
-//   return () => {
-//     clearTimeout(timerId);
-//     if (string === "") {
-//       console.log("string is empty");
-//       return fn();
-//     }
-//     timerId = setTimeout(() => {
-//       console.log("log debounce");
-//       fn();
-//     }, 500);
-//   };
-// };
-
-// class PostalServiceApi {
-//   constructor(baseUrl, apiKey) {
-//     this.baseUrl = baseUrl;
-//     this.apiKey = apiKey;
-//   }
-
-//   async request(endpoint, options = {}) {
-//     try {
-//       const res = await fetch(`${this.baseUrl}${endpoint}`, {
-//         method: options.method || "GET",
-//         headers: {
-//           "Content-Type": "application/json"
-//         },
-//         body: options.body ? JSON.stringify(options.body) : undefined
-//       });
-
-//       if (!res.ok) {
-//         throw new Error(res.statusText);
-//       }
-
-//       return await res.json();
-//     } catch (err) {
-//       console.log("Something went wrong", err);
-//       return null;
-//     }
-//   }
-
-//   async fetchCity(cityName, modelName, calledMethod) {
-//     const body = {
-//       apiKey: this.apiKey,
-//       modelName,
-//       calledMethod,
-//       methodProperties: {
-//         CityName: cityName,
-//         Limit: "500",
-//         Page: "1"
-//       }
-//     };
-
-//     return this.request("", {
-//       method: "POST",
-//       body
-//     });
-//   }
-
-//   async fetchWarehouses(cityName, modelName, calledMethod, extraParams = {}) {
-//     const body = {
-//       apiKey: this.apiKey,
-//       modelName,
-//       calledMethod,
-//       methodProperties: {
-//         CityName: cityName,
-//         Limit: "1000",
-//         CategoryOfWarehouse: "Postomat",
-//         Page: "1",
-//         ...extraParams
-//       }
-//     };
-
-//     return this.request("", {
-//       method: "POST",
-//       body
-//     });
-//   }
-// }
-
-// class NovaPoshtaApi extends PostalServiceApi {
-//   constructor() {
-//     super(NOVA_POST_URI, NOVA_POST_KEY);
-//   }
-
-//   fetchCity(cityName) {
-//     return super.fetchCity(cityName, "AddressGeneral", "searchSettlements");
-//   }
-
-//   async fetchPostomats(cityName) {
-//     const body = {
-//       apiKey: this.apiKey,
-//       modelName: "AddressGeneral",
-//       calledMethod: "getWarehouses",
-//       methodProperties: {
-//         CityName: cityName,
-//         Limit: "1000",
-//         CategoryOfWarehouse: "Postomat",
-//         Page: "1"
-//       }
-//     };
-
-//     return super.request("", {
-//       method: "POST",
-//       body
-//     });
-//   }
-
-//   async fetchOfficeByNumber(cityName, number) {
-//     console.log(cityName, number);
-//     const body = {
-//       apiKey: this.apiKey,
-//       modelName: "AddressGeneral",
-//       calledMethod: "getWarehouses",
-//       methodProperties: {
-//         CityName: cityName,
-//         Limit: "1000",
-//         FindByString: number,
-//         Page: "1"
-//       }
-//     };
-
-//     return this.request("", {
-//       method: "POST",
-//       body
-//     });
-//   }
-
-//   async fetchPostAddresses(cityName) {
-//     // "CategoryOfWarehouse" : "Branch",
-
-//     const body = {
-//       apiKey: this.apiKey,
-//       modelName: "AddressGeneral",
-//       calledMethod: "getWarehouses",
-//       methodProperties: {
-//         CityName: cityName,
-//         Limit: "3000",
-//         Page: "1"
-//       }
-//     };
-
-//     return super.request("", {
-//       method: "POST",
-//       body
-//     });
-//   }
-
-//   async fetchPostomatsByNumber(cityName, number) {
-//     console.log(cityName, number);
-//     const body = {
-//       apiKey: this.apiKey,
-//       modelName: "AddressGeneral",
-//       calledMethod: "getWarehouses",
-//       methodProperties: {
-//         CityName: cityName,
-//         Limit: "1000",
-//         CategoryOfWarehouse: "Postomat",
-//         FindByString: number,
-//         Page: "1"
-//       }
-//     };
-
-//     return this.request("", {
-//       method: "POST",
-//       body
-//     });
-//   }
-// }
+const debounce = (string, fn) => {
+  return () => {
+    clearTimeout(timerId);
+    if (string === "") {
+      console.log("string is empty");
+      return fn();
+    }
+    timerId = setTimeout(() => {
+      console.log("log debounce");
+      fn();
+    }, 700);
+  };
+};
 
 // refresh input fields
 
@@ -665,76 +562,109 @@ watch(selectedDelivery, () => {
 
 // const novaPost = new NovaPoshtaApi();
 
-// const getCitiesNp = debounce(cityRef.value, async () => {
-//   const npCities = await novaPost.fetchCity(cityRef.value);
-//   if (npCities.data[0] === undefined) {
-//     unknownCity.value = true;
-//   } else {
-//     unknownCity.value = false;
-//     fetchedCity.value = npCities.data[0].Addresses;
-//   }
-// });
+const getCitiesNp = debounce(cityRef.value, async () => {
+  const npCities = await $fetch("/api/np/cities", {
+    method: "POST",
+    body: {
+      city: cityRef.value
+    }
+  });
 
-// const getPostomatsNp = async (event, state) => {
-//   if (state === "reload") {
-//     const getPostomatsByNumber = await novaPost.fetchPostomatsByNumber(
-//       cityName.value,
-//       postomatNumber.value
-//     );
-//     console.log(getPostomatsByNumber, "getPostomatsByNumber");
-//     postomatList.value = getPostomatsByNumber.data;
-//     return;
-//   }
+  if (!npCities.data || !npCities.data[0].Addresses) {
+    return;
+  } else {
+    fetchedCity.value = npCities.data[0].Addresses;
+  }
+});
 
-//   if (preventReloadBox.value) {
-//     return;
-//   }
+const getPostomatsNp = debounce(postomatNumber.value, async () => {
+  if (!cityRef.value) {
+    alert("Введіть місто");
+    postomatNumber.value = "";
+    return;
+  }
+  // if (state === "reload") {
+  // const getPostomatsByNumber = await novaPost.fetchPostomatsByNumber(
+  //   cityName.value,
+  //   postomatNumber.value
+  // );
+  // console.log(getPostomatsByNumber, "getPostomatsByNumber");
+  // postomatList.value = getPostomatsByNumber.data;
+  // return;
+  const getPostomatsByNumber = await $fetch("/api/np/postomatNumber", {
+    method: "POST",
+    body: {
+      cityName: cityRef.value,
+      postomatNumber: postomatNumber.value
+    }
+  });
+  console.log(getPostomatsByNumber, "getPostomatsByNumber");
+  postomatList.value = getPostomatsByNumber.data;
+  return;
+  // }
 
-//   if (!cityName.value) {
-//     tooltip({
-//       status: "info",
-//       message: "Виберіть місто"
-//     });
-//     event.preventDefault();
+  // if (preventReloadBox.value) {
+  //   return;
+  // }
 
-//     return;
-//   }
+  // if (!cityRef.value) {
+  //   // tooltip({
+  //   //   status: "info",
+  //   //   message: "Виберіть місто"
+  //   // });
+  //   alert("Виберіть місто");
+  //   event.preventDefault();
 
-//   const postomatsNp = await novaPost.fetchPostomats(cityName.value);
-//   postomatList.value = postomatsNp.data;
-// };
+  //   return;
+  // }
 
-// const getPostOfficeNp = async (event, state) => {
-//   if (state === "reload") {
-//     const getOfficeByNumber = await novaPost.fetchOfficeByNumber(cityName.value, postAddress.value);
-//     console.log(getOfficeByNumber, "getPostomatsByNumber");
-//     const filteredOffice = getOfficeByNumber.data.filter(
-//       (item) => item.CategoryOfWarehouse === "Branch"
-//     );
+  // const postomatsNp = await novaPost.fetchPostomats(cityName.value);
+  // postomatList.value = postomatsNp.data;
+});
 
-//     postAddressList.value = filteredOffice;
-//     return;
-//   }
+const getPostOfficeNp = debounce(postAddress.value, async () => {
+  if (!cityRef.value) {
+    alert("Введіть місто");
+    postAddress.value = "";
+    return;
+  }
+  if (!postAddress.value.length) return;
+  // if (state === "reload") {
+  // const getOfficeByNumber = await novaPost.fetchOfficeByNumber(cityName.value, postAddress.value);
+  const getOfficeByNumber = await $fetch("/api/np/postOffice", {
+    method: "POST",
+    body: {
+      cityName: cityRef.value,
+      postNumber: postAddress.value
+    }
+  });
 
-//   if (preventReloadBox.value) {
-//     return;
-//   }
+  // console.log(getOfficeByNumber, "getPostomatsByNumber");
+  const filteredOffice = getOfficeByNumber.data.filter(
+    (item) => item.CategoryOfWarehouse === "Branch"
+  );
 
-//   if (!cityName.value) {
-//     tooltip({
-//       status: "info",
-//       message: "Виберіть місто"
-//     });
-//     event.preventDefault();
-
-//     return;
-//   }
-
-//   const postOfficeNp = await novaPost.fetchPostAddresses(cityName.value);
-//   // console.log(postOfficeNp, 'postOfficeNp');
-//   const filteredOffice = postOfficeNp.data.filter((item) => item.CategoryOfWarehouse === "Branch");
-//   postAddressList.value = filteredOffice;
-// };
+  console.log(filteredOffice, "filtered office");
+  postAddressList.value = filteredOffice;
+  //   return;
+  // }
+  // if (preventReloadBox.value) {
+  //   return;
+  // }
+  // if (!cityName.value) {
+  //   // tooltip({
+  //   //   status: "info",
+  //   //   message: "Виберіть місто"
+  //   // });
+  //   alert("Виберіть місто");
+  //   event.preventDefault();
+  //   return;
+  // }
+  // const postOfficeNp = await novaPost.fetchPostAddresses(cityName.value);
+  // // console.log(postOfficeNp, 'postOfficeNp');
+  // const filteredOffice = postOfficeNp.data.filter((item) => item.CategoryOfWarehouse === "Branch");
+  // postAddressList.value = filteredOffice;
+});
 
 useHead({
   meta: [{ name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1" }]
@@ -767,6 +697,36 @@ useHead({
     }
   }
 }
+
+.fetched_list {
+  width: 100%;
+  height: auto;
+  max-height: 30dvh;
+  overflow-y: scroll;
+  padding-bottom: 20px;
+  position: absolute;
+  background: var(--bg-color);
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  li {
+    @include mixins.subtitleText;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-grey);
+    transition: all ease 0.3s;
+    font-size: 1rem;
+    padding-block: 5px;
+    cursor: pointer;
+    @media screen and (min-width: 1024px) {
+      &:hover {
+        background: rgba(255, 255, 255, 0.04);
+        transition: all ease 0.3s;
+        color: white;
+      }
+    }
+  }
+}
 .checkout_content {
   width: 100%;
   height: 100%;
@@ -786,7 +746,6 @@ useHead({
       margin-bottom: 8px;
     }
   }
-  // gap: 107px;
   &_delivery {
     flex: 1;
     padding-right: 107px;
@@ -839,6 +798,7 @@ useHead({
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    position: relative;
     display: none;
     width: 100%;
     height: auto;
@@ -919,6 +879,7 @@ useHead({
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    position: relative;
     gap: 16px;
     @include mixins.defaultInput;
     @media screen and (max-width: 375px) {
@@ -1170,6 +1131,7 @@ useHead({
       gap: 40px;
       span {
         @include mixins.mainText;
+        white-space: nowrap;
       }
       .price {
         @media screen and (max-width: 1024px) {

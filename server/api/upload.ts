@@ -1,5 +1,5 @@
 import { defineEventHandler } from "h3";
-import { uploadFiles } from "../services/uploadServices";
+import { uploadFiles, deleteFile } from "../services/uploadServices";
 
 export default defineEventHandler(async (event) => {
   const method = event.node.req.method;
@@ -13,9 +13,7 @@ export default defineEventHandler(async (event) => {
       // return await updateUser();
       break;
     case "DELETE":
-      // return await deleteCategory(event)
-      // return await deleteUser();
-      break;
+      return deleteFile(event);
     default:
       return { message: "Method not defined" };
   }
