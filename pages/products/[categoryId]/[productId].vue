@@ -5,7 +5,7 @@
         v-if="!loadState && productStore.selectedProducts?.translations"
         class="product_id_wrapper"
       >
-        <BreadCrumbs />
+        <BreadCrumbs :links="breadCrumbLinks" />
 
         <div v-if="!loadState" class="product_id_main">
           <div v-if="slides.length > 0" class="product_id_preview">
@@ -157,6 +157,7 @@ import ProductPagePopular from "@/components/ProductPagePopular.vue";
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useProductStore } from "@/store/product-store";
 import { useCartStore } from "@/store/cart-store";
+import { useIndexStore } from "@/store/index-store";
 import { useRoute } from "vue-router";
 // components
 import BreadCrumbs from "@/components/shared/BreadCrumbs.vue";
@@ -167,6 +168,7 @@ import CheckIcon from "~/assets/icons/check.svg";
 
 // stores
 const productStore = useProductStore();
+const indexStore = useIndexStore();
 const cartStore = useCartStore();
 
 // refs
@@ -181,6 +183,53 @@ const discountedPrice = computed(() => {
   const p = productStore.selectedProducts.productPrice;
   const d = productStore.selectedProducts.discountPercent;
   return Math.round(p - (p * d) / 100);
+});
+
+const breadCrumbLinks = computed(() => {
+  const links = [];
+  const pathSegments = route.path.split("/").filter((segment) => segment);
+
+  // Handle products pages
+  if (route.path.startsWith("/products")) {
+    // Add "Продукти" link
+    links.push({ name: "Продукти", url: "/products" });
+
+    // If we have a category
+    if (pathSegments.length > 1) {
+      const categoryId = pathSegments[1];
+      const category = indexStore.fetchedCategories.find(
+        (cat) => cat.group.toLowerCase() === categoryId.toLowerCase()
+      );
+
+      if (category) {
+        links.push({
+          name: category.translations[0]?.title || categoryId,
+          url: `/products/${categoryId}`
+        });
+      }
+
+      // If we have a product ID, add it as non-link (last item)
+      if (pathSegments.length > 2) {
+        const productId = pathSegments[2];
+        let productName = productId;
+
+        // Get actual product name from store
+        if (
+          productStore.selectedProducts &&
+          productStore.selectedProducts.translations?.[0]?.title
+        ) {
+          productName = productStore.selectedProducts.translations[0].title;
+        }
+
+        links.push({
+          name: productName,
+          url: route.fullPath
+        });
+      }
+    }
+  }
+
+  return links;
 });
 
 // routes

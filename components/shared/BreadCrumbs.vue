@@ -2,52 +2,40 @@
   <div
     class="link-block pb-2 border-b-[1px] dark:border-[var(--dark-border-color)] border-[#d9dbe0]"
   >
-    <!-- <SvgIcon 
-            name="home-icon" 
-            size="small" 
-            :fill="iconFill ? 'var(--dark-font-color)' : 'var(--dark-color)' "
-        /> -->
-    <!-- :to="localePath('/')" -->
-
     <NuxtLink
       to="/"
       class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-normal text-base leading-relaxed"
     >
-      Головна /
+      Головна
+      <span v-if="props.links.length > 0">/</span>
     </NuxtLink>
-    <!-- <SvgIcon 
-            name="arrow-right" 
-            size="micro" 
-            :fill="iconFill ? 'var(--dark-font-color)' : 'var(--dark-color)' "
 
-        /> -->
-    <span
-      class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-normal text-base leading-relaxed"
-    >
-      <slot> </slot>
-    </span>
+    <template v-for="link in props.links" :key="link.name">
+      <NuxtLink
+        v-if="link.name !== props.links[props.links.length - 1].name"
+        :to="link.url"
+        class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-normal text-base leading-relaxed"
+      >
+        {{ link.name }}
+        <span>/</span>
+      </NuxtLink>
+      <span
+        v-else
+        class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-normal text-base leading-relaxed"
+      >
+        {{ link.name }}
+      </span>
+    </template>
   </div>
 </template>
 
-<script lang="ts" setup>
-// import SvgIcon from '@/components/shared/SvgIcon.vue';
-// import SvgIcon from './SvgIcon.vue';
-// import { useThemeStore } from "../../stores/theme-store";
-// import { onMounted, watch } from "vue";
-
-// const themeStore = useThemeStore();
-// const isClient = ref(false);
-
-// const iconFill = computed(() => {
-// if (!isClient.value) return "";
-// return themeStore.darkMode
-// });
-
-// onMounted(() => {
-// isClient.value = true;
-// });
-
-// const localePath = useLocalePath();
+<script setup>
+const props = defineProps({
+  links: {
+    type: Array,
+    default: () => []
+  }
+});
 </script>
 
 <style lang="scss">
