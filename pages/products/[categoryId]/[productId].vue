@@ -80,10 +80,30 @@
                 <span> {{ productStore.selectedProducts.stockValue }} в наявності </span>
               </div>
 
+              <div class="product_quantity">
+                <div class="product_quantity_head">Кількість товару:</div>
+                <div class="product_quantity_counter">
+                  <button
+                    :class="counter === 1 ? 'counter_disabled' : ''"
+                    @click="counter > 1 ? counter-- : counter"
+                  >
+                    <MinusIcon />
+                  </button>
+                  <input
+                    v-model="counter"
+                    class="quantity"
+                    type="number"
+                    min="1"
+                    @blur="counterValidate"
+                  />
+                  <button @click="counter">
+                    <PlusIcon />
+                  </button>
+                </div>
+              </div>
+
               <div class="cart_btn">
-                <button @click="cartStore.addProduct(productStore.selectedProducts)">
-                  Додати в кошик
-                </button>
+                <button @click="addToCart">Додати в кошик</button>
               </div>
             </div>
 
@@ -164,6 +184,8 @@ import BreadCrumbs from "@/components/shared/BreadCrumbs.vue";
 import HeartIcon from "~/assets/icons/heart.svg";
 import AngleDown from "~/assets/icons/angle-down.svg";
 import CheckIcon from "~/assets/icons/check.svg";
+import PlusIcon from "~/assets/icons/plus-icon.svg";
+import MinusIcon from "~/assets/icons/minus-icon.svg";
 
 // stores
 const productStore = useProductStore();
@@ -176,6 +198,13 @@ const productImages = ref([]);
 const loadState = ref(true);
 const swiperKey = ref(0);
 const isDescriptionCollapsed = ref(true);
+const counter = ref(1);
+
+const counterValidate = () => {
+  if (counter.value < 1) {
+    counter.value = 1;
+  }
+};
 
 const discountedPrice = computed(() => {
   const p = productStore.selectedProducts.productPrice;
@@ -224,6 +253,12 @@ const fetchProductById = async () => {
   }
 };
 
+const addToCart = () => {
+  const productTotalPrice = productStore.selectedProducts.productPrice * counter.value;
+  cartStore.addProduct(productStore.selectedProducts, counter.value, productTotalPrice);
+  counter.value = 1;
+};
+
 onMounted(async () => {
   if (productStore?.selectedProducts?.id === routeId) {
     loadState.value = false;
@@ -244,6 +279,8 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
+@use "@/style/mixins.scss" as mixins;
+
 .product_id_wrapper {
   display: flex;
   flex-direction: column;
@@ -448,6 +485,63 @@ onUnmounted(() => {
       }
     }
 
+    .product_quantity {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 10px;
+
+      &_head {
+        @include mixins.subtitleText;
+      }
+
+      &_counter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 70%;
+        gap: 15px;
+      }
+      button {
+        background: var(--btn-color);
+        width: 25px;
+        height: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid var(--border-color);
+        transition: all ease 0.3s;
+        position: relative;
+        cursor: pointer;
+        padding: 3px;
+        @media screen and (min-width: 1024px) {
+          &:hover {
+            background: var(--btn-color-hover);
+            transition: all ease 0.3s;
+          }
+        }
+      }
+      svg {
+        width: 100%;
+        height: 100%;
+        fill: var(--text-color);
+      }
+      .counter_disabled {
+        background: transparent;
+        cursor: not-allowed;
+        @media screen and (min-width: 1024px) {
+          &:hover {
+            background: transparent;
+          }
+        }
+      }
+      .quantity {
+        @include mixins.subtitleText;
+        min-width: 2ch;
+        text-align: center;
+      }
+    }
     .cart_btn {
       width: 100%;
       height: fit-content;

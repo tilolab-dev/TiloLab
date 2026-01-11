@@ -5,6 +5,11 @@ interface IProductResponce {
   data: IProduct[];
   message: string;
 }
+interface INewProductResponce {
+  statusCode: number;
+  message: string;
+  product: IProduct;
+}
 
 export const useProductStore = defineStore("product", {
   state: () => ({
@@ -37,6 +42,37 @@ export const useProductStore = defineStore("product", {
         this.productList = this.productList.filter((p) => p.id !== <Number | String>productId);
       } catch (error) {
         console.log(error, "error");
+      }
+    },
+    async updateProduct(product: IProduct) {
+      try {
+        const updateReq = await $fetch(`/api/products/${product.id}`, {
+          method: "PATCH",
+          body: product
+        });
+        if (updateReq?.statusCode === 200) {
+          alert("Товар успішно оновлено");
+        }
+      } catch (err) {
+        console.log(err, "error");
+      }
+    },
+    async addProduct(product: IProduct) {
+      try {
+        const addReq = await $fetch<INewProductResponce>("/api/products", {
+          method: "POST",
+          body: product
+        });
+
+        if (addReq.statusCode === 200) {
+          // this.productList.push(addReq.product);
+          await this.fetchProducts();
+          return addReq;
+        }
+
+        throw new Error(addReq.message);
+      } catch (err) {
+        console.log(err, "error");
       }
     }
   }

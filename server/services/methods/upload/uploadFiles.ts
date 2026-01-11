@@ -10,7 +10,7 @@ async function uploadFiles(event: any) {
       return { message: "No files upload" };
     }
 
-    console.log(files);
+    // console.log(files);
 
     const uploadFiles = files.map(async (item, index) => {
       console.log(index);
@@ -35,7 +35,7 @@ async function uploadFiles(event: any) {
           upsert: true
         });
 
-      console.log(data);
+      // console.log(data);
 
       if (error) {
         throw new Error(`Fail to upload file: ${error.message}`);
@@ -50,7 +50,8 @@ async function uploadFiles(event: any) {
 
       return {
         filePath: publicUrlData.publicUrl,
-        message: "File uploaded successfully"
+        message: "File uploaded successfully",
+        dataFile: data
       };
     });
 
