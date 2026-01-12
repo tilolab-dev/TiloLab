@@ -51,12 +51,9 @@ import { ref, computed, onMounted } from "vue";
 import { useIndexStore } from "@/store/index-store";
 
 const indexStore = useIndexStore();
-const categories = ref([]);
 const loaderState = ref(false);
 
-const slides = computed(() => categories.value);
-
-const fetchCategories = computed(() => indexStore.fetchedCategories);
+const fetchCategories = computed(() => indexStore?.fetchedCategories);
 
 onMounted(async () => {
   loaderState.value = fetchCategories?.value?.length > 0;
