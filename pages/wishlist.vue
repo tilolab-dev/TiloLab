@@ -4,17 +4,23 @@
       <h1>Ваш список бажань</h1>
     </div>
 
-    <SharedLoader v-if="fetchedProducts.length === 0" />
+    <SharedLoader v-if="loaderState" />
 
-    <ul v-else class="product_wrapper">
-      <li v-for="product in fetchedProducts" :key="product.id">
-        <WishlistItemCard
-          :product="product"
-          :link="`/products/${categoryName}/${product.id}`"
-          @set-product="productStore.setSelectedProducts(product)"
-        />
-      </li>
-    </ul>
+    <template v-else>
+      <ul v-if="fetchedProducts?.length" class="product_wrapper">
+        <li v-for="product in fetchedProducts" :key="product.id">
+          <WishlistItemCard
+            :product="product"
+            :link="`/products/${categoryName}/${product.id}`"
+            @set-product="productStore.setSelectedProducts(product)"
+          />
+        </li>
+      </ul>
+
+      <div v-else class="empty_wishlist">
+        <h2>Список бажань порожній</h2>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -26,6 +32,7 @@ import WishlistItemCard from "@/components/WishlistItemCard.vue";
 
 const fetchedProducts = ref([]);
 const categoryName = ref("");
+const loaderState = ref(true);
 
 const indexStore = useIndexStore();
 const productStore = useProductStore();
@@ -53,6 +60,8 @@ onMounted(async () => {
     console.log(fetchedProducts.value);
   } catch (err) {
     console.log(err);
+  } finally {
+    loaderState.value = false;
   }
 });
 
