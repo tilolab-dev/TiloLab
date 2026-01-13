@@ -58,8 +58,6 @@ onMounted(async () => {
 
     if (getCategories && getCategories.data) {
       categories.value = getCategories.data;
-
-      console.log(categories.value);
     }
   } catch (err) {
     console.log(err);
