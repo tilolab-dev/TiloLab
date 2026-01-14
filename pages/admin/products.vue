@@ -29,13 +29,7 @@
         <div class="middle_row_search">
           <div class="search_wrapper">
             <input type="text" placeholder="Пошук" />
-            <button class="search-btn">
-              <!-- <SvgIcon
-                name="search-icon"
-                size="micro"
-                fill="var(--dark-color)"
-              /> -->
-            </button>
+            <button class="search-btn"></button>
           </div>
         </div>
         <div class="adding_content">
@@ -45,9 +39,6 @@
           <button class="text-nowrap" @click="modalStore.showModal('AddProduct')">
             Додати товар
           </button>
-          <!-- <button>
-                <SvgIcon name="burger-menu" size="micro" fill="var(--dark-color)" />
-            </button> -->
         </div>
       </div>
 
@@ -107,17 +98,17 @@
                   <tbody v-else class="t_body">
                     <!-- v-for="category in fetchedCategories" -->
 
-                    <tr v-for="(item, i) in fetchedCategories" :key="i">
+                    <tr v-for="(category, i) in fetchedCategories" :key="i">
                       <td class="table_row">
                         <div class="table_main">
-                          <img :src="item.categoryImg" alt="user1" />
+                          <img :src="category.categoryImg" alt="user1" />
                           <div class="table_main_wrapper">
-                            <h6>{{ item.translations[0].title }}</h6>
+                            <h6>{{ category.translations[0].title }}</h6>
                           </div>
                         </div>
                       </td>
                       <td>
-                        <p>{{ item.products.length }}</p>
+                        <p>{{ category.products.length }}</p>
                       </td>
                       <!-- <td>
                         <span> Online </span>
@@ -126,15 +117,20 @@
                         <!-- <span> 23/04/18 </span> -->
                       </td>
                       <td>
-                        <p v-if="item.visible">Активна категорія</p>
+                        <p v-if="category.visible">Активна категорія</p>
                         <p v-else>Неактивна категорія</p>
                       </td>
                       <td class="button_cell">
                         <div class="table_btn_wrap">
-                          <button class="edit_btn">Редагувати</button>
+                          <button
+                            class="edit_btn"
+                            @click="modalStore.showModal('UpdateCategory', { category })"
+                          >
+                            Редагувати
+                          </button>
                           <button
                             class="delete_btn"
-                            @click="modalStore.showModal('DeleteCategory', { item })"
+                            @click="modalStore.showModal('DeleteCategory', { category })"
                           >
                             <CloseIcon />
                           </button>
@@ -287,11 +283,9 @@
 import CloseIcon from "~/assets/icons/close-icon.svg";
 
 import { onMounted, ref, watch } from "vue";
-// import SvgIcon from "@/components/shared/SvgIcon.vue";
 import { useModalStore } from "@store/modal-store";
 import { useProductStore } from "@store/product-store";
 import { useCategoryStore } from "@/store/category-store";
-// import DashBurger from "@/components/shared/DashBurger.vue";
 import gsap from "gsap";
 
 const modalStore = useModalStore();

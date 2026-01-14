@@ -1,21 +1,17 @@
 import { defineStore } from "pinia";
-
-// interface IWishlist {
-//   price: string;
-//   quantity: string;
-// }
+import type { IProduct } from "~/types/product";
 
 export const useWishlistStore = defineStore("wishlist", {
   state: () => ({
-    wishlist: [] as any
+    wishlist: [] as IProduct[]
   }),
   actions: {
-    addProduct(product: any) {
+    addProduct(product: IProduct) {
       this.wishlist.push(product);
       this.saveWishlist();
     },
-    removeProduct(product: any) {
-      this.wishlist = this.wishlist.filter((item: any) => item.id !== product.id);
+    removeProduct(product: IProduct) {
+      this.wishlist = this.wishlist.filter((item: IProduct) => item.id !== product.id);
       this.saveWishlist();
     },
     clearWishlist() {

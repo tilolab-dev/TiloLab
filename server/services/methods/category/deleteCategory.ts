@@ -1,26 +1,33 @@
-import { readBody } from "h3";
+// import { readBody } from "h3";
 // import supabase from "@/utils/supabase";
 import { prisma } from "@/prisma/prisma";
 
-const deleteCategory = async (event: any) => {
-  try {
-    const body = await readBody(event);
+const deleteCategory = async (id: number) => {
+  // const body = await readBody(event);
 
-    if (!body.id) {
+  // console.log(event, "id from delete category");
+
+  try {
+    if (!id) {
       throw new Error("category Id is required");
     }
 
-    await prisma.category.delete({
-      where: { id: body.id }
+    const deleteCategoryRes = await prisma.category.delete({
+      where: { id: id }
     });
 
     return {
-      message: `Category with ${body.name} deleted successfully`,
-      name: body.name
+      statusCode: 200,
+      message: `Category deleted successfully`,
+      data: deleteCategoryRes
     };
   } catch (error) {
     if (error) {
-      return { error: error || "Failed to delete category" };
+      return {
+        statusCode: 400,
+        message: error || "Failed to delete category",
+        data: null
+      };
     }
   }
 };
