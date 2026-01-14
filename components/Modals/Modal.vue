@@ -8,8 +8,9 @@
       v-bind="modalProps"
       :open-modal="openModal"
       :close-modal="closeModal"
-      @tooltip="tooltip"
     />
+    <!-- @tooltip="tooltip" -->
+
     <!-- </div> -->
     <!-- v-bind="{...modalProps}" -->
   </div>
@@ -29,6 +30,7 @@ import LogOut from "./LogOut.vue";
 import AddProduct from "@/components/Modals/admin/AddProduct.vue";
 import AddCategory from "@/components/Modals/admin/AddCategory.vue";
 import UpdateProduct from "./admin/UpdateProduct.vue";
+import UpdateCategory from "./admin/UpdateCategory.vue";
 import DeleteCategory from "@/components/Modals/admin/DeleteCategory.vue";
 import DeleteProduct from "./admin/DeleteProduct.vue";
 
@@ -37,7 +39,7 @@ const isVisible = computed(() => modalStore.isVisible);
 const currentModal = computed(() => modalStore.currentModal);
 const modalProps = computed(() => modalStore.modalProps);
 
-const emit = defineEmits(["addNewItem", "tooltip"]);
+// const emit = defineEmits(["addNewItem", "tooltip"]);
 
 const modalComponents = {
   CartModal,
@@ -47,6 +49,7 @@ const modalComponents = {
   DeleteCategory,
   DeleteProduct,
   UpdateProduct,
+  UpdateCategory,
   //   ProductToCart,
   AuthModal,
   BurgerMenu,
@@ -54,9 +57,9 @@ const modalComponents = {
   //   ChangeUserData
 };
 
-const tooltip = (obj) => {
-  emit("tooltip", obj);
-};
+// const tooltip = (obj) => {
+//   emit("tooltip", obj);
+// };
 
 const closeModal = () => {
   modalStore.closeModal();
