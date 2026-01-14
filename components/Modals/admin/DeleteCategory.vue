@@ -1,5 +1,8 @@
 <template>
   <div class="delete_category_content">
+    <div v-if="loaderState" class="loader_content">
+      <SharedLoader />
+    </div>
     <div class="delete_category_wrapper">
       <div class="close_button_wrapper">
         <button @click="modalStore.closeModal">
@@ -8,7 +11,7 @@
       </div>
       <h2 class="delete_category_title">
         Підтвердіть видалення категоріі !
-        <strong> {{ modalProps.item.translations[0].title }}. </strong>
+        <strong> {{ modalProps.category.translations[0].title }}. </strong>
       </h2>
 
       <div class="delete_note">
@@ -26,7 +29,8 @@
       </div>
 
       <div class="button_wrapper">
-        <button class="delete_btn" @click="deleteProduct(modalProps.product.id)">Так</button>
+        <button class="delete_btn" @click="deleteCategory(modalProps.category)">Так</button>
+
         <button class="cancel_btn" @click="modalStore.closeModal">Скасувати</button>
       </div>
     </div>
@@ -36,35 +40,29 @@
 <script setup>
 import CloseIcon from "~/assets/icons/close-icon.svg";
 import ErrorIcon from "~/assets/icons/error.svg";
+import { ref } from "vue";
 
 import { useModalStore } from "@/store/modal-store";
+import { useCategoryStore } from "@/store/category-store";
 
 const modalStore = useModalStore();
+const categoryStore = useCategoryStore();
+
+const loaderState = ref(false);
 
 const modalProps = defineProps({
-  item: {
+  category: {
     type: Object,
     required: true
   }
 });
 
-console.log(modalProps.item, "props");
-
-// const deleteCategory = async () => {
-//   try {
-//     const deleteCatResponse = await $fetch("/api/category", {
-//       method: "DELETE",
-//       body: {
-//         id: props.categoryId,
-//         name: props.categoryName
-//       }
-//     });
-
-//     console.log(deleteCatResponse, "readBody");
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+const deleteCategory = async (category) => {
+  loaderState.value = true;
+  await categoryStore.deleteCategory(category);
+  loaderState.value = false;
+  modalStore.closeModal();
+};
 </script>
 
 <style lang="scss">
@@ -82,6 +80,17 @@ console.log(modalProps.item, "props");
   height: fit-content;
   position: relative;
   overflow: hidden;
+  .loader_content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(7px);
+  }
 }
 
 .delete_note {
