@@ -6,26 +6,32 @@ async function deleteFile(event: any) {
   const body = await readBody(event);
   const BUCKET = "Images";
 
-  const { data: fileData, type: methodType } = body;
-  const url = methodType === "productImg" ? fileData.path : fileData.optionImg;
+  const { itemId, itemUrl, methodType } = body;
 
-  //   console.log(url, methodType);
-
-  // console.log(BUCKET, "BUCKET", url, "url", fileData, "fileData", methodType, "methodType");
-
-  const filePath = decodeURIComponent(url.split(`/storage/v1/object/public/${BUCKET}/`)[1]);
+  const filePath = decodeURIComponent(itemUrl.split(`/storage/v1/object/public/${BUCKET}/`)[1]);
 
   if (!filePath) throw new Error("Invalid image url");
 
-  //   const folderPath = filePath.split("/").slice(0, -1).join("/");
+  const removeCategory = async () => {
+    try {
+      await prisma.category.update({
+        where: {
+          id: itemId
+        },
+        data: {
+          categoryImg: null
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const removeImg = async () => {
-    const id = fileData.id;
-
     try {
       await prisma.productImg.delete({
         where: {
-          id: +id
+          id: itemId
         }
       });
     } catch (err) {
@@ -34,12 +40,10 @@ async function deleteFile(event: any) {
   };
 
   const removeOption = async () => {
-    const id = fileData.id;
-
     try {
       await prisma.productOptions.delete({
         where: {
-          id: id
+          id: itemId
         }
       });
     } catch (err) {
@@ -57,11 +61,21 @@ async function deleteFile(event: any) {
       };
     }
 
-    methodType === "productImg" ? await removeImg() : await removeOption();
+    switch (methodType) {
+      case "productImg":
+        await removeImg();
+        break;
+      case "optionImg":
+        await removeOption();
+        break;
+      case "categoryImg":
+        await removeCategory();
+        break;
+    }
 
     return {
       success: true,
-      message: methodType === "productImg" ? "Зображення успішно видалено" : "Опцію видалено",
+      message: "Зображення успішно видалено",
       deletedFile: data?.[0]?.name ?? null
     };
   } catch (err) {
