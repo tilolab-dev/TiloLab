@@ -1,10 +1,12 @@
 <template>
   <div class="add_category_content">
+    <div v-if="loaderState" class="loader_content">
+      <SharedLoader />
+    </div>
     <div class="add_category">
       <div class="top_row flex justify-between items-center">
         <h2>Додати категорію</h2>
         <button @click="modalStore.closeModal">
-          <!-- <SvgIcon name="close-btn" size="micro" fill="" /> -->
           <CloseIcon />
         </button>
       </div>
@@ -73,23 +75,11 @@
           </span>
 
           <input id="categoryCheckbox" v-model="categoryVisible" type="checkbox" />
-          <label for="categoryCheckbox" class="checkbox-elem">
-            <!-- <div class="radio-btn"></div> -->
-          </label>
-
-          <!-- <input
-            id="categoryCheckbox"
-            v-model="categoryVisible"
-            class="checkbox_input"
-            type="checkbox"
-          />
-          <label for="categoryCheckbox" class=""></label> -->
+          <label for="categoryCheckbox" class="checkbox-elem"> </label>
         </div>
       </div>
       <div class="button-group flex justify-end items-center gap-2 w-full">
-        <!-- <button @click="testAlertHandler">Test Alert</button> -->
-        <!-- <button @click="getData">get cat</button> -->
-        <button class="closeModal" @click="shareData">Скасувати</button>
+        <button class="closeModal" @click="resetForm">Скасувати</button>
         <button class="addItem" @click="addNewCategory">Додати</button>
       </div>
     </div>
@@ -99,6 +89,7 @@
 <script setup>
 import { ref } from "vue";
 import { useModalStore } from "@/store/modal-store";
+import { useCategoryStore } from "@/store/category-store";
 // import { useFetch, useAsyncData } from "nuxt/app";
 // import { transliterate } from "@/utils/transliterate";
 
@@ -106,7 +97,8 @@ import SvgIcon from "@/components/shared/SvgIcon.vue";
 import CloseIcon from "~/assets/icons/close-icon.svg";
 
 const modalStore = useModalStore();
-const emit = defineEmits([]);
+const categoryStore = useCategoryStore();
+// const emit = defineEmits([]);
 
 const file = ref(null);
 const fileReady = ref(false);
@@ -121,6 +113,8 @@ const categoryNameRu = ref("");
 const categoryTextUk = ref("");
 
 const categoryVisible = ref(false);
+
+const loaderState = ref(false);
 
 const handleFileUpload = (event) => {
   const accessedFormat = ["svg", "png", "webp"];
@@ -141,10 +135,11 @@ const handleFileUpload = (event) => {
     fileReady.value = true;
   } else {
     // console.error('Файл повинен бути формату .svg .png');
-    emit("tooltip", {
-      status: "error",
-      message: "Файл повинен бути формату .svg .png"
-    });
+    // emit("tooltip", {
+    //   status: "error",
+    //   message: "Файл повинен бути формату .svg .png"
+    // });
+    alert("Файл повинен бути формату .svg .png, webp");
     resetForm();
     return;
   }
@@ -161,27 +156,11 @@ const resetForm = () => {
   categoryNameEn.value = "";
   categoryNameRu.value = "";
   categoryVisible.value = false;
-  // categoryTextEn.value = '';
-  // categoryTextRu.value = '';
-  // categoryTextUk.value = '';
+  categoryTextUk.value = "";
 };
 
-// const sendData = () => {
-//   resetForm();
-//   emit("tooltip", {
-//     status: "success",
-//     message: "Категорія успішно додана"
-//   });
-//   setTimeout(() => {
-//     modalStore.closeModal();
-//   }, 1000);
-// };
-
-// const testAlertHandler = () => {
-//   alert("Категорія успішно додана");
-// };
-
 const addNewCategory = () => {
+  loaderState.value = true;
   //   if (
   //     categoryNameUk.value.length < 1 &&
   //     categoryNameEn.value.length < 1 &&
@@ -271,52 +250,21 @@ const addNewCategory = () => {
   };
 
   const uploadData = async (categoryIconPath) => {
-    // const formData = new FormData();
-
-    // const jsonData = {
-    //   group: translitString,
-    //   visible: categoryVisible.value,
-    //   translations: [
-    //     {
-    //       language: "uk",
-    //       title: categoryNameUk.value,
-    //       description: categoryTextUk.value,
-    //     },
-    //     {
-    //       language: "en",
-    //       title: categoryNameEn.value,
-    //       description: categoryTextEn.value,
-    //     },
-    //     {
-    //       language: "ru",
-    //       title: categoryNameRu.value,
-    //       description: categoryTextRu.value,
-    //     },
-    //   ],
-    //   categoryImg: categoryIconPath,
-    // };
-    // formData.append("data", JSON.stringify(jsonData));
-
-    // console.log('log')
-
     try {
-      const response = await $fetch("/api/category", {
-        method: "POST",
-        body: {
-          group: translitString,
-          visible: categoryVisible.value,
-          translations: [
-            {
-              language: "uk",
-              title: categoryNameUk.value,
-              description: categoryTextUk.value
-            }
-          ],
-          categoryImg: categoryIconPath
-        }
+      const responce = await categoryStore.createNewCategory({
+        group: translitString,
+        visible: categoryVisible.value,
+        translations: [
+          {
+            language: "uk",
+            title: categoryNameUk.value,
+            description: categoryTextUk.value
+          }
+        ],
+        categoryImg: categoryIconPath
       });
 
-      return response;
+      return responce;
     } catch (error) {
       console.log(error.message, "error from uploadData");
     }
@@ -326,108 +274,39 @@ const addNewCategory = () => {
     try {
       const categoryIconPath = await uploadCategoryFile();
 
-      console.log(categoryIconPath, "categoryIconPath");
+      const uploadNewCategory = await uploadData(categoryIconPath);
 
-      //   if (!categoryIconPath) {
-      //     alert("Файл не был загружен, попробуйте снова");
-      //     // emit("tooltip", {
-      //     //   status: "error",
-      //     //   message: "Файл не был загружен, попробуйте снова",
-      //     // });
-      //     return;
-      //   }
-      const resultUpload = await uploadData(categoryIconPath);
-
-      console.log(resultUpload, "resultUpload");
-
-      alert("Категорія успішно додана");
+      // alert("Категорія успішно додана");
       //   emit("tooltip", {
       //     status: "success",
       //     message: "Категорія успішно додана",
+
       //   });
+
+      if (uploadNewCategory.statusCode === 200) {
+        alert("Категорія успішно додана");
+        // emit("tooltip", {
+        //   status: "success",
+        //   message: "Категорія успішно додана",
+        // });
+      }
+
+      loaderState.value = false;
+
       resetForm();
-      // resetTextFields();
     } catch (error) {
-      emit("tooltip", {
-        status: "error",
-        message: `Помилка при додаванні категорії ${error}`
-      });
+      // emit("tooltip", {
+      //   status: "error",
+      //   message: `Помилка при додаванні категорії ${error}`
+      // });
+      alert(`Помилка при додаванні категорії`);
+      loaderState.value = false;
+      console.log(error);
     }
   };
 
   uploadAllData();
 };
-
-const shareData = async () => {
-  const translitString = transliterate(categoryNameUk.value);
-
-  if (
-    categoryNameUk.value.length < 1 &&
-    categoryNameEn.value.length < 1 &&
-    categoryNameRu.value.length < 1
-  ) {
-    emit("tooltip", {
-      status: "error",
-      message: "Заповніть всі поля"
-    });
-    return;
-  } else if (categoryNameUk.value.length < 1) {
-    emit("tooltip", {
-      status: "error",
-      message: "Заповніть назву категорії Українською"
-    });
-    return;
-  } else if (categoryNameEn.value.length < 1) {
-    emit("tooltip", {
-      status: "error",
-      message: "Заповніть назву категорії Англійською"
-    });
-    return;
-  } else if (categoryNameRu.value.length < 1) {
-    emit("tooltip", {
-      status: "error",
-      message: "Заповніть назву категорії Російською"
-    });
-    return;
-  } else if (!file.value) {
-    emit("tooltip", {
-      status: "error",
-      message: "Оберіть іконку для обраної категорії"
-    });
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("image", file.value);
-  formData.append("group", translitString.toLowerCase());
-  formData.append("titleUk", categoryNameUk.value.toLowerCase());
-  formData.append("titleEn", categoryNameEn.value.toLowerCase());
-  formData.append("titleRu", categoryNameRu.value.toLowerCase());
-  formData.append("visible", categoryVisible.value);
-
-  const res = await $fetch("/api/category", {
-    method: "POST",
-
-    body: formData
-  });
-  resetForm();
-
-  // resetTextFields();
-
-  emit("tooltip", {
-    status: res.tooltipStatus,
-    message: `Категорія ${res.message} успішно створена`
-  });
-};
-
-// const getData = async () => {
-//   try {
-//     const resData = await $fetch("/api/category");
-//     console.log(resData, "resData from getData");
-//   } catch (error) {
-//     console.log(error.message, "error from getData");
-//   }
-// };
 </script>
 
 <style scoped lang="scss">
@@ -442,6 +321,17 @@ const shareData = async () => {
   height: fit-content;
   position: relative;
   overflow: hidden;
+  .loader_content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(7px);
+  }
 }
 .top_row {
   display: flex;
@@ -483,7 +373,6 @@ const shareData = async () => {
   }
 
   input {
-    // border: 1px solid rgb(79, 79, 79);
     border: 1px solid rgba(255, 169, 214, 0.3);
     background: black;
     border-radius: 10px;
@@ -612,11 +501,7 @@ const shareData = async () => {
     width: 100%;
 
     button {
-      // border: 1px solid var(--dark-color);
-      // background: rgb(78, 78, 78);
       margin: 20px 0 20px;
-      // @include mixins.defaultShadow;
-      // @include mixins.descriptionText(500, var(--dark-color));
       padding: 3px 6px;
       font-size: clamp(0.6rem, 1vw, 1rem);
       color: white;

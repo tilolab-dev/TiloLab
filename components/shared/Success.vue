@@ -37,7 +37,6 @@
 
 <script setup>
 // import { useProductStore } from "@store/product-store";
-// import { ref } from "vue";
 import CloseIcon from "~/assets/icons/close-icon.svg";
 import ErrorIcon from "~/assets/icons/error.svg";
 

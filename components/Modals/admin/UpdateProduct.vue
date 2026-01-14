@@ -512,7 +512,7 @@ const errorState = reactive({
 });
 
 const errorHandler = (title, text1, text2, method, item) => {
-  console.log(item);
+  // console.log(item);
   errorState.error = true;
   errorState.title = title;
   errorState.text1 = text1;
@@ -529,7 +529,7 @@ const closeError = () => {
   errorState.item = null;
 };
 
-const deleteImgDb = async (item, filetype) => {
+const deleteImgDb = async (item, path, filetype) => {
   console.log(item);
   loaderState.value = true;
 
@@ -537,8 +537,9 @@ const deleteImgDb = async (item, filetype) => {
     const deleteRes = await $fetch("/api/upload", {
       method: "DELETE",
       body: {
-        data: item,
-        type: filetype
+        itemId: item.id,
+        itemUrl: path,
+        methodType: filetype
       }
     });
 
@@ -568,12 +569,15 @@ const confirmError = () => {
   // TYPES - productImg, optionsImg
   switch (errorState.method) {
     case "removeProductImgDB":
-      deleteImgDb(errorState.item, "productImg");
+      // console.log(errorState.item.path, "product");
+      deleteImgDb(errorState.item, errorState.item.path, "productImg");
       // console.log(errorState.method);
       break;
     case "removeOptionDB":
       //   removeOption(errorState.item);
-      deleteImgDb(errorState.item, "optionImg");
+      // console.log(errorState.item.optionImg, "option");
+
+      deleteImgDb(errorState.item, errorState.item.optionImg, "optionImg");
       // console.log(errorState.method);
 
       break;

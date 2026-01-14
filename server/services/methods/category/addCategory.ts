@@ -1,5 +1,3 @@
-// import { readMultipartFormData } from "h3";
-// import supabase from "@/utils/supabase";
 import { prisma } from "@/prisma/prisma";
 
 type Translation = {
