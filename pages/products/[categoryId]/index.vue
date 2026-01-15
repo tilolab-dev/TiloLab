@@ -16,7 +16,10 @@
         </button>
 
         <ul v-if="toggleCategory" class="categories_wrapper">
-          <li v-for="(item, index) in fetchCategories" :key="index">
+          <li>
+            <NuxtLink to="/products"> Всі товари </NuxtLink>
+          </li>
+          <li v-for="(item, index) in indexStore.fetchedCategories" :key="index">
             <NuxtLink :to="`/products/${item.group.toLowerCase()}`">
               {{ item.translations[0].title }}
             </NuxtLink>
@@ -39,24 +42,43 @@
       </div>
     </ClientOnly>
 
-    <div v-else-if="fetchedProducts.length === 0" class="empty_data_layout">
+    <div v-else-if="productStore.productList.length === 0" class="empty_data_layout">
       <h3>В цій категорії поки ще немае товарів...</h3>
     </div>
 
-    <ul v-else class="product_wrapper">
-      <li v-for="product in fetchedProducts" :key="product.id">
+    <div v-else class="items_section">
+      <div v-for="product in productStore.productList" :key="product.id">
         <ItemCard
-          :link="`/products/${categoryName}/${product.id}`"
+          :link="`/products/${product.category.group.toLowerCase()}/${product.id}`"
           :product="product"
           @set-product="productStore.setSelectedProducts(product)"
         />
-      </li>
-    </ul>
+      </div>
+    </div>
 
-    <div v-if="fetchedProducts.length > 0" class="categories_footer">
+    <div class="show_more_block">
+      <div class="show_more_block_inner"></div>
+      <button
+        v-if="productStore.hasMore"
+        class="show_more_block_inner"
+        @click="productStore.loadMore"
+      >
+        Показати більше
+        <AngleDown />
+      </button>
+      <div v-else class="show_more_block_inner"></div>
+      <div class="pagination show_more_block_inner">
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+      </div>
+    </div>
+
+    <!-- <div v-if="fetchedProducts.length > 0" class="categories_footer">
       <ShowMoreBtn :link="`/products/${categoryName}`">
         Переглянути всі
-        <AngleDownIcon />
+        <AngleDown />
       </ShowMoreBtn>
 
       <Pagination
@@ -64,18 +86,18 @@
         :total-pages="totalPages"
         @page-change="handlePageChange"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script setup>
 // Component imports
-import AngleDownIcon from "~/assets/icons/angle-down.svg";
-import ItemCard from "@/components/ItemCard.vue";
+import AngleDown from "~/assets/icons/angle-down.svg";
+// import ItemCard from "@/components/ItemCard.vue";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
 import DoubleRange from "@/components/DoubleRange.vue";
-import ShowMoreBtn from "@/components/shared/ShowMoreBtn.vue";
-import Pagination from "@/components/shared/Pagination.vue";
+// import ShowMoreBtn from "@/components/shared/ShowMoreBtn.vue";
+// import Pagination from "@/components/shared/Pagination.vue";
 
 // Store imports
 import { useIndexStore } from "@/store/index-store";
@@ -84,53 +106,100 @@ import { useProductStore } from "@/store/product-store";
 // Utility imports
 import { ref, onMounted, computed } from "vue";
 
-const fetchedProducts = ref([]);
-const categoryName = ref("");
-const currentPage = ref(1);
-const totalPages = ref(12); // Mock total pages for demonstration
+// const fetchedProducts = ref([]);
+// const categoryName = ref("");
+// const currentPage = ref(1);
+// const totalPages = ref(12); // Mock total pages for demonstration
 const loaderState = ref(false);
 
+const route = useRoute();
 const indexStore = useIndexStore();
 const productStore = useProductStore();
-
-const route = useRoute();
-
-const categoryId = route.params.categoryId;
-
 const toggleCategory = ref(false);
 
-const fetchCategories = computed(() => indexStore.fetchedCategories);
-
-categoryName.value = categoryId;
-
 const currentCategory = computed(() => {
+  if (!indexStore.fetchedCategories.length) return null;
+
+  // console.log(indexStore.fetchedCategories, "indexStore.fetchedCategories");
+  // console.log(route.params.categoryId, "route.params.category");
+
   return indexStore.fetchedCategories.find(
-    (cat) => cat.group.toLowerCase() === categoryId.toLowerCase()
+    (cat) => cat.group.toLowerCase() === route.params.categoryId?.toLowerCase()
   );
 });
 
+watch([currentCategory, () => indexStore.fetchedCategories.length], async ([cat]) => {
+  if (!cat) return;
+
+  productStore.category = cat.id;
+  productStore.page = 1;
+
+  await productStore.fetchProductsByPage({ reset: true });
+});
+
+// const route = useRoute();
+
+// const categoryId = route.params.categoryId;
+
+// const fetchCategories = computed(() => indexStore.fetchedCategories);
+
+// categoryName.value = categoryId;
+
+// const currentCategory = computed(() => {
+//   return indexStore.fetchedCategories.find(
+//     (cat) => cat.group.toLowerCase() === categoryId.toLowerCase()
+//   );
+// });
+
 onMounted(async () => {
   loaderState.value = true;
-  const categoryId = currentCategory.value.id;
 
-  try {
-    const getProductsByCategory = await $fetch(`/api/category?categoryId=${categoryId}`);
-
-    fetchedProducts.value = getProductsByCategory.data;
-    // console.log(getProductsByCategory);
-  } catch (err) {
-    console.log(err);
+  if (currentCategory.value) {
+    productStore.category = currentCategory.value.id;
+    productStore.page = 1;
+    await productStore.fetchProductsByPage({ reset: true });
   }
 
-  console.log(fetchedProducts.value);
   loaderState.value = false;
 });
 
-const handlePageChange = (page) => {
-  currentPage.value = page;
-  // In a real implementation, this would trigger an API call
-  console.log("Page changed to:", page);
-};
+// onMounted(async () => {
+// loaderState.value = true;
+// productStore.category = categoryId;
+// productStore.page = 1;
+
+// console.log(categoryName.value, "category name");
+// console.log(categoryId, "categoryId");
+// // const categoryId = currentCategory.value.id;
+
+// try {
+//   // const getProductsByCategory = await $fetch(`/api/category?categoryId=${categoryId}`);
+
+//   // fetchedProducts.value = getProductsByCategory.data;
+//   // console.log(getProductsByCategory);
+
+//   await productStore.fetchProductsByPage({ reset: true });
+// } catch (err) {
+//   console.log(err);
+// }
+
+// console.log(productStore.productList, "product list");
+
+// // console.log(fetchedProducts.value);
+// loaderState.value = false;
+
+//   loaderState.value = true;
+
+//   console.log(productStore.productList, "product list");
+
+//   loaderState.value = false;
+// });
+
+// const handlePageChange = (page) => {
+//   currentPage.value = page;
+//   // In a real implementation, this would trigger an API call
+//   console.log("Page changed to:", page);
+// };
 
 definePageMeta({
   layout: "products"
@@ -147,10 +216,23 @@ definePageMeta({
 
 .page_title {
   text-transform: uppercase;
+  margin-bottom: 40px;
   h1 {
     color: white;
     font-weight: 700;
     font-size: 2rem;
+  }
+  @media screen and (max-width: 1024px) {
+    margin-bottom: 32px;
+  }
+  @media screen and (max-width: 768px) {
+    margin-bottom: 28px;
+  }
+  @media screen and (max-width: 480px) {
+    margin-bottom: 24px;
+  }
+  @media screen and (max-width: 375px) {
+    margin-bottom: 20px;
   }
 }
 
@@ -179,14 +261,26 @@ definePageMeta({
   align-items: center;
   @include mixins.subtitleText;
 }
-.product_wrapper {
+.items_section {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  align-items: stretch;
-  gap: 1rem;
+  gap: 32px 20px;
+  width: 100%;
+  height: auto;
 
   @media screen and (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+
+  @media screen and (max-width: 768px) {
+    gap: 32px 20px;
+  }
+  @media screen and (max-width: 480px) {
+    gap: 20px 12px;
+  }
+  @media screen and (max-width: 375px) {
+    gap: 15px 8px;
   }
 }
 
@@ -264,6 +358,53 @@ definePageMeta({
   .pagination {
     flex-grow: 0;
     justify-content: flex-end;
+  }
+}
+
+.show_more_block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 70px;
+  gap: 20px;
+
+  &_inner {
+    flex: 1;
+  }
+
+  button {
+    @include mixins.transparentBtn;
+    @include mixins.mainText;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    text-transform: uppercase;
+    color: var(--border-color);
+    gap: 4px;
+
+    svg {
+      padding: 3px;
+      width: 20px;
+      height: 20px;
+      stroke: var(--border-color);
+    }
+  }
+  .pagination {
+    color: transparent;
+  }
+
+  @media screen and (max-width: 1024px) {
+    margin-bottom: 80px;
+  }
+  @media screen and (max-width: 768px) {
+    margin-bottom: 70px;
+  }
+  @media screen and (max-width: 480px) {
+    margin-bottom: 60px;
+  }
+  @media screen and (max-width: 375px) {
+    margin-bottom: 48px;
   }
 }
 </style>

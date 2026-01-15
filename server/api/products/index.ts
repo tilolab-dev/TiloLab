@@ -1,12 +1,24 @@
 import { defineEventHandler } from "h3";
-import { addProduct, getProducts } from "@/server/services/productsServices";
+import { addProduct, getProducts, getProductsByPage } from "@/server/services/productsServices";
 
 export default defineEventHandler((event) => {
   const method = event.node.req.method;
+  const query = getQuery(event);
 
   switch (method) {
     case "GET":
-      return getProducts();
+      // return getProducts();
+
+      switch (query.getMethod) {
+        case "all":
+          console.log("enter to all products");
+          return getProducts();
+        case "page":
+          console.log("enter to product by page");
+          return getProductsByPage(event);
+        default:
+          return { message: "Method not defined" };
+      }
 
     case "POST":
       return addProduct(event);
