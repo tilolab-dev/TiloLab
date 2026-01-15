@@ -4,11 +4,9 @@
       <h1>Ваш список бажань</h1>
     </div>
 
-    <SharedLoader v-if="loaderState" />
-
-    <template v-else>
-      <ul v-if="fetchedProducts?.length" class="product_wrapper">
-        <li v-for="product in fetchedProducts" :key="product.id">
+    <template v-if="wishlistProducts?.length">
+      <ul class="product_wrapper">
+        <li v-for="product in wishlistProducts" :key="product.id">
           <WishlistItemCard
             :product="product"
             :link="`/products/${categoryName}/${product.id}`"
@@ -16,54 +14,24 @@
           />
         </li>
       </ul>
-
-      <div v-else class="empty_wishlist">
-        <h2>Список бажань порожній</h2>
-      </div>
     </template>
+
+    <div v-else class="empty_wishlist">
+      <h2>Список бажань порожній</h2>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { useIndexStore } from "@/store/index-store";
 import { useProductStore } from "@/store/product-store";
-import { ref } from "vue";
+import { useWishlistStore } from "@/store/wishlist-store";
+
 import WishlistItemCard from "@/components/WishlistItemCard.vue";
 
-const fetchedProducts = ref([]);
-const categoryName = ref("");
-const loaderState = ref(true);
-
-const indexStore = useIndexStore();
 const productStore = useProductStore();
+const wishlistStore = useWishlistStore();
 
-const route = useRoute();
-
-const categoryId = route.params.categoryId || "test-category";
-
-categoryName.value = categoryId;
-
-const currentCategory = computed(() => {
-  return indexStore.fetchedCategories.find(
-    (cat) => cat.group?.toLowerCase() === categoryId?.toLowerCase()
-  );
-});
-
-onMounted(async () => {
-  const categoryId = currentCategory?.value?.id || "test-category";
-
-  try {
-    const getProductsByCategory = await $fetch(`/api/category?categoryId=${categoryId}`);
-
-    fetchedProducts.value = getProductsByCategory.data;
-
-    console.log(fetchedProducts.value);
-  } catch (err) {
-    console.log(err);
-  } finally {
-    loaderState.value = false;
-  }
-});
+const wishlistProducts = computed(() => wishlistStore.wishlist);
 
 definePageMeta({
   layout: "products"
