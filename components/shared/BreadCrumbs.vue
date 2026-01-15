@@ -44,6 +44,7 @@ const props = defineProps({
 .link-block {
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
   align-items: center;
   margin-block: 1rem;
   gap: 7px;
