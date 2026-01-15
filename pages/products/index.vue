@@ -1,8 +1,74 @@
 <template>
   <div class="products">
-    <div class="container">
-      <div class="popular_cards">
-        <SharedSwiperSlider>
+    <div class="popular_cards">
+      <div class="filter_category">
+        <div class="filter">
+          <DoubleRange />
+        </div>
+        <div class="category">
+          <button @click="toggleCategory = !toggleCategory">
+            Категорія
+            <AngleDown />
+          </button>
+
+          <ul v-if="toggleCategory" class="categories_wrapper">
+            <li>
+              <NuxtLink to="/products?page=1&category"> Всі товари </NuxtLink>
+            </li>
+            <li v-for="(item, index) in indexStore.fetchedCategories" :key="index">
+              <NuxtLink :to="`/products/${item.group.toLowerCase()}`">
+                {{ item.translations[0].title }}
+              </NuxtLink>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <ClientOnly v-if="loaderState">
+        <div class="loader_cards">
+          <div v-for="(card, i) in 6" :key="i" class="loader_cards_item">
+            <SharedLoader />
+          </div>
+        </div>
+      </ClientOnly>
+
+      <div class="items_section">
+        <template v-for="(group, categoryId) in groupedProducts" :key="categoryId">
+          <h2 class="category-title">
+            {{ group[0].category.translations?.[0]?.title || group[0].category.group }} &nbsp;:
+          </h2>
+          <div class="category-grid">
+            <ItemCard
+              v-for="product in group"
+              :key="product.id"
+              :product="product"
+              :link="`/products/${product.category.group.toLowerCase()}/${product.id}`"
+              class="card"
+              @click="productStore.setSelectedProducts(product)"
+            />
+          </div>
+        </template>
+      </div>
+
+      <div class="show_more_block">
+        <div class="show_more_block_inner"></div>
+        <button
+          v-if="productStore.hasMore"
+          class="show_more_block_inner"
+          @click="productStore.loadMore"
+        >
+          Показати більше
+          <AngleDown />
+        </button>
+        <div v-else class="show_more_block_inner"></div>
+        <div class="pagination show_more_block_inner">
+          <span>1</span>
+          <span>2</span>
+          <span>3</span>
+          <span>4</span>
+        </div>
+      </div>
+      <!-- <SharedSwiperSlider>
           <swiper-slide v-for="(product, i) in popularCards" :key="i">
             <ItemCard
               :product="product"
@@ -11,25 +77,60 @@
               @click="productStore.setSelectedProducts(product)"
             />
           </swiper-slide>
-        </SharedSwiperSlider>
-      </div>
+        </SharedSwiperSlider> -->
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import AngleDown from "~/assets/icons/angle-down.svg";
+import { onMounted, ref, watch } from "vue";
+import { useProductStore } from "@/store/product-store";
+import { useIndexStore } from "@/store/index-store";
+const loaderState = ref(true);
 
-const popularCards = ref([]);
+const route = useRoute();
+const router = useRouter();
+const productStore = useProductStore();
+const indexStore = useIndexStore();
+const toggleCategory = ref(false);
+
+const groupedProducts = computed(() => {
+  const map = {};
+  productStore.productList.forEach((product) => {
+    if (!map[product.categoryId]) map[product.categoryId] = [];
+    map[product.categoryId].push(product);
+  });
+  return map;
+});
 
 onMounted(async () => {
-  try {
-    const getProducts = await $fetch("/api/products");
+  loaderState.value = true;
+  productStore.page = Number(route.query.page ?? 1);
+  productStore.category = route.query.category ?? null;
 
-    popularCards.value = getProducts?.data;
-  } catch (err) {
-    console.error("Failed to fetch popular products:", err);
+  if (!productStore.productList.length) {
+    await productStore.fetchProductsByPage({ reset: true });
   }
+
+  // const scroll = sessionStorage.getItem('catalogScroll')
+  // if (scroll) nextTick(() => window.scrollTo(0, Number(scroll)))
+  // try {
+  //   const getProducts = await $fetch("/api/products");
+
+  //   popularCards.value = getProducts?.data;
+  // } catch (err) {
+  //   console.error("Failed to fetch popular products:", err);
+  // }
+  loaderState.value = false;
+});
+
+// onBeforeRouteLeave(() => {
+//   sessionStorage.setItem('catalogScroll', window.scrollY.toString())
+// })
+
+watch([() => productStore.page, () => productStore.category], () => {
+  router.replace({ query: { page: productStore.page, category: productStore.category } });
 });
 
 definePageMeta({
@@ -38,7 +139,180 @@ definePageMeta({
 </script>
 
 <style lang="scss" scoped>
+@use "@/style/mixins.scss" as mixins;
 .products {
   margin-bottom: 80px;
+
+  .filter_category {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0 1rem;
+    color: white;
+
+    .category {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: 500;
+      position: relative;
+
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        cursor: pointer;
+
+        svg {
+          width: 20px;
+          height: 20px;
+          stroke: var(--text-color);
+        }
+      }
+      .arrow_icon {
+        transition: all ease 0.3s;
+      }
+
+      .active_icon {
+        transition: all ease 0.3s;
+        transform: rotate(180deg);
+        fill: var(--accent-color);
+      }
+    }
+
+    .categories_wrapper {
+      position: absolute;
+      width: fit-content;
+      height: auto;
+      padding: 20px;
+      background-color: var(--bg-color);
+      z-index: 21;
+      top: 50px;
+      right: 0;
+
+      li {
+        white-space: nowrap;
+        color: var(--accent-color);
+        padding-block: 5px;
+      }
+    }
+  }
+
+  .loader_cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    &_item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 40dvh;
+      background: rgb(29, 27, 29);
+    }
+    @media screen and (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .items_section {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .category-title {
+    @include mixins.titleText;
+    color: var(--text-color);
+    font-weight: 600;
+    @media screen and (max-width: 1024px) {
+      margin-bottom: 32px;
+    }
+    @media screen and (max-width: 768px) {
+      margin-bottom: 28px;
+    }
+    @media screen and (max-width: 480px) {
+      margin-bottom: 24px;
+    }
+    @media screen and (max-width: 375px) {
+      margin-bottom: 20px;
+    }
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px 20px;
+    width: 100%;
+    height: auto;
+
+    @media screen and (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+
+    @media screen and (max-width: 768px) {
+      gap: 32px 20px;
+    }
+    @media screen and (max-width: 480px) {
+      gap: 20px 12px;
+    }
+    @media screen and (max-width: 375px) {
+      gap: 15px 8px;
+    }
+  }
+
+  .show_more_block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 70px;
+    gap: 20px;
+
+    &_inner {
+      flex: 1;
+    }
+
+    button {
+      @include mixins.transparentBtn;
+      @include mixins.mainText;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      white-space: nowrap;
+      text-transform: uppercase;
+      color: var(--border-color);
+      gap: 4px;
+
+      svg {
+        padding: 3px;
+        width: 20px;
+        height: 20px;
+        stroke: var(--border-color);
+      }
+    }
+    .pagination {
+      color: transparent;
+    }
+
+    @media screen and (max-width: 1024px) {
+      margin-bottom: 80px;
+    }
+    @media screen and (max-width: 768px) {
+      margin-bottom: 70px;
+    }
+    @media screen and (max-width: 480px) {
+      margin-bottom: 60px;
+    }
+    @media screen and (max-width: 375px) {
+      margin-bottom: 48px;
+    }
+  }
 }
 </style>

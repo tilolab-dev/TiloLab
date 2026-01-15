@@ -93,6 +93,7 @@
       <SharedLoader v-if="!loaderState" />
 
       <nav v-else>
+        <NuxtLink to="/products?page=1&category"> Всі товари </NuxtLink>
         <NuxtLink
           v-for="(item, index) in fetchCategories"
           :key="index"
