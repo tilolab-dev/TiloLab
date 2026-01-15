@@ -48,9 +48,9 @@ const productStore = useProductStore();
 
 onMounted(async () => {
   try {
-    const getProducts = await $fetch("/api/products");
+    await productStore.fetchProducts();
 
-    popularCards.value = getProducts.data;
+    popularCards.value = productStore.productList;
   } catch (err) {
     console.log(err);
   }

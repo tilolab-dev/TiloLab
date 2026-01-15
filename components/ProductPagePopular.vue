@@ -1,6 +1,6 @@
 <template>
   <div class="product_page_popular">
-    <div ref="containerRef" class="container">
+    <div ref="containerRef">
       <div class="popular_head">
         <div class="head_content">
           <h5 class="left_content">вам також може сподобатись</h5>
@@ -9,11 +9,10 @@
 
       <div class="popular_cards">
         <SharedSwiperSlider>
-          <swiper-slide v-for="(product, i) in popularCards" :key="i">
+          <swiper-slide v-for="(product, i) in popularCards" :key="i" class="card">
             <ItemCard
               :link="`/products/${product.category.group.toLowerCase()}/${product.id}`"
               :product="product"
-              class="card"
               @click="productStore.setSelectedProducts(product)"
             />
           </swiper-slide>
@@ -33,9 +32,8 @@ const productStore = useProductStore();
 
 onMounted(async () => {
   try {
-    const getProducts = await $fetch("/api/products");
-
-    popularCards.value = getProducts.data;
+    await productStore.fetchProducts();
+    popularCards.value = productStore.productList;
   } catch (err) {
     console.log(err);
   }
@@ -195,11 +193,6 @@ onMounted(async () => {
     line-height: 150%;
     letter-spacing: 0.6px;
     text-transform: uppercase;
-  }
-
-  @media screen and (max-width: 480px) {
-    min-width: 208px;
-    height: 269px;
   }
 }
 </style>
