@@ -23,7 +23,7 @@
           до тіла, а не про сором.
         </h1>
 
-        <NuxtLink to="/products" class="hero_btn">
+        <NuxtLink to="/products?page=1&category" class="hero_btn">
           <SharedAccentBtn class="hero_btn"> Обрати девайс </SharedAccentBtn>
         </NuxtLink>
       </div>
