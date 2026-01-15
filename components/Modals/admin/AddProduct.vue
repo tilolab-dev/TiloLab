@@ -982,6 +982,7 @@ onMounted(async () => {
     .default_text {
       @include mixins.mainText;
       color: var(--grey-color);
+      white-space: nowrap;
     }
 
     .top_content {

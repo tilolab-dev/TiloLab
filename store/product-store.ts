@@ -20,7 +20,7 @@ export const useProductStore = defineStore("product", {
     setSelectedProducts(products: IProduct[] | null) {
       this.selectedProducts = products;
 
-      console.log(this.selectedProducts, "from store");
+      // console.log(this.selectedProducts, "from store");
     },
     async fetchProducts() {
       try {
@@ -44,13 +44,16 @@ export const useProductStore = defineStore("product", {
         console.log(error, "error");
       }
     },
-    async updateProduct(product: IProduct) {
+    async updateProduct(id: number, product: IProduct) {
+      // console.log(id, "id");
+      // console.log(product, "product");
       try {
-        const updateReq = await $fetch(`/api/products/${product.id}`, {
+        const updateReq = await $fetch(`/api/products/${id}`, {
           method: "PATCH",
           body: product
         });
         if (updateReq?.statusCode === 200) {
+          await this.fetchProducts();
           alert("Товар успішно оновлено");
         }
       } catch (err) {
