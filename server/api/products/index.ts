@@ -11,10 +11,8 @@ export default defineEventHandler((event) => {
 
       switch (query.getMethod) {
         case "all":
-          console.log("enter to all products");
           return getProducts();
         case "page":
-          console.log("enter to product by page");
           return getProductsByPage(event);
         default:
           return { message: "Method not defined" };
