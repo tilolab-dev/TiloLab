@@ -128,8 +128,19 @@ const currentCategory = computed(() => {
   );
 });
 
-watch([currentCategory, () => indexStore.fetchedCategories.length], async ([cat]) => {
+// watch([currentCategory, () => indexStore.fetchedCategories.length], async ([cat]) => {
+//   if (!cat) return;
+
+//   productStore.category = cat.id;
+//   productStore.page = 1;
+
+//   await productStore.fetchProductsByPage({ reset: true });
+// });
+
+watch([currentCategory], async ([cat]) => {
   if (!cat) return;
+
+  if (productStore.category === cat.id) return;
 
   productStore.category = cat.id;
   productStore.page = 1;

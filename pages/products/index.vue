@@ -106,10 +106,20 @@ const groupedProducts = computed(() => {
 
 onMounted(async () => {
   loaderState.value = true;
-  productStore.page = Number(route.query.page ?? 1);
-  productStore.category = route.query.category ?? null;
+  // productStore.page = Number(route.query.page ?? 1);
+  // productStore.category = route.query.category ?? null;
+  const routeCategory = route.query.category ?? null;
+  const routePage = Number(route.query.page ?? 1);
 
-  if (!productStore.productList.length) {
+  const needReset = productStore.category !== routeCategory || productStore.page !== routePage;
+
+  // if (!productStore.productList.length) {
+  //   await productStore.fetchProductsByPage({ reset: true });
+  // }
+
+  if (needReset) {
+    productStore.category = routeCategory;
+    productStore.page = routePage;
     await productStore.fetchProductsByPage({ reset: true });
   }
 
