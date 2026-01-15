@@ -251,8 +251,6 @@ const fetchCategories = computed(() => indexStore?.fetchedCategories);
   }
 
   @media screen and (max-width: 480px) {
-    min-width: 208px;
-    height: 269px;
     font-size: 24px;
   }
 }

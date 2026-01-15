@@ -42,9 +42,10 @@ onMounted(async () => {
   if (!el) return;
 
   Object.assign(el, {
-    slidesPerView: 1,
+    slidesPerView: 2,
     spaceBetween: 20,
     breakpoints: {
+      320: { slidesPerView: 2 },
       480: { slidesPerView: 2 },
       769: { slidesPerView: 2.5 },
       1025: { slidesPerView: 3, spaceBetween: 10 }
