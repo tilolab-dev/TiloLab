@@ -118,9 +118,7 @@
               <div class="main_option_content">
                 <h4 class="default_text">Оберіть категорію товару:<strong> * </strong></h4>
                 <select id="wholesaleType" v-model="productCategory" name="wholesaleType">
-                  <option selected value>
-                    -- {{ modalProps.product.category.translations[0].title }} --
-                  </option>
+                  <option selected value>-- {{ productCategory }} --</option>
                   <option
                     v-for="(category, index) in fetchedCategories"
                     :key="index"
@@ -272,7 +270,7 @@
                 </div>
                 <div class="wrapper">
                   <span class="default_text"> Акційний товар </span>
-                  <div class="checkbox-wrap flex items-center justify-start">
+                  <div class="checkbox-wrap action_checkbox_wrap flex items-center justify-start">
                     <input
                       id="discountState"
                       v-model="discountState"
@@ -443,7 +441,7 @@
           </div>
           <div class="button-group">
             <button class="btn_transparent" @click="clearModal">Очистити форму</button>
-            <button class="btn_fill" @click="addNewProduct">Додати товар</button>
+            <button class="btn_fill" @click="updateProduct">Оновити товар</button>
           </div>
         </div>
       </div>
@@ -636,6 +634,7 @@ const clearModal = () => {
   productSize.value = "";
   optionFileInput.value.value = "";
   productFileInput.value.value = "";
+  productPrice.value = null;
 };
 
 const addNewOption = () => {
@@ -669,40 +668,22 @@ const removeOption = (index) => {
   addOptionsRef.value.splice(index, 1);
 };
 
-const addNewProduct = async () => {
-  //   if (!productCategory.value) {
-  //     emit("tooltip", {
-  //       status: "error",
-  //       message: "Оберіть категорію товару",
-  //     });
-  //     return;
-  //   }
-  //   if (!productNameUk.value || !productNameRu.value || !productNameEn.value) {
-  //     emit("tooltip", {
-  //       status: "error",
-  //       message: "Введіть назву товару",
-  //     });
-  //     return;
-  //   }
-  //   if (!price.value) {
-  //     emit("tooltip", {
-  //       status: "error",
-  //       message: "Введіть роздрібну ціну товару",
-  //     });
-  //     return;
-  //   }
+const updateProduct = async () => {
+  loaderState.value = true;
+  const category = fetchedCategories.value.find((item) => item.id === productCategory.value);
 
-  const categoryData = fetchedCategories.value.filter((item) => item.id === productCategory.value);
+  if (!category) {
+    console.warn("Category not found", productCategory.value);
+    return;
+  }
 
-  const categoryName = categoryData[0].group.trim().replaceAll(" ", "-").toLowerCase();
+  const categoryName = category.group.trim().replaceAll(" ", "-").toLowerCase();
 
   const translitProductName = transliterate(productNameUk.value);
-
   const productName = translitProductName.replaceAll(" ", "-").toLowerCase().trim();
 
   // UPLOAD PRODUCT FILE
   const uploadProductFiles = async () => {
-    loaderState.value = true;
     const formData = new FormData();
 
     try {
@@ -751,10 +732,18 @@ const addNewProduct = async () => {
         body: formData
       });
 
-      if (optionFileUpload && Array.isArray(optionFileUpload.data)) {
-        return optionFileUpload.data.map((elem) => elem.filePath);
+      // if (optionFileUpload && Array.isArray(optionFileUpload.data)) {
+      //   return optionFileUpload.data.map((elem) => elem.filePath);
+      // } else {
+      //   console.error("Ошибка: productFileUpload не является массивом", optionFileUpload);
+      //   return [];
+      // }
+      if (optionFileUpload && optionFileUpload.data && Array.isArray(optionFileUpload.data)) {
+        return optionFileUpload.data.map(function (elem) {
+          return elem.filePath;
+        });
       } else {
-        console.error("Ошибка: productFileUpload не является массивом", optionFileUpload);
+        console.warn("productFileUpload не является массивом, возвращаем пустой", optionFileUpload);
         return [];
       }
     } catch (error) {
@@ -766,33 +755,40 @@ const addNewProduct = async () => {
   };
 
   const uploadData = async (productImgPath, optionImgPath) => {
-    toRaw(addOptionsRef.value).map((elem, index) => {
-      toRaw(elem.fileImg)[0] = optionImgPath[index];
+    // toRaw(addOptionsRef.value).map((elem, index) => {
+    //   toRaw(elem.fileImg)[0] = optionImgPath[index];
+    // });
+
+    const finalImg = [...modalProps.product.img.map((img) => img.path), ...productImgPath];
+
+    const finalOptions = toRaw(addOptionsRef.value).map((option, index) => {
+      return {
+        optionImg: optionImgPath[index] || option.fileImg[0],
+        optionPrice: Number(option.optionPrice),
+        translations: option.translations
+      };
     });
 
-    const res = await $fetch("/api/products", {
-      method: "POST",
-      body: {
-        categoryId: productCategory.value,
-        visibility: productVisibility.value,
-        img: productImgPath,
-        productPrice: productPrice.value,
-        stockState: productStockState.value,
-        stockValue: productStockValue.value,
-        discountPercent: productDiscountPersent.value,
-        productSize: productSize.value,
-        translations: [
-          {
-            language: "uk",
-            title: productNameUk.value,
-            description: productDescriptionUk.value,
-            productColor: productColorUk.value,
-            productMaterial: productMaterialUk.value,
-            productManufacture: productManufacture.value
-          }
-        ],
-        options: toRaw(addOptionsRef.value)
-      }
+    const res = await productStore.updateProduct(modalProps.product.id, {
+      categoryId: productCategory.value,
+      visibility: productVisibility.value,
+      img: finalImg,
+      productPrice: productPrice.value,
+      stockState: productStockState.value,
+      stockValue: productStockValue.value,
+      discountPercent: productDiscountPersent.value,
+      productSize: productSize.value,
+      translations: [
+        {
+          language: "uk",
+          title: productNameUk.value,
+          description: productDescriptionUk.value,
+          productColor: productColorUk.value,
+          productMaterial: productMaterialUk.value,
+          productManufacture: productManufacture.value
+        }
+      ],
+      options: finalOptions
     });
 
     return {
@@ -802,10 +798,17 @@ const addNewProduct = async () => {
 
   const uploadAllData = async () => {
     try {
-      const [productImgPath, optionImgPath] = await Promise.all([
-        uploadProductFiles(),
-        uploadOptionFiles()
-      ]);
+      const productPromise = productFileState.productFiles.value.length
+        ? uploadProductFiles()
+        : Promise.resolve([]);
+
+      const optionPromise = addOptionsRef.value.length ? uploadOptionFiles() : Promise.resolve([]);
+
+      const [productImgPath, optionImgPath] = await Promise.all([productPromise, optionPromise]);
+      // const [productImgPath, optionImgPath] = await Promise.all([
+      //   uploadProductFiles(),
+      //   uploadOptionFiles()
+      // ]);
 
       console.log("Изображения загружены:", productImgPath, optionImgPath);
 
@@ -813,12 +816,10 @@ const addNewProduct = async () => {
 
       console.log("Данные загружены:", result);
 
-      clearModal();
-
       loaderState.value = false;
+      modalStore.closeModal();
 
-      alert("Товар створений успішно");
-
+      // alert("Товар оновлено успішно");
       //   emit("tooltip", {
       //     status: "success",
       //     message: "Товар створений успішно",
@@ -844,14 +845,14 @@ const modalProps = defineProps({
 });
 
 onMounted(async () => {
-  console.log(modalProps.product);
+  // console.log(modalProps.product);
+  loaderState.value = true;
 
-  await categoryStore.getCategories();
+  // await categoryStore.getCategories();
 
-  console.log(categoryStore.categoryList);
+  // console.log(categoryStore.categoryList);
 
   fetchedCategories.value = categoryStore.categoryList;
-
   currentProductFiles.value = modalProps.product.img;
   currentOptionFiles.value = modalProps.product.options;
   productNameUk.value = modalProps.product.translations[0].title;
@@ -869,21 +870,31 @@ onMounted(async () => {
   discountState.value = modalProps.product.discountPercent > 0 ? true : false;
   productDiscountPersent.value = modalProps.product.discountPercent;
 
-  //   productCategory.value = modalProps.product.category.translations[0].title;
+  // productCategory.value = modalProps.product.category.translations[0].title;
   //   console.log(modalProps.product.category.translations[0].title);
 
-  //   try {
-  //     const getData = await $fetch("/api/category");
+  try {
+    const getData = await $fetch("/api/category");
 
-  //     if (getData.data.length > 0) {
-  //       fetchedCategories.value = getData.data.map((item) => ({
-  //         ...item,
-  //         itemLanguage: item.translations.find((translation) => translation.language === "uk")
-  //       }));
-  //     }
-  //   } catch (error) {
-  //     console.log(error.message, "error from getData");
-  //   }
+    if (getData.data.length > 0) {
+      fetchedCategories.value = getData.data.map((item) => ({
+        ...item,
+        itemLanguage: item.translations.find((translation) => translation.language === "uk")
+      }));
+
+      // productCagory.value =
+      // const selectedCategory = fetchedCategories.value.find(
+      //   (el) => el.id === modalProps.product.category.id
+      // );
+
+      productCategory.value = modalProps.product.category.id;
+      console.log(productCategory.value, "value");
+    }
+  } catch (error) {
+    console.log(error.message, "error from getData");
+  }
+
+  loaderState.value = false;
 });
 </script>
 
@@ -1147,6 +1158,7 @@ onMounted(async () => {
     .default_text {
       @include mixins.mainText;
       color: var(--grey-color);
+      white-space: nowrap;
     }
 
     .top_content {
@@ -1296,6 +1308,10 @@ onMounted(async () => {
         flex-direction: column;
         justify-content: space-between;
 
+        .action_checkbox_wrap {
+          margin-top: 10px;
+        }
+
         .checkbox-wrap {
           input {
             display: none;
@@ -1356,6 +1372,14 @@ onMounted(async () => {
         flex-direction: column;
         gap: 0.5rem;
 
+        .option-lang {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          gap: 5px;
+        }
+
         &_wrapper {
           display: flex;
           align-items: center;
@@ -1407,6 +1431,7 @@ onMounted(async () => {
           }
         }
       }
+
       .new_option_btn {
         display: flex;
         justify-content: flex-end;
