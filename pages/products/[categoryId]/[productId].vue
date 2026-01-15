@@ -4,7 +4,9 @@
       <div class="product_id_wrapper">
         <BreadCrumbs :links="breadCrumbLinks" />
 
-        <SharedLoader v-if="loadState" />
+        <div v-if="loadState" class="loader_id_wrapper">
+          <SharedLoader />
+        </div>
 
         <template v-else>
           <div v-if="productStore.selectedProducts?.translations" class="product_id_main">
@@ -55,17 +57,28 @@
 
             <div class="product_id_info">
               <div class="product_id_info_main">
-                <h3>
-                  {{ productStore.selectedProducts.translations[0].title }}
-                </h3>
-                <div class="product_price">
-                  <span> {{ productStore.selectedProducts.productPrice }} грн </span>
-                  <span
-                    v-if="productStore.selectedProducts.discountPercent != 0"
-                    class="discount_accent"
-                  >
-                    {{ discountedPrice }} грн
-                  </span>
+                <div class="description_head">
+                  <h3>
+                    {{ productStore.selectedProducts.translations[0].title }}
+                  </h3>
+                  <div class="product_price">
+                    <span
+                      :style="{
+                        textDecorationLine:
+                          productStore.selectedProducts.discountPercent != 0
+                            ? 'line-through'
+                            : 'none'
+                      }"
+                    >
+                      {{ productStore.selectedProducts.productPrice }} грн
+                    </span>
+                    <span
+                      v-if="productStore.selectedProducts.discountPercent != 0"
+                      class="discount_accent"
+                    >
+                      {{ discountedPrice }} грн
+                    </span>
+                  </div>
                 </div>
 
                 <div class="wish_list">
@@ -115,25 +128,25 @@
                 <ul>
                   <li>
                     <span>
-                      <strong> Колір: </strong>
+                      <strong> Колір: </strong> &nbsp;
                       {{ productStore.selectedProducts.translations[0].productColor }}
                     </span>
                   </li>
                   <li>
                     <span>
-                      <strong> Матеріал: </strong>
+                      <strong> Матеріал: </strong> &nbsp;
                       {{ productStore.selectedProducts.translations[0].productMaterial }}
                     </span>
                   </li>
                   <li>
                     <span>
-                      <strong> Розмір: </strong>
+                      <strong> Розмір: </strong> &nbsp;
                       {{ productStore.selectedProducts.productSize }}
                     </span>
                   </li>
                   <li>
                     <span>
-                      <strong> Країна виробник: </strong>
+                      <strong> Країна виробник: </strong> &nbsp;
                       {{ productStore.selectedProducts.translations[0].productManufacture }}
                     </span>
                   </li>
@@ -337,12 +350,31 @@ onUnmounted(() => {
 @use "@/style/mixins.scss" as mixins;
 
 .product_id_wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  margin-block: 4rem;
-  gap: 4rem;
+  @include mixins.pageSpacing;
+
+  .loader_id_wrapper {
+    width: 100%;
+    height: 60dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.link-block {
+  padding-bottom: 28px;
+  @media screen and (max-width: 1024px) {
+    padding-bottom: 24px;
+  }
+  @media screen and (max-width: 768px) {
+    padding-bottom: 16px;
+  }
+  @media screen and (max-width: 480px) {
+    padding-bottom: 12px;
+  }
+  @media screen and (max-width: 375px) {
+    padding-bottom: 6px;
+  }
 }
 
 .product_id {
@@ -409,10 +441,14 @@ onUnmounted(() => {
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    gap: 32px;
   }
 
   @media (max-width: 480px) {
-    gap: 6px;
+    gap: 24px;
+  }
+  @media screen and (max-width: 375px) {
+    gap: 22px;
   }
 }
 
@@ -423,6 +459,8 @@ onUnmounted(() => {
   align-items: flex-start;
   width: 100%;
   max-width: 600px;
+  position: sticky;
+  top: 50px;
   gap: 1rem;
   flex: 1;
 
@@ -432,6 +470,8 @@ onUnmounted(() => {
 
   @media screen and (max-width: 768px) {
     max-width: calc(100vw - 30px);
+    position: relative;
+    top: 0;
   }
 
   .main_img {
@@ -453,7 +493,7 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 4rem;
+  gap: 46px;
 
   &_main {
     display: flex;
@@ -461,15 +501,39 @@ onUnmounted(() => {
     align-items: flex-start;
     justify-content: flex-start;
     width: fit-content;
-    gap: 1rem;
+    gap: 20px;
+
+    .description_head {
+      @media screen and (max-width: 480px) {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      @media screen and (max-width: 375px) {
+        gap: 4px;
+      }
+    }
 
     h3 {
+      font-family: "Montserrat", sans-serif;
       color: #fff;
-      font-size: 30px;
+      font-size: 1.875rem;
       font-style: normal;
       font-weight: 400;
-      line-height: 150%; /* 45px */
+      line-height: 150%;
       letter-spacing: 0.6px;
+
+      @media screen and (max-width: 1024px) {
+        font-size: 1.75rem;
+      }
+      @media screen and (max-width: 480px) {
+        font-size: 1.625rem;
+      }
+      @media screen and (max-width: 375px) {
+        font-size: 1.375rem;
+      }
     }
 
     .product_price {
@@ -480,12 +544,22 @@ onUnmounted(() => {
 
       span {
         color: #fff;
-        font-family: Montserrat;
-        font-size: 24px;
+        font-family: "Montserrat", sans-serif;
+        font-size: 1.5rem;
         font-style: normal;
         font-weight: 500;
         line-height: 150%;
         letter-spacing: 0.48px;
+
+        @media screen and (max-width: 1024px) {
+          font-size: 1.375rem;
+        }
+        @media screen and (max-width: 480px) {
+          font-size: 1.3125rem;
+        }
+        @media screen and (max-width: 375px) {
+          font-size: 1.125rem;
+        }
       }
 
       .discount_accent {
@@ -499,6 +573,7 @@ onUnmounted(() => {
       align-items: center;
       gap: 1rem;
       cursor: pointer;
+      padding-bottom: 12px;
 
       svg {
         width: 23px;
@@ -506,11 +581,19 @@ onUnmounted(() => {
       }
 
       span {
-        font-size: 1.4rem;
+        @include mixins.mainText;
+        font-size: 1.125rem;
         font-weight: 500;
+        @media screen and (max-width: 1024px) {
+          font-size: 1.125rem;
+        }
+        @media screen and (max-width: 480px) {
+          font-size: 0.875rem;
+        }
       }
 
       @media screen and (min-width: 1024px) {
+        padding-bottom: 20px;
         &:hover svg path {
           stroke: var(--accent-color);
           transition: all ease 0.3s;
@@ -521,6 +604,10 @@ onUnmounted(() => {
           transition: all ease 0.3s;
         }
       }
+      @media screen and (max-width: 480px) {
+        gap: 8px;
+        padding-bottom: 6px;
+      }
     }
 
     .availability {
@@ -530,8 +617,15 @@ onUnmounted(() => {
       gap: 1rem;
 
       span {
-        font-size: 1.4rem;
+        @include mixins.mainText;
+        font-size: 1rem;
         font-weight: 500;
+        @media screen and (max-width: 1024px) {
+          font-size: 0.9375rem;
+        }
+        @media screen and (max-width: 480px) {
+          font-size: 0.875rem;
+        }
       }
 
       svg {
@@ -549,6 +643,9 @@ onUnmounted(() => {
 
       &_head {
         @include mixins.subtitleText;
+        @media screen and (max-width: 1024px) {
+          font-size: 1rem;
+        }
       }
 
       &_counter {
@@ -596,30 +693,48 @@ onUnmounted(() => {
         min-width: 2ch;
         text-align: center;
       }
+      @media screen and (max-width: 480px) {
+        padding-block: 6px;
+      }
     }
     .cart_btn {
       width: 100%;
       height: fit-content;
       position: relative;
+      padding-top: 8px;
 
       button {
+        @include mixins.accentBtn;
         width: 100%;
-        height: 100%;
-        background: var(--btn-color);
-        border: 2px solid var(--border-color);
-        transition: all ease 0.3s;
-        cursor: pointer;
-        border-radius: 8px;
-        padding-block: 1rem;
-        font-size: 1.5rem;
+        // width: 100%;
+        // height: 100%;
+        // background: var(--btn-color);
+        // border: 2px solid var(--border-color);
+        // transition: all ease 0.3s;
+        // cursor: pointer;
+        // border-radius: 8px;
+        // padding-block: 1rem;
+        // font-size: 1.5rem;
 
-        @media screen and (min-width: 1024px) {
-          &:hover {
-            background: var(--btn-color-hover);
-            transition: all ease 0.3s;
-          }
-        }
+        // @media screen and (min-width: 1024px) {
+        //   &:hover {
+        //     background: var(--btn-color-hover);
+        //     transition: all ease 0.3s;
+        //   }
+        // }
       }
+      @media screen and (max-width: 1024px) {
+        padding-top: 6px;
+      }
+    }
+    @media screen and (max-width: 1024px) {
+      gap: 18px;
+    }
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+    @media screen and (max-width: 480px) {
+      gap: 14px;
     }
   }
 
@@ -628,11 +743,18 @@ onUnmounted(() => {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    gap: 1rem;
+    gap: 20px;
 
     h3 {
-      font-size: 1.7rem;
-      font-weight: 500;
+      @include mixins.subtitleText;
+      font-size: 1.125rem;
+
+      @media screen and (max-width: 768px) {
+        font-size: 0.9375rem;
+      }
+      @media screen and (max-width: 375px) {
+        font-size: 0.875rem;
+      }
     }
 
     ul {
@@ -642,19 +764,44 @@ onUnmounted(() => {
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
-      gap: 0.5rem;
+      gap: 8px;
 
       li span {
         strong {
-          font-size: 1.4rem;
-          font-weight: 700;
+          @include mixins.subtitleText;
+          font-size: 1.125rem;
           color: var(--text-color);
+          @media screen and (max-width: 768px) {
+            font-size: 1rem;
+          }
+          @media screen and (max-width: 375px) {
+            font-size: 0.8125rem;
+          }
         }
-
-        font-size: 1.3rem;
-        font-weight: 500;
+        @include mixins.mainText;
+        font-size: 1rem;
         color: darkgrey;
+
+        @media screen and (max-width: 768px) {
+          font-size: 0.875rem;
+        }
+        @media screen and (max-width: 375px) {
+          font-size: 0.6875rem;
+        }
       }
+      @media screen and (max-width: 768px) {
+        gap: 7px;
+      }
+    }
+
+    @media screen and (max-width: 1024px) {
+      gap: 18px;
+    }
+    @media screen and (max-width: 768px) {
+      gap: 16px;
+    }
+    @media screen and (max-width: 375px) {
+      gap: 12px;
     }
   }
 
@@ -673,8 +820,19 @@ onUnmounted(() => {
       cursor: pointer;
 
       h3 {
-        font-size: 1.7rem;
+        @include mixins.subtitleText;
+        font-size: 1.125rem;
         font-weight: 500;
+
+        @media screen and (max-width: 1024px) {
+          font-size: 1.0625rem;
+        }
+        @media screen and (max-width: 768px) {
+          font-size: 1rem;
+        }
+        @media screen and (max-width: 375px) {
+          font-size: 0.875rem;
+        }
       }
 
       button {
@@ -697,7 +855,9 @@ onUnmounted(() => {
     }
 
     p {
-      font-size: 1.4rem;
+      @include mixins.mainText;
+      font-weight: 500;
+      font-size: 1.125rem;
       height: auto;
       transition: height 0.3s ease;
 
@@ -705,7 +865,27 @@ onUnmounted(() => {
         height: 0;
         overflow: hidden;
       }
+
+      @media screen and (max-width: 1024px) {
+        font-size: 1.0625rem;
+      }
+      @media screen and (max-width: 480px) {
+        font-size: 0.875rem;
+      }
+      @media screen and (max-width: 375px) {
+        font-size: 0.75rem;
+      }
     }
+  }
+
+  @media screen and (max-width: 1024px) {
+    gap: 40px;
+  }
+  @media screen and (max-width: 768px) {
+    gap: 32px;
+  }
+  @media screen and (max-width: 375px) {
+    gap: 20px;
   }
 }
 
