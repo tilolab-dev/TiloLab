@@ -81,10 +81,15 @@
                   </div>
                 </div>
 
-                <div class="wish_list">
+                <div
+                  class="wish_list"
+                  :class="isProductInWishlist ? 'selected' : ''"
+                  @click="handleWishlistToggle"
+                >
                   <HeartIcon />
 
-                  <span> Додати до списку бажань </span>
+                  <span v-if="isProductInWishlist"> Видалити зі списку бажань </span>
+                  <span v-else> Додати до списку бажань </span>
                 </div>
 
                 <div class="availability">
@@ -195,6 +200,8 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useProductStore } from "@/store/product-store";
 import { useCartStore } from "@/store/cart-store";
 import { useIndexStore } from "@/store/index-store";
+import { useWishlistStore } from "@/store/wishlist-store";
+
 import { useRoute } from "vue-router";
 // components
 import BreadCrumbs from "@/components/shared/BreadCrumbs.vue";
@@ -209,6 +216,7 @@ import MinusIcon from "~/assets/icons/minus-icon.svg";
 const productStore = useProductStore();
 const indexStore = useIndexStore();
 const cartStore = useCartStore();
+const wishlistStore = useWishlistStore();
 
 // refs
 const containerMainRef = ref(null);
@@ -222,6 +230,18 @@ const counter = ref(1);
 const counterValidate = () => {
   if (counter.value < 1) {
     counter.value = 1;
+  }
+};
+
+const isProductInWishlist = computed(() => {
+  return wishlistStore.wishlist.some((item) => item.id === productStore.selectedProducts.id);
+});
+
+const handleWishlistToggle = () => {
+  if (isProductInWishlist.value) {
+    wishlistStore.removeProduct(productStore.selectedProducts);
+  } else {
+    wishlistStore.addProduct(productStore.selectedProducts);
   }
 };
 
@@ -604,6 +624,17 @@ onUnmounted(() => {
           transition: all ease 0.3s;
         }
       }
+
+      &.selected {
+        svg path {
+          stroke: var(--accent-color);
+        }
+
+        span {
+          color: var(--accent-color);
+        }
+      }
+
       @media screen and (max-width: 480px) {
         gap: 8px;
         padding-bottom: 6px;

@@ -1,6 +1,6 @@
 <template>
   <div class="wishlist_item_card_wrapper">
-    <div class="remove_button">
+    <div class="remove_button" @click="handleRemove">
       <CloseIcon class="remove_icon" />
 
       <span>Видалити</span>
@@ -52,6 +52,9 @@
 // import SvgIcon from "@/components/shared/SvgIcon.vue";
 
 import CloseIcon from "~/assets/icons/close-icon.svg";
+import { useWishlistStore } from "~/store/wishlist-store";
+
+const wishlistStore = useWishlistStore();
 
 const props = defineProps({
   product: {
@@ -74,6 +77,10 @@ const hasDiscount = computed(() => {
   const percentNumber = Number(props.product.discountPercent);
   return percentNumber && !isNaN(percentNumber) && percentNumber > 0;
 });
+
+const handleRemove = () => {
+  wishlistStore.removeProduct(props.product);
+};
 
 // const counterControl = (event, operator, quantity) => {
 //   event.preventDefault();
