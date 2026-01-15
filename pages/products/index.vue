@@ -148,9 +148,21 @@ definePageMeta({
     height: auto;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 2rem 0 1rem;
+    align-items: flex-start;
+    padding: 40px 0 36px;
     color: white;
+
+    .filter {
+      @media screen and (max-width: 768px) {
+        flex: 1;
+      }
+      @media screen and (max-width: 480px) {
+        width: 100%;
+        .double_range {
+          width: 100%;
+        }
+      }
+    }
 
     .category {
       display: flex;
@@ -184,6 +196,15 @@ definePageMeta({
         transform: rotate(180deg);
         fill: var(--accent-color);
       }
+
+      // @media screen and (max-width: 768px) {
+      //   flex: 1;
+      // }
+
+      @media screen and (max-width: 480px) {
+        width: 100%;
+        justify-content: flex-end;
+      }
     }
 
     .categories_wrapper {
@@ -201,6 +222,23 @@ definePageMeta({
         color: var(--accent-color);
         padding-block: 5px;
       }
+    }
+    @media screen and (max-width: 1024px) {
+      padding: 40px 0 40px;
+    }
+
+    @media screen and (max-width: 768px) {
+      padding: 32px 0 32px;
+      gap: 50px;
+    }
+
+    @media screen and (max-width: 480px) {
+      padding: 32px 0 48px;
+      flex-direction: column;
+      gap: 0;
+    }
+    @media screen and (max-width: 375px) {
+      padding: 23px 0 17px;
     }
   }
 
@@ -225,23 +263,25 @@ definePageMeta({
     display: flex;
     flex-direction: column;
     gap: 32px;
+
+    @media screen and (max-width: 768px) {
+      gap: 28px;
+    }
+    @media screen and (max-width: 480px) {
+      gap: 24px;
+    }
+    @media screen and (max-width: 375px) {
+      gap: 20px;
+    }
   }
 
   .category-title {
     @include mixins.titleText;
     color: var(--text-color);
     font-weight: 600;
+    margin-bottom: 8px;
     @media screen and (max-width: 1024px) {
-      margin-bottom: 32px;
-    }
-    @media screen and (max-width: 768px) {
-      margin-bottom: 28px;
-    }
-    @media screen and (max-width: 480px) {
-      margin-bottom: 24px;
-    }
-    @media screen and (max-width: 375px) {
-      margin-bottom: 20px;
+      margin-bottom: 0;
     }
   }
 

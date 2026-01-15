@@ -170,10 +170,30 @@ onMounted(() => {
   height: 100%;
   margin: 0 auto;
   position: relative;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .product-head {
   width: 100%;
-  padding-top: 20px;
+  margin-top: 42px;
+  .link-block {
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+  }
+  @media screen and (max-width: 1024px) {
+    margin-top: 28px;
+  }
+  @media screen and (max-width: 768px) {
+    margin-top: 24px;
+  }
+  @media screen and (max-width: 480px) {
+    margin-top: 16px;
+  }
+  @media screen and (max-width: 375px) {
+    margin-top: 14px;
+  }
 }
 </style>
