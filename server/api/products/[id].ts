@@ -1,4 +1,4 @@
-import { getProductById, deleteProduct } from "@/server/services/productsServices";
+import { getProductById, deleteProduct, patchProduct } from "@/server/services/productsServices";
 
 export default defineEventHandler((event) => {
   const id = getRouterParam(event, "id");
@@ -20,8 +20,7 @@ export default defineEventHandler((event) => {
       // return await updateUser();
       break;
     case "PATCH":
-      // return await updateUser();
-      break;
+      return patchProduct(+id, event);
     case "DELETE":
       return deleteProduct(id);
     default:

@@ -47,27 +47,27 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { computed } from "vue";
 import { useIndexStore } from "@/store/index-store";
 
 const indexStore = useIndexStore();
-const loaderState = ref(false);
+// const loaderState = ref(false);
 
 const fetchCategories = computed(() => indexStore?.fetchedCategories);
 
-onMounted(async () => {
-  try {
-    const getCategories = await $fetch("/api/category");
+// onMounted(async () => {
+//   try {
+//     const getCategories = await $fetch("/api/category");
 
-    if (getCategories && getCategories.data) {
-      categories.value = getCategories.data;
+//     if (getCategories && getCategories.data) {
+//       categories.value = getCategories.data;
 
-      console.log(categories.value);
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
+//       // console.log(categories.value);
+//     }
+//   } catch (err) {
+//     console.log(err);
+//   }
+// });
 </script>
 
 <style lang="scss" scoped>
