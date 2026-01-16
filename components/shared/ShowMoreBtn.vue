@@ -20,7 +20,7 @@ defineProps({
   gap: 8px;
   color: var(--link-color);
   text-align: right;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-style: normal;
   font-weight: 500;
   line-height: 150%;
@@ -57,6 +57,14 @@ defineProps({
         stroke: var(--link-color-active);
       }
     }
+  }
+
+  @media screen and (max-width: 480px) {
+    font-size: 0.9375rem;
+  }
+
+  @media screen and (max-width: 375px) {
+    font-size: 0.8125rem;
   }
 }
 </style>
