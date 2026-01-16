@@ -1,10 +1,11 @@
 <template>
-  <div class="header">
+  <div ref="header" class="header" :class="{ hideHeader: showHeader }">
     <div class="top_header" :class="catalogBtnState ? 'top_header_active' : ''">
       <div class="container">
         <div class="main_header">
           <NuxtLink to="/">
             <svg
+              class="logo_btn"
               xmlns="http://www.w3.org/2000/svg"
               width="130"
               height="65"
@@ -118,7 +119,7 @@ import HeartIcon from "~/assets/icons/heart.svg";
 import CartIcon from "~/assets/icons/cart.svg";
 import BurgerIcon from "~/assets/icons/burger.svg";
 
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 // import { useModalStore, useIndexStore, useCartStore,  } from "#imports";
 
 import { useModalStore } from "@/store/modal-store";
@@ -136,6 +137,10 @@ const cartStore = useCartStore();
 const loaderState = ref(false);
 const mounted = ref(false);
 
+const showHeader = ref(false);
+const lastScrollPosition = ref(0);
+const viewportHeight = ref(0);
+
 watch(burger, () => {
   burger.value
     ? (document.body.style.overflow = "hidden")
@@ -144,9 +149,34 @@ watch(burger, () => {
 
 const fetchCategories = computed(() => indexStore.fetchedCategories);
 
+const onScroll = () => {
+  const currentScroll = window.scrollY || document.documentElement.scrollTop;
+
+  const isScrollingUp = currentScroll < lastScrollPosition.value;
+  const isScrollingDown = currentScroll > lastScrollPosition.value;
+
+  if (isScrollingUp) {
+    showHeader.value = false;
+  }
+
+  if (isScrollingDown && currentScroll > viewportHeight.value) {
+    showHeader.value = true;
+  }
+
+  lastScrollPosition.value = currentScroll;
+};
+
 onMounted(() => {
+  viewportHeight.value = window.innerHeight;
+  lastScrollPosition.value = window.scrollY;
+
+  window.addEventListener("scroll", onScroll);
   loaderState.value = fetchCategories?.value?.length > 0;
   mounted.value = true;
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", onScroll());
 });
 </script>
 
@@ -157,8 +187,28 @@ onMounted(() => {
   width: 100%;
   height: auto;
   background: transparent;
-  position: relative;
+  position: sticky;
+  transition: all ease 0.3s;
+  top: 0;
+
   z-index: 15;
+
+  .logo_btn {
+    @media screen and (max-width: 768px) {
+      width: 22vw;
+    }
+    @media screen and (max-width: 480px) {
+      width: auto;
+    }
+    @media screen and (max-width: 375px) {
+      width: 30vw;
+    }
+  }
+}
+
+.hideHeader {
+  transform: translateY(-100%);
+  transition: all ease 0.3s;
 }
 
 .top_header {

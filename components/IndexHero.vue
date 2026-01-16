@@ -10,7 +10,6 @@
       alt="hero"
       style="transform: scale(1.15); opacity: 0.7"
       priority
-      lazy
       sizes="(max-width: 480px) 480px, (max-width: 1024px) 1024px, 1200px"
     />
 
@@ -78,9 +77,7 @@ onMounted(async () => {
 .index_hero {
   width: 100%;
   height: 100vh;
-  // background:
-  //   linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%),
-  //   url("../public/images/index-img/hero.webp") lightgray 50% / cover no-repeat;
+  overflow: hidden;
   position: relative;
 
   .hero_img {

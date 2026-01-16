@@ -759,15 +759,33 @@ const updateProduct = async () => {
     //   toRaw(elem.fileImg)[0] = optionImgPath[index];
     // });
 
-    const finalImg = [...modalProps.product.img.map((img) => img.path), ...productImgPath];
+    // const finalImg = [...modalProps.product.img.map((img) => img.path), ...productImgPath];
 
-    const finalOptions = toRaw(addOptionsRef.value).map((option, index) => {
-      return {
-        optionImg: optionImgPath[index] || option.fileImg[0],
-        optionPrice: Number(option.optionPrice),
-        translations: option.translations
-      };
-    });
+    const finalImg = [
+      ...new Set([...currentProductFiles.value.map((img) => img.path), ...productImgPath])
+    ];
+
+    // const existingOptions = modalProps.product.options
+    //   ? JSON.parse(JSON.stringify(modalProps.product.options))
+    //   : [];
+
+    const existingOptions = JSON.parse(JSON.stringify(currentOptionFiles.value || []));
+
+    const newOptions = toRaw(addOptionsRef.value).map((option, index) => ({
+      optionImg: optionImgPath[index] || option.fileImg[0],
+      optionPrice: Number(option.optionPrice),
+      translations: option.translations
+    }));
+
+    const finalOptions = [...existingOptions, ...newOptions];
+
+    // const finalOptions = toRaw(addOptionsRef.value).map((option, index) => {
+    //   return {
+    //     optionImg: optionImgPath[index] || option.fileImg[0],
+    //     optionPrice: Number(option.optionPrice),
+    //     translations: option.translations
+    //   };
+    // });
 
     const res = await productStore.updateProduct(modalProps.product.id, {
       categoryId: productCategory.value,
@@ -851,6 +869,8 @@ onMounted(async () => {
   // await categoryStore.getCategories();
 
   // console.log(categoryStore.categoryList);
+
+  console.log(modalProps.product.options, "modalProps");
 
   fetchedCategories.value = categoryStore.categoryList;
   currentProductFiles.value = modalProps.product.img;
