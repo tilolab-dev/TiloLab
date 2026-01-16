@@ -94,7 +94,7 @@ const fetchCategories = computed(() => indexStore?.fetchedCategories);
 
 .categories_cards {
   overflow: visible;
-  margin-top: 32px;
+  margin-top: 22px;
 
   @media screen and (max-width: 1024px) {
     margin-top: 36px;
@@ -183,7 +183,7 @@ const fetchCategories = computed(() => indexStore?.fetchedCategories);
 .head_content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 50px;
   width: 100%;
 
@@ -193,6 +193,9 @@ const fetchCategories = computed(() => indexStore?.fetchedCategories);
     justify-content: flex-start;
     align-items: flex-start;
     gap: 16px;
+  }
+  @media screen and (max-width: 480px) {
+    gap: 8px;
   }
 }
 
