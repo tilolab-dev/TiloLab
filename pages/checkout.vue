@@ -48,7 +48,10 @@
                     placeholder="Введіть номер відділення"
                     @input="getPostOfficeNp"
                   />
-                  <ul v-if="postAddressList.length > 0" class="fetched_list">
+                  <ul
+                    v-if="postAddressList.length > 0 && postAddress.length > 0"
+                    class="fetched_list"
+                  >
                     <li
                       v-for="(el, i) in postAddressList"
                       :key="i"
@@ -74,7 +77,12 @@
                     placeholder="Введіть номер поштомату"
                     @input="(e) => getPostomatsNp(e, 'reload')"
                   />
-                  <ul v-if="postomatList.length > 0" class="fetched_list">
+                  <span>За тарифами перевізника</span>
+
+                  <ul
+                    v-if="postomatList.length > 0 && postomatNumber.length > 0"
+                    class="fetched_list"
+                  >
                     <li
                       v-for="(el, i) in postomatList"
                       :key="i"
@@ -83,7 +91,6 @@
                       {{ el.Description }}
                     </li>
                   </ul>
-                  <span>За тарифами перевізника</span>
                 </div>
 
                 <input id="menu3" type="radio" name="accordeon" />

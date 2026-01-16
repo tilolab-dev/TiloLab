@@ -77,10 +77,16 @@ onMounted(async () => {
   margin-bottom: 22px;
 
   button {
+    width: 30px;
+    height: 30px;
     padding: 5px;
     aspect-ratio: 1 / 1;
     font-size: 1rem;
     cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   @media screen and (max-width: 1024px) {
@@ -88,8 +94,9 @@ onMounted(async () => {
   }
 
   svg {
-    width: 5px;
-    height: 13px;
+    width: 100%;
+    height: 100%;
+    padding: 3px;
   }
 }
 </style>
