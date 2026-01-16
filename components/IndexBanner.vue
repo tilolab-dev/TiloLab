@@ -7,7 +7,6 @@
       width="1200"
       height="600"
       alt="banner"
-      priority
       lazy
       sizes="(max-width: 480px) 480px, (max-width: 1024px) 1024px, 1200px"
     />

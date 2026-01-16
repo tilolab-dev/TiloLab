@@ -29,13 +29,12 @@
               v-for="item in firstLinks"
               :key="item.id"
               class="sidebar_links_item"
-              @click="(closeSidebar(), (activePage = item.activePage))"
+              @click="closeSidebar"
             >
               <NuxtLink :to="item.linkPath">
-                <div
-                  class="item_wrapper"
-                  :class="activePage === item.activePage ? 'item_wrapper_active' : ''"
-                >
+                <div class="item_wrapper" :class="{ item_wrapper_active: isActive(item) }">
+                  <!-- :class="activePage === item.activePage ? 'item_wrapper_active' : ''" -->
+
                   <div class="image_content">
                     <!-- <img src="@/public/img/icons/house.png" alt="option" /> -->
                     <!-- <AdminHome /> -->
@@ -57,13 +56,12 @@
               v-for="item in remainingLinks"
               :key="item.id"
               class="sidebar_links_item"
-              @click="(closeSidebar(), (activePage = item.activePage))"
+              @click="closeSidebar()"
             >
               <NuxtLink :to="item.linkPath">
-                <div
-                  class="item_wrapper"
-                  :class="activePage === item.activePage ? 'item_wrapper_active' : ''"
-                >
+                <div class="item_wrapper" :class="{ item_wrapper_active: isActive(item) }">
+                  <!-- :class="activePage === item.activePage ? 'item_wrapper_active' : ''" -->
+
                   <div class="image_content">
                     <!-- <img src="@/public/img/icons/house.png" alt="option" /> -->
                     <component :is="item.componentName" />
@@ -136,6 +134,7 @@ import { useModalStore } from "@/store/modal-store";
 // useIndexStore
 import { useIndexStore } from "@/store/index-store";
 import { markRaw } from "vue";
+import { useRoute } from "vue-router";
 
 const linksData = ref([
   {
@@ -203,13 +202,21 @@ const showTooltip = ref(false);
 const tooltipStatus = ref("");
 const tooltipMessage = ref("");
 const isSidebarOpen = ref(false);
-const activePage = ref("index");
+// const activePage = ref("index");
 
 const modalStore = useModalStore();
 const indexStore = useIndexStore();
 const currentModal = computed(() => modalStore.currentModal);
 const modalProps = computed(() => modalStore.modalProps);
 
+const route = useRoute();
+
+const isActive = (item) => {
+  if (item.linkPath === "/admin") {
+    return route.path === "/admin";
+  }
+  return route.path === item.linkPath || route.path.startsWith(item.linkPath + "/");
+};
 // const burgerBtn = computed(() => indexStore.adminBurgerBtn);
 
 // watch(burgerBtn, () => {

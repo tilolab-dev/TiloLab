@@ -128,8 +128,10 @@
             src="./images/index-img/banner.webp"
             quality="80"
             alt="preview"
+            width="600"
+            height="460"
+            sizes="600px"
             priority
-            lazy
           />
         </div>
       </div>
@@ -275,7 +277,11 @@
   }
 
   .sectionImg {
-    margin-top: 21;
+    margin-top: 21px;
+
+    img {
+      object-fit: contain;
+    }
 
     @media screen and (max-width: 1024px) {
       margin-top: 33px;
