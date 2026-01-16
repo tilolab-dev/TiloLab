@@ -60,22 +60,23 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .index_popular {
   overflow: hidden;
-  padding-block: 109px;
+  padding-block: 80px;
 
   @media screen and (max-width: 1024px) {
-    padding-block: 64px;
+    padding-block: unset;
+    padding-bottom: 64px;
   }
 
   @media screen and (max-width: 768px) {
-    padding-block: 52px;
+    padding-bottom: 52px;
   }
 
   @media screen and (max-width: 480px) {
-    padding-block: 48px;
+    padding-bottom: 48px;
   }
 
   @media screen and (max-width: 375px) {
-    padding-block: 44px;
+    padding-bottom: 44px;
   }
 }
 
@@ -153,7 +154,11 @@ onMounted(async () => {
     text-align: left;
   }
   @media screen and (max-width: 480px) {
+    br {
+      display: none;
+    }
     font-size: 0.875rem;
+    width: 100%;
   }
   @media screen and (max-width: 375px) {
     font-size: 0.75rem;
@@ -164,6 +169,7 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
   gap: 50px;
   width: 100%;
 
@@ -173,6 +179,10 @@ onMounted(async () => {
     justify-content: flex-start;
     align-items: flex-start;
     gap: 16px;
+  }
+
+  @media screen and (max-width: 480px) {
+    gap: 8px;
   }
 }
 
@@ -220,5 +230,12 @@ onMounted(async () => {
   display: flex;
   justify-content: flex-end;
   margin-top: 32px;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 44px;
+  }
+  @media screen and (max-width: 480px) {
+    margin-top: 42px;
+  }
 }
 </style>
