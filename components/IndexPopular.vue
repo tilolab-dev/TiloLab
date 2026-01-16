@@ -212,7 +212,7 @@ onMounted(async () => {
   }
 
   @media screen and (max-width: 480px) {
-    grid-template-rows: 133px 1fr;
+    grid-template-rows: 1fr;
   }
 }
 
