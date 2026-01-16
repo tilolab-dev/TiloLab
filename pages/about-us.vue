@@ -30,9 +30,11 @@
             class="main_img"
             src="./images/index-img/banner.webp"
             alt="preview"
+            width="500"
+            height="500"
             quality="80"
-            lazy
             priority
+            sizes="500px"
           />
         </div>
         <div class="about_us_content_secondary">
@@ -41,8 +43,10 @@
             src="./images/index-img/banner.webp"
             quality="80"
             alt="preview"
+            width="500"
+            height="350"
             priority
-            lazy
+            sizes="500px"
           />
           <div class="secondary_text">
             <p>
@@ -114,6 +118,10 @@
       align-items: center;
       gap: 20px;
 
+      img {
+        object-fit: cover;
+      }
+
       @media screen and (max-width: 1024px) {
         display: flex;
         flex-direction: column;
@@ -165,8 +173,10 @@
   }
 
   .main_img {
-    width: 495px;
-    height: 539px;
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
 
     @media screen and (max-width: 1024px) {
       display: none;
