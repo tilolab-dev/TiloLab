@@ -755,19 +755,9 @@ const updateProduct = async () => {
   };
 
   const uploadData = async (productImgPath, optionImgPath) => {
-    // toRaw(addOptionsRef.value).map((elem, index) => {
-    //   toRaw(elem.fileImg)[0] = optionImgPath[index];
-    // });
-
-    // const finalImg = [...modalProps.product.img.map((img) => img.path), ...productImgPath];
-
     const finalImg = [
       ...new Set([...currentProductFiles.value.map((img) => img.path), ...productImgPath])
     ];
-
-    // const existingOptions = modalProps.product.options
-    //   ? JSON.parse(JSON.stringify(modalProps.product.options))
-    //   : [];
 
     const existingOptions = JSON.parse(JSON.stringify(currentOptionFiles.value || []));
 
@@ -778,14 +768,6 @@ const updateProduct = async () => {
     }));
 
     const finalOptions = [...existingOptions, ...newOptions];
-
-    // const finalOptions = toRaw(addOptionsRef.value).map((option, index) => {
-    //   return {
-    //     optionImg: optionImgPath[index] || option.fileImg[0],
-    //     optionPrice: Number(option.optionPrice),
-    //     translations: option.translations
-    //   };
-    // });
 
     const res = await productStore.updateProduct(modalProps.product.id, {
       categoryId: productCategory.value,
