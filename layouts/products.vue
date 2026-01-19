@@ -35,6 +35,7 @@ import { ref, computed, onMounted } from "vue";
 
 import { useModalStore } from "@/store/modal-store";
 import { useIndexStore } from "@/store/index-store";
+import { useCookie } from "nuxt/app";
 
 import Modal from "@/components/Modals/Modal.vue";
 import BreadCrumbs from "@/components/shared/BreadCrumbs.vue";
@@ -150,6 +151,11 @@ const showCategory = (category) => {
 
 onMounted(() => {
   showCategory("showAll");
+  // Check if user has already verified their age
+  const ageVerified = useCookie("age_verified");
+  if (!ageVerified.value) {
+    modalStore.showModal("VerifyAgeModal");
+  }
 });
 </script>
 

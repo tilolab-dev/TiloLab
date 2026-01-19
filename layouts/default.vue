@@ -33,8 +33,9 @@ import Modal from "~/components/Modals/Modal.vue";
 import StickyHeader from "@/components/StickyHeader.vue";
 // import Tooltips from "~/components/shared/Tooltips.vue";
 import { useModalStore } from "@/store/modal-store";
+import { useCookie } from "nuxt/app";
 // import { useAuthStore } from "@/store/auth-store";
-// import { onMounted } from "vue";
+import { onMounted } from "vue";
 
 const modalStore = useModalStore();
 // const authStore = useAuthStore();
@@ -56,9 +57,13 @@ const modalProps = computed(() => modalStore.modalProps);
 //   }, 3000);
 // };
 
-// onMounted(() => {
-//   authStore.fetchUser();
-// })
+onMounted(() => {
+  // Check if user has already verified their age
+  const ageVerified = useCookie("age_verified");
+  if (!ageVerified.value) {
+    modalStore.showModal("VerifyAgeModal");
+  }
+});
 </script>
 
 <style scoped>
