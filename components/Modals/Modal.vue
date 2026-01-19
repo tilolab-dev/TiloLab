@@ -24,6 +24,7 @@ import CartModal from "./CartModal.vue";
 import WishlistModal from "../WishlistModal.vue";
 import BurgerMenu from "./BurgerMenu.vue";
 import LogOut from "./LogOut.vue";
+import VerifyAgeModal from "./VerifyAgeModal.vue";
 
 // ADMIN
 
@@ -53,7 +54,8 @@ const modalComponents = {
   //   ProductToCart,
   AuthModal,
   BurgerMenu,
-  LogOut
+  LogOut,
+  VerifyAgeModal
   //   ChangeUserData
 };
 
