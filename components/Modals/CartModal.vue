@@ -161,7 +161,6 @@ const recalc = (item) => {
 // };
 
 onMounted(() => {
-  console.log(cartStore.cart);
   gsap.fromTo(
     cartRef.value,
     {

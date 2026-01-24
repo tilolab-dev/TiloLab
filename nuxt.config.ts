@@ -27,7 +27,10 @@ export default defineNuxtConfig({
     api_secret_key: process.env.API_SECRET_KEY,
     api_service_role_key: process.env.API_SERVICE_ROLE_KEY,
     bank_api_key: process.env.BANK_API_KEY,
+    bank_webhook_url: process.env.BANK_WEBHOOK_URL,
     nova_post_api: process.env.NEW_POST_API,
+    admin_user_name: process.env.ADMIN_USERNAME,
+    admin_password: process.env.ADMIN_PASSWORD,
 
     public: {
       api_base_url: process.env.API_BASE_URL,
@@ -67,6 +70,10 @@ export default defineNuxtConfig({
   ],
 
   vite: {
+    server: {
+      allowedHosts: ["edd85ac46640.ngrok-free.app"],
+      strictPort: false
+    },
     plugins: [
       require("vite-svg-loader")({
         svgo: true,

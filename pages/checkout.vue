@@ -158,7 +158,8 @@
                 <span v-else> 0 грн </span>
               </div>
             </div>
-            <NuxtLink to="/summary">Замовлення підтверджую</NuxtLink>
+            <!-- !!!!!!!!!!! -->
+            <button @click="confirmOrderHandler">Замовлення підтверджую</button>
           </div>
         </div>
         <div class="checkout_content_cart">
@@ -240,7 +241,7 @@ const selectedDelivery = ref("");
 const deliveryAddressState = ref(false);
 const courierDeliveryState = ref(false);
 
-const deliveryPrice = ref(100);
+const deliveryPrice = ref(0);
 // const saveDeliveryAddress = ref(false);
 
 // const checkoutProducts = ref([]);
@@ -313,6 +314,68 @@ const cartStore = useCartStore();
 //   cityName.value = "";
 //   cityRef.value = "";
 // };
+
+const confirmOrderHandler = async () => {
+  const getOrderItems = cartStore.cart.map((item) => {
+    return {
+      product: item.product.id,
+      quantity: item.quantity
+    };
+  });
+
+  const amountInCents = Math.round(totalDeliveryPrice.value * 100);
+
+  try {
+    const getOrderId = await $fetch("/api/orders/newOrder", {
+      method: "POST",
+      body: {
+        // userId: "", left after auth implementation
+        totalPrice: amountInCents,
+        paymentMethod: "monobank",
+        orderItems: getOrderItems,
+        shippingInfo: {
+          recipient: name.value + " " + surname.value,
+          phoneNumber: phone.value,
+          deliveryMethod: "nova poshta",
+          postOffice: postAddress.value,
+          postomat: postomatNumber.value,
+          city: cityRef.value,
+          country: "Ukraine"
+        }
+      }
+    });
+
+    if (!getOrderId.statusCode === 200) {
+      alert("Щось пішло не так спробуйте ще раз");
+      return;
+    }
+    console.log(getOrderId, "getOrderId");
+
+    //     const res = await $fetch('/api/mono/create-invoice', {
+    //   method: 'POST',
+    //   body: {
+    //     orderId,
+    //     amount
+    //   }
+    // });
+
+    // implement server function to comparing ammount from order and front
+
+    const createPayment = await $fetch("/api/monobank/create", {
+      method: "POST",
+      body: {
+        // !!!!!!! implement ammount from getOrderId
+        orderId: getOrderId.data.id,
+        amount: amountInCents
+      }
+    });
+
+    console.log(createPayment, "createPayment");
+    window.location.href = createPayment.pageUrl;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 onMounted(() => {
   isMounted.value = true;
@@ -983,7 +1046,7 @@ useHead({
       height: auto;
       @include mixins.mainText;
     }
-    a {
+    button {
       @include mixins.accentBtn;
       text-align: center;
       cursor: pointer;

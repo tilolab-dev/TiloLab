@@ -6,6 +6,8 @@ import createUser from "./methods/auth/createUser_tmp";
 import me from "./methods/auth/me";
 import checkVerifyPass from "./methods/auth/checkVerifyPass";
 import sendVerifyPass from "./methods/auth/sendVerifyPass";
+import adminLogin from "./methods/auth/adminLogin";
+import adminLogout from "./methods/auth/adminLogout";
 
 export {
   restoreUser,
@@ -15,5 +17,7 @@ export {
   createUser,
   me,
   checkVerifyPass,
-  sendVerifyPass
+  sendVerifyPass,
+  adminLogin,
+  adminLogout
 };
