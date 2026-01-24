@@ -51,23 +51,8 @@ import { computed } from "vue";
 import { useIndexStore } from "@/store/index-store";
 
 const indexStore = useIndexStore();
-// const loaderState = ref(false);
 
 const fetchCategories = computed(() => indexStore?.fetchedCategories);
-
-// onMounted(async () => {
-//   try {
-//     const getCategories = await $fetch("/api/category");
-
-//     if (getCategories && getCategories.data) {
-//       categories.value = getCategories.data;
-
-//       // console.log(categories.value);
-//     }
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
 </script>
 
 <style lang="scss" scoped>
@@ -208,22 +193,6 @@ const fetchCategories = computed(() => indexStore?.fetchedCategories);
   overflow: hidden;
   cursor: pointer;
 
-  @media screen and (min-width: 1024px) {
-    &:hover img {
-      transform: scale(1.1);
-      transition: all ease 0.3s;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    grid-template-rows: 260px;
-    gap: 10px;
-  }
-
-  @media screen and (max-width: 480px) {
-    gap: 8px;
-  }
-
   img {
     width: 100%;
     height: 100%;
@@ -253,8 +222,39 @@ const fetchCategories = computed(() => indexStore?.fetchedCategories);
     text-transform: uppercase;
   }
 
+  @media screen and (min-width: 1024px) {
+    &:hover img {
+      transform: scale(1.1);
+      transition: all ease 0.3s;
+    }
+  }
+
+  @media screen and (max-width: 1024px) {
+    grid-template-rows: 461px;
+
+    .card_title {
+      font-size: 28px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    grid-template-rows: 440px;
+  }
+
   @media screen and (max-width: 480px) {
-    font-size: 24px;
+    grid-template-rows: 260px;
+
+    .card_title {
+      font-size: 24px;
+    }
+  }
+
+  @media screen and (max-width: 360px) {
+    grid-template-rows: 184px;
+
+    .card_title {
+      font-size: 18px;
+    }
   }
 }
 </style>
