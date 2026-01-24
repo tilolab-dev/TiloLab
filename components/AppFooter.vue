@@ -75,12 +75,12 @@
                 <li>
                   <NuxtLink to="/privacy-policy"> Політика конфіденційності </NuxtLink>
                 </li>
-                <li>
+                <!-- <li>
                   <NuxtLink to="/delivery"> Оплата і доставка </NuxtLink>
                 </li>
                 <li>
                   <NuxtLink to="/warranty"> Обмін і гарантія </NuxtLink>
-                </li>
+                </li> -->
                 <li>
                   <NuxtLink to="/public-offer"> Публічна оферта </NuxtLink>
                 </li>

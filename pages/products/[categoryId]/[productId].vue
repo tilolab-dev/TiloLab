@@ -931,7 +931,6 @@ onUnmounted(() => {
 .swiper-main {
   width: 100%;
   height: 621px;
-  border-radius: 8px;
   overflow: hidden;
 
   @media screen and (max-width: 1024px) {
@@ -943,7 +942,7 @@ onUnmounted(() => {
   }
 
   @media screen and (max-width: 480px) {
-    height: 300px;
+    height: 265px;
   }
 
   swiper-slide {
