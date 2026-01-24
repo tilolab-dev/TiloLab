@@ -6,14 +6,14 @@ import {
   refreshToken,
   me,
   sendVerifyPass,
-  checkVerifyPass
+  checkVerifyPass,
+  adminLogin,
+  adminLogout
 } from "../services/authServices";
 
 export default defineEventHandler(async (event) => {
   const method = event.node.req.method;
   const query = getQuery(event);
-
-  // console.log(query, "query");
 
   switch (method) {
     case "GET":
@@ -34,6 +34,10 @@ export default defineEventHandler(async (event) => {
         return await sendVerifyPass(event);
       } else if (query.auth === "checkVerifyPass") {
         return await checkVerifyPass(event);
+      } else if (query.auth === "admin_login") {
+        return await adminLogin(event);
+      } else if (query.auth === "admin_logout") {
+        return await adminLogout(event);
       }
       break;
     case "PATCH":

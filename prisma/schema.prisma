@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client"
   output   = "./generated/prisma"
@@ -250,15 +249,17 @@ model Order {
   id              String      @id @default(uuid())
   userId          Int?        
   user            User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
-  status          OrderStatus @default(PENDING) 
+  status          OrderStatus @default(NEW) 
   createdAt       DateTime    @default(now())
   paymentMethod   String?
   totalPrice      Int  
   shippingInfo    ShippingInfo?
+  orderNumber     String      @unique
   orderItems      OrderItem[]
 
   @@index([userId])
   @@index([status])
+  payments Payment[]
 }
 
 model OrderItem {
@@ -293,10 +294,12 @@ model ShippingInfo {
 }
 
 enum OrderStatus {
-  PENDING      
-  PROCESSING   
-  SHIPPED      
-  DELIVERED    
+  NEW
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  RETURNED  
   CANCELED     
 }
 
@@ -308,4 +311,23 @@ model News {
   createdAt DateTime @default(now())
 
   @@index([createdAt])
+}
+
+model Payment {
+  id          String   @id @default(uuid())
+  orderId     String   @unique
+  monoInvoice String   @unique
+  status      PaymentStatus @default(PENDING)
+  amount      Int
+  provider      String   @default("monobank")
+  payload       Json?
+  createdAt   DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id])
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
 }

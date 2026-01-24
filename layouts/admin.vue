@@ -75,6 +75,9 @@
           </ul>
         </div>
       </div>
+      <div class="logout_wrapper">
+        <button class="logout_btn" @click="exitHandler">Вийти</button>
+      </div>
     </aside>
 
     <!-- <main class="page-layout"> -->
@@ -127,6 +130,8 @@ import AdminProducts from "~/assets/icons/admin-products.svg";
 import AdminNotifications from "~/assets/icons/admin-notifications.svg";
 import AdminSettings from "~/assets/icons/admin-settings.svg";
 
+import { useAuthStore } from "@/store/auth-store";
+
 import { computed, ref } from "vue";
 import Modal from "~/components/Modals/Modal.vue";
 // import Tooltips from "~/components/shared/Tooltips.vue";
@@ -135,6 +140,8 @@ import { useModalStore } from "@/store/modal-store";
 import { useIndexStore } from "@/store/index-store";
 import { markRaw } from "vue";
 import { useRoute } from "vue-router";
+
+const authStore = useAuthStore();
 
 const linksData = ref([
   {
@@ -245,6 +252,18 @@ const closeSidebar = () => {
   }
   return;
 };
+
+const exitHandler = async () => {
+  const resExit = await authStore.clearAdminRole();
+
+  if (resExit) {
+    navigateTo("/");
+  }
+};
+
+definePageMeta({
+  middleware: "admin"
+});
 </script>
 
 <style lang="scss">
@@ -472,5 +491,15 @@ const closeSidebar = () => {
   @media (min-width: 1280px) {
     margin-left: 18rem;
   }
+}
+.logout_wrapper {
+  width: 100%;
+  height: auto;
+  padding-inline: 0.5rem;
+  margin-bottom: 10px;
+}
+.logout_btn {
+  @include mixins.transparentBtn;
+  border: 1px solid var(--border-color);
 }
 </style>

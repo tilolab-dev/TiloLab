@@ -56,6 +56,11 @@ export default [
         definePageMeta: "readonly",
         useFetch: "readonly",
         useAsyncData: "readonly",
+        defineNuxtRouteMiddleware: "readonly",
+        useCookie: "readonly",
+        setCookie: "readonly",
+        readRawBody: "readonly",
+        getHeader: "readonly",
         // Vue globals
         ref: "readonly",
         computed: "readonly",
