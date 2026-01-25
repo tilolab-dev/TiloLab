@@ -82,16 +82,13 @@
 
     <!-- <main class="page-layout"> -->
     <main class="admin_content">
-      <!-- <div class="mobile-burger py-2 ">
-          <button 
-            class="bg-[var(--light-color)] "
-            @click="isSidebarOpen = !isSidebarOpen"
-          >
-            <div class="top"></div>
-            <div class="middle"></div>
-            <div class="bottom"></div>
-          </button>
-        </div> -->
+      <div class="mobile-burger py-2">
+        <button class="mobile-burger-btn" @click="isSidebarOpen = !isSidebarOpen">
+          <div class="top"></div>
+          <div class="middle"></div>
+          <div class="bottom"></div>
+        </button>
+      </div>
 
       <!-- <slot @toggle-sidebar="handleSidebarToggle"/> -->
       <!-- <div @toggle-sidebar="handleSidebarToggle">
@@ -260,10 +257,6 @@ const exitHandler = async () => {
     navigateTo("/");
   }
 };
-
-definePageMeta({
-  middleware: "admin"
-});
 </script>
 
 <style lang="scss">
@@ -328,12 +321,9 @@ definePageMeta({
   z-index: 990;
   border-radius: 1rem;
 
-  // @media (prefers-color-scheme: dark) {
-  //   background-color: var(--dark-grey);
-  //   border: 1px solid var(--dark-border-color);
-  //   box-shadow: none;
-  //   background-color: #0f172a;
-  // }
+  &[aria-expanded="true"] {
+    transform: translateX(0);
+  }
 
   @media (min-width: 1280px) {
     margin-left: 1.5rem;
@@ -487,9 +477,11 @@ definePageMeta({
   height: 100%;
   transition: all 200ms ease-in-out;
   border-radius: 0.75rem;
+  padding-top: 50px;
 
   @media (min-width: 1280px) {
     margin-left: 18rem;
+    padding-top: 0;
   }
 }
 .logout_wrapper {
@@ -501,5 +493,55 @@ definePageMeta({
 .logout_btn {
   @include mixins.transparentBtn;
   border: 1px solid var(--border-color);
+}
+
+.mobile-burger {
+  display: none;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+
+  &-btn {
+    background-color: var(--light-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 1.3rem;
+    height: 2rem;
+  }
+
+  .top {
+    width: 100%;
+    height: 0.125rem;
+    background-color: var(--dark-text);
+    margin: 0.125rem 0;
+    border-radius: 0.125rem;
+    transition: all 0.3s ease;
+  }
+
+  .middle {
+    width: 100%;
+    height: 0.125rem;
+    background-color: var(--dark-text);
+    margin: 0.125rem 0;
+    border-radius: 0.125rem;
+    transition: all 0.3s ease;
+  }
+
+  .bottom {
+    width: 100%;
+    height: 0.125rem;
+    background-color: var(--dark-text);
+    margin: 0.125rem 0;
+    border-radius: 0.125rem;
+    transition: all 0.3s ease;
+  }
+
+  @media (max-width: 1279px) {
+    display: block;
+  }
 }
 </style>
