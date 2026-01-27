@@ -64,7 +64,7 @@ onMounted(() => {
     modalStore.showModal("VerifyAgeModal");
   }
 
-  modalStore.showModal("QuestionnaireModal");
+  // modalStore.showModal("QuestionnaireModal");
 });
 </script>
 
