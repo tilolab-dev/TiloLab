@@ -63,6 +63,8 @@ onMounted(() => {
   if (!ageVerified.value) {
     modalStore.showModal("VerifyAgeModal");
   }
+
+  modalStore.showModal("QuestionnaireModal");
 });
 </script>
 
