@@ -126,6 +126,7 @@ import AdminOrders from "~/assets/icons/admin-orders.svg";
 import AdminProducts from "~/assets/icons/admin-products.svg";
 import AdminNotifications from "~/assets/icons/admin-notifications.svg";
 import AdminSettings from "~/assets/icons/admin-settings.svg";
+import AdminStaticData from "~/assets/icons/admin-static.svg";
 
 import { useAuthStore } from "@/store/auth-store";
 
@@ -196,6 +197,13 @@ const linksData = ref([
     title: "Налаштування",
     linkPath: "/admin/settings",
     componentName: markRaw(AdminSettings)
+  },
+  {
+    id: 9,
+    activePage: "staticdata",
+    title: "Статичні дані",
+    linkPath: "/admin/staticdata",
+    componentName: markRaw(AdminStaticData)
   }
 ]);
 
