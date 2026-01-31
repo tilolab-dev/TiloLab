@@ -10,7 +10,6 @@
     <!-- <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
       {{ tooltipMessage }}
     </Tooltips> -->
-    <!-- <Modal @tooltip="tooltip"> -->
 
     <Modal>
       <template #default="{ openModal, closeModal }">
@@ -22,6 +21,8 @@
         />
       </template>
     </Modal>
+
+    <!-- {{ currentModal }} -->
     <!-- <Chat />
      -->
     <AppFooter />
@@ -33,14 +34,19 @@ import Modal from "~/components/Modals/Modal.vue";
 import StickyHeader from "@/components/StickyHeader.vue";
 // import Tooltips from "~/components/shared/Tooltips.vue";
 import { useModalStore } from "@/store/modal-store";
+import { useUserStore } from "@/store/user-store";
 import { useCookie } from "nuxt/app";
 // import { useAuthStore } from "@/store/auth-store";
 import { onMounted } from "vue";
+import { useAuth } from "@/composables/useAuth";
 
 const modalStore = useModalStore();
+const userStore = useUserStore();
 // const authStore = useAuthStore();
 const currentModal = computed(() => modalStore.currentModal);
 const modalProps = computed(() => modalStore.modalProps);
+
+const { fetchOrCreateUser } = useAuth();
 
 // const showTooltip = ref(false);
 // const tooltipStatus = ref("");
@@ -56,13 +62,24 @@ const modalProps = computed(() => modalStore.modalProps);
 //     showTooltip.value = false;
 //   }, 3000);
 // };
+// const supabase = useSupabaseClient();
 
-onMounted(() => {
+onMounted(async () => {
   // Check if user has already verified their age
+
   const ageVerified = useCookie("age_verified");
   if (!ageVerified.value) {
     modalStore.showModal("VerifyAgeModal");
   }
+  // await supabase.auth.signOut();
+
+  await fetchOrCreateUser();
+
+  console.log(userStore.isLoggedIn, userStore.user, "log user");
+
+  // if (window.history.replaceState) {
+  //   window.history.replaceState({}, document.title, window.location.pathname);
+  // }
 });
 </script>
 

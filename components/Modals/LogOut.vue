@@ -4,7 +4,7 @@
       <div class="logout_content">
         <p class="logout_content_text">Ви впевнені, що хочете вийти з аккаунту?</p>
         <div class="logout_content_btns">
-          <button class="logout_btn" @click="modalStore.closeModal()">Так</button>
+          <button class="logout_btn" @click="signOutHandler">Так</button>
           <button class="logout_btn" @click="modalStore.closeModal()">Скасувати</button>
         </div>
       </div>
@@ -14,8 +14,15 @@
 
 <script setup>
 import { useModalStore } from "@/store/modal-store";
+import { useAuth } from "@/composables/useAuth";
 
 const modalStore = useModalStore();
+const auth = useAuth();
+
+const signOutHandler = async () => {
+  await auth.signOut();
+  modalStore.closeModal();
+};
 </script>
 
 <style lang="scss">

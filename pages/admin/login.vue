@@ -77,13 +77,13 @@
 </template>
 
 <script setup>
-import { useAuthStore } from "@/store/auth-store";
+import { useAdminStore } from "@/store/admin-store";
 import { ref, computed } from "vue";
 
 const hiddenPassword = ref(true);
 const loading = ref(false);
 
-const auth = useAuthStore();
+const auth = useAdminStore();
 
 const formValue = ref({
   username: "",
@@ -127,7 +127,8 @@ const validForm = computed(() => {
 
 const login = async () => {
   try {
-    const result = await $fetch("/api/auth?auth=admin_login", {
+    // /api/auth?auth=admin_login
+    const result = await $fetch("/api/auth/admin/admin-login", {
       method: "POST",
       body: {
         username: formValue.value.username,
@@ -183,7 +184,6 @@ definePageMeta({
     justify-content: center;
     align-items: center;
     gap: 1em;
-    // border: 1px solid rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 169, 214, 0.3);
     border-radius: 16px;
     background: #161616;
@@ -297,7 +297,6 @@ definePageMeta({
     width: 100%;
     padding: 12px 10px;
     font-size: 16px;
-    // border: 1px solid #ccc;
     border: 1px solid rgba(255, 169, 214, 0.1);
     background: var(--bg-color);
     border-radius: 6px;
