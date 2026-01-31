@@ -92,14 +92,14 @@
         <div class="user_content_info">
           <div class="user_content_info_wrapper">
             <div class="user_name">
-              {{ userData.name }}
+              {{ userStore.user.username }} {{ userStore.user.userSurname }}
             </div>
             <div class="user_contact">
               <span>
-                {{ userData.phone }}
+                {{ userStore.user.phoneNumber }}
               </span>
               <span>
-                {{ userData.email }}
+                {{ userStore.user.email }}
               </span>
             </div>
             <button class="edit_profile">
@@ -119,14 +119,16 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import AngleDown from "~/assets/icons/angle-down.svg";
 import AngleRight from "~/assets/icons/angle-right.svg";
 import CloseIcon from "~/assets/icons/close-icon.svg";
 
 import { useModalStore } from "@/store/modal-store";
+import { useUserStore } from "@/store/user-store";
 
 const modalStore = useModalStore();
+const userStore = useUserStore();
 
 const userData = {
   name: "Анастасія Самойлова",
@@ -210,6 +212,14 @@ const openOrderHandler = (index) => {
   const i = openOrders.value.indexOf(index);
   i === -1 ? openOrders.value.push(index) : openOrders.value.splice(i, 1);
 };
+
+onMounted(() => {
+  console.log(userStore.isLoggedIn, userStore.user, "log user");
+});
+
+// definePageMeta({
+//   middleware: "userAuth"
+// });
 </script>
 
 <style lang="scss">
@@ -579,7 +589,6 @@ const openOrderHandler = (index) => {
 
     &_list_active {
       height: auto;
-      // transition: height 0.3s ease;
       transition: all ease 0.3s;
       padding-top: 32px;
     }

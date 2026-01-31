@@ -1,5 +1,8 @@
 <template>
   <div class="register">
+    <div v-if="loaderState" class="loader_wrapper">
+      <SharedLoader />
+    </div>
     <div class="container">
       <div class="register_wrapper">
         <h1 class="register_title">
@@ -10,18 +13,26 @@
 
         <div class="register_content">
           <div class="register_content_inputs">
-            <input type="text" placeholder="Прізвище та ім’я" />
-            <input type="text" placeholder="Телефон" />
-            <input type="text" placeholder="Електронна пошта" />
+            <input v-model="lastName" type="text" placeholder="Прізвище" />
+            <input v-model="name" type="text" placeholder="Ім’я" />
+            <input v-model="phoneNumber" type="text" placeholder="Телефон" />
+            <input v-model="email" type="text" placeholder="Електронна пошта" />
           </div>
 
           <div class="register_content_inputs">
-            <input type="text" placeholder="Пароль" />
-            <input type="text" placeholder="Повторити пароль" />
+            <input v-model="password" type="text" placeholder="Пароль" />
+            <input v-model="confirmPassword" type="text" placeholder="Повторити пароль" />
           </div>
 
-          <button class="register_content_btn">Зареєструватися</button>
+          <button class="register_content_btn" @click="registerHandler">Зареєструватися</button>
         </div>
+
+        <!-- <div v-if="sendedEmail" class="email_sended">
+          <p></p>
+          Емейл з подальшими інструкціями відправлено на: <br />
+          <strong>{{ sendedEmailValue }}</strong> <br />
+          Перевірте свою пошту
+        </div> -->
 
         <div class="has_account">
           <span> Маєте акаунт? </span>
@@ -38,9 +49,9 @@
           <GoogleIcon />
         </button>
 
-        <div class="test_user_btn">
+        <!-- <div class="test_user_btn">
           <NuxtLink to="/user" class="test_user"> Тестова кнопка сторінки користувача </NuxtLink>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -49,6 +60,70 @@
 <script setup>
 import AngleRightIcon from "~/assets/icons/angle-right.svg";
 import GoogleIcon from "~/assets/icons/google.svg";
+import { useAuth } from "@/composables/useAuth";
+import { ref } from "vue";
+
+const { signUpWithEmail } = useAuth();
+const name = ref("");
+const lastName = ref("");
+const email = ref("");
+const password = ref("");
+const confirmPassword = ref("");
+const phoneNumber = ref("");
+const loaderState = ref(false);
+// const sendedEmail = ref(false);
+// const sendedEmailValue = ref("");
+
+const clearForm = () => {
+  name.value = "";
+  lastName.value = "";
+  email.value = "";
+  password.value = "";
+  confirmPassword.value = "";
+  phoneNumber.value = "";
+};
+
+const registerHandler = async () => {
+  const validPassword = password.value.trim() === confirmPassword.value.trim();
+
+  if (!validPassword) {
+    alert("Перевірте пароль,");
+    return;
+  } else if (password.value.length <= 7) {
+    alert("Пароль повинен бути не менше 7 символів");
+  }
+
+  loaderState.value = true;
+  document.body.style.overflow = "hidden";
+
+  const registerRes = await signUpWithEmail(
+    email.value,
+    password.value,
+    name.value,
+    lastName.value,
+    phoneNumber.value
+  );
+
+  // console.log(registerRes, "register Res");
+
+  // console.log(registerRes.error);
+
+  if (registerRes.error === null) {
+    loaderState.value = false;
+    document.body.style.overflow = "";
+    // sendedEmailValue.value = registerRes.data.user.email;
+    clearForm();
+    alert(
+      `Дякуемо за реєстрацію. Емейл з подальшими інструкціями відправлено на ${registerRes.data.user.email}`
+    );
+    navigateTo("/");
+    // sendedEmail.value = true;
+  } else {
+    loaderState.value = false;
+    document.body.style.overflow = "";
+    alert("Щось пішло не так, спробуйте пізніше");
+  }
+};
 </script>
 
 <style lang="scss">
@@ -56,6 +131,19 @@ import GoogleIcon from "~/assets/icons/google.svg";
 
 .register {
   @include mixins.pageSpacing;
+
+  .loader_wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    backdrop-filter: blur(10px);
+    top: 0;
+    left: 0;
+    z-index: 100;
+  }
 }
 
 .register_wrapper {
@@ -192,24 +280,5 @@ import GoogleIcon from "~/assets/icons/google.svg";
 .google_auth {
   @include mixins.googleAuth;
   color: var(--text-color);
-}
-
-.test_user_btn {
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
-  .test_user {
-    @include mixins.transparentBtn;
-    border: 1px solid var(--border-color);
-    text-align: center;
-
-    @media screen and (max-width: 480px) {
-      font-weight: 500;
-      font-size: 0.75rem;
-    }
-  }
 }
 </style>

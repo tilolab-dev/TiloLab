@@ -26,6 +26,7 @@ export default defineNuxtConfig({
     api_secret_path: process.env.API_SECRET_PATH,
     api_secret_key: process.env.API_SECRET_KEY,
     api_service_role_key: process.env.API_SERVICE_ROLE_KEY,
+    test_bank_api_key: process.env.TEST_BANK_API_KEY,
     bank_api_key: process.env.BANK_API_KEY,
     bank_webhook_url: process.env.BANK_WEBHOOK_URL,
     nova_post_api: process.env.NEW_POST_API,
@@ -50,6 +51,7 @@ export default defineNuxtConfig({
     "@helpers": "/helpers"
   },
   modules: [
+    "@nuxtjs/supabase",
     "@pinia/nuxt",
     "@nuxt/image",
     [
@@ -68,6 +70,12 @@ export default defineNuxtConfig({
     ],
     "nuxt-swiper"
   ],
+  supabase: {
+    redirect: false,
+
+    url: process.env.NUXT_PUBLIC_SUPABASE_URL,
+    key: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY
+  },
 
   vite: {
     server: {

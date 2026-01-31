@@ -1,8 +1,9 @@
 import { readMultipartFormData } from "h3";
 // import { data } from "autoprefixer";
-import supabase from "../../../../utils/supabase";
+// import supabase from "../../../../utils/supabase";
 
 async function uploadFiles(event: any) {
+  const supabase = useSupabaseClient();
   try {
     const files = await readMultipartFormData(event);
 

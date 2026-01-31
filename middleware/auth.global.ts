@@ -1,7 +1,7 @@
-import { useAuthStore } from "../store/auth-store";
+import { useAdminStore } from "../store/admin-store";
 
 export default defineNuxtRouteMiddleware((to) => {
-  const auth = useAuthStore();
+  const auth = useAdminStore();
   const cookieRole = useCookie<string | null>("role").value;
 
   if (!auth.adminRole && cookieRole) {

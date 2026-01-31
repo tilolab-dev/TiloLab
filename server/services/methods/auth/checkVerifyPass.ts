@@ -1,7 +1,8 @@
-import supabase from "~/utils/supabase";
+// import supabase from "~/utils/supabase";
 import { readMultipartFormData } from "h3";
 async function checkVerifyPass(event: any) {
   const data = await readMultipartFormData(event);
+  const supabase = useSupabaseClient();
 
   if (!data) {
     return {

@@ -91,7 +91,16 @@ export default [
         // Utility functions
         countTotalPrice: "readonly",
         resetTextFields: "readonly",
-        productFileUpload: "readonly"
+        productFileUpload: "readonly",
+        // SUPABASE
+        useSupabaseClient: "readonly",
+        useSupabaseUser: "readonly",
+        serverSupabaseUser: "readonly",
+        useSupabaseAdmin: "readonly",
+        // COOCKIE
+        getGuestIdFromCookie: "readonly",
+        clearGuestIdCookie: "readonly",
+        setGuestIdCookie: "readonly"
       }
     },
     plugins: {
