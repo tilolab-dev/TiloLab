@@ -182,7 +182,7 @@
 // import SvgIcon from "../shared/SvgIcon.vue";
 import { ref, onMounted, onUnmounted, watch } from "vue";
 import { useModalStore } from "@/store/modal-store";
-import { useAuthStore } from "@/store/auth-store";
+import { useAdminStore } from "@/store/admin-store";
 import gsap from "gsap";
 
 const userName = ref("Nick");
@@ -202,7 +202,8 @@ const background = ref(null);
 
 const modalStore = useModalStore();
 
-const authStore = useAuthStore();
+// const authStore = useAuthStore();
+const adminStore = useAdminStore();
 
 const emit = defineEmits([]);
 
@@ -439,7 +440,7 @@ const handleLogin = async () => {
   }
 
   if (loginUser.user) {
-    authStore.setUser(loginUser.user);
+    adminStore.setUser(loginUser.user);
   }
 
   setTimeout(() => {

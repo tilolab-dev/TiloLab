@@ -14,7 +14,17 @@
           <li @click="closeBurgerMenu('/wishlist')">Список бажань</li>
         </ul>
       </div>
-      <div class="burger_menu_user" @click="closeBurgerMenu('/auth/login')">Особистий кабінет</div>
+      <!-- <div class="burger_menu_user" @click="closeBurgerMenu('/auth/login')"> -->
+
+      <div
+        class="burger_menu_user"
+        @click="
+          closeBurgerMenu(!useUserStore.isLoggedIn ? `/user/${userStore.user.id}` : '/auth/login')
+        "
+      >
+        <div v-if="userStore.isLoggedIn">Особистий кабінет</div>
+        <div v-else>Увійти</div>
+      </div>
     </div>
   </div>
 </template>
@@ -24,9 +34,11 @@ import CloseIcon from "~/assets/icons/close-icon.svg";
 
 import { ref, onMounted } from "vue";
 import { useModalStore } from "@/store/modal-store";
+import { useUserStore } from "@/store/user-store";
 import gsap from "gsap";
 
 const modalStore = useModalStore();
+const userStore = useUserStore();
 const burgerRef = ref(null);
 
 onMounted(() => {

@@ -1,8 +1,9 @@
-import supabase from "@/utils/supabase";
+// import supabase from "@/utils/supabase";
 import { prisma } from "@/prisma/prisma";
 import { readMultipartFormData } from "h3";
 
 async function sendVerifyPass(event: any) {
+  const supabase = useSupabaseClient();
   try {
     console.log("enter");
     const data = await readMultipartFormData(event);

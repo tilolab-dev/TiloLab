@@ -225,7 +225,7 @@ import Modal from "~/components/Modals/Modal.vue";
 import Tooltips from "~/components/shared/Tooltips.vue";
 import { useModalStore } from "@/store/modal-store";
 import { useIndexStore } from "@/store/index-store";
-import { useAuthStore } from "@/store/auth-store";
+import { useAdminStore } from "@/store/admin-store";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
 
 const showTooltip = ref(false);
@@ -238,7 +238,7 @@ const loggedUser = ref(false);
 
 const modalStore = useModalStore();
 const indexStore = useIndexStore();
-const authStore = useAuthStore();
+const authStore = useAdminStore();
 const currentModal = computed(() => modalStore.currentModal);
 const modalProps = computed(() => modalStore.modalProps);
 

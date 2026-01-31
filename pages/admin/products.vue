@@ -359,6 +359,7 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 @use "@/style/mixins.scss" as mixins;
+
 .product_section {
   height: 100vh;
   position: relative;

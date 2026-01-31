@@ -65,10 +65,15 @@
               </button>
             </div>
           </div>
+          <!-- <NuxtLink :to="/auth/login" class="user_btn"> -->
 
           <div class="main_header_buttons">
-            <NuxtLink to="/auth/login" class="user_btn">
+            <NuxtLink
+              :to="userStore.isLoggedIn ? `/user/${userStore.user.id}` : '/auth/login'"
+              class="user_btn"
+            >
               <ProfileIcon />
+              <div v-if="userStore.isLoggedIn" class="logged_info">Мій кабінет</div>
             </NuxtLink>
             <NuxtLink to="/wishlist" class="wishlist_btn">
               <HeartIcon />
@@ -125,6 +130,7 @@ import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 import { useModalStore } from "@/store/modal-store";
 import { useIndexStore } from "@/store/index-store";
 import { useCartStore } from "@/store/cart-store";
+import { useUserStore } from "@/store/user-store";
 
 const catalogBtnState = ref(false);
 const burger = ref(false);
@@ -133,6 +139,7 @@ const mobileSearch = ref(false);
 const modalStore = useModalStore();
 const indexStore = useIndexStore();
 const cartStore = useCartStore();
+const userStore = useUserStore();
 
 const loaderState = ref(false);
 const mounted = ref(false);
@@ -191,7 +198,7 @@ onBeforeUnmount(() => {
   transition: all ease 0.3s;
   top: 0;
 
-  z-index: 15;
+  z-index: 25;
 
   .logo_btn {
     @media screen and (max-width: 768px) {
@@ -406,6 +413,15 @@ onBeforeUnmount(() => {
 
       svg {
         transition: all ease 0.3s;
+      }
+
+      .logged_info {
+        font-size: 10px;
+        white-space: nowrap;
+        position: absolute;
+        bottom: -50%;
+        color: white;
+        font-weight: 500;
       }
 
       @media screen and (min-width: 1024px) {

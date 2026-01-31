@@ -130,7 +130,7 @@ import AdminProducts from "~/assets/icons/admin-products.svg";
 import AdminNotifications from "~/assets/icons/admin-notifications.svg";
 import AdminSettings from "~/assets/icons/admin-settings.svg";
 
-import { useAuthStore } from "@/store/auth-store";
+import { useAdminStore } from "@/store/admin-store";
 
 import { computed, ref } from "vue";
 import Modal from "~/components/Modals/Modal.vue";
@@ -141,7 +141,7 @@ import { useIndexStore } from "@/store/index-store";
 import { markRaw } from "vue";
 import { useRoute } from "vue-router";
 
-const authStore = useAuthStore();
+const adminStore = useAdminStore();
 
 const linksData = ref([
   {
@@ -208,7 +208,7 @@ const remainingLinks = computed(() => linksData.value.slice(4));
 const showTooltip = ref(false);
 const tooltipStatus = ref("");
 const tooltipMessage = ref("");
-const isSidebarOpen = ref(false);
+const isSidebarOpen = ref(true);
 // const activePage = ref("index");
 
 const modalStore = useModalStore();
@@ -254,16 +254,17 @@ const closeSidebar = () => {
 };
 
 const exitHandler = async () => {
-  const resExit = await authStore.clearAdminRole();
+  const resExit = await adminStore.clearAdminRole();
 
   if (resExit) {
     navigateTo("/");
   }
 };
 
-definePageMeta({
-  middleware: "admin"
-});
+// definePageMeta({
+//   layout: "admin",
+//   middleware: "admin"
+// });
 </script>
 
 <style lang="scss">

@@ -1,12 +1,15 @@
 <template>
   <div class="login">
+    <div class="loader_wrapper">
+      <SharedLoader />
+    </div>
     <div class="container">
       <div class="login_wrapper">
         <h1>Твій власний простір</h1>
 
         <div class="input_wrapper">
-          <input type="text" placeholder="Електронна пошта" />
-          <input type="text" placeholder="Пароль" />
+          <input v-model="email" type="text" placeholder="Електронна пошта" />
+          <input v-model="password" type="text" placeholder="Пароль" />
         </div>
 
         <div class="checkbox_wrapper">
@@ -22,7 +25,7 @@
           <input id="checkbox" type="checkbox" />
         </div>
 
-        <button class="login_btn">Увійти</button>
+        <button class="login_btn" @click="onEmailLogin">Увійти</button>
 
         <NuxtLink to="/auth/reset" class="forgot_btn"> Забули пароль? </NuxtLink>
 
@@ -34,15 +37,15 @@
           </div>
         </NuxtLink>
 
-        <button class="google_auth">
+        <button class="google_auth" @click="onGoogleLogin">
           <span> Або увійти за допомогою </span>
 
           <GoogleIcon />
         </button>
 
-        <div class="test_user_btn">
+        <!-- <div class="test_user_btn">
           <NuxtLink to="/user" class="test_user"> Тестова кнопка сторінки користувача </NuxtLink>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -57,8 +60,44 @@ import Check from "~/assets/icons/check.svg";
 // imports
 
 import { ref } from "vue";
+import { useAuth } from "@/composables/useAuth";
+// import { useUserStore } from "@/store/user-store";
 
+// import supabase from "@utils/supabase";
+
+// const supabase = useSupabaseClient();
+
+// const supabase = useSupabaseClient();
+// const userStore = useUserStore();
+const { signInWithGoogle, signInWithEmail } = useAuth();
+
+const email = ref("");
+const password = ref("");
 const rememberMe = ref(false);
+const loaderState = ref(false);
+
+const onEmailLogin = async () => {
+  loaderState.value = true;
+  await signInWithEmail(email.value, password.value, rememberMe.value);
+  loaderState.value = false;
+};
+
+const onGoogleLogin = async () => {
+  await signInWithGoogle();
+};
+
+// const signInWithGoogle = async () => {
+//   const { error } = await supabase.auth.signInWithOAuth({
+//     provider: "google",
+//     options: {
+//       redirectTo: `${window.location.origin}/auth/callback`
+//     }
+//   });
+
+//   if (error) {
+//     console.error("Google sign-in error:", error.message);
+//   }
+// };
 </script>
 
 <style lang="scss">
@@ -67,6 +106,15 @@ const rememberMe = ref(false);
 .login {
   color: var(--text-color);
   @include mixins.pageSpacing;
+
+  .loader_wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(10px);
+  }
 
   h1 {
     @include mixins.titleText;
