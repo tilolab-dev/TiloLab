@@ -178,11 +178,11 @@
                   <div class="cart_item_values">
                     <span class="price">{{ item.product.productPrice }} грн</span>
                     <div class="quantity_btn">
-                      <button>
+                      <button @click="counterHandler.decrement(item)">
                         <MinusIcon />
                       </button>
                       <span>{{ item.quantity }}</span>
-                      <button>
+                      <button @click="counterHandler.increment(item)">
                         <PlusIcon />
                       </button>
                     </div>
@@ -212,6 +212,7 @@ import { ref, watch, onMounted, computed } from "vue";
 import CloseIcon from "~/assets/icons/close-icon.svg";
 import MinusIcon from "~/assets/icons/minus-icon.svg";
 import PlusIcon from "~/assets/icons/plus-icon.svg";
+import { counterHandler } from "@/composables/counterHandler";
 // import { useCartStore, useAuthStore } from "#imports";
 // import { Swiper, SwiperSlide } from "swiper/vue";
 

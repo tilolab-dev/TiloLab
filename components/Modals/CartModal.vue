@@ -48,8 +48,10 @@
                   <button
                     :class="item.quantity === 1 ? 'counter_btn_disabled' : ''"
                     class="counter_btn"
-                    @click="decrement(item)"
+                    @click="counterHandler.decrement(item)"
                   >
+                    <!-- @click="decrement(item)" -->
+
                     -
                   </button>
                   <!-- v-model.number="item.quantity" -->
@@ -59,7 +61,7 @@
                     class="counter_value"
                     type="number"
                     min="1"
-                    @blur="onBlur(item)"
+                    @blur="counterHandler.onBlur(item)"
                   />
 
                   <!-- <label :for="`counter-input-${item.product.id}`" class="counter_value">{{
@@ -67,7 +69,7 @@
                   }}</label> -->
 
                   <!-- <span class="counter_value"> {{ item.quantity }} </span> -->
-                  <button class="counter_btn" @click="increment(item)">
+                  <button class="counter_btn" @click="counterHandler.increment(item)">
                     <!-- @click="cartStore.updateProduct(item.product.id, 'increment')" -->
 
                     +
@@ -98,6 +100,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { counterHandler } from "@/composables/counterHandler";
 import { useModalStore } from "@/store/modal-store";
 import { useCartStore } from "@/store/cart-store";
 import gsap from "gsap";
@@ -112,35 +115,25 @@ const cartRef = ref(null);
 //   if (!item.quantity || item.quantity < 1) {
 //     item.quantity = 1;
 //   }
-
-//   const newPrice = item.quantity * Number(item.product.productPrice);
-
-//   cartStore.updateProduct(item.product.id, item.quantity, newPrice);
+//   recalc(item);
 // };
 
-const onBlur = (item) => {
-  if (!item.quantity || item.quantity < 1) {
-    item.quantity = 1;
-  }
-  recalc(item);
-};
+// const decrement = (item) => {
+//   if (item.quantity > 1) {
+//     item.quantity--;
+//     recalc(item);
+//   }
+// };
 
-const decrement = (item) => {
-  if (item.quantity > 1) {
-    item.quantity--;
-    recalc(item);
-  }
-};
+// const increment = (item) => {
+//   item.quantity++;
+//   recalc(item);
+// };
 
-const increment = (item) => {
-  item.quantity++;
-  recalc(item);
-};
-
-const recalc = (item) => {
-  const newPrice = item.quantity * Number(item.product.productPrice);
-  cartStore.updateProduct(item.product.id, item.quantity, newPrice);
-};
+// const recalc = (item) => {
+//   const newPrice = item.quantity * Number(item.product.productPrice);
+//   cartStore.updateProduct(item.product.id, item.quantity, newPrice);
+// };
 
 // const updateProductHandler = (productId, quantity, newPrice) => {
 // console.log(productId, quantity, newPrice);

@@ -70,7 +70,7 @@
                             : 'none'
                       }"
                     >
-                      {{ productStore.selectedProducts.productPrice }} грн
+                      {{ productStore.selectedProducts.productPrice * productQuantity }} грн
                     </span>
                     <span
                       v-if="productStore.selectedProducts.discountPercent != 0"
@@ -101,10 +101,7 @@
                 <div class="product_quantity">
                   <div class="product_quantity_head">Кількість товару:</div>
                   <div class="product_quantity_counter">
-                    <button
-                      :class="counter === 1 ? 'counter_disabled' : ''"
-                      @click="counter > 1 ? counter-- : counter"
-                    >
+                    <button :class="counter === 1 ? 'counter_disabled' : ''" @click="decrement">
                       <MinusIcon />
                     </button>
                     <input
@@ -112,9 +109,9 @@
                       class="quantity"
                       type="number"
                       min="1"
-                      @blur="counterValidate"
+                      @blur="onBlur"
                     />
-                    <button @click="counter">
+                    <button @click="increment">
                       <PlusIcon />
                     </button>
                   </div>
@@ -226,12 +223,42 @@ const loadState = ref(true);
 const swiperKey = ref(0);
 const isDescriptionCollapsed = ref(true);
 const counter = ref(1);
+const productQuantity = ref(1);
 
-const counterValidate = () => {
-  if (counter.value < 1) {
+const onBlur = () => {
+  if (!counter.value || counter.value < 1) {
     counter.value = 1;
+    productQuantity.value = 1;
+  }
+
+  productQuantity.value = counter.value;
+  // recalc(item);
+};
+
+const decrement = () => {
+  if (counter.value > 1) {
+    productQuantity.value--;
+    counter.value--;
+    // recalc(item);
   }
 };
+
+const increment = () => {
+  productQuantity.value++;
+  counter.value++;
+  // recalc(item);
+};
+
+// const recalc = (item) => {
+//   const newPrice = item.quantity * Number(item.product.productPrice);
+//   cartStore.updateProduct(item.product.id, item.quantity, newPrice);
+// };
+
+// const counterValidate = () => {
+//   if (counter.value < 1) {
+//     counter.value = 1;
+//   }
+// };
 
 const isProductInWishlist = computed(() => {
   return wishlistStore.wishlist.some((item) => item.id === productStore.selectedProducts.id);
@@ -344,6 +371,7 @@ const fetchProductById = async () => {
 const addToCart = () => {
   const productTotalPrice = productStore.selectedProducts.productPrice * counter.value;
   cartStore.addProduct(productStore.selectedProducts, counter.value, productTotalPrice);
+  alert("Товар успішно додано до кошика");
   counter.value = 1;
 };
 
