@@ -284,6 +284,11 @@ const exitHandler = async () => {
   //     background-color: var(--dark-component-color);
   //     color: #94a3b8;
   // }
+  h1,
+  .page_name {
+    padding: 0 20px;
+    font-size: 24px;
+  }
 }
 
 .admin_head_bg {
