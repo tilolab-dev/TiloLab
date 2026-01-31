@@ -25,6 +25,8 @@ import WishlistModal from "../WishlistModal.vue";
 import BurgerMenu from "./BurgerMenu.vue";
 import LogOut from "./LogOut.vue";
 import VerifyAgeModal from "./VerifyAgeModal.vue";
+import PromoModal from "./PromoModal.vue";
+import QuestionnaireModal from "./QuesrionnaireModal.vue";
 
 // ADMIN
 
@@ -57,7 +59,9 @@ const modalComponents = {
   AuthModal,
   BurgerMenu,
   LogOut,
-  VerifyAgeModal
+  VerifyAgeModal,
+  PromoModal,
+  QuestionnaireModal
   //   ChangeUserData
 };
 
