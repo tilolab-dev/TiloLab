@@ -366,17 +366,17 @@ const confirmOrderHandler = async () => {
 
     // implement server function to comparing ammount from order and front
 
-    // const createPayment = await $fetch("/api/monobank/create", {
-    //   method: "POST",
-    //   body: {
-    //     // !!!!!!! implement ammount from getOrderId
-    //     orderId: getOrderId.data.id,
-    //     amount: amountInCents
-    //   }
-    // });
+    const createPayment = await $fetch("/api/monobank/create", {
+      method: "POST",
+      body: {
+        // !!!!!!! implement ammount from getOrderId
+        orderId: getOrderId.data.id,
+        amount: amountInCents
+      }
+    });
 
-    // console.log(createPayment, "createPayment");
-    // window.location.href = createPayment.pageUrl;
+    console.log(createPayment, "createPayment");
+    window.location.href = createPayment.pageUrl;
   } catch (err) {
     console.log(err);
   }

@@ -1,6 +1,11 @@
 import { prisma } from "@/prisma/prisma";
 import { defineEventHandler, getQuery } from "h3";
 
+interface IProductQuantity {
+  stockValue: number | null;
+  stockReserved: number | null;
+}
+
 const getProductsByPage = defineEventHandler(async (event) => {
   const { page, limit, category } = getQuery(event);
   // const where: any = category ? { category } : {};
@@ -27,10 +32,16 @@ const getProductsByPage = defineEventHandler(async (event) => {
       }),
       prisma.product.count({ where })
     ]);
+
+    const productsWithAvailable = items.map((product: IProductQuantity) => ({
+      ...product,
+      availableStock: (product.stockValue || 0) - (product.stockReserved || 0)
+    }));
+
     return {
       statusCode: 200,
       message: "Success",
-      data: items,
+      data: productsWithAvailable,
       productTotal: total
     };
   } catch (err) {

@@ -190,7 +190,7 @@ export const useAuth = () => {
       password,
       options: {
         // emailRedirectTo: "https://tilolab.com.ua/auth/login",
-        emailRedirectTo: "http://localhost:3000/auth/login",
+        emailRedirectTo: "http://www.tilolab.com.ua/auth/login",
         data: { last_name: lastName, full_name: name, phone_number: phoneNumber }
       }
     });

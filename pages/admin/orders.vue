@@ -244,6 +244,8 @@ const getIconPath = (status) => {
       return "/icons/order/returned.webp";
     case "CANCELED":
       return "/icons/order/canceled.webp";
+    case "EXPIRED":
+      return "/icons/order/expired.webp";
   }
 };
 
@@ -274,6 +276,10 @@ const applyStyle = (status) => {
         background: "var(--error-bg)"
       };
     case "CANCELED":
+      return {
+        background: "var(--error-bg)"
+      };
+    case "EXPIRED":
       return {
         background: "var(--error-bg)"
       };
