@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     nova_post_api: process.env.NEW_POST_API,
     admin_user_name: process.env.ADMIN_USERNAME,
     admin_password: process.env.ADMIN_PASSWORD,
-
+    jwt_secret: process.env.JWT_SECRET,
     public: {
       api_base_url: process.env.API_BASE_URL,
       nova_post_uri: process.env.NOVA_POST_URI
@@ -76,7 +76,6 @@ export default defineNuxtConfig({
     url: process.env.NUXT_PUBLIC_SUPABASE_URL,
     key: process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY
   },
-
   vite: {
     server: {
       allowedHosts: ["edd85ac46640.ngrok-free.app"],

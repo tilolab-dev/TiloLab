@@ -72,6 +72,7 @@ export default [
         useSwiper: "readonly",
         // Server globals
         defineEventHandler: "readonly",
+        defineNitroPlugin: "readonly",
         getRouterParam: "readonly",
         getQuery: "readonly",
         readBody: "readonly",

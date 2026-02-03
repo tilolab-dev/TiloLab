@@ -128,17 +128,20 @@ import AdminNotifications from "~/assets/icons/admin-notifications.svg";
 import AdminSettings from "~/assets/icons/admin-settings.svg";
 
 import { useAdminStore } from "@/store/admin-store";
-
-import { computed, ref } from "vue";
+import { useOrderRealtime } from "@/composables/useOrderRealtime";
+import { computed, ref, onMounted, onBeforeUnmount } from "vue";
 import Modal from "~/components/Modals/Modal.vue";
 // import Tooltips from "~/components/shared/Tooltips.vue";
 import { useModalStore } from "@/store/modal-store";
+
 // useIndexStore
 import { useIndexStore } from "@/store/index-store";
+// import { useOrdersStore } from "@/store/orders-store";
 import { markRaw } from "vue";
 import { useRoute } from "vue-router";
 
 const adminStore = useAdminStore();
+// const ordersStore = useOrdersStore();
 
 const linksData = ref([
   {
@@ -215,6 +218,17 @@ const modalProps = computed(() => modalStore.modalProps);
 
 const route = useRoute();
 
+let audio = null;
+let audioUnlocked = false;
+
+const initAudio = () => {
+  if (audioUnlocked) return;
+
+  audio = new window.Audio("/sounds/notification.mp3");
+  audio.volume = 1;
+  audioUnlocked = true;
+};
+
 const isActive = (item) => {
   if (item.linkPath === "/admin") {
     return route.path === "/admin";
@@ -258,10 +272,43 @@ const exitHandler = async () => {
   }
 };
 
+const playSound = () => {
+  if (!audioUnlocked || !audio) return;
+
+  audio.currentTime = 0;
+  audio.play().catch(() => {});
+};
+
 // definePageMeta({
 //   layout: "admin",
 //   middleware: "admin"
 // });
+onMounted(() => {
+  // const unsubscribe = useOrderRealtime((order) => {
+  //   console.log(order, "orderLog");
+  //   playSound();
+  // });
+
+  // onBeforeUnmount(() => {
+  //   unsubscribe();
+  // });
+
+  const unlock = () => {
+    initAudio();
+    document.removeEventListener("click", unlock);
+  };
+
+  document.addEventListener("click", unlock);
+
+  const unsubscribe = useOrderRealtime(() => {
+    playSound();
+  });
+
+  onBeforeUnmount(() => {
+    unsubscribe();
+    document.removeEventListener("click", unlock);
+  });
+});
 </script>
 
 <style lang="scss">

@@ -31,6 +31,8 @@ export const useCartStore = defineStore("cart", {
         (acc: number, item: ICartItem) => acc + item.productTotalPrice,
         0
       );
+      // const totalCents = this.cart.reduce((acc, item) => acc + item.productTotalPrice, 0);
+      // this.totalPrice = totalCents / 100;
       this.saveCart();
     },
     removeProduct(productId: number) {
