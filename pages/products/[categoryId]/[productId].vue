@@ -92,10 +92,34 @@
                   <span v-else> Додати до списку бажань </span>
                 </div>
 
-                <div class="availability">
+                <div
+                  v-if="productStore.selectedProducts.availableProduct > 10"
+                  class="availability"
+                >
                   <CheckIcon />
 
-                  <span> {{ productStore.selectedProducts.stockValue }} в наявності </span>
+                  <span> {{ productStore.selectedProducts.availableProduct }} в наявності </span>
+                </div>
+
+                <div
+                  v-else-if="
+                    productStore.selectedProducts.availableProduct < 10 &&
+                    productStore.selectedProducts.availableProduct > 0
+                  "
+                  class="running_out"
+                >
+                  <CheckIcon />
+
+                  <span> {{ productStore.selectedProducts.availableProduct }} в наявності </span
+                  ><br />
+                  <span class="accent">Товар закінчується</span>
+                </div>
+
+                <div
+                  v-else-if="productStore.selectedProducts.availableProduct === 0"
+                  class="no_available"
+                >
+                  <span>Товар закінчився</span>
                 </div>
 
                 <div class="product_quantity">
@@ -111,14 +135,32 @@
                       min="1"
                       @blur="onBlur"
                     />
-                    <button @click="increment">
+                    <button
+                      :class="
+                        counter === productStore.selectedProducts.availableProduct
+                          ? 'counter_disabled'
+                          : ''
+                      "
+                      @click="increment"
+                    >
                       <PlusIcon />
                     </button>
                   </div>
                 </div>
 
                 <div class="cart_btn">
-                  <button @click="addToCart">Додати в кошик</button>
+                  <button
+                    v-if="productStore.selectedProducts.availableProduct > 0"
+                    @click="addToCart"
+                  >
+                    Додати в кошик
+                  </button>
+                  <div
+                    v-if="productStore.selectedProducts.availableProduct === 0"
+                    class="not_allowed_btn"
+                  >
+                    Додати в кошик
+                  </div>
                 </div>
               </div>
 
@@ -229,6 +271,9 @@ const onBlur = () => {
   if (!counter.value || counter.value < 1) {
     counter.value = 1;
     productQuantity.value = 1;
+  } else if (counter.value > productStore.selectedProducts.availableProduct) {
+    counter.value = productStore.selectedProducts.availableProduct;
+    productQuantity.value = productStore.selectedProducts.availableProduct;
   }
 
   productQuantity.value = counter.value;
@@ -244,8 +289,11 @@ const decrement = () => {
 };
 
 const increment = () => {
-  productQuantity.value++;
-  counter.value++;
+  if (productStore.selectedProducts.availableProduct > counter.value) {
+    productQuantity.value++;
+    counter.value++;
+  }
+
   // recalc(item);
 };
 
@@ -356,6 +404,8 @@ const fetchProductById = async () => {
     //   return navigateTo("/404");
     // }
 
+    console.log(res, "res");
+
     productStore.setSelectedProducts(res.data);
 
     productImages.value = Array.isArray(res.data.images) ? res.data.images : [];
@@ -369,9 +419,25 @@ const fetchProductById = async () => {
 };
 
 const addToCart = () => {
+  const checkProductFromStor = cartStore.cart.find(
+    (el) => el.product.id === productStore.selectedProducts.id
+  );
+  if (checkProductFromStor) {
+    if (
+      counter.value + checkProductFromStor.quantity >
+      productStore.selectedProducts.availableProduct
+    ) {
+      alert(
+        `Цей товар вже в кошику, загальна кількість товару не може перевищувати наявність товару на складі`
+      );
+      return;
+    }
+  }
+
   const productTotalPrice = productStore.selectedProducts.productPrice * counter.value;
   cartStore.addProduct(productStore.selectedProducts, counter.value, productTotalPrice);
   alert("Товар успішно додано до кошика");
+  productQuantity.value = 1;
   counter.value = 1;
 };
 
@@ -669,7 +735,9 @@ onUnmounted(() => {
       }
     }
 
-    .availability {
+    .availability,
+    .running_out,
+    .no_available {
       display: flex;
       justify-content: flex-start;
       align-items: center;
@@ -690,6 +758,20 @@ onUnmounted(() => {
       svg {
         width: 20px;
         height: 20px;
+      }
+    }
+
+    .running_out {
+      .accent {
+        color: var(--warning-border);
+      }
+    }
+
+    .no_available {
+      span {
+        color: var(--accent-red);
+        font-size: 1rem;
+        font-weight: 600;
       }
     }
 
@@ -781,6 +863,19 @@ onUnmounted(() => {
         //     transition: all ease 0.3s;
         //   }
         // }
+      }
+      .not_allowed_btn {
+        @include mixins.transparentBtn;
+        background: var(--transparent-fill);
+        border: 0;
+        width: 100%;
+        text-align: center;
+        cursor: not-allowed;
+        @media screen and (min-width: 1024px) {
+          &:hover {
+            border: 0;
+          }
+        }
       }
       @media screen and (max-width: 1024px) {
         padding-top: 6px;

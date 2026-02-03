@@ -47,20 +47,22 @@ export default defineEventHandler(async (event: any) => {
     const invoice: any = await $fetch("https://api.monobank.ua/api/merchant/invoice/create", {
       method: "POST",
       headers: {
-        "X-Token": process.env.BANK_API_KEY!
-        // "X-Token": process.env.TEST_BANK_API_KEY!
+        // "X-Token": process.env.BANK_API_KEY!
+        "X-Token": process.env.TEST_BANK_API_KEY!
         // TESTING ENVIRONMENT VARIABLE
       },
       body: {
         amount: amount * 100,
         ccy: 980,
-        redirectUrl: `https://edd85ac46640.ngrok-free.app/summary`,
-        webHookUrl: "https://edd85ac46640.ngrok-free.app/api/monobank/webhook",
+        // redirectUrl: `https://edd85ac46640.ngrok-free.app/summary`,
+        // webHookUrl: "https://edd85ac46640.ngrok-free.app/api/monobank/webhook",
+        redirectUrl: `https://www.tilolab.com.ua/summary`,
+        webHookUrl: "https://www.tilolab.com.ua/api/monobank/webhook",
 
         validity: 3600,
         merchantPaymInfo: {
           reference: orderId,
-          destination: "Оплата заказа"
+          destination: "Оплата замовлення"
         }
       }
     });
