@@ -1,8 +1,23 @@
 <template>
-  <div class="item_card">
+  <div
+    class="item_card"
+    :class="{
+      no_available_product: props.product.availableStock === 0,
+      running_out_product: props.product.availableStock < 10 && props.product.availableStock > 0
+    }"
+  >
     <div v-if="hasDiscount" class="action_label">Акція</div>
 
     <NuxtLink :to="props.link" class="img_container">
+      <div v-if="props.product.availableStock === 0" class="no_available_label">
+        Немає в наявності
+      </div>
+      <div
+        v-if="props.product.availableStock < 10 && props.product.availableStock > 0"
+        class="running_out_label"
+      >
+        Товар закінчується
+      </div>
       <img
         v-if="props.product.img && props.product.img[0] && props.product.img[0].path"
         :src="props.product.img[0].path"
@@ -108,10 +123,29 @@ const discountedPrice = computed(() => {
     gap: 10px;
   }
 
+  .no_available_label,
+  .running_out_label {
+    background: var(--accent-red);
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 600;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .running_out_label {
+    background: var(--warning-border);
+    color: var(--bg-color);
+  }
+
   .img_container {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    position: relative;
   }
 
   img {
@@ -172,6 +206,12 @@ const discountedPrice = computed(() => {
   }
   .discount_price {
     color: var(--discount-price);
+  }
+}
+
+.no_available_product {
+  img {
+    filter: grayscale(0.85);
   }
 }
 </style>

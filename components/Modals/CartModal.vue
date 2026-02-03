@@ -20,6 +20,7 @@
               :data-id="item.product.id"
               class="cart_item"
             >
+              {{ console.log(item, "item") }}
               <div class="cart_item_main">
                 <div class="details">
                   <img :src="item.product.img?.[0]?.path" alt="item-img" />

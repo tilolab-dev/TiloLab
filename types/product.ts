@@ -38,6 +38,7 @@ export interface IProduct {
   visible: boolean;
   stockState: boolean;
   stockValue?: number | null;
+  stockReserved?: number | null;
   discountPercent?: number | null;
   productPrice: number | string;
   productSize: string;
