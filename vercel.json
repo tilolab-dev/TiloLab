@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/expire-orders",
-      "schedule": "*/2 * * * *",
+      "schedule": "* * * * *",
       "headers": {
         "authorization": "Bearer ${CRON_SECRET}"
       }
