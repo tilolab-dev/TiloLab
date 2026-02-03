@@ -185,7 +185,6 @@ const removeItem = (id) => {
     console.log("id not found");
     return;
   }
-  // console.log("click2", el, id);
 
   gsap.to(el, {
     x: 120,
