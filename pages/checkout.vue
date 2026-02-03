@@ -714,7 +714,6 @@ const getPostOfficeNp = debounce(postAddress.value, async () => {
     }
   });
 
-  // console.log(getOfficeByNumber, "getPostomatsByNumber");
   const filteredOffice = getOfficeByNumber.data.filter(
     (item) => item.CategoryOfWarehouse === "Branch"
   );
