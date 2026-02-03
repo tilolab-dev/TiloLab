@@ -319,10 +319,20 @@ const cartStore = useCartStore();
 const confirmOrderHandler = async () => {
   const getOrderItems = cartStore.cart.map((item) => {
     return {
-      product: item.product.id,
+      productId: item.product.id,
       quantity: item.quantity
     };
   });
+
+  // const checkProductAvailability = await $fetch("/api/products/checkAvailability", {
+  //   method: "POST",
+  //   body: {
+  //     items: getOrderItems
+  //   }
+  // });
+
+  // console.log(getOrderItems, "getOrderItems");
+  // console.log(checkProductAvailability, "checkProductAvailability");
 
   const amountInCents = Math.round(totalDeliveryPrice.value * 100);
 
@@ -334,6 +344,8 @@ const confirmOrderHandler = async () => {
         totalPrice: amountInCents,
         paymentMethod: "monobank",
         orderItems: getOrderItems,
+        email: email.value,
+        phoneNumber: phone.value,
         shippingInfo: {
           recipient: name.value + " " + surname.value,
           phoneNumber: phone.value,
@@ -352,27 +364,19 @@ const confirmOrderHandler = async () => {
     }
     console.log(getOrderId, "getOrderId");
 
-    //     const res = await $fetch('/api/mono/create-invoice', {
-    //   method: 'POST',
+    // implement server function to comparing ammount from order and front
+
+    // const createPayment = await $fetch("/api/monobank/create", {
+    //   method: "POST",
     //   body: {
-    //     orderId,
-    //     amount
+    //     // !!!!!!! implement ammount from getOrderId
+    //     orderId: getOrderId.data.id,
+    //     amount: amountInCents
     //   }
     // });
 
-    // implement server function to comparing ammount from order and front
-
-    const createPayment = await $fetch("/api/monobank/create", {
-      method: "POST",
-      body: {
-        // !!!!!!! implement ammount from getOrderId
-        orderId: getOrderId.data.id,
-        amount: amountInCents
-      }
-    });
-
-    console.log(createPayment, "createPayment");
-    window.location.href = createPayment.pageUrl;
+    // console.log(createPayment, "createPayment");
+    // window.location.href = createPayment.pageUrl;
   } catch (err) {
     console.log(err);
   }
@@ -1117,6 +1121,8 @@ useHead({
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-top: 1px solid var(--accent-grey);
+  padding-top: 10px;
 }
 
 .checkout {

@@ -126,6 +126,7 @@ const validForm = computed(() => {
 });
 
 const login = async () => {
+  console.log("enter");
   try {
     // /api/auth?auth=admin_login
     const result = await $fetch("/api/auth/admin/admin-login", {
@@ -137,14 +138,19 @@ const login = async () => {
       }
     });
 
+    console.log(result, "result");
+
     if (result.statusCode === 403) {
       alert(result.message);
       return;
     }
 
     if (result.statusCode === 200) {
-      auth.setAdminRole("admin");
+      auth.setAdminRole("admin", result.token);
 
+      // if (result.token) {
+      //   localStorage.setItem("admin_token", result.token);
+      // }
       await navigateTo("/admin");
     }
   } catch (err) {
