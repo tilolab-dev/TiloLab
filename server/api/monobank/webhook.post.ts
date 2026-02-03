@@ -16,17 +16,48 @@ export default defineEventHandler(async (event) => {
 
   const data = JSON.parse(rawBody!.toString());
 
-  if (data.status === "success") {
-    await prisma.payment.update({
-      where: { monoInvoice: data.invoiceId },
+  if (data.status !== "success") {
+    return { ok: true, message: "Платіж не пройшов " };
+  }
+
+  const payment = await prisma.payment.findUnique({
+    where: { monoInvoice: data.invoiceId },
+    include: { order: { include: { orderItems: true } } }
+  });
+
+  if (!payment || !payment.order) {
+    throw createError({ statusCode: 404, statusMessage: "Платіж чи замовлення не знайдено" });
+  }
+
+  const order = payment.order;
+
+  if (order.status !== "NEW") {
+    return { ok: true, message: `Замовлення вже оплачено: ${order.status}` };
+  }
+
+  await prisma.$transaction(async (tx) => {
+    for (const item of order.orderItems) {
+      await tx.product.update({
+        where: { id: item.productId },
+        data: {
+          stockValue: { decrement: item.quantity },
+          stockReserved: { decrement: item.quantity }
+        }
+      });
+    }
+
+    await tx.order.update({
+      where: { id: order.id },
+      data: { status: "PAID" }
+    });
+
+    await tx.payment.update({
+      where: { id: payment.id },
       data: { status: "SUCCESS" }
     });
 
-    await prisma.order.update({
-      where: { id: data.reference },
-      data: { status: "SHIPPED" }
-    });
-  }
+    // IMPLEMENT NOTIFICATION FEATURE
+  });
 
-  return { ok: true };
+  return { statusCode: 200, message: "Платіж успішно оброблений" };
 });

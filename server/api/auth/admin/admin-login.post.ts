@@ -1,5 +1,5 @@
 import { defineEventHandler } from "h3";
-
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 export default defineEventHandler(async (event) => {
@@ -26,6 +26,10 @@ export default defineEventHandler(async (event) => {
 
     const maxAge = rememberMe ? 60 * 60 * 24 * 7 : 60 * 60;
 
+    const token = jwt.sign({ role: "admin" }, config.jwt_secret as string, {
+      expiresIn: rememberMe ? "7d" : "1h"
+    });
+
     setCookie(event, "role", "admin", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -36,7 +40,8 @@ export default defineEventHandler(async (event) => {
 
     return {
       statusCode: 200,
-      message: "Login successful"
+      message: "Login successful",
+      token
     };
   } catch (err) {
     return {

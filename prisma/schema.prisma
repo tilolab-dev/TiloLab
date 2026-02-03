@@ -84,6 +84,7 @@ model Product {
   img                ProductImg[]                    
   stockState         Boolean              
   stockValue         Int?                 @default(0)
+  stockReserved      Int?                 @default(0)
   discountPercent    Int?                 
   // wholesalePrice     Int?                 
   // counterQuantity    Int?                 @default(1)
@@ -251,12 +252,14 @@ model Order {
   user            User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
   status          OrderStatus @default(NEW) 
   createdAt       DateTime    @default(now())
+  expiresAt       DateTime?
   paymentMethod   String?
   totalPrice      Int  
   shippingInfo    ShippingInfo?
   orderNumber     String      @unique
   orderItems      OrderItem[]
 
+  @@map("orders")
   @@index([userId])
   @@index([status])
   payments Payment[]
@@ -300,7 +303,8 @@ enum OrderStatus {
   SHIPPED
   DELIVERED
   RETURNED  
-  CANCELED     
+  CANCELED
+  EXPIRED  
 }
 
 model News {
