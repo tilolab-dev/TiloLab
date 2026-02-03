@@ -3,12 +3,14 @@ import { defineStore } from "pinia";
 export const useAdminStore = defineStore("admin-store", {
   state: () => ({
     adminRole: null as string | null,
-    user: null as {} | null
+    user: null as {} | null,
+    token: null as string | null
   }),
 
   actions: {
-    setAdminRole(role: string) {
+    setAdminRole(role: string, token?: string) {
       this.adminRole = role;
+      if (token) this.token = token;
     },
     async clearAdminRole() {
       try {
@@ -18,7 +20,7 @@ export const useAdminStore = defineStore("admin-store", {
             method: "POST"
           }
         );
-
+        this.token = null;
         if (adminLogout.statusCode === 200) {
           this.adminRole = null;
           return true;

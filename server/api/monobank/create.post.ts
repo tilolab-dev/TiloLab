@@ -6,6 +6,43 @@ export default defineEventHandler(async (event: any) => {
 
   const { orderId, amount } = body;
 
+  if (!orderId || !amount) {
+    throw createError({ statusCode: 400, statusMessage: "Missing orderId or amount" });
+  }
+
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    include: { orderItems: true }
+  });
+
+  if (!order) {
+    throw createError({ statusCode: 404, statusMessage: "Order not found" });
+  }
+
+  if (order.status !== "NEW") {
+    throw createError({
+      statusCode: 400,
+      statusMessage: `Order cannot be paid (current status: ${order.status})`
+    });
+  }
+
+  if (order.expiresAt && order.expiresAt < new Date()) {
+    await prisma.$transaction(async (tx) => {
+      for (const item of order.orderItems) {
+        await tx.product.update({
+          where: { id: item.productId },
+          data: { stockReserved: { decrement: item.quantity } }
+        });
+      }
+      await tx.order.update({
+        where: { id: order.id },
+        data: { status: "EXPIRED" }
+      });
+    });
+
+    throw createError({ statusCode: 400, statusMessage: "Order has expired" });
+  }
+
   try {
     const invoice: any = await $fetch("https://api.monobank.ua/api/merchant/invoice/create", {
       method: "POST",

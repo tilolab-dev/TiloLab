@@ -157,6 +157,7 @@ export const ProductScalarFieldEnum = {
   visible: 'visible',
   stockState: 'stockState',
   stockValue: 'stockValue',
+  stockReserved: 'stockReserved',
   discountPercent: 'discountPercent',
   productPrice: 'productPrice',
   productSize: 'productSize'
@@ -290,6 +291,7 @@ export const OrderScalarFieldEnum = {
   userId: 'userId',
   status: 'status',
   createdAt: 'createdAt',
+  expiresAt: 'expiresAt',
   paymentMethod: 'paymentMethod',
   totalPrice: 'totalPrice',
   orderNumber: 'orderNumber'

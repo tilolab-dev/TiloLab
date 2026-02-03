@@ -17,6 +17,24 @@ async function getProducts() {
     //     };
     // }
 
+    // const getExpiredOrders = await prisma.order.findMany({
+    //   where: {
+    //     status: "NEW",
+    //     expiresAt: {
+    //       lte: new Date()
+    //     }
+    //   },
+    //   include: {
+    //     orderItems: true
+    //   }
+    // });
+
+    // console.log(getExpiredOrders, "getExpiredOrders");
+
+    // const orders = await prisma.order.findMany();
+
+    // console.log(orders.length, "orders");
+
     const products = await prisma.product.findMany({
       // skip: (page - 1) * pageSize,
       // take: pageSize,
