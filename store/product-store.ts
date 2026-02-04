@@ -122,6 +122,7 @@ export const useProductStore = defineStore("product", () => {
         }
       });
       productList.value = resFetch.data || [];
+      console.log(!productList.value, "Products store fetchProducts productList is empty");
     } catch (err) {
       console.error(err);
     }
@@ -148,9 +149,10 @@ export const useProductStore = defineStore("product", () => {
         }
       });
 
-      console.log(resFetch, "resFetch from store");
+      console.log(resFetch, "Products store fetchProductsByPage resFetch from store");
 
       const newItems = resFetch.data || [];
+      console.log(!newItems, "Products store fetchProductsByPage newItems is empty");
       productList.value.push(...newItems);
       total.value = resFetch.productTotal || 0;
       page.value++;
@@ -178,6 +180,7 @@ export const useProductStore = defineStore("product", () => {
         }
       });
       prefetched.set(next, data || []);
+      console.log(!prefetched.get(next), "Products store prefetchNextPage prefetched is empty");
     } catch (err) {
       console.error("Prefetch error:", err);
     }
@@ -243,6 +246,9 @@ export const useProductStore = defineStore("product", () => {
 
       if (addReq.statusCode === 200) {
         await fetchProducts();
+
+        console.log(!addReq, " Products store addProduct addReq is empty");
+
         return addReq;
       }
 

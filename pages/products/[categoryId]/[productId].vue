@@ -400,9 +400,7 @@ const fetchProductById = async () => {
   try {
     const res = await $fetch(`/api/products/${routeId}`);
 
-    // if (!res?.data) {
-    //   return navigateTo("/404");
-    // }
+    console.log(!res.data, "Products page fetchProductById res.data is empty");
 
     console.log(res, "res");
 

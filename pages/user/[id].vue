@@ -8,20 +8,24 @@
           <ul class="order_items">
             <li v-for="(order, i) in userData.orders" :key="i" class="order_item">
               <div class="order_item_head">
-                <span class="order_number"> Номер {{ order.number }} </span>
+                <span class="order_number"> Номер {{ order.orderNumber }} </span>
                 <span class="order_date">
-                  {{ order.date }}
+                  {{ new Date(order.createdAt).toLocaleDateString() }}
                 </span>
               </div>
 
-              <div class="items_quantity">{{ order.items.length }} товари</div>
+              <div class="items_quantity">{{ order.orderItems?.length || 0 }} товари</div>
 
-              <ul class="product_list">
-                <li v-for="(item, i) in order.items" :key="i" class="product_list_item">
+              <ul v-if="order.orderItems && order.orderItems.length > 0" class="product_list">
+                <li
+                  v-for="(item, itemIndex) in order.orderItems"
+                  :key="itemIndex"
+                  class="product_list_item"
+                >
                   <div class="item_main">
                     <img :src="item.image" alt="preview" class="product_preview" />
                     <span>
-                      {{ item.title }}
+                      {{ item.product.title }}
                     </span>
                   </div>
 
@@ -64,24 +68,21 @@
                   <li>
                     <span> Спосіб оплати: </span>
                     <span>
-                      {{ order.payment }}
+                      {{ order.paymentMethod }}
                     </span>
                   </li>
                   <li>
                     <span> Доставка: </span>
                     <span>
-                      {{ order.delivery }}
+                      {{ order.shippingInfo.city }}
+                      {{ order.shippingInfo.country }}
+                      {{ order.shippingInfo.postOffice }}
                     </span>
                   </li>
-                  <li class="cancel_order">
-                    <button>
-                      Скасувати замовлення
-                      <div class="icon_wrap">
-                        <CloseIcon />
-                      </div>
-                    </button>
-                  </li>
                 </ul>
+                <div v-show="false" class="cancel_order">
+                  <button>Скасувати замовлення</button>
+                </div>
               </div>
 
               <div class="order_divider"></div>
@@ -122,7 +123,6 @@
 import { ref, onMounted } from "vue";
 import AngleDown from "~/assets/icons/angle-down.svg";
 import AngleRight from "~/assets/icons/angle-right.svg";
-import CloseIcon from "~/assets/icons/close-icon.svg";
 
 import { useModalStore } from "@/store/modal-store";
 import { useUserStore } from "@/store/user-store";
@@ -134,76 +134,7 @@ const userData = {
   name: "Анастасія Самойлова",
   phone: "+380 50 000 00 00",
   email: "4HbGZ@example.com",
-  orders: [
-    {
-      id: 1,
-      number: "12345",
-      date: "10.12.2025",
-      items: [
-        {
-          image: "/images/popular/popular1.webp",
-          title: "Вагінальні кульки кегеля",
-          quantity: "2",
-          price: "3 850",
-          salePrice: "3 550"
-        },
-        {
-          image: "/images/popular/popular1.webp",
-          title: "Вагінальні кульки кегеля",
-          quantity: "2",
-          price: "3 850",
-          salePrice: "3 550"
-        },
-        {
-          image: "/images/popular/popular1.webp",
-          title: "Вагінальні кульки кегеля",
-          quantity: "2",
-          price: "3 850",
-          salePrice: "3 550"
-        }
-      ],
-      status: "Відправлено",
-      totalPrice: "6 850",
-      payment: "Оплата на онлайн сайті",
-      delivery: "Відділення Нової пошти"
-    },
-    {
-      id: 2,
-      number: "12345",
-      date: "10.12.2025",
-      items: [
-        {
-          image: "/images/popular/popular1.webp",
-          title: "Вагінальні кульки кегеля",
-          quantity: "2",
-          price: "3 850 ",
-          salePrice: "3 550 "
-        }
-      ],
-      status: "Відправлено",
-      totalPrice: "6 850 ",
-      payment: "Оплата на онлайн сайті",
-      delivery: "Відділення Нової пошти"
-    },
-    {
-      id: 3,
-      number: "12345",
-      date: "10.12.2025",
-      items: [
-        {
-          image: "/images/popular/popular1.webp",
-          title: "Вагінальні кульки кегеля",
-          quantity: "2",
-          price: "3 850 ",
-          salePrice: "3 550 "
-        }
-      ],
-      status: "Відправлено",
-      totalPrice: "6 850 ",
-      payment: "Оплата на онлайн сайті",
-      delivery: "Відділення Нової пошти"
-    }
-  ]
+  orders: userStore.user.orders
 };
 
 const openOrders = ref([]);
@@ -537,9 +468,11 @@ onMounted(() => {
 
       li {
         width: 100%;
-        display: flex;
+        display: grid;
+        grid-template-columns: 150px 1fr;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
+        gap: 8px;
 
         span,
         button {
@@ -560,31 +493,6 @@ onMounted(() => {
           color: var(--accent-red);
         }
       }
-
-      .cancel_order {
-        justify-content: flex-end;
-        margin-top: 16px;
-
-        button {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          cursor: pointer;
-          gap: 10px;
-        }
-
-        .icon_wrap {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          svg {
-            width: 10px;
-            height: 10px;
-            stroke: var(--accent-red);
-          }
-        }
-      }
     }
 
     &_list_active {
@@ -601,6 +509,32 @@ onMounted(() => {
     }
     @media screen and (max-width: 375px) {
       padding-bottom: 20px;
+    }
+
+    .cancel_order {
+      @include mixins.mainText;
+      font-size: 1rem;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 16px;
+
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        gap: 10px;
+      }
+
+      @media screen and (max-width: 1024px) {
+        font-size: 0.9375rem;
+      }
+      @media screen and (max-width: 480px) {
+        font-size: 0.8125rem;
+      }
+      @media screen and (max-width: 480px) {
+        font-size: 0.6875rem;
+      }
     }
   }
 

@@ -1,44 +1,42 @@
 :root {
+  --bg-color: rgb(13 12 13);
+  --accent-color: rgb(255 169 214);
+  --btn-color: rgba(255, 169, 214, 0.45);
+  --btn-color-hover: rgba(255, 169, 214, 0.6);
+  --btn-color-active: rgba(255, 134, 187, 1);
+  --border-color: rgba(255, 169, 214, 0.7);
+  --accent-red: rgba(255, 0, 112, 1);
+  --accent-grey: rgb(104 103 104);
+  --transparent-fill: rgba(254, 253, 254, 0.3);
+  --text-color: rgb(255 255 255);
+  --dark-text: rgb(142 142 142);
+  --text-grey: #dbdbdb;
+  --link-color: var(--accent-color);
+  --link-color-hover: rgb(255, 159, 200);
+  --link-color-active: var(--btn-color-active);
+  --discount-price: #ff0070;
 
-    --bg-color: rgb(13 12 13);
-    --accent-color: rgb(255 169 214);
-    --btn-color: rgba(255, 169, 214, 0.45);
-    --btn-color-hover: rgba(255, 169, 214, 0.6);
-    --btn-color-active: rgba(255, 134, 187, 1);
-    --border-color: rgba(255, 169, 214, 0.7);
-    --accent-red: rgba(255, 0, 112, 1);
-    --accent-grey: rgb(104 103 104);
-    --transparent-fill: rgba(254, 253, 254, 0.30);
-    --text-color: rgb(255 255 255);
-    --dark-text: rgb(142 142 142);
-    --text-grey: #DBDBDB;
-    --link-color: var(--accent-color);
-    --link-color-hover: rgb(255, 159, 200);
-    --link-color-active: var(--btn-color-active);
-    --discount-price: #FF0070;
+  --error-bg: rgb(36 14 24);
+  --error-border: rgb(255 64 128);
+  --error-text: rgb(255 142 192);
 
+  --error-btn: rgba(255, 64, 128, 0.35);
+  --error-btn-hover: rgba(255, 64, 128, 0.55);
+  --error-btn-active: rgb(255 64 128);
 
-    --error-bg: rgb(36 14 24);
-    --error-border: rgb(255 64 128);
-    --error-text: rgb(255 142 192);
+  --warning-bg: rgb(36 22 14);
+  --warning-border: rgb(255 170 85);
+  --warning-text: rgb(255 208 160);
 
-    --error-btn: rgba(255, 64, 128, 0.35);
-    --error-btn-hover: rgba(255, 64, 128, 0.55);
-    --error-btn-active: rgb(255 64 128);
+  --warning-btn: rgba(255, 170, 85, 0.35);
+  --warning-btn-hover: rgba(255, 170, 85, 0.55);
+  --warning-btn-active: rgb(255 170 85);
 
-    --warning-bg: rgb(36 22 14);
-    --warning-border: rgb(255 170 85);
-    --warning-text: rgb(255 208 160);
+  --success-bg: rgb(10 28 28);
+  --success-border: rgb(64 224 208);
+  --success-text: rgb(160 255 240);
 
-    --warning-btn: rgba(255, 170, 85, 0.35);
-    --warning-btn-hover: rgba(255, 170, 85, 0.55);
-    --warning-btn-active: rgb(255 170 85);
-
-    --success-bg: rgb(10 28 28);
-    --success-border: rgb(64 224 208);
-    --success-text: rgb(160 255 240);
-
-    --success-btn: rgba(64, 224, 208, 0.35);
-    --success-btn-hover: rgba(64, 224, 208, 0.55);
-    --success-btn-active: rgb(64 224 208);
-    }
+  --success-btn: rgba(64, 224, 208, 0.35);
+  --success-btn-hover: rgba(64, 224, 208, 0.55);
+  --success-btn-active: rgb(64 224 208);
+}

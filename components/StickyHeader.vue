@@ -69,11 +69,11 @@
 
           <div class="main_header_buttons">
             <NuxtLink
-              :to="userStore.isLoggedIn ? `/user/${userStore.user.id}` : '/auth/login'"
+              :to="userLoginComputedLink"
               class="user_btn"
+              :class="{ active: userStore.isLoggedIn }"
             >
               <ProfileIcon />
-              <div v-if="userStore.isLoggedIn" class="logged_info">Мій кабінет</div>
             </NuxtLink>
             <NuxtLink to="/wishlist" class="wishlist_btn">
               <HeartIcon />
@@ -124,7 +124,7 @@ import HeartIcon from "~/assets/icons/heart.svg";
 import CartIcon from "~/assets/icons/cart.svg";
 import BurgerIcon from "~/assets/icons/burger.svg";
 
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, onMounted, onBeforeUnmount, watch, computed } from "vue";
 // import { useModalStore, useIndexStore, useCartStore,  } from "#imports";
 
 import { useModalStore } from "@/store/modal-store";
@@ -147,6 +147,10 @@ const mounted = ref(false);
 const showHeader = ref(false);
 const lastScrollPosition = ref(0);
 const viewportHeight = ref(0);
+
+const userLoginComputedLink = computed(() => {
+  return userStore.isLoggedIn ? `/user/${userStore.user.id}` : "/auth/login";
+});
 
 watch(burger, () => {
   burger.value
@@ -425,6 +429,7 @@ onBeforeUnmount(() => {
       }
 
       @media screen and (min-width: 1024px) {
+        &.active,
         &:hover svg {
           path {
             transition: all ease 0.3s;
