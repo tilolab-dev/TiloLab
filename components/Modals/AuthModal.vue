@@ -426,6 +426,8 @@ const handleLogin = async () => {
     password: password.value
   });
 
+  console.log(loginUser, "loginUser");
+
   if (loginUser.statusCode === 200) {
     emit("tooltip", {
       status: "success",
