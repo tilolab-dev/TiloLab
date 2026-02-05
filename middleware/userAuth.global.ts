@@ -5,19 +5,22 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (!to.path.startsWith("/user")) return;
 
   const userStore = useUserStore();
-  const supabase = useSupabaseClient();
   const auth = useAuth();
+  const supabase = useSupabaseClient();
 
-  if (!userStore.user) {
-    const {
-      data: { session }
-    } = await supabase.auth.getSession();
-    if (session) {
-      await auth.fetchOrCreateUser();
-    }
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+
+  if (!session && process.client) {
+    return navigateTo("/auth/login");
   }
 
-  if (!userStore.isLoggedIn) {
+  if (!userStore.user && session) {
+    await auth.fetchOrCreateUser();
+  }
+
+  if (!userStore.isLoggedIn && process.client) {
     return navigateTo("/auth/login");
   }
 });

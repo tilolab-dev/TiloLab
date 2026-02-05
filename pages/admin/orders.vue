@@ -6,13 +6,22 @@
         <div class="info_content_wrapper">
           <div ref="productElem" class="wrapper_content">
             <div class="table_name">
-              <h6 class="dark:text-white">Замовлення</h6>
-              <select v-model="orderByStatus" name="order-type">
+              <!-- <h6 class="dark:text-white">Замовлення</h6> -->
+              <!-- <select v-model="orderByStatus" name="order-type">
                 <option value="ALL" checked>Всі</option>
                 <option v-for="item in orderStatus" :key="item.id" :value="item.value">
                   {{ item.name }}
                 </option>
-              </select>
+              </select> -->
+              <div class="radio_status">
+                <button @click="orderByStatus = 'PAID'">Оплачений</button>
+                <button @click="orderByStatus = 'PROCESSING'">В обробці</button>
+                <button @click="orderByStatus = 'SHIPPED'">Відправлений</button>
+                <button @click="orderByStatus = 'DELIVERED'">Доставлений</button>
+                <button @click="orderByStatus = 'RETURNED'">Повернутий</button>
+                <button @click="orderByStatus = 'CANCELED'">Скасований</button>
+                <button @click="orderByStatus = 'EXPIRED'">Вичерпаний</button>
+              </div>
             </div>
             <div class="table_content">
               <div class="table_inner">
@@ -103,7 +112,7 @@
                               textDecoration: product.discountPercent > 0 ? 'line-through' : '',
                               color: product.discountPercent > 0 ? 'var(--accent-red)' : ''
                             }" -->
-                            <!-- {{ product.productPrice }} UAH -->
+                            {{ order.totalPrice / 100 }} UAH
                           </span>
                           <!-- <span v-if="product.discountPercent > 0" class="discount_price">
                             UAH
@@ -153,7 +162,7 @@
                   </tbody>
                   <tbody v-else>
                     <tr>
-                      <td colspan="7">Немає замовлень по цій категорії</td>
+                      <td class="no_order_items" colspan="7">Немає замовлень по цій категорії</td>
                     </tr>
                   </tbody>
                 </table>
@@ -190,43 +199,43 @@ const loadingOrdersState = ref(false);
 const ordersStore = useOrdersStore();
 const { ordersList } = storeToRefs(ordersStore);
 
-const orderStatus = ref([
-  {
-    id: 1,
-    value: "NEW",
-    name: "Новий"
-  },
-  {
-    id: 2,
-    value: "PAID",
-    name: "Оплачении"
-  },
-  {
-    id: 3,
-    value: "PROCESSING",
-    name: "В обробці"
-  },
-  {
-    id: 4,
-    value: "SHIPPED",
-    name: "Відправлено"
-  },
-  {
-    id: 5,
-    value: "DELIVERED",
-    name: "Доставлено"
-  },
-  {
-    id: 6,
-    value: "RETURNED",
-    name: "Повернуто"
-  },
-  {
-    id: 7,
-    value: "CANCELED",
-    name: "Скасовано"
-  }
-]);
+// const orderStatus = ref([
+//   {
+//     id: 1,
+//     value: "NEW",
+//     name: "Новий"
+//   },
+//   {
+//     id: 2,
+//     value: "PAID",
+//     name: "Оплачении"
+//   },
+//   {
+//     id: 3,
+//     value: "PROCESSING",
+//     name: "В обробці"
+//   },
+//   {
+//     id: 4,
+//     value: "SHIPPED",
+//     name: "Відправлено"
+//   },
+//   {
+//     id: 5,
+//     value: "DELIVERED",
+//     name: "Доставлено"
+//   },
+//   {
+//     id: 6,
+//     value: "RETURNED",
+//     name: "Повернуто"
+//   },
+//   {
+//     id: 7,
+//     value: "CANCELED",
+//     name: "Скасовано"
+//   }
+// ]);
 
 const getIconPath = (status) => {
   switch (status) {
@@ -358,6 +367,21 @@ definePageMeta({
           border-bottom: 0px solid transparent;
           border-top-left-radius: 1rem;
           border-top-right-radius: 1rem;
+
+          .radio_status {
+            width: 100%;
+            height: auto;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+
+            button {
+              background: var(--btn-color);
+              border: 1px solid var(--border-color);
+              padding: 3px 7px;
+              border-radius: 5px;
+            }
+          }
         }
         .table_content {
           flex: 1 1 auto;
@@ -636,6 +660,13 @@ definePageMeta({
         }
       }
     }
+  }
+
+  .no_order_items {
+    color: white;
+    text-align: center;
+    padding-block: 20px;
+    font-size: 1.3rem;
   }
 }
 </style>
