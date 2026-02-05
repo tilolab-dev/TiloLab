@@ -8,7 +8,22 @@ export default defineEventHandler(async (event) => {
   let user = await prisma.user.findUnique({
     where: { email: supabaseUser.email! },
     include: {
-      orders: true,
+      orders: {
+        include: {
+          orderItems: {
+            include: {
+              product: {
+                include: {
+                  img: true,
+                  translations: true,
+                  category: true
+                }
+              }
+            }
+          },
+          shippingInfo: true
+        }
+      },
       adresses: true
     }
   });
@@ -21,7 +36,22 @@ export default defineEventHandler(async (event) => {
         role: "user"
       },
       include: {
-        orders: true,
+        orders: {
+          include: {
+            orderItems: {
+              include: {
+                product: {
+                  include: {
+                    img: true,
+                    translations: true,
+                    category: true
+                  }
+                }
+              }
+            },
+            shippingInfo: true
+          }
+        },
         adresses: true
       }
     });

@@ -1,11 +1,7 @@
-
 {
-   "extends": "./.nuxt/tsconfig.json",
+  "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "types": [
-      "@types/node",
-      "vite/client"
-    ],
+    "types": ["@types/node", "vite/client"],
     "moduleResolution": "Node",
     "baseUrl": "./",
     "paths": {
