@@ -4,6 +4,7 @@ import type { IProduct } from "@/types/product";
 interface ICartItem {
   product: IProduct;
   quantity: number;
+  productPrice: number;
   productTotalPrice: number;
 }
 
@@ -24,6 +25,7 @@ export const useCartStore = defineStore("cart", {
         this.cart.push({
           product,
           quantity,
+          productPrice: productTotalPrice / quantity,
           productTotalPrice
         });
       }
@@ -31,11 +33,10 @@ export const useCartStore = defineStore("cart", {
         (acc: number, item: ICartItem) => acc + item.productTotalPrice,
         0
       );
-      // const totalCents = this.cart.reduce((acc, item) => acc + item.productTotalPrice, 0);
-      // this.totalPrice = totalCents / 100;
       this.saveCart();
     },
     removeProduct(productId: number) {
+      console.log(productId, "id");
       // this.cart = [];
 
       // productId: number
@@ -45,7 +46,7 @@ export const useCartStore = defineStore("cart", {
 
       // console.log(this.cart, "2");
       this.totalPrice = this.cart.reduce(
-        (acc: number, item: ICartItem) => acc + +item.product.productPrice * item.quantity,
+        (acc: number, item: ICartItem) => acc + +item.productPrice * item.quantity,
         0
       );
       this.saveCart();
@@ -56,7 +57,7 @@ export const useCartStore = defineStore("cart", {
       foundProduct.productTotalPrice = newPrice;
 
       this.totalPrice = this.cart.reduce(
-        (acc: number, item: ICartItem) => acc + +item.product.productPrice * item.quantity,
+        (acc: number, item: ICartItem) => acc + +item.productPrice * item.quantity,
         0
       );
 
