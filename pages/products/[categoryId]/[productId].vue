@@ -62,7 +62,13 @@
                     {{ productStore.selectedProducts.translations[0].title }}
                   </h3>
                   <div class="product_price">
+                    <span v-if="productStore.selectedProducts.discountPercent === 0">
+                      {{
+                        (productStore.selectedProducts.productPrice * productQuantity).toFixed(2)
+                      }}
+                    </span>
                     <span
+                      v-else
                       :style="{
                         textDecorationLine:
                           productStore.selectedProducts.discountPercent != 0
@@ -70,13 +76,14 @@
                             : 'none'
                       }"
                     >
-                      {{ productStore.selectedProducts.productPrice * productQuantity }} грн
+                      {{ productStore.selectedProducts.productPrice.toFixed(2) }}
+                      грн
                     </span>
                     <span
-                      v-if="productStore.selectedProducts.discountPercent != 0"
+                      v-if="productStore.selectedProducts.discountPercent > 0"
                       class="discount_accent"
                     >
-                      {{ discountedPrice }} грн
+                      {{ (discountedPrice * productQuantity).toFixed(2) }} грн
                     </span>
                   </div>
                 </div>
@@ -434,7 +441,16 @@ const addToCart = () => {
     }
   }
 
-  const productTotalPrice = productStore.selectedProducts.productPrice * counter.value;
+  const checkDiscountPrice =
+    productStore.selectedProducts.discountPercent > 0
+      ? discountedPrice.value
+      : productStore.selectedProducts.productPrice;
+
+  console.log(checkDiscountPrice);
+
+  // const productTotalPrice = productStore.selectedProducts.productPrice * counter.value;
+  const productTotalPrice = checkDiscountPrice * counter.value;
+
   cartStore.addProduct(productStore.selectedProducts, counter.value, productTotalPrice);
   alert("Товар успішно додано до кошика");
   productQuantity.value = 1;

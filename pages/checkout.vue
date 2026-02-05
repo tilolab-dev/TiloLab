@@ -159,17 +159,27 @@
               </div>
             </div>
             <!-- !!!!!!!!!!! -->
-            <button @click="confirmOrderHandler">Замовлення підтверджую</button>
+            <button v-if="cartStore.cart.length !== 0" @click="confirmOrderHandler">
+              Замовлення підтверджую
+            </button>
+            <NuxtLink v-else to="/products?page=2&category" @click="confirmOrderHandler"
+              >Перейти в каталог</NuxtLink
+            >
           </div>
         </div>
         <div class="checkout_content_cart">
           <div class="cart_wrapper">
             <h2>Ваш кошик</h2>
+
+            <div v-if="cartStore.cart.length === 0" class="empty_cart">
+              <div>Кошик порожній</div>
+              <NuxtLink to="/products?page=2&category">Перейти до товарів</NuxtLink>
+            </div>
             <ClientOnly>
               <ul class="cart_items">
                 <li v-for="(item, i) in cartStore.cart" :key="i" class="cart_item">
                   <div class="cart_item_main">
-                    <img :src="item.product.img[0].path" alt="preview" />
+                    <img :src="item?.product?.img[0]?.path" alt="preview" />
                     <div class="main_wrapper">
                       <p>{{ item.product.translations[0].title }}</p>
                       <span class="mobile_price"> {{ item.product.productPrice }} грн</span>
@@ -186,7 +196,7 @@
                         <PlusIcon />
                       </button>
                     </div>
-                    <button class="close_btn">
+                    <button class="close_btn" @click="cartStore.removeProduct(item.product.id)">
                       <CloseIcon />
                     </button>
                   </div>
@@ -209,10 +219,12 @@
 
 <script setup>
 import { ref, watch, onMounted, computed } from "vue";
+//
 import CloseIcon from "~/assets/icons/close-icon.svg";
 import MinusIcon from "~/assets/icons/minus-icon.svg";
 import PlusIcon from "~/assets/icons/plus-icon.svg";
 import { counterHandler } from "@/composables/counterHandler";
+//
 // import { useCartStore, useAuthStore } from "#imports";
 // import { Swiper, SwiperSlide } from "swiper/vue";
 
@@ -371,9 +383,11 @@ const confirmOrderHandler = async () => {
       body: {
         // !!!!!!! implement ammount from getOrderId
         orderId: getOrderId.data.id,
-        amount: amountInCents
+        amount: totalDeliveryPrice.value
       }
     });
+
+    cartStore.clearCart();
 
     console.log(createPayment, "createPayment");
     window.location.href = createPayment.pageUrl;
@@ -1012,13 +1026,8 @@ useHead({
       color: var(--text-grey);
     }
     .list_value {
-      // max-width: 40vw;
       text-align: end;
       color: var(--text-color);
-
-      // @media screen and (max-width: 768px) {
-      //   max-width: 70%;
-      // }
     }
 
     @media screen and (max-width: 1024px) {
@@ -1050,7 +1059,8 @@ useHead({
       height: auto;
       @include mixins.mainText;
     }
-    button {
+    button,
+    a {
       @include mixins.accentBtn;
       text-align: center;
       cursor: pointer;
@@ -1096,7 +1106,7 @@ useHead({
   justify-content: flex-start;
   align-items: flex-start;
   gap: 40px;
-  top: 50px;
+  top: 85px;
 
   @media screen and (max-width: 1024px) {
     gap: 32px;
@@ -1109,6 +1119,33 @@ useHead({
   }
   @media screen and (max-width: 375px) {
     gap: 28px;
+  }
+}
+
+.empty_cart {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: auto;
+
+  a {
+    padding: 10px 20px;
+    background: var(--btn-color);
+    border: 1px solid var(--border-color);
+    transition: all ease 0.3s;
+    border-radius: 10px;
+
+    @media screen and (min-width: 1024px) {
+      &:hover {
+        background: var(--btn-color-hover);
+        transition: all ease 0.3s;
+      }
+    }
+    &:active {
+      background: var(--btn-color-active);
+      transition: all ease 0.3s;
+    }
   }
 }
 

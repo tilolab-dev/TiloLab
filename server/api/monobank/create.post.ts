@@ -56,7 +56,7 @@ export default defineEventHandler(async (event: any) => {
         ccy: 980,
         // redirectUrl: `https://edd85ac46640.ngrok-free.app/summary`,
         // webHookUrl: "https://edd85ac46640.ngrok-free.app/api/monobank/webhook",
-        redirectUrl: `https://www.tilolab.com.ua/summary`,
+        redirectUrl: `https://www.tilolab.com.ua/summary/${orderId}`,
         webHookUrl: "https://www.tilolab.com.ua/api/monobank/webhook",
 
         validity: 3600,
@@ -74,6 +74,13 @@ export default defineEventHandler(async (event: any) => {
         orderId,
         monoInvoice: invoice.invoiceId,
         amount
+      }
+    });
+
+    await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        status: "PAID"
       }
     });
 
