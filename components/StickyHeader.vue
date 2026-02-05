@@ -68,13 +68,16 @@
           <!-- <NuxtLink :to="/auth/login" class="user_btn"> -->
 
           <div class="main_header_buttons">
-            <NuxtLink
-              :to="userLoginComputedLink"
-              class="user_btn"
-              :class="{ active: userStore.isLoggedIn }"
-            >
-              <ProfileIcon />
-            </NuxtLink>
+            <ClientOnly>
+              <NuxtLink
+                :to="userLoginComputedLink"
+                class="user_btn"
+                :class="{ active: userStore.isLoggedIn }"
+              >
+                <ProfileIcon />
+              </NuxtLink>
+            </ClientOnly>
+
             <NuxtLink to="/wishlist" class="wishlist_btn">
               <HeartIcon />
             </NuxtLink>
