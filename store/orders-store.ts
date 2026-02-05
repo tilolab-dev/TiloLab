@@ -11,6 +11,8 @@ export const useOrdersStore = defineStore("order", () => {
 
       console.log(resFetch, "resFetch from store");
       ordersList.value = resFetch.data || [];
+
+      console.log(!ordersList.value, "Orders store getOrders ordersList is empty");
     } catch (err) {
       console.error(err);
     }
@@ -28,6 +30,7 @@ export const useOrdersStore = defineStore("order", () => {
       if (resFetch.statusCode === 200) {
         await getOrders();
 
+        console.log(!resFetch, "Orders store updateOrderStatus resFetch is empty");
         return resFetch;
       }
     } catch (err) {

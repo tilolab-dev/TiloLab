@@ -11,6 +11,7 @@ export const usePaymentStore = defineStore("payment", () => {
 
       console.log(resFetch, "resFetch from store");
       paymentList.value = resFetch.data || [];
+      console.log(!paymentList.value, "Payments store getPayments paymentList is empty");
     } catch (err) {
       console.error(err);
     }

@@ -45,6 +45,8 @@ export const useCategoryStore = defineStore("category", {
       try {
         const getCategories = await $fetch<IFetchCategory>("/api/category");
         this.categoryList = getCategories.data;
+
+        console.log(!this.categoryList, "Category store getCategories categoryList is empty");
       } catch (err) {
         console.error("Something went wrong", err);
       }
@@ -81,6 +83,8 @@ export const useCategoryStore = defineStore("category", {
           alert("Категорія успішно оновлена");
 
           this.getCategories();
+
+          console.log(!updateCategory, "Category store updateCategory updateCategory is empty");
         }
 
         return updateCategory;
