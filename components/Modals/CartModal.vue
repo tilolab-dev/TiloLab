@@ -12,69 +12,71 @@
             <div v-if="cartStore.cart.length === 0" class="empty_cart">
               <p>Кошик порожній</p>
             </div>
-            <div
-              v-for="item in cartStore.cart"
-              v-else
-              :key="item.product.id"
-              ref="items"
-              :data-id="item.product.id"
-              class="cart_item"
-            >
-              {{ console.log(item, "item") }}
-              <div class="cart_item_main">
-                <div class="details">
-                  <img :src="item.product.img?.[0]?.path" alt="item-img" />
-                  <div class="cart_item_description">
-                    <p>
-                      {{ item.product.translations[0].title }}
-                    </p>
-                    <span v-if="item.quantity === 1">
-                      {{ item.product.productPrice }}
-                      грн.
-                    </span>
-                    <span v-else>
-                      {{
-                        `${item.quantity}x ${item.product.productPrice} = ${item.productTotalPrice}`
-                      }}
-                      грн
-                    </span>
+            <div v-else>
+              <div
+                v-for="item in cartStore.cart"
+                :key="item.product.id"
+                ref="items"
+                :data-id="item.product.id"
+                class="cart_item"
+              >
+                {{ console.log(item, "item") }}
+                <div class="cart_item_main">
+                  <div class="details">
+                    <img :src="item.product.img?.[0]?.path" alt="item-img" />
+                    <div class="cart_item_description">
+                      <p>
+                        {{ item.product.translations[0].title ?? "" }}
+                      </p>
+                      <span v-if="item.quantity === 1">
+                        {{ item.productPrice.toFixed(2) }}
+                        грн.
+                      </span>
+                      <span v-else>
+                        {{
+                          // `${item.quantity}x ${item.productPrice} = ${item.productTotalPrice.toFixed(2)}`
+                          item.productTotalPrice.toFixed(2)
+                        }}
+                        грн
+                      </span>
+                    </div>
                   </div>
+
+                  <!-- <button class="remove_product" @click="cartStore.removeProduct(item)">x</button> -->
+                  <button class="remove_product" @click="removeItem(item.product.id)">x</button>
                 </div>
+                <div class="cart_item_counter">
+                  <div class="cart_item_counter_content">
+                    <button
+                      :class="item.quantity === 1 ? 'counter_btn_disabled' : ''"
+                      class="counter_btn"
+                      @click="counterHandler.decrement(item)"
+                    >
+                      <!-- @click="decrement(item)" -->
 
-                <!-- <button class="remove_product" @click="cartStore.removeProduct(item)">x</button> -->
-                <button class="remove_product" @click="removeItem(item.product.id)">x</button>
-              </div>
-              <div class="cart_item_counter">
-                <div class="cart_item_counter_content">
-                  <button
-                    :class="item.quantity === 1 ? 'counter_btn_disabled' : ''"
-                    class="counter_btn"
-                    @click="counterHandler.decrement(item)"
-                  >
-                    <!-- @click="decrement(item)" -->
+                      -
+                    </button>
+                    <!-- v-model.number="item.quantity" -->
 
-                    -
-                  </button>
-                  <!-- v-model.number="item.quantity" -->
+                    <input
+                      v-model="item.quantity"
+                      class="counter_value"
+                      type="number"
+                      min="1"
+                      @blur="counterHandler.onBlur(item)"
+                    />
 
-                  <input
-                    v-model="item.quantity"
-                    class="counter_value"
-                    type="number"
-                    min="1"
-                    @blur="counterHandler.onBlur(item)"
-                  />
-
-                  <!-- <label :for="`counter-input-${item.product.id}`" class="counter_value">{{
+                    <!-- <label :for="`counter-input-${item.product.id}`" class="counter_value">{{
                     item.quantity
                   }}</label> -->
 
-                  <!-- <span class="counter_value"> {{ item.quantity }} </span> -->
-                  <button class="counter_btn" @click="counterHandler.increment(item)">
-                    <!-- @click="cartStore.updateProduct(item.product.id, 'increment')" -->
+                    <!-- <span class="counter_value"> {{ item.quantity }} </span> -->
+                    <button class="counter_btn" @click="counterHandler.increment(item)">
+                      <!-- @click="cartStore.updateProduct(item.product.id, 'increment')" -->
 
-                    +
-                  </button>
+                      +
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -84,7 +86,7 @@
         <div v-if="cartStore.cart.length !== 0" class="cart_bottom">
           <div class="cart_summary">
             <span class="cart_summary_text"> загалом: </span>
-            <span> {{ cartStore.totalPrice }} грн </span>
+            <span> {{ cartStore.totalPrice.toFixed(2) }} грн </span>
           </div>
 
           <div class="cart_buttons">
@@ -111,48 +113,6 @@ const cartStore = useCartStore();
 const items = ref([]);
 
 const cartRef = ref(null);
-
-// const onBlur = (item) => {
-//   if (!item.quantity || item.quantity < 1) {
-//     item.quantity = 1;
-//   }
-//   recalc(item);
-// };
-
-// const decrement = (item) => {
-//   if (item.quantity > 1) {
-//     item.quantity--;
-//     recalc(item);
-//   }
-// };
-
-// const increment = (item) => {
-//   item.quantity++;
-//   recalc(item);
-// };
-
-// const recalc = (item) => {
-//   const newPrice = item.quantity * Number(item.product.productPrice);
-//   cartStore.updateProduct(item.product.id, item.quantity, newPrice);
-// };
-
-// const updateProductHandler = (productId, quantity, newPrice) => {
-// console.log(productId, quantity, newPrice);
-// item, operator
-// const product = cartStore.cart.find((el) => el.product.id === item.id);
-// const productId = product.product.id;
-// const totalPrice = product.productTotalPrice;
-// const quantity = product.quantity;
-// const increment = () => {
-//   console.log(totalPrice, quantity, productId);
-//   console.log("increment function");
-//   cartStore.updateProduct(productId);
-// };
-// const decrement = () => {
-//   console.log("decrement function");
-// };
-// operator === "increment" ? increment() : decrement();
-// };
 
 onMounted(() => {
   gsap.fromTo(
@@ -242,7 +202,7 @@ const goToCheckout = () => {
   width: clamp(300px, 20vw, 400px);
   border: 1px solid #302029;
   background: var(--bg-color);
-  padding: 20px 0 20px 20px;
+  padding: 20px;
 
   min-height: 500px;
   max-height: 80vh;
@@ -285,7 +245,6 @@ const goToCheckout = () => {
   align-items: center;
   width: 100%;
   height: fit-content;
-  padding-right: 20px;
   z-index: 1;
 
   h1 {
@@ -318,7 +277,6 @@ const goToCheckout = () => {
   height: fit-content;
   max-height: 55dvh;
   padding-bottom: 2rem;
-  padding-right: 20px;
   overflow-y: auto;
 }
 
