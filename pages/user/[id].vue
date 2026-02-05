@@ -6,7 +6,7 @@
           <h1>Мої замовлення</h1>
 
           <ul class="order_items">
-            <li v-for="(order, i) in userData.orders" :key="i" class="order_item">
+            <li v-for="(order, i) in userStore.user.orders" :key="i" class="order_item">
               <div class="order_item_head">
                 <span class="order_number"> Номер {{ order.orderNumber }} </span>
                 <span class="order_date">
@@ -23,15 +23,23 @@
                   class="product_list_item"
                 >
                   <div class="item_main">
-                    <img :src="item.image" alt="preview" class="product_preview" />
-                    <span>
-                      {{ item.product.title }}
-                    </span>
+                    <img :src="item?.product?.img[0]?.path" alt="preview" class="product_preview" />
+                    <NuxtLink :to="`/products/${item.product.category.group}/${item.product.id}`">
+                      {{ item?.product?.translations?.[0]?.title }}
+                    </NuxtLink>
                   </div>
 
                   <div class="product_price">
-                    <span class="old_price"> {{ item.price }} грн </span>
-                    <span class="action_price"> {{ item.salePrice }} грн </span>
+                    <template v-if="item.product.discountPercent">
+                      <span class="old_price"> {{ item.product.productPrice }} грн </span>
+                      <span class="action_price">
+                        {{
+                          calculateDiscount(item.product.productPrice, item.product.discountPercent)
+                        }}
+                        грн
+                      </span>
+                    </template>
+                    <span v-else> {{ item.product.productPrice }} грн </span>
                   </div>
                 </li>
               </ul>
@@ -130,11 +138,8 @@ import { useUserStore } from "@/store/user-store";
 const modalStore = useModalStore();
 const userStore = useUserStore();
 
-const userData = {
-  name: "Анастасія Самойлова",
-  phone: "+380 50 000 00 00",
-  email: "4HbGZ@example.com",
-  orders: userStore.user.orders
+const calculateDiscount = (price, salePercent) => {
+  return price - (price * salePercent) / 100;
 };
 
 const openOrders = ref([]);
@@ -147,10 +152,6 @@ const openOrderHandler = (index) => {
 onMounted(() => {
   console.log(userStore.isLoggedIn, userStore.user, "log user");
 });
-
-// definePageMeta({
-//   middleware: "userAuth"
-// });
 </script>
 
 <style lang="scss">
@@ -304,6 +305,7 @@ onMounted(() => {
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      white-space: nowrap;
 
       span {
         @include mixins.mainText;
@@ -312,7 +314,6 @@ onMounted(() => {
           font-size: 1.0625rem;
         }
         @media screen and (max-width: 480px) {
-          white-space: nowrap;
           font-size: 0.875rem;
         }
         @media screen and (max-width: 480px) {

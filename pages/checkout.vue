@@ -221,7 +221,12 @@ import { counterHandler } from "@/composables/counterHandler";
 // import Tooltips from "@/components/shared/Tooltips.vue";
 // import DeliverySelector from "~/components/DeliverySelector.vue";
 // import { useAuthStore } from "@/store/auth-store";
+import { useUserStore } from "@/store/user-store";
 import { useCartStore } from "@/store/cart-store";
+
+const userStore = useUserStore();
+
+const loggedInUser = userStore.isLoggedIn;
 
 const cityRef = ref("");
 // const selectedCity = ref(null);
@@ -230,10 +235,10 @@ const fetchedCity = ref([]);
 
 const isMounted = ref(false);
 
-const name = ref("");
-const surname = ref("");
-const phone = ref("");
-const email = ref("");
+const name = ref(loggedInUser ? userStore.user?.username : "");
+const surname = ref(loggedInUser ? userStore.user?.userSurname : "");
+const phone = ref(loggedInUser ? userStore.user?.phoneNumber : "");
+const email = ref(loggedInUser ? userStore.user?.email : "");
 const deliveryMethod = ref("nova-post");
 const selectedDelivery = ref("");
 // const paymentMethod = ref("");
