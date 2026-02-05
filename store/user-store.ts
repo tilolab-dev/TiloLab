@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", () => {
   const user = ref<any>(null);
+  const usersList = ref([]);
 
   const isLoggedIn = computed(() => !!user.value && user.value.role !== "guest");
 
@@ -12,6 +13,17 @@ export const useUserStore = defineStore("user", () => {
   const clearUser = () => {
     user.value = null;
   };
+  const getUsers = async () => {
+    try {
+      const res = await $fetch<any>("/api/users/get-users", {
+        method: "GET"
+      });
 
-  return { user, isLoggedIn, setUser, clearUser };
+      usersList.value = res.data;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return { user, usersList, isLoggedIn, setUser, clearUser, getUsers };
 });

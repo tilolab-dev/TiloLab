@@ -1,128 +1,148 @@
 <template>
   <section class="user">
     <div class="container">
-      <div class="user_content">
-        <div class="user_content_orders">
-          <h1>Мої замовлення</h1>
+      <ClientOnly>
+        <div v-if="!userStore.user" class="loader_wrapper">
+          <SharedLoader />
+        </div>
+        <div v-else>
+          <div class="user_content">
+            <div class="user_content_orders">
+              <h1>Мої замовлення</h1>
 
-          <ul class="order_items">
-            <li v-for="(order, i) in userStore.user.orders" :key="i" class="order_item">
-              <div class="order_item_head">
-                <span class="order_number"> Номер {{ order.orderNumber }} </span>
-                <span class="order_date">
-                  {{ new Date(order.createdAt).toLocaleDateString() }}
-                </span>
-              </div>
-
-              <div class="items_quantity">{{ order.orderItems?.length || 0 }} товари</div>
-
-              <ul v-if="order.orderItems && order.orderItems.length > 0" class="product_list">
+              <ul class="order_items">
                 <li
-                  v-for="(item, itemIndex) in order.orderItems"
-                  :key="itemIndex"
-                  class="product_list_item"
+                  v-for="(order, i) in userStore.user.orders.slice().reverse()"
+                  :key="i"
+                  class="order_item"
                 >
-                  <div class="item_main">
-                    <img :src="item?.product?.img[0]?.path" alt="preview" class="product_preview" />
-                    <NuxtLink :to="`/products/${item.product.category.group}/${item.product.id}`">
-                      {{ item?.product?.translations?.[0]?.title }}
-                    </NuxtLink>
+                  <div class="order_item_head">
+                    <span class="order_number"> Номер {{ order.orderNumber }} </span>
+                    <span class="order_date">
+                      {{ new Date(order.createdAt).toLocaleDateString() }}
+                    </span>
                   </div>
 
-                  <div class="product_price">
-                    <template v-if="item.product.discountPercent">
-                      <span class="old_price"> {{ item.product.productPrice }} грн </span>
-                      <span class="action_price">
-                        {{
-                          calculateDiscount(item.product.productPrice, item.product.discountPercent)
-                        }}
-                        грн
-                      </span>
-                    </template>
-                    <span v-else> {{ item.product.productPrice }} грн </span>
+                  <div class="items_quantity">{{ order.orderItems?.length || 0 }} товари</div>
+
+                  <ul v-if="order.orderItems && order.orderItems.length > 0" class="product_list">
+                    <li
+                      v-for="(item, itemIndex) in order.orderItems"
+                      :key="itemIndex"
+                      class="product_list_item"
+                    >
+                      <div class="item_main">
+                        <img
+                          :src="item?.product?.img[0]?.path"
+                          alt="preview"
+                          class="product_preview"
+                        />
+                        <NuxtLink
+                          :to="`/products/${item.product.category.group}/${item.product.id}`"
+                        >
+                          {{ item?.product?.translations?.[0]?.title }}
+                        </NuxtLink>
+                      </div>
+
+                      <div class="product_price">
+                        <template v-if="item.product.discountPercent">
+                          <span class="old_price"> {{ item.product.productPrice }} грн </span>
+                          <span class="action_price">
+                            {{
+                              calculateDiscount(
+                                item.product.productPrice,
+                                item.product.discountPercent
+                              )
+                            }}
+                            грн
+                          </span>
+                        </template>
+                        <span v-else> {{ item.product.productPrice }} грн </span>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <div class="status_wrapper">
+                    <span class="status_wrapper_title"> Статус </span>
+                    <span class="status_wrapper_value">
+                      {{ order.status }}
+                    </span>
                   </div>
+
+                  <div class="order_additional">
+                    <div class="order_additional_head">
+                      <button @click="openOrderHandler(i)">
+                        <span> Деталі замовлення </span>
+
+                        <div
+                          class="icon_wrap"
+                          :class="openOrders.includes(i) ? 'icon_wrap_active' : ''"
+                        >
+                          <AngleDown />
+                        </div>
+                      </button>
+                    </div>
+
+                    <ul
+                      class="order_additional_list"
+                      :class="openOrders.includes(i) ? 'order_additional_list_active' : ''"
+                    >
+                      <li>
+                        <span> Сума: </span>
+                        <span> {{ order.totalPrice / 100 }} грн </span>
+                      </li>
+                      <li>
+                        <span> Спосіб оплати: </span>
+                        <span>
+                          {{ order.paymentMethod }}
+                        </span>
+                      </li>
+                      <li>
+                        <span> Доставка: </span>
+                        <span>
+                          {{ order.shippingInfo.city }}
+                          {{ order.shippingInfo.country }}
+                          {{ order.shippingInfo.postOffice }}
+                        </span>
+                      </li>
+                    </ul>
+                    <div v-show="false" class="cancel_order">
+                      <button>Скасувати замовлення</button>
+                    </div>
+                  </div>
+
+                  <div class="order_divider"></div>
                 </li>
               </ul>
-
-              <div class="status_wrapper">
-                <span class="status_wrapper_title"> Статус </span>
-                <span class="status_wrapper_value">
-                  {{ order.status }}
-                </span>
-              </div>
-
-              <div class="order_additional">
-                <div class="order_additional_head">
-                  <button @click="openOrderHandler(i)">
-                    <span> Деталі замовлення </span>
-
-                    <div
-                      class="icon_wrap"
-                      :class="openOrders.includes(i) ? 'icon_wrap_active' : ''"
-                    >
-                      <AngleDown />
-                    </div>
-                  </button>
-                </div>
-
-                <ul
-                  class="order_additional_list"
-                  :class="openOrders.includes(i) ? 'order_additional_list_active' : ''"
-                >
-                  <li>
-                    <span> Сума: </span>
-                    <span> {{ order.totalPrice }} грн </span>
-                  </li>
-                  <li>
-                    <span> Спосіб оплати: </span>
-                    <span>
-                      {{ order.paymentMethod }}
-                    </span>
-                  </li>
-                  <li>
-                    <span> Доставка: </span>
-                    <span>
-                      {{ order.shippingInfo.city }}
-                      {{ order.shippingInfo.country }}
-                      {{ order.shippingInfo.postOffice }}
-                    </span>
-                  </li>
-                </ul>
-                <div v-show="false" class="cancel_order">
-                  <button>Скасувати замовлення</button>
-                </div>
-              </div>
-
-              <div class="order_divider"></div>
-            </li>
-          </ul>
-        </div>
-
-        <div class="user_content_info">
-          <div class="user_content_info_wrapper">
-            <div class="user_name">
-              {{ userStore.user.username }} {{ userStore.user.userSurname }}
             </div>
-            <div class="user_contact">
-              <span>
-                {{ userStore.user.phoneNumber }}
-              </span>
-              <span>
-                {{ userStore.user.email }}
-              </span>
-            </div>
-            <button class="edit_profile">
-              <span> Редагувати дані </span>
-              <div class="icon_wrap">
-                <AngleRight />
+
+            <div class="user_content_info">
+              <div class="user_content_info_wrapper">
+                <div class="user_name">
+                  {{ userStore.user.username }} {{ userStore.user.userSurname }}
+                </div>
+                <div class="user_contact">
+                  <span>
+                    {{ userStore.user.phoneNumber }}
+                  </span>
+                  <span>
+                    {{ userStore.user.email }}
+                  </span>
+                </div>
+                <button class="edit_profile">
+                  <span> Редагувати дані </span>
+                  <div class="icon_wrap">
+                    <AngleRight />
+                  </div>
+                </button>
+                <button class="exit_profile" @click="modalStore.showModal('LogOut')">
+                  Вийти з облікового запису
+                </button>
               </div>
-            </button>
-            <button class="exit_profile" @click="modalStore.showModal('LogOut')">
-              Вийти з облікового запису
-            </button>
+            </div>
           </div>
         </div>
-      </div>
+      </ClientOnly>
     </div>
   </section>
 </template>
@@ -137,6 +157,9 @@ import { useUserStore } from "@/store/user-store";
 
 const modalStore = useModalStore();
 const userStore = useUserStore();
+// const loaderState = computed(() => {
+//   return userStore.user.orders.length > 0 ? true : false;
+// });
 
 const calculateDiscount = (price, salePercent) => {
   return price - (price * salePercent) / 100;
