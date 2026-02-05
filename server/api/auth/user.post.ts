@@ -12,7 +12,13 @@ export default defineEventHandler(async (event) => {
         include: {
           orderItems: {
             include: {
-              product: true
+              product: {
+                include: {
+                  img: true,
+                  translations: true,
+                  category: true
+                }
+              }
             }
           },
           shippingInfo: true
@@ -34,7 +40,13 @@ export default defineEventHandler(async (event) => {
           include: {
             orderItems: {
               include: {
-                product: true
+                product: {
+                  include: {
+                    img: true,
+                    translations: true,
+                    category: true
+                  }
+                }
               }
             },
             shippingInfo: true
