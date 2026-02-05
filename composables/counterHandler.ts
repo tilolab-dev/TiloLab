@@ -22,7 +22,7 @@ export const counterHandler = {
   recalc(item: any) {
     const cartStore = useCartStore();
 
-    const newPrice = item.quantity * Number(item.product.productPrice);
+    const newPrice = item.quantity * item.productPrice;
     cartStore.updateProduct(item.product.id, item.quantity, newPrice);
   }
 };
