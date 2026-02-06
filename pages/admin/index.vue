@@ -160,7 +160,7 @@
 
       <!-- cards row 3 -->
 
-      <div class="flex flex-wrap mt-6 -mx-3">
+      <!-- <div class="flex flex-wrap mt-6 -mx-3">
         <div class="w-full max-w-full px-3 mt-0 mb-6 lg:mb-0 lg:w-7/12 lg:flex-none">
           <div
             class="relative flex flex-col min-w-0 break-words bg-white border-0 dark:border dark:border-[var(--dark-border-color)] border-solid shadow-xl dark:shadow-dark-xl dark:bg-gray-950 border-black-125 rounded-2xl bg-clip-border"
@@ -181,7 +181,7 @@
                     >
                       <div class="flex items-center px-2 py-1">
                         <div>
-                          <!-- <img src="./assets/img/icons/flags/US.png" alt="Country flag" /> -->
+                          <img src="./assets/img/icons/flags/US.png" alt="Country flag" />
                         </div>
                         <div class="ml-6">
                           <p
@@ -250,7 +250,7 @@
                     >
                       <div class="flex items-center px-2 py-1">
                         <div>
-                          <!-- <img src="./assets/img/icons/flags/US.png" alt="Country flag" /> -->
+                          <img src="./assets/img/icons/flags/US.png" alt="Country flag" />
                         </div>
                         <div class="ml-6">
                           <p
@@ -319,7 +319,7 @@
                     >
                       <div class="flex items-center px-2 py-1">
                         <div>
-                          <!-- <img src="./assets/img/icons/flags/US.png" alt="Country flag" /> -->
+                          <img src="./assets/img/icons/flags/US.png" alt="Country flag" />
                         </div>
                         <div class="ml-6">
                           <p
@@ -388,7 +388,7 @@
                     >
                       <div class="flex items-center px-2 py-1">
                         <div>
-                          <!-- <img src="./assets/img/icons/flags/US.png" alt="Country flag" /> -->
+                          <img src="./assets/img/icons/flags/US.png" alt="Country flag" />
                         </div>
                         <div class="ml-6">
                           <p
@@ -585,11 +585,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- cards row 4 -->
 
-      <div class="flex flex-wrap mt-6 -mx-3">
+      <!-- <div class="flex flex-wrap mt-6 -mx-3">
         <div class="w-full max-w-full px-3 mt-0 lg:w-5/12 lg:flex-none">
           <div
             class="border-black/12.5 shadow-xl dark:bg-gray-950 dark:border-[var(--dark-border-color)] dark:shadow-dark-xl relative flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border"
@@ -598,7 +598,7 @@
               <h6 class="mb-0 dark:text-white">Рейтинг товарів</h6>
             </div>
             <div class="flex-auto p-4">
-              <!-- <ProductPieChart/> -->
+              <ProductPieChart/>
             </div>
           </div>
         </div>
@@ -612,17 +612,17 @@
               </div>
             </div>
             <div class="overflow-x-auto px-4 py-6">
-              <!-- <ActiveUsersChart/> -->
+              <ActiveUsersChart/>
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <footer class="pt-4">
+      <!-- <footer class="pt-4">
         <div class="w-full px-6 mx-auto">
           <div class="flex flex-wrap items-center -mx-3 lg:justify-between"></div>
         </div>
-      </footer>
+      </footer> -->
     </div>
     <!-- end cards -->
   </div>

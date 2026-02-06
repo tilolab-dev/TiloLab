@@ -322,12 +322,31 @@ onMounted(() => {
   line-height: 1.5;
   background-color: var(--bg-color);
   color: var(--text-color);
+  width: 100%;
+  height: 100vh;
+  position: relative;
 
   // Dark mode
   //   @media (prefers-color-scheme: dark) {
   //     background-color: var(--dark-component-color);
   //     color: #94a3b8;
   // }
+  &_container {
+    width: 95%;
+    height: 100%;
+    margin: 0 auto;
+  }
+  .title_page {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 0 20px;
+    h1 {
+      @include mixins.titleText;
+    }
+  }
 }
 
 .admin_head_bg {
@@ -544,7 +563,8 @@ onMounted(() => {
 }
 .logout_btn {
   @include mixins.transparentBtn;
-  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  font-size: 0.8rem;
 }
 
 .mobile-burger {
