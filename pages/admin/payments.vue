@@ -1,135 +1,141 @@
 <template>
-  <h1>Платежі</h1>
-  <div class="payments_section">
-    <div class="payment_container">
-      <div class="info_content">
-        <div class="info_content_wrapper">
-          <div ref="productElem" class="wrapper_content">
-            <div class="table_name">
-              <h6 class="dark:text-white">Товари</h6>
-            </div>
-            <div class="table_content">
-              <div class="table_inner">
-                <table class="table_wrapper">
-                  <thead class="t_head">
-                    <tr>
-                      <th class="t_head_cell"></th>
-                      <th class="t_head_cell">Сумма замовлення</th>
-                      <th class="t_head_cell">Статус платежу</th>
-                      <th class="t_head_cell">Банк</th>
-                      <th class="t_head_cell">Дата</th>
-                      <th class="t_head_cell"></th>
-                    </tr>
-                  </thead>
-                  <tbody v-if="loadingProductState" class="t_body">
-                    <!-- <div > -->
-                    <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
-                      <!-- Author -->
-                      <td class="skeleton_content">
-                        <div class="main_cell">
-                          <div class="main_cell_circle skeleton_item"></div>
-                          <div class="main_cell_text">
-                            <div class="skeleton_item main_cell_text_top"></div>
-                            <div class="skeleton_item main_cell_text_bottom"></div>
+  <div class="payments">
+    <div class="admin_layout_container">
+      <div class="title_page">
+        <h1>Платежі</h1>
+      </div>
+    </div>
+    <div class="payments_section">
+      <div class="payment_container">
+        <div class="info_content">
+          <div class="info_content_wrapper">
+            <div ref="productElem" class="wrapper_content">
+              <div class="table_name">
+                <h6 class="dark:text-white">Товари</h6>
+              </div>
+              <div class="table_content">
+                <div class="table_inner">
+                  <table class="table_wrapper">
+                    <thead class="t_head">
+                      <tr>
+                        <th class="t_head_cell"></th>
+                        <th class="t_head_cell">Сумма замовлення</th>
+                        <th class="t_head_cell">Статус платежу</th>
+                        <th class="t_head_cell">Банк</th>
+                        <th class="t_head_cell">Дата</th>
+                        <th class="t_head_cell"></th>
+                      </tr>
+                    </thead>
+                    <tbody v-if="loadingProductState" class="t_body">
+                      <!-- <div > -->
+                      <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
+                        <!-- Author -->
+                        <td class="skeleton_content">
+                          <div class="main_cell">
+                            <div class="main_cell_circle skeleton_item"></div>
+                            <div class="main_cell_text">
+                              <div class="skeleton_item main_cell_text_top"></div>
+                              <div class="skeleton_item main_cell_text_bottom"></div>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <!-- Function -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                        <div class="skeleton_item"></div>
-                      </td>
-                      <!-- Status -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                      </td>
-                      <!-- Employed -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                      </td>
-                      <!-- Edit -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                      </td>
-                    </tr>
-                    <!-- </div> -->
-                  </tbody>
-                  <tbody v-else class="t_body">
-                    <!-- v-for="product in fetchedProducts" -->
+                        </td>
+                        <!-- Function -->
+                        <td class="skeleton_content">
+                          <div class="skeleton_item"></div>
+                          <div class="skeleton_item"></div>
+                        </td>
+                        <!-- Status -->
+                        <td class="skeleton_content">
+                          <div class="skeleton_item"></div>
+                        </td>
+                        <!-- Employed -->
+                        <td class="skeleton_content">
+                          <div class="skeleton_item"></div>
+                        </td>
+                        <!-- Edit -->
+                        <td class="skeleton_content">
+                          <div class="skeleton_item"></div>
+                        </td>
+                      </tr>
+                      <!-- </div> -->
+                    </tbody>
+                    <tbody v-else class="t_body">
+                      <!-- v-for="product in fetchedProducts" -->
 
-                    <tr v-for="(payment, i) in paymentStore.paymentList" :key="i">
-                      <td class="table_row">
-                        <div class="table_main">
-                          <!-- v-if="product.img?.length" -->
+                      <tr v-for="(payment, i) in paymentStore.paymentList" :key="i">
+                        <td class="table_row">
+                          <div class="table_main">
+                            <!-- v-if="product.img?.length" -->
 
-                          <img src="../../public/images/icons/credit-card.webp" alt="icon" />
-                          <!-- <div v-else class="fallback_img"></div> -->
-                          <!-- src="../public/images/icons.credit-card.webp" -->
+                            <img src="../../public/images/icons/credit-card.webp" alt="icon" />
+                            <!-- <div v-else class="fallback_img"></div> -->
+                            <!-- src="../public/images/icons.credit-card.webp" -->
 
-                          <h6>
-                            <!-- {{ product.translations[0].title }} -->
-                            <!-- {{ product.translations?.[0]?.title ?? "" }} -->
-                          </h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="product_option price_option">
-                          <span class="price">
-                            {{ console.log(payment) }}
-                            {{ payment.amount }}
-                            <!-- :style="{
+                            <h6>
+                              <!-- {{ product.translations[0].title }} -->
+                              <!-- {{ product.translations?.[0]?.title ?? "" }} -->
+                            </h6>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="product_option price_option">
+                            <span class="price">
+                              {{ console.log(payment) }}
+                              {{ payment.amount }}
+                              <!-- :style="{
                               textDecoration: product.discountPercent > 0 ? 'line-through' : '',
                               color: product.discountPercent > 0 ? 'var(--accent-red)' : ''
                             }" -->
-                            <!-- {{ product.productPrice }} UAH -->
-                          </span>
-                          <!-- <span v-if="product.discountPercent > 0" class="discount_price">
+                              <!-- {{ product.productPrice }} UAH -->
+                            </span>
+                            <!-- <span v-if="product.discountPercent > 0" class="discount_price">
                             UAH
                           </span> -->
-                        </div>
-                      </td>
-                      <td>
-                        <div class="product_option">
-                          <!-- <span v-if="product.visible">Активний</span>
-                          <span v-else>Не активний</span> -->
-                          {{ payment.status }}
-                        </div>
-                      </td>
-                      <td>
-                        <div class="product_option">
-                          <!-- {{ product.category?.group ?? "" }} -->
-                          {{ payment.provider }}
-                        </div>
-                      </td>
-                      <td>
-                        <div class="product_quantity">
-                          <!-- {{ product.stockValue }} -->
-                          <div>
-                            {{ payment.createdAt.slice(0, 10) }}
-                            <br />
-                            {{ payment.createdAt.slice(11, 19) }}
                           </div>
-                        </div>
-                      </td>
-                      <td class="button_cell">
-                        <div class="table_btn_wrap">
-                          <button
-                            class="edit_btn"
-                            @click="modalStore.showModal('UpdateProduct', { product })"
-                          >
-                            Детальна інформація
-                          </button>
-                          <!-- <button
+                        </td>
+                        <td>
+                          <div class="product_option">
+                            <!-- <span v-if="product.visible">Активний</span>
+                          <span v-else>Не активний</span> -->
+                            {{ payment.status }}
+                          </div>
+                        </td>
+                        <td>
+                          <div class="product_option">
+                            <!-- {{ product.category?.group ?? "" }} -->
+                            {{ payment.provider }}
+                          </div>
+                        </td>
+                        <td>
+                          <div class="product_quantity">
+                            <!-- {{ product.stockValue }} -->
+                            <div>
+                              {{ payment.createdAt.slice(0, 10) }}
+                              <br />
+                              {{ payment.createdAt.slice(11, 19) }}
+                            </div>
+                          </div>
+                        </td>
+                        <td class="button_cell">
+                          <div class="table_btn_wrap">
+                            <button
+                              class="edit_btn"
+                              @click="modalStore.showModal('UpdateProduct', { product })"
+                            >
+                              Детальна інформація
+                            </button>
+                            <!-- <button
                             class="delete_btn"
                             @click="modalStore.showModal('DeleteProduct', { product })"
                           >
                             <CloseIcon />
                           </button> -->
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

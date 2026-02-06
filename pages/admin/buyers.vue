@@ -1,123 +1,129 @@
 <template>
-  <h1>Користувачі</h1>
-  <div class="payments_section">
-    <div class="payment_container">
-      <div class="info_content">
-        <div class="info_content_wrapper">
-          <div ref="productElem" class="wrapper_content">
-            <div class="table_name">
-              <h6 class="dark:text-white">Товари</h6>
-            </div>
-            <div class="table_content">
-              <div class="table_inner">
-                <table class="table_wrapper">
-                  <thead class="t_head">
-                    <tr>
-                      <th class="t_head_cell">Імʼя</th>
-                      <th class="t_head_cell">Фамілія</th>
-                      <th class="t_head_cell">Емейл</th>
-                      <th class="t_head_cell">Телефон</th>
-                      <th class="t_head_cell">Користувач від</th>
-                      <th class="t_head_cell"></th>
-                    </tr>
-                  </thead>
-                  <tbody v-if="loadingUsersState" class="t_body">
-                    <!-- <div > -->
-                    <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
-                      <!-- Author -->
-                      <td class="skeleton_content">
-                        <div class="main_cell">
-                          <div class="main_cell_circle skeleton_item"></div>
-                          <div class="main_cell_text">
-                            <div class="skeleton_item main_cell_text_top"></div>
-                            <div class="skeleton_item main_cell_text_bottom"></div>
-                          </div>
-                        </div>
-                      </td>
-                      <!-- Function -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                        <div class="skeleton_item"></div>
-                      </td>
-                      <!-- Status -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                      </td>
-                      <!-- Employed -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                      </td>
-                      <!-- Edit -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                      </td>
-                    </tr>
-                    <!-- </div> -->
-                  </tbody>
-                  <tbody v-else class="t_body">
-                    <!-- v-for="product in fetchedProducts" -->
+  <div class="buyers">
+    <div class="admin_layout_container">
+      <div class="title_page">
+        <h1>Користувачі</h1>
+      </div>
+      <div class="payments_section">
+        <div class="payment_container">
+          <div class="info_content">
+            <div class="info_content_wrapper">
+              <div ref="productElem" class="wrapper_content">
+                <div class="table_name">
+                  <h6 class="dark:text-white">Товари</h6>
+                </div>
+                <div class="table_content">
+                  <div class="table_inner">
+                    <table class="table_wrapper">
+                      <thead class="t_head">
+                        <tr>
+                          <th class="t_head_cell">Імʼя</th>
+                          <th class="t_head_cell">Фамілія</th>
+                          <th class="t_head_cell">Емейл</th>
+                          <th class="t_head_cell">Телефон</th>
+                          <th class="t_head_cell">Користувач від</th>
+                          <th class="t_head_cell"></th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="loadingUsersState" class="t_body">
+                        <!-- <div > -->
+                        <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
+                          <!-- Author -->
+                          <td class="skeleton_content">
+                            <div class="main_cell">
+                              <div class="main_cell_circle skeleton_item"></div>
+                              <div class="main_cell_text">
+                                <div class="skeleton_item main_cell_text_top"></div>
+                                <div class="skeleton_item main_cell_text_bottom"></div>
+                              </div>
+                            </div>
+                          </td>
+                          <!-- Function -->
+                          <td class="skeleton_content">
+                            <div class="skeleton_item"></div>
+                            <div class="skeleton_item"></div>
+                          </td>
+                          <!-- Status -->
+                          <td class="skeleton_content">
+                            <div class="skeleton_item"></div>
+                          </td>
+                          <!-- Employed -->
+                          <td class="skeleton_content">
+                            <div class="skeleton_item"></div>
+                          </td>
+                          <!-- Edit -->
+                          <td class="skeleton_content">
+                            <div class="skeleton_item"></div>
+                          </td>
+                        </tr>
+                        <!-- </div> -->
+                      </tbody>
+                      <tbody v-else class="t_body">
+                        <!-- v-for="product in fetchedProducts" -->
 
-                    <tr v-for="(user, i) in userStore.usersList" :key="i">
-                      <td class="table_row">
-                        <div class="table_main">
-                          <!-- v-if="product.img?.length" -->
+                        <tr v-for="(user, i) in userStore.usersList" :key="i">
+                          <td class="table_row">
+                            <div class="table_main">
+                              <!-- v-if="product.img?.length" -->
 
-                          <!-- <img src="../../public/images/icons/credit-card.webp" alt="icon" /> -->
-                          <!-- <div v-else class="fallback_img"></div> -->
-                          <!-- src="../public/images/icons.credit-card.webp" -->
+                              <!-- <img src="../../public/images/icons/credit-card.webp" alt="icon" /> -->
+                              <!-- <div v-else class="fallback_img"></div> -->
+                              <!-- src="../public/images/icons.credit-card.webp" -->
 
-                          <h6>
-                            {{ user.username }}
-                          </h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="product_option price_option">
-                          <span class="price">
-                            {{ user.userSurname }}
-                          </span>
-                          <!-- <span v-if="product.discountPercent > 0" class="discount_price">
+                              <h6>
+                                {{ user.username }}
+                              </h6>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="product_option price_option">
+                              <span class="price">
+                                {{ user.userSurname }}
+                              </span>
+                              <!-- <span v-if="product.discountPercent > 0" class="discount_price">
                             UAH
                           </span> -->
-                        </div>
-                      </td>
-                      <td>
-                        <div class="product_option">
-                          <!-- <span v-if="product.visible">Активний</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="product_option">
+                              <!-- <span v-if="product.visible">Активний</span>
                           <span v-else>Не активний</span> -->
-                          {{ user.email }}
-                        </div>
-                      </td>
-                      <td>
-                        <div class="product_option">
-                          <!-- {{ product.category?.group ?? "" }} -->
-                          {{ user.phoneNumber }}
-                        </div>
-                      </td>
-                      <td>
-                        <div class="product_quantity">
-                          {{ user.createdAt.slice(0, 10) }}
-                        </div>
-                      </td>
-                      <td class="button_cell">
-                        <div class="table_btn_wrap">
-                          <button
-                            class="edit_btn"
-                            @click="modalStore.showModal('UpdateProduct', { product })"
-                          >
-                            Замовлення
-                          </button>
-                          <!-- <button
+                              {{ user.email }}
+                            </div>
+                          </td>
+                          <td>
+                            <div class="product_option">
+                              <!-- {{ product.category?.group ?? "" }} -->
+                              {{ user.phoneNumber }}
+                            </div>
+                          </td>
+                          <td>
+                            <div class="product_quantity">
+                              {{ user.createdAt.slice(0, 10) }}
+                            </div>
+                          </td>
+                          <td class="button_cell">
+                            <div class="table_btn_wrap">
+                              <button
+                                class="edit_btn"
+                                @click="modalStore.showModal('UpdateProduct', { product })"
+                              >
+                                Замовлення
+                              </button>
+                              <!-- <button
                             class="delete_btn"
                             @click="modalStore.showModal('DeleteProduct', { product })"
                           >
                             <CloseIcon />
                           </button> -->
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -172,7 +178,7 @@ definePageMeta({
   .info_content {
     width: 100%;
     height: 100%;
-    padding: 24px;
+    padding: 24px 0;
     margin: 0 auto;
     position: relative;
     overflow: hidden;
