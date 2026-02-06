@@ -71,7 +71,11 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+const route = useRoute();
+const orderId = route.params.id;
+console.log(orderId);
+</script>
 
 <style lang="scss">
 @use "@/style/mixins.scss" as mixins;
