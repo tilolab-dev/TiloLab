@@ -1,32 +1,33 @@
 <template>
   <section class="summary">
     <div class="container">
-      <div class="summary_wrapper">
-        <div class="summary_head">
+      <div v-if="loaderState" class="loaderWrapper">
+        <SharedLoader />
+      </div>
+      <div v-else class="summary_wrapper">
+        <div v-if="orderInfo !== null" class="summary_head">
           <h1>Ваше замовлення прийнято!</h1>
           <p>
             Дякуємо, що обрали нас. Ми вже обробляємо ваше замовлення — найближчим часом ви
             отримаєте SMS з підтвердженням та деталями доставки.
           </p>
           <p class="order_number">
-            <strong> Номер замовлення: №{12345} </strong>
+            <strong>
+              Номер замовлення: <br />
+              {{
+                `
+              №{ ${orderInfo.orderNumber} }`
+              }}
+            </strong>
           </p>
         </div>
-        <div class="summary_content">
+        <div v-if="orderInfo !== null" class="summary_content">
           <div class="summary_content_details">
             <h2>Склад замовлення</h2>
             <ul>
-              <li>
-                <div class="option">Вакуумний стимулятор клітора Air kiss</div>
-                <div class="value">1 шт</div>
-              </li>
-              <li>
-                <div class="option">Вагінальні кульки Кегеля</div>
-                <div class="value">2 шт</div>
-              </li>
-              <li>
-                <div class="option">Смарт-стимулятор з керуванням через додаток</div>
-                <div class="value">1 шт</div>
+              <li v-for="item in orderInfo.orderItems" :key="item.id">
+                <div class="option">{{ item.product.translations[0].title }}</div>
+                <div class="value">{{ item.quantity }} шт</div>
               </li>
             </ul>
           </div>
@@ -34,7 +35,7 @@
           <ul class="summary_content_final">
             <li>
               <div class="option">Сума товарів:</div>
-              <div class="value">3 850 грн</div>
+              <div class="value">{{ orderInfo.totalPrice / 100 }} грн</div>
             </li>
             <li>
               <div class="option">Вартість доставки:</div>
@@ -42,7 +43,7 @@
             </li>
             <li>
               <div class="option">До сплати:</div>
-              <div class="value">3 850 грн (оплата онлайн)</div>
+              <div class="value">{{ orderInfo.totalPrice / 100 }} грн (оплата онлайн)</div>
             </li>
           </ul>
           <div class="divider"></div>
@@ -51,6 +52,9 @@
             <div class="delivery_content">
               <div class="delivery_method">Спосіб:</div>
               <div class="delivery_description">Відділення Нової пошти</div>
+              <div class="post_office">
+                {{ orderInfo.shippingInfo.postOffice }}
+              </div>
             </div>
             <p>Коли замовлення буде передане перевізнику, ви отримаєте SMS з номером ТТН.</p>
           </div>
@@ -65,6 +69,8 @@
             </div>
           </div>
         </div>
+        <div v-else-if="fetchedDataStatus" class="empty_data">Номер замовлення не знайдено</div>
+
         <NuxtLink to="/" class="summary_btn">Повернутися до каталогу</NuxtLink>
       </div>
     </div>
@@ -72,9 +78,39 @@
 </template>
 
 <script setup>
+import { onMounted, ref, nextTick } from "vue";
 const route = useRoute();
 const orderId = route.params.id;
-console.log(orderId);
+
+const loaderState = ref(true);
+const fetchedDataStatus = ref(false);
+const orderInfo = ref(null);
+
+onMounted(async () => {
+  await nextTick();
+
+  try {
+    const resOrder = await $fetch("/api/orders/get-order-by-id", {
+      method: "POST",
+      body: {
+        orderId: orderId
+      }
+    });
+
+    if (resOrder.statusCode === 404) {
+      fetchedDataStatus.value = true;
+      loaderState.value = false;
+
+      return;
+    }
+
+    orderInfo.value = resOrder.data;
+  } catch (err) {
+    console.log(err);
+  }
+
+  loaderState.value = false;
+});
 </script>
 
 <style lang="scss">
@@ -109,6 +145,14 @@ console.log(orderId);
     @media screen and (max-width: 375px) {
       gap: 32px;
     }
+  }
+
+  .loaderWrapper {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 .summary_head {
@@ -303,8 +347,14 @@ console.log(orderId);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
       margin-bottom: 12px;
       gap: 20px;
+
+      .post_office {
+        width: 100%;
+        height: 100%;
+      }
       @media screen and (max-width: 1024px) {
         margin-bottom: 8px;
       }
@@ -398,6 +448,14 @@ console.log(orderId);
   @media screen and (max-width: 375px) {
     gap: 16px;
   }
+}
+
+.empty_data {
+  width: 100%;
+  height: 40vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .summary_btn {
