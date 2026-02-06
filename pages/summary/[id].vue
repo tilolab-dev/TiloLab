@@ -100,7 +100,6 @@ onMounted(async () => {
     if (resOrder.statusCode === 404) {
       fetchedDataStatus.value = true;
       loaderState.value = false;
-
       return;
     }
 
