@@ -193,7 +193,7 @@ const orderByStatus = ref("");
 const orderListByStatus = ref([]);
 
 watch(orderByStatus, (newVal) => {
-  console.log(orderByStatus, newVal);
+  console.log(newVal);
   orderListByStatus.value = ordersStore.ordersList.filter(
     (order) => order.status === orderByStatus.value
   );
