@@ -9,36 +9,53 @@
 //   adapter
 // });
 
+// import { PrismaClient } from "@/prisma/generated/prisma/client";
+// import { PrismaPg } from "@prisma/adapter-pg";
+
+// const globalForPrisma = globalThis as unknown as {
+//   prisma: PrismaClient | undefined;
+// };
+
+// export const prisma =
+//   globalForPrisma.prisma ??
+//   new PrismaClient({
+//     adapter: new PrismaPg({
+//       connectionString: `${process.env.API_SECRET_PATH}?connection_limit=10&pool_timeout=10`
+//     }),
+//     log: ["error"]
+//   });
+
+// if (process.env.NODE_ENV !== "production") {
+//   globalForPrisma.prisma = prisma;
+// }
+
+// process.on("beforeExit", async () => {
+//   await prisma.$disconnect();
+// });
+
+// process.on("SIGINT", async () => {
+//   await prisma.$disconnect();
+//   process.exit(0);
+// });
+
+// process.on("SIGTERM", async () => {
+//   await prisma.$disconnect();
+//   process.exit(0);
+// });
 import { PrismaClient } from "@/prisma/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+const prismaClientSingleton = () => {
+  const pool = new PrismaPg({ connectionString: process.env.API_SECRET_PATH! });
+  return new PrismaClient({ adapter: pool });
 };
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    adapter: new PrismaPg({
-      connectionString: `${process.env.API_SECRET_PATH}?max_connections=20&connect_timeout=10&idle_timeout=30`
-    }),
-    log: ["error", "warn"]
-  });
+type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClientSingleton | undefined;
+};
 
-process.on("beforeExit", async () => {
-  await prisma.$disconnect();
-});
+export const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
 
-process.on("SIGINT", async () => {
-  await prisma.$disconnect();
-  process.exit(0);
-});
-
-process.on("SIGTERM", async () => {
-  await prisma.$disconnect();
-  process.exit(0);
-});
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
