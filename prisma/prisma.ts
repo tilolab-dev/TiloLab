@@ -20,7 +20,7 @@ export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
     adapter: new PrismaPg({
-      connectionString: process.env.API_SECRET_PATH
+      connectionString: `${process.env.API_SECRET_PATH}?connection_limit=10&pool_timeout=10`
     }),
     log: ["error"]
   });
@@ -28,3 +28,17 @@ export const prisma =
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
 }
+
+process.on("beforeExit", async () => {
+  await prisma.$disconnect();
+});
+
+process.on("SIGINT", async () => {
+  await prisma.$disconnect();
+  process.exit(0);
+});
+
+process.on("SIGTERM", async () => {
+  await prisma.$disconnect();
+  process.exit(0);
+});
