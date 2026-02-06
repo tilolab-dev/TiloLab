@@ -20,9 +20,9 @@ export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
     adapter: new PrismaPg({
-      connectionString: `${process.env.API_SECRET_PATH}?connection_limit=10&pool_timeout=10`
+      connectionString: `${process.env.API_SECRET_PATH}?max_connections=20&connect_timeout=10&idle_timeout=30`
     }),
-    log: ["error"]
+    log: ["error", "warn"]
   });
 
 if (process.env.NODE_ENV !== "production") {
