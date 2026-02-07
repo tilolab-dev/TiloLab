@@ -56,8 +56,13 @@
             </nav>
 
             <div class="search_block">
-              <input type="text" placeholder="Пошук..." />
-              <button class="desktop_search_btn">
+              <input
+                v-model="searchQuery"
+                type="text"
+                placeholder="Пошук..."
+                @keyup.enter="performSearch"
+              />
+              <button class="desktop_search_btn" @click="performSearch">
                 <SearchIcon />
               </button>
               <button class="mobile_search_btn" @click="mobileSearch = !mobileSearch">
@@ -114,7 +119,12 @@
     </div>
 
     <div class="mobile_search" :class="mobileSearch ? 'mobile_search_active' : ''">
-      <input type="text" placeholder="Пошук" />
+      <input
+        v-model="mobileSearchQuery"
+        type="text"
+        placeholder="Пошук"
+        @keyup.enter="performMobileSearch"
+      />
     </div>
   </div>
 </template>
@@ -138,6 +148,8 @@ import { useUserStore } from "@/store/user-store";
 const catalogBtnState = ref(false);
 const burger = ref(false);
 const mobileSearch = ref(false);
+const searchQuery = ref("");
+const mobileSearchQuery = ref("");
 
 const modalStore = useModalStore();
 const indexStore = useIndexStore();
@@ -188,6 +200,23 @@ onMounted(() => {
   loaderState.value = fetchCategories?.value?.length > 0;
   mounted.value = true;
 });
+
+const router = useRouter();
+
+const performSearch = () => {
+  if (searchQuery.value.trim()) {
+    router.push(`/search?q=${encodeURIComponent(searchQuery.value.trim())}`);
+    searchQuery.value = "";
+  }
+};
+
+const performMobileSearch = () => {
+  if (mobileSearchQuery.value.trim()) {
+    router.push(`/search?q=${encodeURIComponent(mobileSearchQuery.value.trim())}`);
+    mobileSearchQuery.value = "";
+    mobileSearch.value = false;
+  }
+};
 
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", onScroll());
