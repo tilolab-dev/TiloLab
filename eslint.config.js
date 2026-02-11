@@ -147,6 +147,7 @@ export default [
         FormData: "readonly",
         FileReader: "readonly",
         File: "readonly",
+        Buffer: "readonly",
         Blob: "readonly",
         alert: "readonly",
         process: "readonly",

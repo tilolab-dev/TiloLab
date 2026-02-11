@@ -1,8 +1,14 @@
+-- CreateSchema
+CREATE SCHEMA IF NOT EXISTS "public";
+
 -- CreateEnum
 CREATE TYPE "TgRoles" AS ENUM ('GUEST', 'ADMIN', 'CLIENT');
 
 -- CreateEnum
-CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELED');
+CREATE TYPE "OrderStatus" AS ENUM ('NEW', 'PAID', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'RETURNED', 'CANCELED', 'EXPIRED');
+
+-- CreateEnum
+CREATE TYPE "PaymentStatus" AS ENUM ('PENDING', 'SUCCESS', 'FAILED');
 
 -- CreateTable
 CREATE TABLE "Admin" (
@@ -48,7 +54,7 @@ CREATE TABLE "Category" (
     "group" TEXT NOT NULL,
     "listPosition" INTEGER NOT NULL DEFAULT 0,
     "visible" BOOLEAN NOT NULL,
-    "categoryImg" TEXT NOT NULL,
+    "categoryImg" TEXT,
     "parentId" INTEGER,
 
     CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
@@ -61,7 +67,7 @@ CREATE TABLE "CategoryTranslation" (
     "language" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT,
-    "groupText" TEXT NOT NULL,
+    "groupText" TEXT,
 
     CONSTRAINT "CategoryTranslation_pkey" PRIMARY KEY ("id")
 );
@@ -71,21 +77,12 @@ CREATE TABLE "Product" (
     "id" SERIAL NOT NULL,
     "categoryId" INTEGER NOT NULL,
     "visible" BOOLEAN NOT NULL,
-    "price" DOUBLE PRECISION,
     "stockState" BOOLEAN NOT NULL,
     "stockValue" INTEGER DEFAULT 0,
     "discountPercent" INTEGER,
-    "wholesalePrice" INTEGER,
-    "counterQuantity" INTEGER DEFAULT 1,
-    "packageType" TEXT NOT NULL,
-    "wholesaleOnly" BOOLEAN,
-    "wholesaleFrom" INTEGER,
     "productSize" TEXT NOT NULL,
-    "productWeight" TEXT NOT NULL,
-    "productDensity" TEXT NOT NULL,
-    "productCapacity" TEXT NOT NULL,
-    "packageQuantity" TEXT NOT NULL,
-    "groupPackQuantity" TEXT NOT NULL,
+    "productPrice" DOUBLE PRECISION NOT NULL,
+    "stockReserved" INTEGER DEFAULT 0,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -116,10 +113,9 @@ CREATE TABLE "ProductTranslation" (
     "language" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "productDescription" TEXT,
-    "wholesaleDescription" TEXT,
     "productColor" TEXT NOT NULL,
-    "groupPackage" TEXT NOT NULL,
     "productMaterial" TEXT NOT NULL,
+    "productManufacture" TEXT DEFAULT '-',
 
     CONSTRAINT "ProductTranslation_pkey" PRIMARY KEY ("id")
 );
@@ -201,24 +197,15 @@ CREATE TABLE "UserSetting" (
 );
 
 -- CreateTable
-CREATE TABLE "Notification" (
-    "id" SERIAL NOT NULL,
-    "userId" INTEGER NOT NULL,
-    "message" TEXT NOT NULL,
-    "isReaded" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "Notification_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Order" (
+CREATE TABLE "orders" (
     "id" TEXT NOT NULL,
     "userId" INTEGER,
-    "status" "OrderStatus" NOT NULL DEFAULT 'PENDING',
+    "status" "OrderStatus" NOT NULL DEFAULT 'NEW',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "paymentMethod" TEXT,
     "totalPrice" INTEGER NOT NULL,
+    "orderNumber" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3),
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
@@ -261,6 +248,31 @@ CREATE TABLE "News" (
     CONSTRAINT "News_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Payment" (
+    "id" TEXT NOT NULL,
+    "orderId" TEXT NOT NULL,
+    "monoInvoice" TEXT NOT NULL,
+    "status" "PaymentStatus" NOT NULL DEFAULT 'PENDING',
+    "amount" INTEGER NOT NULL,
+    "provider" TEXT NOT NULL DEFAULT 'monobank',
+    "payload" JSONB,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Payment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Notification" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "message" TEXT NOT NULL,
+    "isReaded" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Notification_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Category_group_key" ON "Category"("group");
 
@@ -277,7 +289,7 @@ CREATE INDEX "CategoryTranslation_language_idx" ON "CategoryTranslation"("langua
 CREATE INDEX "Product_categoryId_idx" ON "Product"("categoryId");
 
 -- CreateIndex
-CREATE INDEX "Product_price_idx" ON "Product"("price");
+CREATE INDEX "Product_productSize_idx" ON "Product"("productSize");
 
 -- CreateIndex
 CREATE INDEX "ProductOptions_optionId_idx" ON "ProductOptions"("optionId");
@@ -319,13 +331,13 @@ CREATE INDEX "Adress_userId_idx" ON "Adress"("userId");
 CREATE INDEX "UserSetting_userId_idx" ON "UserSetting"("userId");
 
 -- CreateIndex
-CREATE INDEX "Notification_userId_idx" ON "Notification"("userId");
+CREATE UNIQUE INDEX "Order_orderNumber_key" ON "orders"("orderNumber");
 
 -- CreateIndex
-CREATE INDEX "Order_userId_idx" ON "Order"("userId");
+CREATE INDEX "Order_status_idx" ON "orders"("status");
 
 -- CreateIndex
-CREATE INDEX "Order_status_idx" ON "Order"("status");
+CREATE INDEX "Order_userId_idx" ON "orders"("userId");
 
 -- CreateIndex
 CREATE INDEX "OrderItem_orderId_idx" ON "OrderItem"("orderId");
@@ -344,6 +356,15 @@ CREATE INDEX "ShippingInfo_country_idx" ON "ShippingInfo"("country");
 
 -- CreateIndex
 CREATE INDEX "News_createdAt_idx" ON "News"("createdAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Payment_orderId_key" ON "Payment"("orderId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Payment_monoInvoice_key" ON "Payment"("monoInvoice");
+
+-- CreateIndex
+CREATE INDEX "Notification_userId_idx" ON "Notification"("userId");
 
 -- AddForeignKey
 ALTER TABLE "AdminMetric" ADD CONSTRAINT "AdminMetric_adminId_fkey" FOREIGN KEY ("adminId") REFERENCES "Admin"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -388,16 +409,20 @@ ALTER TABLE "Adress" ADD CONSTRAINT "Adress_userId_fkey" FOREIGN KEY ("userId") 
 ALTER TABLE "UserSetting" ADD CONSTRAINT "UserSetting_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Notification" ADD CONSTRAINT "Notification_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "orders" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "orders"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ShippingInfo" ADD CONSTRAINT "ShippingInfo_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ShippingInfo" ADD CONSTRAINT "ShippingInfo_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "orders"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Payment" ADD CONSTRAINT "Payment_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "orders"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Notification" ADD CONSTRAINT "Notification_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+

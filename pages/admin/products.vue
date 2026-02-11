@@ -1,273 +1,281 @@
 <template>
-  <div class="product_section">
-    <div class="product_container">
-      <div class="top_block">
-        <div class="page_name">
-          <h1 class="mb-0">Товари</h1>
-        </div>
-        <div class="top_block_content">
-          <div class="top_block_content_nav">
-            <div
-              class="el"
-              :class="activeGroup === 'products' ? 'el-active' : ''"
-              @click="showGroup('products')"
-            >
-              <span> Товари </span>
+  <div class="products">
+    <div class="admin_layout_container">
+      <div class="product_section">
+        <div class="product_container">
+          <div class="top_block">
+            <div class="title_page">
+              <h1>Товари</h1>
             </div>
-            <div
-              class="el"
-              :class="activeGroup === 'categories' ? 'el-active' : ''"
-              @click="showGroup('categories')"
-            >
-              <span> Категорії </span>
+            <div class="top_block_content">
+              <div class="top_block_content_nav">
+                <div
+                  class="el"
+                  :class="activeGroup === 'products' ? 'el-active' : ''"
+                  @click="showGroup('products')"
+                >
+                  <span> Товари </span>
+                </div>
+                <div
+                  class="el"
+                  :class="activeGroup === 'categories' ? 'el-active' : ''"
+                  @click="showGroup('categories')"
+                >
+                  <span> Категорії </span>
+                </div>
+              </div>
+              <!-- <DashBurger /> -->
             </div>
           </div>
-          <!-- <DashBurger /> -->
-        </div>
-      </div>
-      <div class="middle_row">
-        <div class="middle_row_search">
-          <div class="search_wrapper">
-            <input type="text" placeholder="Пошук" />
-            <button class="search-btn"></button>
-          </div>
-        </div>
-        <div class="adding_content">
-          <button class="text-nowrap" @click="modalStore.showModal('AddCategory')">
-            Додати категорію
-          </button>
-          <button class="text-nowrap" @click="modalStore.showModal('AddProduct')">
-            Додати товар
-          </button>
-        </div>
-      </div>
-
-      <div class="info_content">
-        <div v-if="activeGroup === 'categories'" class="info_content_wrapper">
-          <div ref="categoryElem" class="wrapper_content">
-            <div class="table_name">
-              <h6 class="dark:text-white">Категорії товарів</h6>
-            </div>
-
-            <div class="table_content">
-              <div class="table_inner">
-                <table class="table_wrapper">
-                  <thead class="t_head">
-                    <tr>
-                      <th class="t_head_cell">Назва категорії</th>
-                      <th class="t_head_cell">Кількість товарів</th>
-                      <th class="t_head_cell"></th>
-                      <th class="t_head_cell">Статус</th>
-
-                      <th class="t_head_cell"></th>
-                    </tr>
-                  </thead>
-                  <tbody v-if="loadingCategoryState" class="t_body">
-                    <!-- Skeleton -->
-                    <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
-                      <!-- Author -->
-                      <td class="skeleton_content">
-                        <div class="main_cell">
-                          <div class="main_cell_circle skeleton_item"></div>
-                          <div class="main_cell_text">
-                            <div class="skeleton_item main_cell_text_top"></div>
-                            <div class="skeleton_item main_cell_text_bottom"></div>
-                          </div>
-                        </div>
-                      </td>
-                      <!-- Function -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                        <div class="skeleton_item"></div>
-                      </td>
-                      <!-- Status -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                      </td>
-                      <!-- Employed -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                      </td>
-                      <!-- Edit -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                      </td>
-                    </tr>
-                    <!-- Data -->
-                  </tbody>
-                  <tbody v-else class="t_body">
-                    <!-- v-for="category in fetchedCategories" -->
-
-                    <tr v-for="(category, i) in fetchedCategories" :key="i">
-                      <td class="table_row">
-                        <div class="table_main">
-                          <img :src="category.categoryImg" alt="user1" />
-                          <div class="table_main_wrapper">
-                            <h6>{{ category.translations[0].title }}</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p>{{ category.products.length }}</p>
-                      </td>
-                      <!-- <td>
-                        <span> Online </span>
-                      </td> -->
-                      <td>
-                        <!-- <span> 23/04/18 </span> -->
-                      </td>
-                      <td>
-                        <p v-if="category.visible">Активна категорія</p>
-                        <p v-else>Неактивна категорія</p>
-                      </td>
-                      <td class="button_cell">
-                        <div class="table_btn_wrap">
-                          <button
-                            class="edit_btn"
-                            @click="modalStore.showModal('UpdateCategory', { category })"
-                          >
-                            Редагувати
-                          </button>
-                          <button
-                            class="delete_btn"
-                            @click="modalStore.showModal('DeleteCategory', { category })"
-                          >
-                            <CloseIcon />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+          <div class="middle_row">
+            <div class="middle_row_search">
+              <div class="search_wrapper">
+                <input type="text" placeholder="Пошук" />
+                <button class="search-btn"></button>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- card 2 -->
-
-        <div v-else class="info_content_wrapper">
-          <div ref="productElem" class="wrapper_content">
-            <div class="table_name">
-              <h6 class="dark:text-white">Товари</h6>
+            <div class="adding_content">
+              <button class="text-nowrap" @click="modalStore.showModal('AddCategory')">
+                Додати категорію
+              </button>
+              <button class="text-nowrap" @click="modalStore.showModal('AddProduct')">
+                Додати товар
+              </button>
             </div>
-            <div class="table_content">
-              <div class="table_inner">
-                <table class="table_wrapper">
-                  <thead class="t_head">
-                    <tr>
-                      <th class="t_head_cell">Товар</th>
-                      <th class="t_head_cell">Ціна</th>
-                      <th class="t_head_cell">Статус товару</th>
-                      <th class="t_head_cell">Категорія</th>
-                      <th class="t_head_cell">Залишок</th>
-                      <th class="t_head_cell"></th>
-                    </tr>
-                  </thead>
-                  <tbody v-if="loadingProductState" class="t_body">
-                    <!-- <div > -->
-                    <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
-                      <!-- Author -->
-                      <td class="skeleton_content">
-                        <div class="main_cell">
-                          <div class="main_cell_circle skeleton_item"></div>
-                          <div class="main_cell_text">
-                            <div class="skeleton_item main_cell_text_top"></div>
-                            <div class="skeleton_item main_cell_text_bottom"></div>
-                          </div>
-                        </div>
-                      </td>
-                      <!-- Function -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                        <div class="skeleton_item"></div>
-                      </td>
-                      <!-- Status -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                      </td>
-                      <!-- Employed -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                      </td>
-                      <!-- Edit -->
-                      <td class="skeleton_content">
-                        <div class="skeleton_item"></div>
-                      </td>
-                    </tr>
-                    <!-- </div> -->
-                  </tbody>
-                  <tbody v-else class="t_body">
-                    <!-- v-for="product in fetchedProducts" -->
+          </div>
 
-                    <tr v-for="(product, i) in fetchedProducts" :key="i">
-                      <td class="table_row">
-                        <div class="table_main">
-                          <img v-if="product.img?.length" :src="product.img[0].path" alt="item" />
-                          <div v-else class="fallback_img"></div>
-                          <h6>
-                            <!-- {{ product.translations[0].title }} -->
-                            {{ product.translations?.[0]?.title ?? "" }}
-                          </h6>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="product_option price_option">
-                          <span
-                            class="price"
-                            :style="{
-                              textDecoration: product.discountPercent > 0 ? 'line-through' : '',
-                              color: product.discountPercent > 0 ? 'var(--accent-red)' : ''
-                            }"
-                          >
-                            {{ product.productPrice }} UAH
-                          </span>
-                          <span v-if="product.discountPercent > 0" class="discount_price">
-                            {{
-                              Math.round(
-                                product.productPrice -
-                                  (product.productPrice * product.discountPercent) / 100
-                              )
-                            }}
-                            UAH
-                          </span>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="product_option">
-                          <span v-if="product.visible">Активний</span>
-                          <span v-else>Не активний</span>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="product_option">
-                          {{ product.category?.group ?? "" }}
-                        </div>
-                      </td>
-                      <td>
-                        <div class="product_quantity">
-                          {{ product.stockValue }}
-                        </div>
-                      </td>
-                      <td class="button_cell">
-                        <div class="table_btn_wrap">
-                          <button
-                            class="edit_btn"
-                            @click="modalStore.showModal('UpdateProduct', { product })"
-                          >
-                            Редагувати
-                          </button>
-                          <button
-                            class="delete_btn"
-                            @click="modalStore.showModal('DeleteProduct', { product })"
-                          >
-                            <CloseIcon />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+          <div class="info_content">
+            <div v-if="activeGroup === 'categories'" class="info_content_wrapper">
+              <div ref="categoryElem" class="wrapper_content">
+                <div class="table_name">
+                  <h6 class="dark:text-white">Категорії товарів</h6>
+                </div>
+
+                <div class="table_content">
+                  <div class="table_inner">
+                    <table class="table_wrapper">
+                      <thead class="t_head">
+                        <tr>
+                          <th class="t_head_cell">Назва категорії</th>
+                          <th class="t_head_cell">Кількість товарів</th>
+                          <th class="t_head_cell"></th>
+                          <th class="t_head_cell">Статус</th>
+
+                          <th class="t_head_cell"></th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="loadingCategoryState" class="t_body">
+                        <!-- Skeleton -->
+                        <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
+                          <!-- Author -->
+                          <td class="skeleton_content">
+                            <div class="main_cell">
+                              <div class="main_cell_circle skeleton_item"></div>
+                              <div class="main_cell_text">
+                                <div class="skeleton_item main_cell_text_top"></div>
+                                <div class="skeleton_item main_cell_text_bottom"></div>
+                              </div>
+                            </div>
+                          </td>
+                          <!-- Function -->
+                          <td class="skeleton_content">
+                            <div class="skeleton_item"></div>
+                            <div class="skeleton_item"></div>
+                          </td>
+                          <!-- Status -->
+                          <td class="skeleton_content">
+                            <div class="skeleton_item"></div>
+                          </td>
+                          <!-- Employed -->
+                          <td class="skeleton_content">
+                            <div class="skeleton_item"></div>
+                          </td>
+                          <!-- Edit -->
+                          <td class="skeleton_content">
+                            <div class="skeleton_item"></div>
+                          </td>
+                        </tr>
+                        <!-- Data -->
+                      </tbody>
+                      <tbody v-else class="t_body">
+                        <!-- v-for="category in fetchedCategories" -->
+
+                        <tr v-for="(category, i) in fetchedCategories" :key="i">
+                          <td class="table_row">
+                            <div class="table_main">
+                              <img :src="category.categoryImg" alt="user1" />
+                              <div class="table_main_wrapper">
+                                <h6>{{ category.translations[0].title }}</h6>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <p>{{ category.products.length }}</p>
+                          </td>
+                          <!-- <td>
+                        <span> Online </span>
+                      </td> -->
+                          <td>
+                            <!-- <span> 23/04/18 </span> -->
+                          </td>
+                          <td>
+                            <p v-if="category.visible">Активна категорія</p>
+                            <p v-else>Неактивна категорія</p>
+                          </td>
+                          <td class="button_cell">
+                            <div class="table_btn_wrap">
+                              <button
+                                class="edit_btn"
+                                @click="modalStore.showModal('UpdateCategory', { category })"
+                              >
+                                Редагувати
+                              </button>
+                              <button
+                                class="delete_btn"
+                                @click="modalStore.showModal('DeleteCategory', { category })"
+                              >
+                                <CloseIcon />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- card 2 -->
+
+            <div v-else class="info_content_wrapper">
+              <div ref="productElem" class="wrapper_content">
+                <div class="table_name">
+                  <h6 class="dark:text-white">Товари</h6>
+                </div>
+                <div class="table_content">
+                  <div class="table_inner">
+                    <table class="table_wrapper">
+                      <thead class="t_head">
+                        <tr>
+                          <th class="t_head_cell">Товар</th>
+                          <th class="t_head_cell">Ціна</th>
+                          <th class="t_head_cell">Статус товару</th>
+                          <th class="t_head_cell">Категорія</th>
+                          <th class="t_head_cell">Залишок</th>
+                          <th class="t_head_cell"></th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="loadingProductState" class="t_body">
+                        <!-- <div > -->
+                        <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
+                          <!-- Author -->
+                          <td class="skeleton_content">
+                            <div class="main_cell">
+                              <div class="main_cell_circle skeleton_item"></div>
+                              <div class="main_cell_text">
+                                <div class="skeleton_item main_cell_text_top"></div>
+                                <div class="skeleton_item main_cell_text_bottom"></div>
+                              </div>
+                            </div>
+                          </td>
+                          <!-- Function -->
+                          <td class="skeleton_content">
+                            <div class="skeleton_item"></div>
+                            <div class="skeleton_item"></div>
+                          </td>
+                          <!-- Status -->
+                          <td class="skeleton_content">
+                            <div class="skeleton_item"></div>
+                          </td>
+                          <!-- Employed -->
+                          <td class="skeleton_content">
+                            <div class="skeleton_item"></div>
+                          </td>
+                          <!-- Edit -->
+                          <td class="skeleton_content">
+                            <div class="skeleton_item"></div>
+                          </td>
+                        </tr>
+                        <!-- </div> -->
+                      </tbody>
+                      <tbody v-else class="t_body">
+                        <!-- v-for="product in fetchedProducts" -->
+
+                        <tr v-for="(product, i) in fetchedProducts" :key="i">
+                          <td class="table_row">
+                            <div class="table_main">
+                              <img
+                                v-if="product.img?.length"
+                                :src="product.img[0].path"
+                                alt="item"
+                              />
+                              <div v-else class="fallback_img"></div>
+                              <h6>
+                                <!-- {{ product.translations[0].title }} -->
+                                {{ product.translations?.[0]?.title ?? "" }}
+                              </h6>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="product_option price_option">
+                              <span
+                                class="price"
+                                :style="{
+                                  textDecoration: product.discountPercent > 0 ? 'line-through' : '',
+                                  color: product.discountPercent > 0 ? 'var(--accent-red)' : ''
+                                }"
+                              >
+                                {{ product.productPrice }} UAH
+                              </span>
+                              <span v-if="product.discountPercent > 0" class="discount_price">
+                                {{
+                                  Math.round(
+                                    product.productPrice -
+                                      (product.productPrice * product.discountPercent) / 100
+                                  )
+                                }}
+                                UAH
+                              </span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="product_option">
+                              <span v-if="product.visible">Активний</span>
+                              <span v-else>Не активний</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="product_option">
+                              {{ product.category?.group ?? "" }}
+                            </div>
+                          </td>
+                          <td>
+                            <div class="product_quantity">
+                              {{ product.stockValue }}
+                            </div>
+                          </td>
+                          <td class="button_cell">
+                            <div class="table_btn_wrap">
+                              <button
+                                class="edit_btn"
+                                @click="modalStore.showModal('UpdateProduct', { product })"
+                              >
+                                Редагувати
+                              </button>
+                              <button
+                                class="delete_btn"
+                                @click="modalStore.showModal('DeleteProduct', { product })"
+                              >
+                                <CloseIcon />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -379,7 +387,8 @@ onMounted(async () => {
     align-items: center;
     margin-top: 1rem;
 
-    .page_name {
+    .title_page {
+      padding: 0;
       h1 {
         margin-bottom: 5px;
       }
@@ -478,7 +487,7 @@ onMounted(async () => {
   .info_content {
     width: 100%;
     height: 100%;
-    padding: 24px;
+    padding: 24px 0;
     margin: 0 auto;
     position: relative;
     overflow: hidden;
