@@ -364,9 +364,8 @@ const confirmOrderHandler = async () => {
     tooltip({ status: "warning", message: "Перевірте Фамілію" });
     return;
   }
-  console.log(userNumber.length, userNumber);
 
-  if (userNumber.length !== 13) {
+  if (userNumber.length < 12) {
     tooltip({ status: "warning", message: "Перевірте номер телефону" });
   }
 
