@@ -1,3 +1,5 @@
+<!-- eslint-disable vue/v-on-event-hyphenation -->
+<!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div class="admin_layout">
     <div class="admin_head_bg"></div>
@@ -76,6 +78,19 @@
         </div>
       </div>
       <div class="logout_wrapper">
+        <!-- <button class="logout_btn" style="margin-bottom: 10px" @click="toggleRealtime"> -->
+        <!-- @click="tooltip({ status: 'warning', message: 'tooltip was warning' })" -->
+        <!-- @click="toggleRealtime" -->
+        <!-- Tooltip
+        </button> -->
+        <button
+          class="logout_btn"
+          style="margin-bottom: 10px"
+          @click="tooltip({ status: 'error', message: 'tooltip was error' })"
+        >
+          Tooltip
+        </button>
+
         <button class="logout_btn" @click="exitHandler">Вийти</button>
       </div>
     </aside>
@@ -100,9 +115,9 @@
 
       <!-- :tooltipProps="tooltipProps"  -->
     </main>
-    <!-- <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
+    <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
       {{ tooltipMessage }}
-    </Tooltips> -->
+    </Tooltips>
     <Modal @tooltip="tooltip">
       <template #default="{ openModal, closeModal }">
         <component
@@ -113,6 +128,11 @@
         />
       </template>
     </Modal>
+    <AdminRealtime
+      v-if="realtimeNote.length > 0"
+      :noteItem="realtimeNote"
+      @removeRealtimeItem="(item) => removeRealTimeItem(item)"
+    />
   </div>
 </template>
 
@@ -126,12 +146,13 @@ import AdminOrders from "~/assets/icons/admin-orders.svg";
 import AdminProducts from "~/assets/icons/admin-products.svg";
 import AdminNotifications from "~/assets/icons/admin-notifications.svg";
 import AdminSettings from "~/assets/icons/admin-settings.svg";
+import AdminRealtime from "@/components/AdminRealtime.vue";
 
 import { useAdminStore } from "@/store/admin-store";
 import { useOrderRealtime } from "@/composables/useOrderRealtime";
 import { computed, ref, onMounted, onBeforeUnmount } from "vue";
 import Modal from "~/components/Modals/Modal.vue";
-// import Tooltips from "~/components/shared/Tooltips.vue";
+import Tooltips from "~/components/shared/Tooltips.vue";
 import { useModalStore } from "@/store/modal-store";
 
 // useIndexStore
@@ -142,6 +163,9 @@ import { useRoute } from "vue-router";
 
 const adminStore = useAdminStore();
 // const ordersStore = useOrdersStore();
+
+const realtimeNote = ref([]);
+const realtimeId = ref(0);
 
 const linksData = ref([
   {
@@ -279,6 +303,20 @@ const playSound = () => {
   audio.play().catch(() => {});
 };
 
+const toggleRealtime = () => {
+  initAudio();
+  realtimeId.value++;
+  // realtimeNote.value = [...realtimeNote.value, realtimeId.value];
+  realtimeNote.value.push(realtimeId.value);
+  // console.log(realtimeNote.value);
+  playSound();
+};
+
+const removeRealTimeItem = (item) => {
+  console.log(item);
+  realtimeNote.value = realtimeNote.value.filter((el) => el !== item);
+};
+
 // definePageMeta({
 //   layout: "admin",
 //   middleware: "admin"
@@ -301,7 +339,8 @@ onMounted(() => {
   document.addEventListener("click", unlock);
 
   const unsubscribe = useOrderRealtime(() => {
-    playSound();
+    // playSound();
+    toggleRealtime();
   });
 
   onBeforeUnmount(() => {
@@ -325,6 +364,7 @@ onMounted(() => {
   width: 100%;
   height: 100vh;
   position: relative;
+  overflow: hidden;
 
   // Dark mode
   //   @media (prefers-color-scheme: dark) {

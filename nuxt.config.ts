@@ -13,6 +13,9 @@ export default defineNuxtConfig({
       ]
     }
   },
+  // experimental: {
+  //   inlineSSRStyles: true
+  // },
   nitro: {
     compressPublicAssets: true
   },
@@ -29,6 +32,7 @@ export default defineNuxtConfig({
     test_bank_api_key: process.env.TEST_BANK_API_KEY,
     bank_api_key: process.env.BANK_API_KEY,
     bank_webhook_url: process.env.BANK_WEBHOOK_URL,
+    bank_public_key: process.env.BANK_PUBLIC_KEY,
     nova_post_api: process.env.NEW_POST_API,
     admin_user_name: process.env.ADMIN_USERNAME,
     admin_password: process.env.ADMIN_PASSWORD,
@@ -40,7 +44,7 @@ export default defineNuxtConfig({
   },
   css: [
     "~/style/mixins.scss",
-    "~/style/default.css",
+    "~/style/default.scss",
     "~/style/index.scss",
     "~/style/variables.scss"
   ],
@@ -78,7 +82,7 @@ export default defineNuxtConfig({
   },
   vite: {
     server: {
-      allowedHosts: ["edd85ac46640.ngrok-free.app"],
+      allowedHosts: ["7fdf-46-150-69-16.ngrok-free.app"],
       strictPort: false
     },
     plugins: [

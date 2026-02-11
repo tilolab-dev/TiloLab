@@ -66,6 +66,7 @@
                       {{
                         (productStore.selectedProducts.productPrice * productQuantity).toFixed(2)
                       }}
+                      грн
                     </span>
                     <span
                       v-else
@@ -121,9 +122,10 @@
                   ><br />
                   <span class="accent">Товар закінчується</span>
                 </div>
+                <!-- v-else-if="productStore.selectedProducts.availableProduct === 0" -->
 
                 <div
-                  v-else-if="productStore.selectedProducts.availableProduct === 0"
+                  v-else-if="productStore.selectedProducts.availableProduct <= 0"
                   class="no_available"
                 >
                   <span>Товар закінчився</span>
@@ -163,7 +165,7 @@
                     Додати в кошик
                   </button>
                   <div
-                    v-if="productStore.selectedProducts.availableProduct === 0"
+                    v-if="productStore.selectedProducts.availableProduct <= 0"
                     class="not_allowed_btn"
                   >
                     Додати в кошик
@@ -794,7 +796,7 @@ onUnmounted(() => {
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-start;
-      gap: 10px;
+      gap: 20px;
 
       &_head {
         @include mixins.subtitleText;
@@ -819,6 +821,7 @@ onUnmounted(() => {
         align-items: center;
         border: 1px solid var(--border-color);
         transition: all ease 0.3s;
+        aspect-ratio: 1 /1;
         position: relative;
         cursor: pointer;
         padding: 3px;
