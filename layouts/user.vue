@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div>
     <div v-if="!loggedUser" class="flex justify-center items-center h-screen">
@@ -201,7 +202,7 @@
         </div>
       </main>
 
-      <Tooltips v-if="showTooltip" :tooltip-status="tooltipStatus">
+      <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
         {{ tooltipMessage }}
       </Tooltips>
       <Modal @tooltip="tooltip">
@@ -253,8 +254,6 @@ const tooltip = (obj) => {
 };
 
 const closeSidebar = () => {
-  console.log(isSidebarOpen.value, "log");
-
   if (isSidebarOpen.value) {
     setTimeout(() => {
       indexStore.setAdminBurgerBtn(false);

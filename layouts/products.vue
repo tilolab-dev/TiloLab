@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div class="layout relative">
     <!-- <AppHeader /> -->
@@ -16,7 +17,10 @@
         </div>
       </div>
     </main>
-    <Modal>
+    <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
+      {{ tooltipMessage }}
+    </Tooltips>
+    <Modal @tooltip="tooltip">
       <template #default="{ openModal, closeModal }">
         <component
           :is="currentModal"
@@ -35,7 +39,7 @@ import { ref, computed, onMounted } from "vue";
 
 import { useModalStore } from "@/store/modal-store";
 import { useIndexStore } from "@/store/index-store";
-import { useCookie } from "nuxt/app";
+// import { useCookie } from "nuxt/app";
 
 import Modal from "@/components/Modals/Modal.vue";
 import BreadCrumbs from "@/components/shared/BreadCrumbs.vue";
@@ -46,6 +50,10 @@ const currentModal = computed(() => modalStore.currentModal);
 const modalProps = computed(() => modalStore.modalProps);
 
 const fetchedAllCategories = ref([]);
+
+const showTooltip = ref(false);
+const tooltipStatus = ref("");
+const tooltipMessage = ref("");
 
 const fetchCategory = computed(() => indexStore.fetchedCategories);
 fetchedAllCategories.value = fetchCategory.value;
@@ -104,6 +112,17 @@ const breadCrumbLinks = computed(() => {
 //   mobileCategoryState.value = !mobileCategoryState.value;
 // };
 
+const tooltip = (obj) => {
+  const { status, message } = obj;
+
+  tooltipStatus.value = status;
+  tooltipMessage.value = message;
+  showTooltip.value = true;
+  setTimeout(() => {
+    showTooltip.value = false;
+  }, 5000);
+};
+
 let activeCategory = ref([]);
 
 const showCategory = (category) => {
@@ -152,10 +171,10 @@ const showCategory = (category) => {
 onMounted(() => {
   showCategory("showAll");
   // Check if user has already verified their age
-  const ageVerified = useCookie("age_verified");
-  if (!ageVerified.value) {
-    modalStore.showModal("VerifyAgeModal");
-  }
+  // const ageVerified = useCookie("age_verified");
+  // if (!ageVerified.value) {
+  //   modalStore.showModal("VerifyAgeModal");
+  // }
 });
 </script>
 

@@ -9,13 +9,22 @@ export const useOrderRealtime = (onNewOrder: (order: any) => void) => {
     .on(
       "postgres_changes",
       {
-        event: "INSERT",
+        event: "UPDATE",
         schema: "public",
         table: "orders"
       },
       (payload) => {
-        console.log("New order", payload.new);
-        onNewOrder(payload.new);
+        console.log("enter");
+        // console.log("New order", payload.new);
+        // onNewOrder(payload.new);
+        const oldStatus = payload.old?.status;
+        const newStatus = payload.new?.status;
+
+        console.log(oldStatus, newStatus, "status");
+
+        if (oldStatus !== "PAID" && newStatus === "PAID") {
+          onNewOrder(payload.new);
+        }
       }
     )
     .subscribe((status) => {
