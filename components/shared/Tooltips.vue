@@ -75,6 +75,7 @@ const tooltipStyle = computed(() => {
   backdrop-filter: blur(10px);
   border-radius: 2vw;
   padding-block: 40px;
+  padding-right: 40px;
   margin: 0 auto;
   z-index: 1010;
   overflow: hidden;
@@ -111,6 +112,15 @@ const tooltipStyle = computed(() => {
       width: 50px;
       height: 50px;
       aspect-ratio: 1 / 1;
+
+      @media screen and (max-width: 768px) {
+        width: 40px;
+        height: 40px;
+      }
+      @media screen and (max-width: 480px) {
+        width: 30px;
+        height: 30px;
+      }
     }
   }
 
@@ -129,15 +139,17 @@ const tooltipStyle = computed(() => {
 
   @media screen and (max-width: 768px) {
     padding-block: 30px;
+    padding-right: 30px;
     min-width: 200px;
 
-    height: 130px;
+    height: 110px;
     width: 90%;
   }
   @media screen and (max-width: 480px) {
     padding-block: 20px;
-    min-width: 100px;
-    height: 120px;
+    padding-right: 20px;
+    min-width: 90px;
+    height: 100px;
     width: 95%;
   }
 }

@@ -1393,9 +1393,12 @@ useHead({
       justify-content: center;
       align-items: center;
       background: var(--accent-color);
+      aspect-ratio: 1 / 1;
       svg {
         stroke: black;
         padding: 4px;
+        width: 100%;
+        height: 100%;
       }
       span {
         @include mixins.mainText;
