@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div class="layout">
     <!-- <AppHeader />
@@ -7,11 +8,11 @@
     <main class="border-t border-solid border-[var(--main-accent)]">
       <slot />
     </main>
-    <!-- <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
+    <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
       {{ tooltipMessage }}
-    </Tooltips> -->
+    </Tooltips>
 
-    <Modal>
+    <Modal @tooltip="tooltip">
       <template #default="{ openModal, closeModal }">
         <component
           :is="currentModal"
@@ -32,10 +33,10 @@
 <script setup>
 import Modal from "~/components/Modals/Modal.vue";
 import StickyHeader from "@/components/StickyHeader.vue";
-// import Tooltips from "~/components/shared/Tooltips.vue";
+import Tooltips from "~/components/shared/Tooltips.vue";
 import { useModalStore } from "@/store/modal-store";
 import { useUserStore } from "@/store/user-store";
-import { useCookie } from "nuxt/app";
+// import { useCookie } from "nuxt/app";
 // import { useAuthStore } from "@/store/auth-store";
 import { onMounted } from "vue";
 import { useAuth } from "@/composables/useAuth";
@@ -48,29 +49,29 @@ const modalProps = computed(() => modalStore.modalProps);
 
 const { fetchOrCreateUser } = useAuth();
 
-// const showTooltip = ref(false);
-// const tooltipStatus = ref("");
-// const tooltipMessage = ref("");
+const showTooltip = ref(false);
+const tooltipStatus = ref("");
+const tooltipMessage = ref("");
 
-// const tooltip = (obj) => {
-//   const { status, message } = obj;
+const tooltip = (obj) => {
+  const { status, message } = obj;
 
-//   tooltipStatus.value = status;
-//   tooltipMessage.value = message;
-//   showTooltip.value = true;
-//   setTimeout(() => {
-//     showTooltip.value = false;
-//   }, 3000);
-// };
+  tooltipStatus.value = status;
+  tooltipMessage.value = message;
+  showTooltip.value = true;
+  setTimeout(() => {
+    showTooltip.value = false;
+  }, 3000);
+};
 // const supabase = useSupabaseClient();
 
 onMounted(async () => {
   // Check if user has already verified their age
 
-  const ageVerified = useCookie("age_verified");
-  if (!ageVerified.value) {
-    modalStore.showModal("VerifyAgeModal");
-  }
+  // const ageVerified = useCookie("age_verified");
+  // if (!ageVerified.value) {
+  // modalStore.showModal("VerifyAgeModal");
+  // }
   // await supabase.auth.signOut();
 
   await fetchOrCreateUser();

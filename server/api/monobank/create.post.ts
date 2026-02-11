@@ -57,7 +57,8 @@ export default defineEventHandler(async (event: any) => {
         // redirectUrl: `https://edd85ac46640.ngrok-free.app/summary`,
         // webHookUrl: "https://edd85ac46640.ngrok-free.app/api/monobank/webhook",
         redirectUrl: `https://www.tilolab.com.ua/summary/${orderId}`,
-        webHookUrl: "https://www.tilolab.com.ua/api/monobank/webhook",
+        // webHookUrl: "https://www.tilolab.com.ua/api/monobank/webhook",
+        webHookUrl: "https://7fdf-46-150-69-16.ngrok-free.app/api/monobank/webhook",
 
         validity: 3600,
         merchantPaymInfo: {
@@ -77,12 +78,12 @@ export default defineEventHandler(async (event: any) => {
       }
     });
 
-    await prisma.order.update({
-      where: { id: order.id },
-      data: {
-        status: "PAID"
-      }
-    });
+    // await prisma.order.update({
+    //   where: { id: order.id },
+    //   data: {
+    //     status: "PAID"
+    //   }
+    // });
 
     return {
       invoiceId: invoice.invoiceId,

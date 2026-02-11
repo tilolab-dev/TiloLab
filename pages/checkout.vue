@@ -1,5 +1,8 @@
 <template>
   <section class="checkout">
+    <div v-if="loaderState" class="loader_wrapper">
+      <SharedLoader />
+    </div>
     <div class="container">
       <div class="checkout_content">
         <div class="checkout_content_delivery">
@@ -10,7 +13,7 @@
               <div class="main_input">
                 <input v-model="name" type="text" placeholder="Ім’я" />
                 <input v-model="surname" type="text" placeholder="Прізвище" />
-                <input v-model="phone" type="text" placeholder="Телефон" />
+                <input :value="phone" type="tel" @input="onPhoneInput" @keydown="onPhoneKeydown" />
                 <input v-model="email" type="text" placeholder="Електронна пошта" />
                 <input v-model="cityRef" type="text" placeholder="Місто" @input="getCitiesNp" />
                 <!-- :value="selectedCity !== null ? `${selectedCity.Present}` : ''" -->
@@ -148,34 +151,33 @@
               </li>
             </ul>
           </div>
+          <ClientOnly>
+            <div class="payment_block">
+              <div class="payment_info">
+                <div class="payment_option">До сплати:</div>
 
-          <div class="payment_block">
-            <div class="payment_info">
-              <div class="payment_option">До сплати:</div>
-
-              <div class="payment_option">
-                <span v-if="isMounted"> {{ totalDeliveryPrice }} грн </span>
-                <span v-else> 0 грн </span>
+                <div class="payment_option">
+                  <span> {{ totalDeliveryPrice ?? 0 }} грн </span>
+                </div>
               </div>
+              <button v-if="cartStore.cart.length > 0" @click="confirmOrderHandler">
+                Замовлення підтверджую
+              </button>
+              <NuxtLink v-else to="/products?page=2&category" @click="confirmOrderHandler"
+                >Перейти в каталог</NuxtLink
+              >
             </div>
-            <!-- !!!!!!!!!!! -->
-            <button v-if="cartStore.cart.length !== 0" @click="confirmOrderHandler">
-              Замовлення підтверджую
-            </button>
-            <NuxtLink v-else to="/products?page=2&category" @click="confirmOrderHandler"
-              >Перейти в каталог</NuxtLink
-            >
-          </div>
+          </ClientOnly>
         </div>
         <div class="checkout_content_cart">
-          <div class="cart_wrapper">
-            <h2>Ваш кошик</h2>
+          <ClientOnly>
+            <div class="cart_wrapper">
+              <h2>Ваш кошик</h2>
+              <div v-if="!cartStore.cart || cartStore.cart.length === 0" class="empty_cart">
+                <div>Кошик порожній</div>
+                <NuxtLink to="/products?page=2&category">Перейти до товарів</NuxtLink>
+              </div>
 
-            <div v-if="cartStore.cart.length === 0" class="empty_cart">
-              <div>Кошик порожній</div>
-              <NuxtLink to="/products?page=2&category">Перейти до товарів</NuxtLink>
-            </div>
-            <ClientOnly>
               <ul class="cart_items">
                 <li v-for="(item, i) in cartStore.cart" :key="i" class="cart_item">
                   <div class="cart_item_main">
@@ -202,18 +204,20 @@
                   </div>
                 </li>
               </ul>
-            </ClientOnly>
 
-            <div class="cart_summary">
-              <span>Всього:</span>
+              <div class="cart_summary">
+                <span>Всього:</span>
 
-              <span v-if="isMounted"> {{ cartStore.totalPrice }} грн </span>
-              <span v-else> 0 грн </span>
+                <span> {{ cartStore.totalPrice ?? 0 }} грн </span>
+              </div>
             </div>
-          </div>
+          </ClientOnly>
         </div>
       </div>
     </div>
+    <Tooltips v-if="showTooltip" :tooltip-status="tooltipStatus">
+      {{ tooltipMessage }}
+    </Tooltips>
   </section>
 </template>
 
@@ -230,7 +234,7 @@ import { counterHandler } from "@/composables/counterHandler";
 
 // import { navigateTo } from "nuxt/app";
 // import ToggleBtn from "@/components/shared/ToggleBtn.vue";
-// import Tooltips from "@/components/shared/Tooltips.vue";
+import Tooltips from "@/components/shared/Tooltips.vue";
 // import DeliverySelector from "~/components/DeliverySelector.vue";
 // import { useAuthStore } from "@/store/auth-store";
 import { useUserStore } from "@/store/user-store";
@@ -249,7 +253,7 @@ const isMounted = ref(false);
 
 const name = ref(loggedInUser ? userStore.user?.username : "");
 const surname = ref(loggedInUser ? userStore.user?.userSurname : "");
-const phone = ref(loggedInUser ? userStore.user?.phoneNumber : "");
+const phone = ref(loggedInUser ? userStore.user?.phoneNumber : "+38 (0");
 const email = ref(loggedInUser ? userStore.user?.email : "");
 const deliveryMethod = ref("nova-post");
 const selectedDelivery = ref("");
@@ -288,6 +292,7 @@ const currierAddress = ref("");
 const postomatList = ref([]);
 const postAddressList = ref([]);
 const preventReloadBox = ref(false);
+const isDeleting = ref(false);
 
 const cartStore = useCartStore();
 // const authStore = useAuthStore();
@@ -299,24 +304,24 @@ const cartStore = useCartStore();
 // const NOVA_POST_KEY = config.public.novaPostKey;
 // const NOVA_POST_URI = config.public.novaPostUri;
 
-// const showTooltip = ref(false);
-// const tooltipStatus = ref("");
-// const tooltipMessage = ref("");
+const showTooltip = ref(false);
+const tooltipStatus = ref("");
+const tooltipMessage = ref("");
+
+const loaderState = ref(false);
 
 // const numReg = /^[0-9]+$/;
 
-// const tooltip = (obj) => {
-//   const { status, message } = obj;
+const tooltip = (obj) => {
+  const { status, message } = obj;
 
-//   tooltipStatus.value = status;
-//   tooltipMessage.value = message;
-//   showTooltip.value = true;
-//   // setTimeout(() => {
-//   //   showTooltip.value = false;
-//   //   tooltipStatus.value = "";
-//   //   tooltipMessage.value = "";
-//   // }, 3000);
-// };
+  tooltipStatus.value = status;
+  tooltipMessage.value = message;
+  showTooltip.value = true;
+  setTimeout(() => {
+    showTooltip.value = false;
+  }, 3000);
+};
 
 // const clearForm = () => {
 //   name.value = "";
@@ -334,6 +339,57 @@ const cartStore = useCartStore();
 // };
 
 const confirmOrderHandler = async () => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  let userNumber = "";
+
+  const formatPhoneNumber = (phoneNumber) => {
+    const formatted = phoneNumber
+      .replaceAll("-", "")
+      .replaceAll(" ", "")
+      .replace("(", "")
+      .replace(")", "");
+    userNumber = formatted;
+    return formatted;
+  };
+
+  formatPhoneNumber(phone.value);
+
+  if (!name.value) {
+    tooltip({ status: "warning", message: "Перевірте Імʼя" });
+    // alert("The name field is empty");
+    return;
+  }
+  if (!surname.value) {
+    tooltip({ status: "warning", message: "Перевірте Фамілію" });
+    return;
+  }
+  console.log(userNumber.length, userNumber);
+
+  if (userNumber.length !== 13) {
+    tooltip({ status: "warning", message: "Перевірте номер телефону" });
+  }
+
+  if (!emailRegex.test(email.value)) {
+    tooltip({ status: "warning", message: "Перевірте правильність email" });
+    return;
+  }
+
+  if (!cityRef.value) {
+    tooltip({ status: "warning", message: "Перевірте місто" });
+    return;
+  }
+
+  if (!postAddress.value && !postomatNumber.value) {
+    tooltip({ status: "warning", message: "Оберіть відділення чи поштомат" });
+    return;
+  }
+
+  // if (!postAddress.value || !postomatNumber.value) {
+  //   console.log("ok");
+  //   return;
+  // }
+
   const getOrderItems = cartStore.cart.map((item) => {
     return {
       productId: item.product.id,
@@ -341,28 +397,18 @@ const confirmOrderHandler = async () => {
     };
   });
 
-  // const checkProductAvailability = await $fetch("/api/products/checkAvailability", {
-  //   method: "POST",
-  //   body: {
-  //     items: getOrderItems
-  //   }
-  // });
-
-  // console.log(getOrderItems, "getOrderItems");
-  // console.log(checkProductAvailability, "checkProductAvailability");
-
-  const amountInCents = Math.round(totalDeliveryPrice.value * 100);
+  // const amountInCents = Math.round(totalDeliveryPrice.value * 100);
 
   try {
     const getOrderId = await $fetch("/api/orders/newOrder", {
       method: "POST",
       body: {
         // userId: "", left after auth implementation
-        totalPrice: amountInCents,
+        totalPrice: totalDeliveryPrice,
         paymentMethod: "monobank",
         orderItems: getOrderItems,
         email: email.value,
-        phoneNumber: phone.value,
+        phoneNumber: userNumber,
         shippingInfo: {
           recipient: name.value + " " + surname.value,
           phoneNumber: phone.value,
@@ -379,7 +425,6 @@ const confirmOrderHandler = async () => {
       alert("Щось пішло не так спробуйте ще раз");
       return;
     }
-    console.log(getOrderId, "getOrderId");
 
     // implement server function to comparing ammount from order and front
 
@@ -394,11 +439,64 @@ const confirmOrderHandler = async () => {
 
     cartStore.clearCart();
 
-    console.log(createPayment, "createPayment");
     window.location.href = createPayment.pageUrl;
   } catch (err) {
     console.log(err);
   }
+};
+
+const onPhoneKeydown = (e) => {
+  isDeleting.value = e.key === "Backspace" || e.key === "Delete";
+};
+const onPhoneInput = (e) => {
+  let value = e.target.value;
+  let digits = value.replace(/\D/g, "");
+
+  if (isDeleting.value && digits.length <= 3) {
+    phone.value = "+38 (0";
+    e.target.value = phone.value;
+    return;
+  }
+  const formatted = formatFromDigits(digits);
+  phone.value = formatted;
+  e.target.value = formatted;
+};
+
+const formatFromDigits = (digits) => {
+  digits = digits.slice(0, 12);
+
+  let result = "+38";
+
+  if (digits.length > 2) {
+    result += " (" + digits.slice(2, 5);
+  }
+
+  if (digits.length >= 5) {
+    result += ") " + digits.slice(5, 8);
+  }
+
+  if (digits.length >= 8) {
+    result += "-" + digits.slice(8, 10);
+  }
+
+  if (digits.length >= 10) {
+    result += "-" + digits.slice(10, 12);
+  }
+
+  if (result.length === 17 && isDeleting.value) {
+    result = result.slice(0, -1);
+  }
+  if (result.length === 14 && isDeleting.value) {
+    result = result.slice(0, -1);
+  }
+  if (result.length === 10 && isDeleting.value) {
+    result = result.slice(0, -1);
+  }
+  if (result.length === 9 && isDeleting.value) {
+    result = result.replace(")", "");
+  }
+
+  return result;
 };
 
 onMounted(() => {
@@ -769,6 +867,20 @@ useHead({
 .checkout {
   color: var(--text-color);
   @include mixins.pageSpacing;
+
+  .loader_wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    z-index: 100;
+    top: 0;
+    left: 0;
+  }
 
   .checkout_subtitle {
     @include mixins.subtitleText;
@@ -1163,7 +1275,7 @@ useHead({
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid var(--accent-grey);
-  padding-top: 10px;
+  padding-top: 25px;
 }
 
 .checkout {

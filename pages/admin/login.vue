@@ -126,9 +126,7 @@ const validForm = computed(() => {
 });
 
 const login = async () => {
-  console.log("enter");
   try {
-    // /api/auth?auth=admin_login
     const result = await $fetch("/api/auth/admin/admin-login", {
       method: "POST",
       body: {
@@ -138,8 +136,6 @@ const login = async () => {
       }
     });
 
-    console.log(result, "result");
-
     if (result.statusCode === 403) {
       alert(result.message);
       return;
@@ -148,9 +144,6 @@ const login = async () => {
     if (result.statusCode === 200) {
       auth.setAdminRole("admin", result.token);
 
-      // if (result.token) {
-      //   localStorage.setItem("admin_token", result.token);
-      // }
       await navigateTo("/admin");
     }
   } catch (err) {

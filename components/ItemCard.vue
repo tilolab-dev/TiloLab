@@ -2,14 +2,14 @@
   <div
     class="item_card"
     :class="{
-      no_available_product: props.product.availableStock === 0,
+      no_available_product: props.product.availableStock <= 0,
       running_out_product: props.product.availableStock < 10 && props.product.availableStock > 0
     }"
   >
     <div v-if="hasDiscount" class="action_label">Акція</div>
 
     <NuxtLink :to="props.link" class="img_container">
-      <div v-if="props.product.availableStock === 0" class="no_available_label">
+      <div v-if="props.product.availableStock <= 0" class="no_available_label">
         Немає в наявності
       </div>
       <div
@@ -130,7 +130,7 @@ const discountedPrice = computed(() => {
     width: 100%;
     bottom: 0;
     color: white;
-    font-size: 1.3rem;
+    font-size: clamp(0.8rem, 2vw, 1.3rem);
     font-weight: 600;
     z-index: 1;
     text-align: center;
