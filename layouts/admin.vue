@@ -38,9 +38,7 @@
                   <!-- :class="activePage === item.activePage ? 'item_wrapper_active' : ''" -->
 
                   <div class="image_content">
-                    <!-- <img src="@/public/img/icons/house.png" alt="option" /> -->
-                    <!-- <AdminHome /> -->
-                    <!-- <item.imgPath /> -->
+                    <div v-if="item.activePin" class="active_pin"></div>
                     <component :is="item.componentName" />
                   </div>
                   <span class="text_content">
@@ -51,7 +49,7 @@
             </li>
 
             <li class="divider_item">
-              <h6 class="divider_item_text">Account pages</h6>
+              <h6 class="divider_item_text">Керування магазином</h6>
             </li>
 
             <li
@@ -62,10 +60,9 @@
             >
               <NuxtLink :to="item.linkPath">
                 <div class="item_wrapper" :class="{ item_wrapper_active: isActive(item) }">
-                  <!-- :class="activePage === item.activePage ? 'item_wrapper_active' : ''" -->
-
                   <div class="image_content">
-                    <!-- <img src="@/public/img/icons/house.png" alt="option" /> -->
+                    <div v-if="item.activePin" class="active_pin"></div>
+
                     <component :is="item.componentName" />
                   </div>
                   <span class="text_content">
@@ -78,24 +75,20 @@
         </div>
       </div>
       <div class="logout_wrapper">
-        <!-- <button class="logout_btn" style="margin-bottom: 10px" @click="toggleRealtime"> -->
-        <!-- @click="tooltip({ status: 'warning', message: 'tooltip was warning' })" -->
-        <!-- @click="toggleRealtime" -->
-        <!-- Tooltip
-        </button> -->
-        <button
+        <!-- TESTING TOOLTIP -->
+
+        <!-- <button
           class="logout_btn"
           style="margin-bottom: 10px"
           @click="tooltip({ status: 'error', message: 'tooltip was error' })"
         >
           Tooltip
-        </button>
+        </button> -->
 
         <button class="logout_btn" @click="exitHandler">Вийти</button>
       </div>
     </aside>
 
-    <!-- <main class="page-layout"> -->
     <main class="admin_content">
       <div class="mobile-burger py-2">
         <button class="mobile-burger-btn" @click="isSidebarOpen = !isSidebarOpen">
@@ -105,15 +98,7 @@
         </button>
       </div>
 
-      <!-- <slot @toggle-sidebar="handleSidebarToggle"/> -->
-      <!-- <div @toggle-sidebar="handleSidebarToggle">
-            <slot />
-          </div> -->
       <slot />
-
-      <!-- <Tooltips :props="tooltipProps"/> -->
-
-      <!-- :tooltipProps="tooltipProps"  -->
     </main>
     <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
       {{ tooltipMessage }}
@@ -171,6 +156,7 @@ const linksData = ref([
   {
     id: 1,
     activePage: "index",
+    activePin: false,
     title: "Головна",
     linkPath: "/admin",
     componentName: markRaw(AdminHome)
@@ -178,6 +164,7 @@ const linksData = ref([
   {
     id: 2,
     activePage: "analytics",
+    activePin: false,
     title: "Аналітика",
     linkPath: "/admin/analytics",
     componentName: markRaw(AdminAnalytics)
@@ -185,6 +172,7 @@ const linksData = ref([
   {
     id: 3,
     activePage: "buyers",
+    activePin: false,
     title: "Покупці",
     linkPath: "/admin/buyers",
     componentName: markRaw(AdminUsers)
@@ -192,6 +180,7 @@ const linksData = ref([
   {
     id: 4,
     activePage: "notifications",
+    activePin: computed(() => adminStore.hasUnread),
     title: "Повідомлення",
     linkPath: "/admin/notifications",
     componentName: markRaw(AdminNotifications)
@@ -199,6 +188,7 @@ const linksData = ref([
   {
     id: 5,
     activePage: "orders",
+    activePin: false,
     title: "Замовлення",
     linkPath: "/admin/orders",
     componentName: markRaw(AdminOrders)
@@ -206,6 +196,7 @@ const linksData = ref([
   {
     id: 6,
     activePage: "payment",
+    activePin: false,
     title: "Оплата",
     linkPath: "/admin/payments",
     componentName: markRaw(AdminPayments)
@@ -213,6 +204,7 @@ const linksData = ref([
   {
     id: 7,
     activePage: "products",
+    activePin: false,
     title: "Товари",
     linkPath: "/admin/products",
     componentName: markRaw(AdminProducts)
@@ -220,6 +212,7 @@ const linksData = ref([
   {
     id: 8,
     activePage: "settings",
+    activePin: false,
     title: "Налаштування",
     linkPath: "/admin/settings",
     componentName: markRaw(AdminSettings)
@@ -233,7 +226,7 @@ const showTooltip = ref(false);
 const tooltipStatus = ref("");
 const tooltipMessage = ref("");
 const isSidebarOpen = ref(true);
-// const activePage = ref("index");
+// const isUnreadedNotifications = ref(false);
 
 const modalStore = useModalStore();
 const indexStore = useIndexStore();
@@ -244,6 +237,9 @@ const route = useRoute();
 
 let audio = null;
 let audioUnlocked = false;
+
+let unsubscribe = null;
+let unlock = null;
 
 const initAudio = () => {
   if (audioUnlocked) return;
@@ -259,13 +255,6 @@ const isActive = (item) => {
   }
   return route.path === item.linkPath || route.path.startsWith(item.linkPath + "/");
 };
-// const burgerBtn = computed(() => indexStore.adminBurgerBtn);
-
-// watch(burgerBtn, () => {
-//   burgerBtn.value
-//     ? (isSidebarOpen.value = true)
-//     : (isSidebarOpen.value = false);
-// });
 
 const tooltip = (obj) => {
   const { status, message } = obj;
@@ -275,7 +264,7 @@ const tooltip = (obj) => {
   showTooltip.value = true;
   setTimeout(() => {
     showTooltip.value = false;
-  }, 3000);
+  }, 4000);
 };
 
 const closeSidebar = () => {
@@ -296,8 +285,17 @@ const exitHandler = async () => {
   }
 };
 
-const playSound = () => {
+const updateNotifications = async () => {
+  await adminStore.getNotes();
+
+  // isUnreadedNotifications.value = adminStore.notifications.some((el) => !el.isReaded);
+
+  // console.log(isUnreadedNotifications.value, "isUnreaded");
+};
+const playSound = async () => {
   if (!audioUnlocked || !audio) return;
+
+  await updateNotifications();
 
   audio.currentTime = 0;
   audio.play().catch(() => {});
@@ -306,9 +304,7 @@ const playSound = () => {
 const toggleRealtime = () => {
   initAudio();
   realtimeId.value++;
-  // realtimeNote.value = [...realtimeNote.value, realtimeId.value];
   realtimeNote.value.push(realtimeId.value);
-  // console.log(realtimeNote.value);
   playSound();
 };
 
@@ -317,36 +313,45 @@ const removeRealTimeItem = (item) => {
   realtimeNote.value = realtimeNote.value.filter((el) => el !== item);
 };
 
-// definePageMeta({
-//   layout: "admin",
-//   middleware: "admin"
+// onMounted(async () => {
+//   const unlock = () => {
+//     initAudio();
+//     document.removeEventListener("click", unlock);
+//   };
+
+//   document.addEventListener("click", unlock);
+
+//   const unsubscribe = useOrderRealtime(() => {
+//     toggleRealtime();
+//   });
+
+//   await adminStore.getNotes();
+
+//   await updateNotifications();
+
+//   onBeforeUnmount(() => {
+//     unsubscribe();
+//     document.removeEventListener("click", unlock);
+//   });
 // });
-onMounted(() => {
-  // const unsubscribe = useOrderRealtime((order) => {
-  //   console.log(order, "orderLog");
-  //   playSound();
-  // });
+onMounted(async () => {
+  await updateNotifications();
 
-  // onBeforeUnmount(() => {
-  //   unsubscribe();
-  // });
-
-  const unlock = () => {
+  unlock = () => {
     initAudio();
     document.removeEventListener("click", unlock);
   };
 
   document.addEventListener("click", unlock);
 
-  const unsubscribe = useOrderRealtime(() => {
-    // playSound();
+  unsubscribe = useOrderRealtime(() => {
     toggleRealtime();
   });
+});
 
-  onBeforeUnmount(() => {
-    unsubscribe();
-    document.removeEventListener("click", unlock);
-  });
+onBeforeUnmount(() => {
+  if (unsubscribe) unsubscribe();
+  if (unlock) document.removeEventListener("click", unlock);
 });
 </script>
 
@@ -434,6 +439,7 @@ onMounted(() => {
 
   &[aria-expanded="true"] {
     transform: translateX(0);
+    margin-left: 1.5vw;
   }
 
   @media (min-width: 1280px) {
@@ -509,12 +515,15 @@ onMounted(() => {
 
     &_item {
       margin-top: 0.125rem;
+      cursor: pointer;
+
       width: 100%;
     }
 
     .divider_item {
       width: 100%;
-      margin-top: 1rem;
+      margin-block: 1rem;
+
       &_text {
         padding-left: 1.5rem;
         margin-left: 0.5rem;
@@ -555,10 +564,27 @@ onMounted(() => {
       text-align: center;
       fill: var(--accent-grey);
       transition: all ease 0.3s;
+      position: relative;
+
+      svg {
+        width: clamp(17px, 3vw, 20px);
+        height: clamp(17px, 3vw, 20px);
+        aspect-ratio: 1 / 1;
+      }
 
       @media (min-width: 1280px) {
         padding: 0.375rem;
       }
+    }
+
+    .active_pin {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      position: absolute;
+      background: var(--accent-red);
+      top: 0;
+      right: 0;
     }
 
     .text_content {

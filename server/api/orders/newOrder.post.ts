@@ -4,8 +4,6 @@ import { eventHandler, readBody } from "h3";
 export default eventHandler(async (event: any) => {
   const body = await readBody(event);
 
-  console.log(body, "body");
-
   if (!body) {
     return { statusCode: 400, message: "No data received" };
   }

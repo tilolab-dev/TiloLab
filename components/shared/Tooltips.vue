@@ -3,7 +3,7 @@
     <div class="tooltip_content_wrapper">
       <div class="status_wrapper">
         <component :is="tooltipIcon" v-if="tooltipIcon" />
-        <p class="">{{ props.tooltipStatus }}</p>
+        <p class="">{{ tooltipName }}</p>
       </div>
       <div class="text_wrapper">
         <slot />
@@ -22,9 +22,22 @@ const props = defineProps({
   tooltipStatus: {
     type: String,
     default: "success"
-  },
-  tooltipName: {
-    type: String
+  }
+});
+
+const tooltipName = computed(() => {
+  switch (props.tooltipStatus) {
+    case "success":
+      return "Успіх";
+
+    case "warning":
+      return "Увага";
+
+    case "error":
+      return "Помилка";
+
+    default:
+      return null;
   }
 });
 
@@ -64,14 +77,13 @@ const tooltipStyle = computed(() => {
 .tooltip {
   height: auto;
   width: 60%;
-  height: 170px;
+  height: 150px;
   text-align: center;
   position: fixed;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  animation: tooltipAnimation 3s ease-in-out forwards;
-  // background: rgba(13, 12, 13, 0.5);
+  animation: tooltipAnimation 4s ease-in-out forwards;
   backdrop-filter: blur(10px);
   border-radius: 2vw;
   padding-block: 40px;
@@ -133,7 +145,7 @@ const tooltipStyle = computed(() => {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     padding: 10px 50px 10px 10px;
-    min-width: 300px;
+    min-width: clamp(120px, 55vw, 300px);
     height: 100%;
   }
 

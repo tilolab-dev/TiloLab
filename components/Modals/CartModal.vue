@@ -20,7 +20,6 @@
                 :data-id="item.product.id"
                 class="cart_item"
               >
-                {{ console.log(item, "item") }}
                 <div class="cart_item_main">
                   <div class="details">
                     <img :src="item.product.img?.[0]?.path" alt="item-img" />
@@ -85,7 +84,7 @@
 
         <div v-if="cartStore.cart.length !== 0" class="cart_bottom">
           <div class="cart_summary">
-            <span class="cart_summary_text"> загалом: </span>
+            <span class="cart_summary_text"> Всього: </span>
             <span> {{ cartStore.totalPrice.toFixed(2) }} грн </span>
           </div>
 
@@ -392,6 +391,8 @@ const goToCheckout = () => {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  border-top: 1px solid var(--accent-grey);
+  padding-top: 10px;
   width: 100%;
   height: fit-content;
   gap: 1.5rem;

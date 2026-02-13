@@ -30,16 +30,19 @@ export default defineNuxtConfig({
     api_secret_key: process.env.API_SECRET_KEY,
     api_service_role_key: process.env.API_SERVICE_ROLE_KEY,
     test_bank_api_key: process.env.TEST_BANK_API_KEY,
+    // bank_test_public_key: process.env.BANK_TEST_PUBLIC_KEY,
     bank_api_key: process.env.BANK_API_KEY,
     bank_webhook_url: process.env.BANK_WEBHOOK_URL,
     bank_public_key: process.env.BANK_PUBLIC_KEY,
     nova_post_api: process.env.NEW_POST_API,
+    nova_post_test_api_key: process.env.NOVA_POST_TEST_API_KEY,
     admin_user_name: process.env.ADMIN_USERNAME,
     admin_password: process.env.ADMIN_PASSWORD,
     jwt_secret: process.env.JWT_SECRET,
     public: {
       api_base_url: process.env.API_BASE_URL,
-      nova_post_uri: process.env.NOVA_POST_URI
+      nova_post_uri: process.env.NOVA_POST_URI,
+      nova_post_test_uri: process.env.NOVA_POST_TEST_URI
     }
   },
   css: [
@@ -82,7 +85,7 @@ export default defineNuxtConfig({
   },
   vite: {
     server: {
-      allowedHosts: ["7fdf-46-150-69-16.ngrok-free.app"],
+      allowedHosts: ["8e57-46-150-69-76.ngrok-free.app"],
       strictPort: false
     },
     plugins: [

@@ -680,6 +680,7 @@ onMounted(async () => {
                     font-size: 0.875rem;
                     color: #ffffff;
                     transition: all 0.2s ease-in-out;
+                    aspect-ratio: 1 / 1;
                     border-radius: 50%;
                     height: 3rem;
                     width: 3rem;
@@ -794,7 +795,7 @@ onMounted(async () => {
                 }
                 .button_cell .table_btn_wrap {
                   display: flex;
-                  align-items: stretch;
+                  align-items: center;
                   justify-content: center;
                   gap: 10px;
                 }

@@ -41,7 +41,7 @@
 //   await prisma.$disconnect();
 //   process.exit(0);
 // });
-import { PrismaClient } from "@/prisma/generated/prisma/client";
+import { PrismaClient } from "@/prisma/generated/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 const prismaClientSingleton = () => {
