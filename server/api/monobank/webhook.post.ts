@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
 
   const signatureBuffer = Buffer.from(sign, "base64");
 
-  const publicKey = Buffer.from(process.env.BANK_TEST_PUBLIC_KEY!, "base64");
+  const publicKey = Buffer.from(process.env.BANK_PUBLIC_KEY!, "base64");
   if (!publicKey) throw createError({ statusCode: 500, message: "No public key" });
 
   const isValid = crypto.verify(
@@ -79,15 +79,27 @@ export default defineEventHandler(async (event) => {
     return { ok: true, message: `Замовлення вже оплачено: ${order.status}` };
   }
 
+  let runningOutItems = [] as any[];
+
   await prisma.$transaction(async (tx) => {
     for (const item of order.orderItems) {
-      await tx.product.update({
+      const updatedProduct = await tx.product.update({
         where: { id: item.productId },
         data: {
           stockValue: { decrement: item.quantity },
           stockReserved: { decrement: item.quantity }
+        },
+        include: {
+          translations: true
         }
       });
+
+      if ((updatedProduct.stockValue || 0) < 10) {
+        runningOutItems.push({
+          ...updatedProduct,
+          actualStock: (updatedProduct.stockValue ?? 0) - item.quantity
+        });
+      }
     }
     console.log(order, order.id, "order");
     await tx.order.update({
@@ -100,8 +112,26 @@ export default defineEventHandler(async (event) => {
       data: { status: "SUCCESS" }
     });
 
+    await tx.adminNotification.create({
+      data: {
+        message: `Нове замовлення на сумму ${order.totalPrice}`,
+        isReaded: false
+      }
+    });
+
     // IMPLEMENT NOTIFICATION FEATURE
   });
+
+  for (const item of runningOutItems) {
+    await prisma.adminNotification.create({
+      data: {
+        message: `Товар ${item.translations?.[0]?.title || null} залишилось менше ${runningOutItems?.[0]?.actualStock ?? ""} одиниць`
+      }
+    });
+  }
+
+  // console.log(runningOutItems?.translations?.[0]?.title || null, "runningOutItems");
+  console.log(runningOutItems?.[0]?.translations?.[0]?.title || null, "runningOutItems");
 
   console.log("Payment was success");
 

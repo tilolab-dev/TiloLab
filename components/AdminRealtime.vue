@@ -66,7 +66,7 @@ const props = defineProps({
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    padding-right: 2vw;
+    padding-right: calc(2vw + 10px);
     padding-bottom: 2vh;
     gap: 10px;
 

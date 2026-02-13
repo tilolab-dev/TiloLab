@@ -98,7 +98,7 @@ import CloseIcon from "~/assets/icons/close-icon.svg";
 
 const modalStore = useModalStore();
 const categoryStore = useCategoryStore();
-// const emit = defineEmits([]);
+const emit = defineEmits(["tooltip"]);
 
 const file = ref(null);
 const fileReady = ref(false);
@@ -285,10 +285,10 @@ const addNewCategory = () => {
 
       if (uploadNewCategory.statusCode === 200) {
         alert("Категорія успішно додана");
-        // emit("tooltip", {
-        //   status: "success",
-        //   message: "Категорія успішно додана",
-        // });
+        emit("tooltip", {
+          status: "success",
+          message: "Категорія успішно додана"
+        });
       }
 
       loaderState.value = false;

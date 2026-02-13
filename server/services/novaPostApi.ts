@@ -1,18 +1,35 @@
 import PostalServiceApi from "./postalServicesApi";
 
-export default class NovaPoshtaApi extends PostalServiceApi {
-  // constructor() {
-  //   // const config = useRuntimeConfig();
+interface IPayloadTtn {
+  PayerType: string;
+  PaymentMethod: string;
+  CargoType: string;
+  Weight: string | number;
+  ServiceType: string;
+  SeatsAmount: string | number;
+  Description: string;
 
-  //   constructor(private baseURL: string);
-  // }
+  Cost: string | number;
+
+  CitySender: string;
+  Sender: string;
+  SenderAdress: string;
+  ContactSender: string;
+  SendersPhone: string;
+
+  FirstName: string;
+  LastName: string;
+  Phone: string;
+
+  CityRecipient: string;
+  RecipientAddress: string;
+}
+export default class NovaPoshtaApi extends PostalServiceApi {
   constructor(baseUrl: string, apiKey: string) {
     super(baseUrl, apiKey);
   }
 
   override fetchCity(cityName: string) {
-    // console.log(0);
-    // console.log(this.baseUrl, this.apiKey);
     return super.fetchCity(cityName, "AddressGeneral", "searchSettlements");
   }
 
@@ -36,7 +53,6 @@ export default class NovaPoshtaApi extends PostalServiceApi {
   }
 
   async fetchOfficeByNumber(cityName: string, number: number | string) {
-    console.log(cityName, number);
     const body = {
       apiKey: this.apiKey,
       modelName: "AddressGeneral",
@@ -56,8 +72,6 @@ export default class NovaPoshtaApi extends PostalServiceApi {
   }
 
   async fetchPostAddresses(cityName: string) {
-    // "CategoryOfWarehouse" : "Branch",
-
     const body = {
       apiKey: this.apiKey,
       modelName: "AddressGeneral",
@@ -76,7 +90,6 @@ export default class NovaPoshtaApi extends PostalServiceApi {
   }
 
   async fetchPostomatsByNumber(cityName: string, number: number | string) {
-    console.log(cityName, number);
     const body = {
       apiKey: this.apiKey,
       modelName: "AddressGeneral",
@@ -88,6 +101,20 @@ export default class NovaPoshtaApi extends PostalServiceApi {
         FindByString: number,
         Page: "1"
       }
+    };
+
+    return this.request("", {
+      method: "POST",
+      body
+    });
+  }
+
+  async getTtn(payload: IPayloadTtn) {
+    const body = {
+      apiKey: this.apiKey,
+      modelName: "InternetDocument",
+      calledMethod: "save",
+      methodProperties: payload
     };
 
     return this.request("", {

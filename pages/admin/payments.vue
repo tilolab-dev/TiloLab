@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="payments_section">
-      <div class="payment_container">
+      <div class="payments_container">
         <div class="info_content">
           <div class="info_content_wrapper">
             <div ref="productElem" class="wrapper_content">
@@ -189,7 +189,7 @@ definePageMeta({
 
   .info_content {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 10%);
     padding: 24px;
     margin: 0 auto;
     position: relative;
