@@ -403,7 +403,7 @@ const confirmOrderHandler = async () => {
       method: "POST",
       body: {
         // userId: "", left after auth implementation
-        totalPrice: totalDeliveryPrice,
+        totalPrice: totalDeliveryPrice.value,
         paymentMethod: "monobank",
         orderItems: getOrderItems,
         email: email.value,
@@ -861,7 +861,7 @@ useHead({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @use "@/style/mixins.scss" as mixins;
 .checkout {
   color: var(--text-color);

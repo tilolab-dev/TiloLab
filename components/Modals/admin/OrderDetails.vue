@@ -5,8 +5,6 @@
     </div>
     <div class="order_detail_wrapper">
       <div class="order_detail_top">
-        <h2 class="order_detail_title">Інформація про замовлення</h2>
-
         <div class="close_button_wrapper">
           <button @click="modalStore.closeModal">
             <CloseIcon />
@@ -14,132 +12,208 @@
         </div>
       </div>
 
-      <div class="order_detail_main">
-        <div class="info">
-          <h3 class="order_number">№ Замовлення: {{ modalProps.order.orderNumber }}</h3>
-          <span>
-            Від: {{ modalProps.order.createdAt.slice(0, 10) }} -
-            {{ modalProps.order.createdAt.slice(11, 19) }}</span
-          >
-        </div>
-        <div class="total_price">
-          <h3>Всього:</h3>
-          <p>{{ modalProps.order.totalPrice }} грн</p>
-        </div>
+      <div class="order_detail_sections">
+        <button
+          :style="activeTab === 'order-info' ? 'border-bottom: 1px solid var(--accent-color)' : ''"
+          class="section"
+          @click="activeTab = 'order-info'"
+        >
+          Інформація про замовлення
+        </button>
+        <button
+          :style="activeTab === 'create-ttn' ? 'border-bottom: 1px solid var(--accent-color)' : ''"
+          class="section"
+          @click="activeTab = 'create-ttn'"
+        >
+          Сформувати ТТН
+        </button>
+        <button
+          :style="
+            activeTab === 'create-sender' ? 'border-bottom: 1px solid var(--accent-color)' : ''
+          "
+          class="section"
+          @click="activeTab = 'create-sender'"
+        >
+          Створити відправника
+        </button>
       </div>
 
-      <div class="order_status">
-        <h3>Статус замовлення:</h3>
-        <p>{{ modalProps.order.status }}</p>
-      </div>
+      <div v-if="activeTab === 'order-info'" class="order_detail_main_info">
+        <div class="order_detail_main">
+          <div class="info">
+            <h3 class="order_number">№ Замовлення: {{ modalProps.order.orderNumber }}</h3>
+            <span>
+              Від: {{ modalProps.order.createdAt.slice(0, 10) }} -
+              {{ modalProps.order.createdAt.slice(11, 19) }}</span
+            >
+          </div>
+          <div class="total_price">
+            <h3>Всього:</h3>
+            <p>{{ modalProps.order.totalPrice }} грн</p>
+          </div>
+        </div>
 
-      <div class="order_info_main">
-        <div class="client">
-          <strong> Клієнт: </strong>
+        <div class="order_status">
+          <h3>Статус замовлення:</h3>
+          <p>{{ modalProps.order.status }}</p>
+        </div>
 
-          <div class="client_main">
-            <img
-              :src="!modalProps.order.userId ? '/icons/user/guest.webp' : '/icons/user/user.webp'"
-              alt="avatar"
-              width="50"
-              height="50"
-            />
+        <div class="order_info_main">
+          <div class="client">
+            <strong> Клієнт: </strong>
 
-            <ul class="info_wrapper">
+            <div class="client_main">
+              <img
+                :src="!modalProps.order.userId ? '/icons/user/guest.webp' : '/icons/user/user.webp'"
+                alt="avatar"
+                width="50"
+                height="50"
+              />
+
+              <ul class="info_wrapper">
+                <li>
+                  <strong>Прізвище, ім'я:</strong>
+                  <p>{{ modalProps.order.shippingInfo.recipient ?? "" }}</p>
+                </li>
+
+                <li>
+                  <strong>Місто:</strong>
+                  <p>{{ modalProps.order.shippingInfo.city }}</p>
+                </li>
+                <li>
+                  <strong>Адреса:</strong>
+                  <p>{{ modalProps.order.shippingInfo.address || "-" }}</p>
+                </li>
+                <li>
+                  <strong>Телефон:</strong>
+                  <p>{{ modalProps.order.shippingInfo.phoneNumber }}</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="shipping_info">
+            <ul class="shipping_info_wrapper">
               <li>
-                <strong>Прізвище, ім'я:</strong>
-                <p>{{ modalProps.order.shippingInfo.recipient }}</p>
+                <strong>Пошта:</strong>
+                <p>{{ modalProps.order.shippingInfo.deliveryMethod }}</p>
               </li>
-
               <li>
                 <strong>Місто:</strong>
                 <p>{{ modalProps.order.shippingInfo.city }}</p>
               </li>
               <li>
-                <strong>Адреса:</strong>
-                <p>{{ modalProps.order.shippingInfo.address || "-" }}</p>
+                <strong>Відділення:</strong>
+                <p>{{ modalProps.order.shippingInfo.postOffice.length === 0 ? "-" : "" }}</p>
+              </li>
+              <li v-if="modalProps.order.shippingInfo.postOffice.length > 0">
+                <p>{{ modalProps.order.shippingInfo.postOffice || "-" }}</p>
               </li>
               <li>
-                <strong>Телефон:</strong>
-                <p>{{ modalProps.order.shippingInfo.phoneNumber }}</p>
+                <strong>Поштомат:</strong>
+                <p>{{ modalProps.order.shippingInfo.postomat.length === 0 ? "-" : "" }}</p>
+              </li>
+              <li v-if="modalProps.order.shippingInfo.postomat.length > 0">
+                <p>
+                  {{ modalProps.order.shippingInfo.postomat }}
+                </p>
               </li>
             </ul>
           </div>
         </div>
 
-        <div class="shipping_info">
-          <ul class="shipping_info_wrapper">
-            <li>
-              <strong>Пошта:</strong>
-              <p>{{ modalProps.order.shippingInfo.deliveryMethod }}</p>
-            </li>
-            <li>
-              <strong>Місто:</strong>
-              <p>{{ modalProps.order.shippingInfo.city }}</p>
-            </li>
-            <li>
-              <strong>Відділення:</strong>
-              <p>{{ modalProps.order.shippingInfo.postOffice.length === 0 ? "-" : "" }}</p>
-            </li>
-            <li v-if="modalProps.order.shippingInfo.postOffice.length > 0">
-              <p>{{ modalProps.order.shippingInfo.postOffice || "-" }}</p>
-            </li>
-            <li>
-              <strong>Поштомат:</strong>
-              <p>{{ modalProps.order.shippingInfo.postomat.length === 0 ? "-" : "" }}</p>
-            </li>
-            <li v-if="modalProps.order.shippingInfo.postomat.length > 0">
-              <p>
-                {{ modalProps.order.shippingInfo.postomat }}
-              </p>
+        <div class="items_info">
+          <strong>Товари:</strong>
+          <ul class="items_info_wrapper">
+            <li
+              v-for="item in modalProps.order.orderItems"
+              :key="item.id"
+              class="items_info_product"
+            >
+              <div class="product_main">
+                <img :src="item.product.img[0].path" alt="product" width="50" height="50" />
+                <p>{{ item.product.translations[0].title }}</p>
+              </div>
+
+              <div class="product_summ">
+                <p>{{ item.quantity }}</p>
+                <p>X</p>
+                <p>
+                  {{ item.product.productPrice }}
+                </p>
+                <p>
+                  <strong> Всього :</strong>
+                  {{ item.quantity * item.product.productPrice }} грн.
+                </p>
+              </div>
             </li>
           </ul>
         </div>
+
+        <div class="change_status">
+          <strong>Змінити статус:</strong>
+          <select v-model="selectValue" name="select">
+            <option v-for="item in selectData" :key="item.id" :value="item.value">
+              {{ item.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="button_wrapper">
+          <button
+            :class="activeButton ? 'active_btn' : ''"
+            class="accept_btn"
+            @click="activeButton ? changeStatus() : ''"
+          >
+            Підтвердити зміни
+          </button>
+
+          <button class="cancel_btn" @click="modalStore.closeModal">Скасувати</button>
+        </div>
       </div>
-
-      <div class="items_info">
-        <strong>Товари:</strong>
-        <ul class="items_info_wrapper">
-          <li v-for="item in modalProps.order.orderItems" :key="item.id" class="items_info_product">
-            <div class="product_main">
-              <img :src="item.product.img[0].path" alt="product" width="50" height="50" />
-              <p>{{ item.product.translations[0].title }}</p>
-            </div>
-
-            <div class="product_summ">
-              <p>{{ item.quantity }}</p>
-              <p>X</p>
-              <p>
-                {{ item.product.productPrice }}
-              </p>
-              <p>
-                <strong> Всього :</strong>
-                {{ item.quantity * item.product.productPrice }} грн.
-              </p>
-            </div>
-          </li>
-        </ul>
+      <div v-else-if="activeTab === 'create-ttn'" class="order_detail_ttn_info">
+        <div class="select_sender">
+          <div>Оберіть відправника</div>
+          <select id="sender" name="sender"></select>
+        </div>
+        <div class="create_ttn">
+          <p>Створити експресс накладну для замовлення</p>
+          <button @click="createTtnHandler">Створити</button>
+        </div>
       </div>
+      <div v-else class="create_sender">
+        <div class="create_sender_title">Створити відправника</div>
 
-      <div class="change_status">
-        <strong>Змінити статус:</strong>
-        <select v-model="selectValue" name="select">
-          <option v-for="item in selectData" :key="item.id" :value="item.value">
-            {{ item.name }}
-          </option>
-        </select>
-      </div>
-
-      <div class="button_wrapper">
-        <button
-          :class="activeButton ? 'active_btn' : ''"
-          class="accept_btn"
-          @click="activeButton ? changeStatus() : ''"
-        >
-          Підтвердити зміни
-        </button>
-
-        <button class="cancel_btn" @click="modalStore.closeModal">Скасувати</button>
+        <div class="items_wrapper">
+          <div class="item">
+            <div class="item_name">Імʼя:</div>
+            <input class="item_input" type="text" placeholder="Введіть імʼя" />
+          </div>
+          <div class="item">
+            <div class="item_name">По батькові:</div>
+            <input type="text" placeholder="Введіть по батькові" />
+          </div>
+          <div class="item">
+            <div class="item_name">Прізвище:</div>
+            <input type="text" placeholder="Введіть прізвище" />
+          </div>
+          <div class="item">
+            <div class="item_name">Номер телефону:</div>
+            <input type="text" placeholder="Введіть номер телефону" />
+          </div>
+          <div class="item">
+            <div class="item_name">Відділення Нової пошти (не обовʼязково):</div>
+            <input type="text" placeholder="Виберіть номер відділення" />
+          </div>
+          <div class="item">
+            <div class="item_name">Поштомат (не обовязково):</div>
+            <input type="text" placeholder="Виберіть номер поштомату" />
+          </div>
+        </div>
+        <span class="bottom_note">
+          Обовʼязково потрібно вибрати номер відділення чи номер поштомату
+        </span>
+        <button class="create_btn" @click="createNewSender">Створити</button>
       </div>
     </div>
   </div>
@@ -149,7 +223,7 @@
 import CloseIcon from "~/assets/icons/close-icon.svg";
 // import ErrorIcon from "~/assets/icons/error.svg";
 
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useModalStore } from "@/store/modal-store";
 import { useOrdersStore } from "@/store/orders-store";
 
@@ -157,6 +231,16 @@ const modalStore = useModalStore();
 const orderStore = useOrdersStore();
 const loaderState = ref(false);
 const selectValue = ref();
+const activeTab = ref("order-info");
+
+//SENDER
+
+const senderName = ref("");
+const senderSurname = ref("");
+const senderFamily = ref("");
+const senderPhoneNumber = ref("");
+const senderPostomat = ref("");
+const senderPostOffice = ref(false);
 
 const modalProps = defineProps({
   order: {
@@ -167,10 +251,6 @@ const modalProps = defineProps({
 
 const activeButton = computed(() => {
   return selectValue.value !== modalProps.order.status;
-});
-
-watch(activeButton, (newVal) => {
-  console.log(activeButton.value, newVal);
 });
 
 const selectData = ref([
@@ -210,6 +290,63 @@ const selectData = ref([
     name: "Скасований"
   }
 ]);
+
+const createNewSender = async () => {
+  if (senderName.value.length < 2) {
+    alert("Імʼя повинно бути більше 2х символів");
+    return;
+  }
+  if (senderSurname.value.length < 2) {
+    alert("По батькові повинно бути більше 2х символів");
+    return;
+  }
+  if (senderFamily.value.length < 2) {
+    alert("Прізвище повинно бути більше 2х символів");
+    return;
+  }
+  if (senderPostomat.value.length < 2 && senderPostOffice.value.length < 2) {
+    alert("Оберіть номер відділення чи номер поштомату");
+    return;
+  }
+  try {
+    const createSenderRes = await $fetch("/api/np/create-sender", {
+      method: "POST",
+      body: {
+        name: senderName.value,
+        surname: senderSurname.value,
+        family: senderFamily.value,
+        phoneNumber: senderPhoneNumber.value,
+        senderPostomat: senderPostomat.value,
+        senderPostOffice: senderPostOffice.value
+      }
+    });
+
+    if (createSenderRes.statusCode === 200) {
+      alert("Відправник створенний успішно");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const createTtnHandler = async (order) => {
+  console.log(order);
+  try {
+    const getTtnRes = await $fetch("/api/np/get-ttn", {
+      method: "POST",
+      body: {
+        cost: "any",
+        weight: "any",
+        citySender: "any",
+        cityRecipient: "any"
+      }
+    });
+
+    console.log(getTtnRes);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 const changeStatus = async () => {
   loaderState.value = true;
@@ -274,7 +411,7 @@ onMounted(() => {
 
   .order_detail_top {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     padding-inline: 20px;
     border-bottom: 1px solid var(--accent-grey);
@@ -335,6 +472,28 @@ onMounted(() => {
     }
   }
 
+  .order_detail_sections {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--accent-grey);
+    padding-bottom: 10px;
+    width: 100%;
+    height: auto;
+    .section {
+      flex: 1;
+      width: 100%;
+      height: auto;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 10px;
+      transition: all ease 0.3s;
+    }
+  }
+
   .order_status {
     width: 100%;
     height: auto;
@@ -369,6 +528,36 @@ onMounted(() => {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
+    }
+  }
+
+  .order_detail_main_info,
+  .order_detail_ttn_info,
+  .create_sender {
+    width: 100%;
+    height: auto;
+    position: relative;
+    min-height: 500px;
+  }
+
+  .order_detail_ttn_info {
+    .select_sender {
+      padding: 10px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 20px;
+
+      select {
+        width: 80%;
+        height: 30px;
+        background: black;
+        border-radius: 5px;
+        padding: 5px 10px;
+        outline: var(--accent-red);
+        margin: 0 auto;
+      }
     }
   }
 
@@ -509,6 +698,79 @@ onMounted(() => {
       @include mixins.mainText;
       font-size: 1rem;
       cursor: pointer;
+    }
+  }
+
+  .create_ttn {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 50px;
+    padding: 50px 20px 10px;
+
+    button {
+      @include mixins.accentBtn;
+    }
+  }
+
+  .create_sender {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    position: relative;
+    padding: 15px 20px;
+
+    &_title {
+      @include mixins.mainText;
+    }
+
+    .items_wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      width: 80%;
+      height: auto;
+      gap: 10px;
+    }
+
+    .item {
+      @include mixins.defaultInput;
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    input {
+      width: 100%;
+      height: auto;
+      background: black;
+      border-radius: 5px !important;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .bottom_note {
+      font-weight: 600;
+      font-family: "Montserrat", sans-serif;
+      transform: translateY(-50%);
+      color: var(--error-border);
+    }
+
+    button {
+      @include mixins.accentBtn;
+      width: 100%;
+      height: auto;
+      padding-block: 5px;
     }
   }
 }

@@ -4,8 +4,8 @@
       <div class="title_page">
         <h1>Користувачі</h1>
       </div>
-      <div class="payments_section">
-        <div class="payment_container">
+      <div class="buyers_section">
+        <div class="buyers_container">
           <div class="info_content">
             <div class="info_content_wrapper">
               <div ref="productElem" class="wrapper_content">
@@ -162,11 +162,11 @@ definePageMeta({
 <style lang="scss" scoped>
 @use "@/style/mixins.scss" as mixins;
 
-.payments_section {
+.buyers_section {
   height: 100vh;
   position: relative;
 
-  .payments_container {
+  .buyers_container {
     padding-bottom: 2px;
     display: flex;
     flex-direction: column;
@@ -177,7 +177,7 @@ definePageMeta({
 
   .info_content {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 10%);
     padding: 24px 0;
     margin: 0 auto;
     position: relative;

@@ -299,8 +299,6 @@ class Auth {
       body: verifyData
     });
 
-    console.log(processVerify, "processVerify");
-
     if (processVerify.status === 200) {
       supabaseConfirmState.value = true;
     } else {
