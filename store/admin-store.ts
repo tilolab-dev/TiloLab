@@ -4,8 +4,13 @@ export const useAdminStore = defineStore("admin-store", {
   state: () => ({
     adminRole: null as string | null,
     user: null as {} | null,
-    token: null as string | null
+    token: null as string | null,
+    senderData: null as [] | null,
+    notifications: [] as any | null
   }),
+  getters: {
+    hasUnread: (state) => state.notifications.some((n: any) => !n.isReaded)
+  },
 
   actions: {
     setAdminRole(role: string, token?: string) {
@@ -29,6 +34,77 @@ export const useAdminStore = defineStore("admin-store", {
         }
       } catch (err) {
         console.log(err);
+      }
+    },
+    async getSenderData() {
+      try {
+        const getSendersRes = $fetch("/api/np/get-senders", {
+          method: "GET"
+        });
+
+        console.log(getSendersRes);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getNotes() {
+      try {
+        const getNotificationsRes = await $fetch("/api/admin/notifications/get-notifications", {
+          method: "GET"
+        });
+
+        if (!getNotificationsRes) {
+          console.log("Немаэ новий повідомлень");
+          return;
+        }
+
+        this.notifications = getNotificationsRes.data ?? [];
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    async updateNoteStatus(id: string | number) {
+      try {
+        const changeStatusRes = await $fetch<any>("/api/admin/notifications/new-status", {
+          method: "PATCH",
+          body: {
+            noteId: id
+          }
+        });
+
+        if (changeStatusRes.statusCode !== 200) {
+          console.error(changeStatusRes.message);
+        }
+
+        // console.log(changeStatusRes.data);
+
+        const note = this.notifications.find((el: any) => el.id === changeStatusRes.data.id);
+
+        if (note) {
+          note.isReaded = changeStatusRes.data.isReaded;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    async deleteNote(id: string | number) {
+      try {
+        const deleteNoteRes = await $fetch<any>("/api/admin/notifications/delete-note", {
+          method: "DELETE",
+          body: {
+            noteId: id
+          }
+        });
+
+        console.log(deleteNoteRes, "delete res");
+
+        if (deleteNoteRes.statusCode !== 200) {
+          console.log("Something went wrong during deleting note");
+        }
+
+        this.notifications = this.notifications.filter((el: any) => el.id !== id);
+      } catch (err) {
+        console.error(err);
       }
     },
     setUser(user: any) {

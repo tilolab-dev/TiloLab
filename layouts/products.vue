@@ -43,6 +43,7 @@ import { useIndexStore } from "@/store/index-store";
 
 import Modal from "@/components/Modals/Modal.vue";
 import BreadCrumbs from "@/components/shared/BreadCrumbs.vue";
+import Tooltips from "@/components/shared/Tooltips.vue";
 
 const modalStore = useModalStore();
 const indexStore = useIndexStore();

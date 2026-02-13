@@ -117,7 +117,7 @@
                               textDecoration: product.discountPercent > 0 ? 'line-through' : '',
                               color: product.discountPercent > 0 ? 'var(--accent-red)' : ''
                             }" -->
-                              {{ order.totalPrice / 100 }} UAH
+                              {{ order.totalPrice }} UAH
                             </span>
                             <!-- <span v-if="product.discountPercent > 0" class="discount_price">
                             UAH

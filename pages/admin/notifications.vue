@@ -7,28 +7,24 @@
 
       <div class="notification_wrapper">
         <div
-          v-for="note in noteData"
+          v-for="note in adminStore.notifications"
           :key="note.id"
           :class="{
-            activeWarning: note.type === 'WARNING' && note.status === 'NEW',
+            activeWarning: note.type === 'WARNING' && !note.isReaded,
             activeNote: note.type === 'NOTE' && note.status === 'NEW'
           }"
           class="notification_wrapper_note"
         >
           <div class="note_content">
             <img :src="note.img" alt="icon" />
-            <p>{{ note.text }}</p>
+            <p>{{ note.message }}</p>
           </div>
 
           <div class="button_group">
-            <button
-              v-if="note.status === 'NEW'"
-              class="accept_btn"
-              @click="changeStatusHandler(note.id)"
-            >
+            <button v-if="!note.isReaded" class="accept_btn" @click="changeStatusHandler(note.id)">
               ПРОЧИТАНО
             </button>
-            <button class="detail_btn">Деталі</button>
+            <!-- <button class="detail_btn">Деталі</button> -->
             <button class="decline_btn" @click="removeNote(note.id)">ВИДАЛИТИ</button>
           </div>
         </div>
@@ -38,105 +34,109 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
+
+import { useAdminStore } from "@/store/admin-store";
+
+const adminStore = useAdminStore();
 
 // const noteStatus = ref(["READED", "NEW"]);
 
-const noteData = ref([
-  {
-    id: 1,
-    type: "NOTE",
-    text: "Нове замовлення",
-    status: "NEW",
-    img: "/icons/order/delivered.webp"
-  },
-  {
-    id: 2,
-    type: "WARNING",
-    text: "Товар закінчується",
-    status: "NEW",
-    img: "/icons/order/delivered.webp"
-  },
-  {
-    id: 3,
-    type: "NOTE",
-    text: "Нове замовлення",
-    status: "NEW",
-    img: "/icons/order/delivered.webp"
-  },
-  {
-    id: 4,
-    type: "WARNING",
-    text: "Товар закінчується",
-    status: "NEW",
-    img: "/icons/order/delivered.webp"
-  },
-  {
-    id: 5,
-    type: "NOTE",
-    text: "Нове замовлення",
-    status: "NEW",
-    img: "/icons/order/delivered.webp"
-  },
-  {
-    id: 6,
-    type: "WARNING",
-    text: "Товар закінчується",
-    status: "NEW",
-    img: "/icons/order/delivered.webp"
-  },
-  {
-    id: 7,
-    type: "NOTE",
-    text: "Нове замовлення",
-    status: "NEW",
-    img: "/icons/order/delivered.webp"
-  },
-  {
-    id: 8,
-    type: "WARNING",
-    text: "Товар закінчується",
-    status: "NEW",
-    img: "/icons/order/delivered.webp"
-  },
-  {
-    id: 9,
-    type: "NOTE",
-    text: "Нове замовлення",
-    status: "NEW",
-    img: "/icons/order/delivered.webp"
-  },
-  {
-    id: 10,
-    type: "WARNING",
-    text: "Товар закінчується",
-    status: "NEW",
-    img: "/icons/order/delivered.webp"
-  },
-  {
-    id: 11,
-    type: "NOTE",
-    text: "Нове замовлення",
-    status: "NEW",
-    img: "/icons/order/delivered.webp"
-  },
-  {
-    id: 12,
-    type: "WARNING",
-    text: "Товар закінчується",
-    status: "NEW",
-    img: "/icons/order/delivered.webp"
-  }
-]);
+// const noteData = ref([
+//   {
+//     id: 1,
+//     type: "NOTE",
+//     text: "Нове замовлення",
+//     status: "NEW",
+//     img: "/icons/order/delivered.webp"
+//   },
+//   {
+//     id: 2,
+//     type: "WARNING",
+//     text: "Товар закінчується",
+//     status: "NEW",
+//     img: "/icons/order/delivered.webp"
+//   },
+//   {
+//     id: 3,
+//     type: "NOTE",
+//     text: "Нове замовлення",
+//     status: "NEW",
+//     img: "/icons/order/delivered.webp"
+//   },
+//   {
+//     id: 4,
+//     type: "WARNING",
+//     text: "Товар закінчується",
+//     status: "NEW",
+//     img: "/icons/order/delivered.webp"
+//   },
+//   {
+//     id: 5,
+//     type: "NOTE",
+//     text: "Нове замовлення",
+//     status: "NEW",
+//     img: "/icons/order/delivered.webp"
+//   },
+//   {
+//     id: 6,
+//     type: "WARNING",
+//     text: "Товар закінчується",
+//     status: "NEW",
+//     img: "/icons/order/delivered.webp"
+//   },
+//   {
+//     id: 7,
+//     type: "NOTE",
+//     text: "Нове замовлення",
+//     status: "NEW",
+//     img: "/icons/order/delivered.webp"
+//   },
+//   {
+//     id: 8,
+//     type: "WARNING",
+//     text: "Товар закінчується",
+//     status: "NEW",
+//     img: "/icons/order/delivered.webp"
+//   },
+//   {
+//     id: 9,
+//     type: "NOTE",
+//     text: "Нове замовлення",
+//     status: "NEW",
+//     img: "/icons/order/delivered.webp"
+//   },
+//   {
+//     id: 10,
+//     type: "WARNING",
+//     text: "Товар закінчується",
+//     status: "NEW",
+//     img: "/icons/order/delivered.webp"
+//   },
+//   {
+//     id: 11,
+//     type: "NOTE",
+//     text: "Нове замовлення",
+//     status: "NEW",
+//     img: "/icons/order/delivered.webp"
+//   },
+//   {
+//     id: 12,
+//     type: "WARNING",
+//     text: "Товар закінчується",
+//     status: "NEW",
+//     img: "/icons/order/delivered.webp"
+//   }
+// ]);
 
-const changeStatusHandler = (id) => {
-  const getNote = noteData.value.find((el) => el.id === id);
-  getNote.status = "READED";
+const changeStatusHandler = async (id) => {
+  await adminStore.updateNoteStatus(id);
+  // const getNote = noteData.value.find((el) => el.id === id);
+  // getNote.status = "READED";
 };
 
-const removeNote = (id) => {
-  console.log("remove");
-  noteData.value = noteData.value.filter((el) => el.id !== id);
+const removeNote = async (id) => {
+  await adminStore.deleteNote(id);
 };
 
 onMounted(() => {
