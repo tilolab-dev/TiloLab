@@ -7,12 +7,23 @@ interface IProductQuantity {
 }
 
 const getProductsByPage = defineEventHandler(async (event) => {
-  const { page, limit, category } = getQuery(event);
+  const { page, limit, category, minPrice, maxPrice } = getQuery(event);
   // const where: any = category ? { category } : {};
 
-  const where: any = {};
+  const where: Record<string, any> = {};
   if (category) {
     where.categoryId = Number(category);
+  }
+
+  // Add price range filtering
+  if (minPrice || maxPrice) {
+    where.productPrice = {};
+    if (minPrice) {
+      where.productPrice.gte = Number(minPrice);
+    }
+    if (maxPrice) {
+      where.productPrice.lte = Number(maxPrice);
+    }
   }
   try {
     const [items, total] = await Promise.all([
