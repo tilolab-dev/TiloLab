@@ -20,9 +20,9 @@
       bar-right-color="rgb(97, 75, 81)"
       thumb-left-color="rgb(152, 14, 67)"
       thumb-right-color="rgb(231, 32, 108)"
-      :min="100"
-      :max="10000"
-      :step="1"
+      :min="min"
+      :max="max"
+      :step="step"
       :min-value="minValue"
       :max-value="maxValue"
       @input="rangeSliderHandler"
@@ -37,16 +37,55 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 import MultiRangeSlider from "multi-range-slider-vue";
 
-const minValue = ref(100);
-const maxValue = ref(5000);
+const props = defineProps({
+  min: {
+    type: Number,
+    default: 0
+  },
+  max: {
+    type: Number,
+    default: 10000
+  },
+  step: {
+    type: Number,
+    default: 1
+  }
+});
+
+const emit = defineEmits(["range-change"]);
+
+const minValue = ref(props.min);
+const maxValue = ref(props.max);
+
+let debounceTimer = null;
+
+// Watch for prop changes and update values accordingly
+watch([() => props.min, () => props.max], ([newMin, newMax]) => {
+  minValue.value = Math.max(minValue.value, newMin);
+  maxValue.value = Math.min(maxValue.value, newMax);
+});
 
 const rangeSliderHandler = (value) => {
+  // Update UI values immediately
   minValue.value = parseInt(value.minValue);
   maxValue.value = parseInt(value.maxValue);
+
+  // Clear existing timer
+  if (debounceTimer) {
+    clearTimeout(debounceTimer);
+  }
+
+  // Set new timer to emit after user stops dragging (300ms delay)
+  debounceTimer = setTimeout(() => {
+    emit("range-change", {
+      min: minValue.value,
+      max: maxValue.value
+    });
+  }, 300);
 };
 </script>
 

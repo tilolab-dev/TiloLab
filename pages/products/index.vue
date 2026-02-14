@@ -3,7 +3,12 @@
     <div class="popular_cards">
       <div class="filter_category">
         <div class="filter">
-          <DoubleRange />
+          <DoubleRange
+            v-if="priceRangeData"
+            :min="priceRangeData.min"
+            :max="priceRangeData.max"
+            @range-change="handleRangeChange"
+          />
         </div>
         <div class="category">
           <button @click="toggleCategory = !toggleCategory">
@@ -94,6 +99,22 @@ const router = useRouter();
 const productStore = useProductStore();
 const indexStore = useIndexStore();
 const toggleCategory = ref(false);
+const priceRangeData = ref(null);
+
+const handleRangeChange = (range) => {
+  productStore.setPriceRange(range);
+};
+
+const fetchPriceRange = async () => {
+  try {
+    const response = await $fetch("/api/price-range");
+    if (response.statusCode === 200) {
+      priceRangeData.value = response.data;
+    }
+  } catch (error) {
+    console.error("Failed to fetch price range:", error);
+  }
+};
 
 const groupedProducts = computed(() => {
   const map = {};
@@ -106,6 +127,10 @@ const groupedProducts = computed(() => {
 
 onMounted(async () => {
   loaderState.value = true;
+
+  // Fetch price range first
+  await fetchPriceRange();
+
   // productStore.page = Number(route.query.page ?? 1);
   // productStore.category = route.query.category ?? null;
   const routeCategory = route.query.category ?? null;

@@ -2,7 +2,12 @@
   <div class="category_product_wrapper">
     <div class="filter_category">
       <div class="filter">
-        <DoubleRange />
+        <DoubleRange
+          v-if="priceRangeData"
+          :min="priceRangeData.min"
+          :max="priceRangeData.max"
+          @range-change="handleRangeChange"
+        />
       </div>
       <div class="category">
         <button @click="toggleCategory = !toggleCategory">
@@ -116,6 +121,23 @@ const route = useRoute();
 const indexStore = useIndexStore();
 const productStore = useProductStore();
 const toggleCategory = ref(false);
+const priceRangeData = ref(null);
+
+const handleRangeChange = (range) => {
+  productStore.setPriceRange(range);
+};
+
+const fetchPriceRange = async () => {
+  try {
+    const categoryId = currentCategory.value?.id;
+    const response = await $fetch(`/api/price-range${categoryId ? `?category=${categoryId}` : ""}`);
+    if (response.statusCode === 200) {
+      priceRangeData.value = response.data;
+    }
+  } catch (error) {
+    console.error("Failed to fetch price range:", error);
+  }
+};
 
 const currentCategory = computed(() => {
   if (!indexStore.fetchedCategories.length) return null;
@@ -145,6 +167,9 @@ watch([currentCategory], async ([cat]) => {
   productStore.category = cat.id;
   productStore.page = 1;
 
+  // Fetch price range for this category
+  await fetchPriceRange();
+
   await productStore.fetchProductsByPage({ reset: true });
 });
 
@@ -168,6 +193,10 @@ onMounted(async () => {
   if (currentCategory.value) {
     productStore.category = currentCategory.value.id;
     productStore.page = 1;
+
+    // Fetch price range for this category
+    await fetchPriceRange();
+
     await productStore.fetchProductsByPage({ reset: true });
   }
 
