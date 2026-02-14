@@ -105,6 +105,7 @@ export const useProductStore = defineStore("product", () => {
   const total = ref(0);
   const loading = ref(false);
   const category = ref<string | null>(null);
+  const priceRange = ref<{ min: number | null; max: number | null }>({ min: null, max: null });
   const prefetched = new Map<number, IProduct[]>();
 
   const hasMore = computed(() => productList.value.length < total.value);
@@ -139,14 +140,23 @@ export const useProductStore = defineStore("product", () => {
     }
 
     try {
+      const params: Record<string, any> = {
+        getMethod: "page",
+        page: page.value,
+        limit: limit.value,
+        category: category.value
+      };
+
+      if (priceRange.value.min) {
+        params.minPrice = priceRange.value.min;
+      }
+      if (priceRange.value.max) {
+        params.maxPrice = priceRange.value.max;
+      }
+
       const resFetch = await $fetch<IProductResponse>("/api/products", {
         method: "GET",
-        params: {
-          getMethod: "page",
-          page: page.value,
-          limit: limit.value,
-          category: category.value
-        }
+        params
       });
 
       console.log(resFetch, "Products store fetchProductsByPage resFetch from store");
@@ -170,14 +180,23 @@ export const useProductStore = defineStore("product", () => {
     if (prefetched.has(next)) return;
 
     try {
+      const params: Record<string, any> = {
+        getMethod: "page",
+        page: next,
+        limit: limit.value,
+        category: category.value
+      };
+
+      if (priceRange.value.min) {
+        params.minPrice = priceRange.value.min;
+      }
+      if (priceRange.value.max) {
+        params.maxPrice = priceRange.value.max;
+      }
+
       const { data } = await $fetch<IProductResponse>("/api/products", {
         method: "GET",
-        params: {
-          getMethod: "page",
-          page: next,
-          limit: limit.value,
-          category: category.value
-        }
+        params
       });
       prefetched.set(next, data || []);
       console.log(!prefetched.get(next), "Products store prefetchNextPage prefetched is empty");
@@ -199,6 +218,11 @@ export const useProductStore = defineStore("product", () => {
 
   function setCategory(cat: string | null) {
     category.value = cat;
+    fetchProductsByPage({ reset: true });
+  }
+
+  function setPriceRange(range: { min: number | null; max: number | null }) {
+    priceRange.value = range;
     fetchProductsByPage({ reset: true });
   }
 
@@ -266,6 +290,7 @@ export const useProductStore = defineStore("product", () => {
     loading,
     hasMore,
     category,
+    priceRange,
     setSelectedProducts,
     fetchProducts,
     fetchProductsByPage,
@@ -275,6 +300,7 @@ export const useProductStore = defineStore("product", () => {
     updateProduct,
     addProduct,
     setCategory,
+    setPriceRange,
     goToPage
   };
 });
