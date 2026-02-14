@@ -8,7 +8,11 @@
 
     <IndexBanner />
 
+    <Advantages />
+
     <IndexCta />
+
+    <Seo />
   </section>
 </template>
 
