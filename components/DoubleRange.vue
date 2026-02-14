@@ -20,8 +20,8 @@
       bar-right-color="rgb(97, 75, 81)"
       thumb-left-color="rgb(152, 14, 67)"
       thumb-right-color="rgb(231, 32, 108)"
-      :min="min"
-      :max="max"
+      :min="finalMin"
+      :max="finalMax"
       :step="step"
       :min-value="minValue"
       :max-value="maxValue"
@@ -37,14 +37,14 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
 
 import MultiRangeSlider from "multi-range-slider-vue";
 
 const props = defineProps({
   min: {
     type: Number,
-    default: 0
+    default: 100
   },
   max: {
     type: Number,
@@ -58,13 +58,49 @@ const props = defineProps({
 
 const emit = defineEmits(["range-change"]);
 
-const minValue = ref(props.min);
-const maxValue = ref(props.max);
+// Validate and fallback for min/max props
+const safeMin = computed(() => {
+  const min = props.min;
+  if (typeof min !== "number" || isNaN(min) || min < 0) {
+    return 100;
+  }
+  return min;
+});
+
+const safeMax = computed(() => {
+  const max = props.max;
+  if (typeof max !== "number" || isNaN(max) || max < 0) {
+    return 10000;
+  }
+  return max;
+});
+
+// Ensure min and max are never the same for MultiRangeSlider
+const finalMin = computed(() => {
+  const min = safeMin.value;
+  const max = safeMax.value;
+  if (min === max) {
+    return Math.max(1, min - 100); // Ensure min is at least 1 and different from max
+  }
+  return min;
+});
+
+const finalMax = computed(() => {
+  const min = safeMin.value;
+  const max = safeMax.value;
+  if (min === max) {
+    return max + 100; // Ensure max is different from min
+  }
+  return max;
+});
+
+const minValue = ref(finalMin.value);
+const maxValue = ref(finalMax.value);
 
 let debounceTimer = null;
 
 // Watch for prop changes and update values accordingly
-watch([() => props.min, () => props.max], ([newMin, newMax]) => {
+watch([finalMin, finalMax], ([newMin, newMax]) => {
   minValue.value = Math.max(minValue.value, newMin);
   maxValue.value = Math.min(maxValue.value, newMax);
 });
@@ -87,6 +123,12 @@ const rangeSliderHandler = (value) => {
     });
   }, 300);
 };
+
+onBeforeUnmount(() => {
+  if (debounceTimer) {
+    clearTimeout(debounceTimer);
+  }
+});
 </script>
 
 <style lang="scss">
