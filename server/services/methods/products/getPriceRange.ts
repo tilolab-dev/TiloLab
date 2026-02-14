@@ -33,11 +33,21 @@ const getPriceRange = defineEventHandler(async (event) => {
     const trueMinPrice = minAggregate._min?.productPrice ?? 0;
     const trueMaxPrice = maxAggregate._max?.productPrice ?? 0;
 
-    console.log("Aggregate min:", trueMinPrice);
-    console.log("Aggregate max:", trueMaxPrice);
+    // Round min down and max up to nearest reasonable values
+    let minPrice = Math.floor(trueMinPrice / 10) * 10; // Round down to nearest 10
+    let maxPrice = Math.ceil(trueMaxPrice / 100) * 100; // Round up to nearest 100
 
-    const minPrice = trueMinPrice;
-    const maxPrice = trueMaxPrice;
+    // Special case: if min and max are the same, adjust them
+    if (minPrice === maxPrice) {
+      minPrice = Math.max(1, minPrice - 100); // Ensure min is at least 1
+      maxPrice = maxPrice + 100; // Ensure max is different from min
+    }
+
+    // Ensure min is always less than max
+    if (minPrice >= maxPrice) {
+      minPrice = Math.max(1, maxPrice - 100);
+      maxPrice = maxPrice + 100;
+    }
 
     if (minPrice < 0 || maxPrice < 0) {
       return {
@@ -46,27 +56,14 @@ const getPriceRange = defineEventHandler(async (event) => {
       };
     }
 
-    // Convert price to number and round min down to nearest 100, max up to nearest 100
-    // For minimum: if it's less than 100, round to nearest 10, otherwise use as-is or round to nearest 100
-    let roundedMin;
-    if (minPrice <= 0) {
-      roundedMin = 1; // Handle 0 case
-    } else if (minPrice < 100) {
-      roundedMin = Math.floor(minPrice / 10) * 10; // Round to nearest 10
-    } else {
-      roundedMin = Math.floor(minPrice / 100) * 100; // Round to nearest 100 for larger values
-    }
-
-    const roundedMax = Math.ceil(maxPrice / 100) * 100;
-
     return {
       statusCode: 200,
       message: "Success",
       data: {
-        min: roundedMin,
-        max: roundedMax,
-        actualMin: minPrice,
-        actualMax: maxPrice
+        min: minPrice,
+        max: maxPrice,
+        actualMin: trueMinPrice,
+        actualMax: trueMaxPrice
       }
     };
   } catch (err) {

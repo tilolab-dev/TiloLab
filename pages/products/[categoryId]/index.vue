@@ -109,7 +109,7 @@ import { useIndexStore } from "@/store/index-store";
 import { useProductStore } from "@/store/product-store";
 
 // Utility imports
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 
 // const fetchedProducts = ref([]);
 // const categoryName = ref("");
@@ -130,41 +130,59 @@ const handleRangeChange = (range) => {
 const fetchPriceRange = async () => {
   try {
     const categoryId = currentCategory.value?.id;
-    const response = await $fetch(`/api/price-range${categoryId ? `?category=${categoryId}` : ""}`);
-    if (response.statusCode === 200) {
-      priceRangeData.value = response.data;
+    if (!categoryId) {
+      return;
+    }
+
+    const response = await $fetch(`/api/price-range?category=${categoryId}`);
+
+    if (response && response.statusCode === 200 && response.data) {
+      // Validate the response data structure
+      const { min, max } = response.data;
+      if (
+        typeof min === "number" &&
+        typeof max === "number" &&
+        min >= 0 &&
+        max >= 0 &&
+        min <= max
+      ) {
+        priceRangeData.value = { min, max };
+      } else {
+        console.error("Category page: Invalid price range data:", response.data);
+        // Set fallback values to prevent component errors
+        priceRangeData.value = { min: 100, max: 10000 };
+      }
+    } else {
+      console.error("Category page: Invalid API response:", response);
+      priceRangeData.value = { min: 100, max: 10000 };
     }
   } catch (error) {
-    console.error("Failed to fetch price range:", error);
+    console.error("Category page: Failed to fetch price range:", error);
+    // Set fallback values to prevent component errors
+    priceRangeData.value = { min: 100, max: 10000 };
   }
 };
 
 const currentCategory = computed(() => {
-  if (!indexStore.fetchedCategories.length) return null;
+  if (!indexStore.fetchedCategories.length) {
+    return null;
+  }
 
-  // console.log(indexStore.fetchedCategories, "indexStore.fetchedCategories");
-  // console.log(route.params.categoryId, "route.params.category");
-
-  return indexStore.fetchedCategories.find(
+  const result = indexStore.fetchedCategories.find(
     (cat) => cat.group.toLowerCase() === route.params.categoryId?.toLowerCase()
   );
+  return result;
 });
 
-// watch([currentCategory, () => indexStore.fetchedCategories.length], async ([cat]) => {
-//   if (!cat) return;
+// Watch for category changes
+watch(currentCategory, async (newCategory) => {
+  if (!newCategory) return;
 
-//   productStore.category = cat.id;
-//   productStore.page = 1;
+  if (productStore.category === newCategory.id) {
+    return;
+  }
 
-//   await productStore.fetchProductsByPage({ reset: true });
-// });
-
-watch([currentCategory], async ([cat]) => {
-  if (!cat) return;
-
-  if (productStore.category === cat.id) return;
-
-  productStore.category = cat.id;
+  productStore.category = newCategory.id;
   productStore.page = 1;
 
   // Fetch price range for this category
@@ -172,12 +190,6 @@ watch([currentCategory], async ([cat]) => {
 
   await productStore.fetchProductsByPage({ reset: true });
 });
-
-// const route = useRoute();
-
-// const categoryId = route.params.categoryId;
-
-// const fetchCategories = computed(() => indexStore.fetchedCategories);
 
 // categoryName.value = categoryId;
 

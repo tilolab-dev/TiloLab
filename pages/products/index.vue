@@ -108,11 +108,29 @@ const handleRangeChange = (range) => {
 const fetchPriceRange = async () => {
   try {
     const response = await $fetch("/api/price-range");
-    if (response.statusCode === 200) {
-      priceRangeData.value = response.data;
+    if (response && response.statusCode === 200 && response.data) {
+      // Validate the response data structure
+      const { min, max } = response.data;
+      if (
+        typeof min === "number" &&
+        typeof max === "number" &&
+        min >= 0 &&
+        max >= 0 &&
+        min <= max
+      ) {
+        priceRangeData.value = { min, max };
+      } else {
+        // Set fallback values to prevent component errors
+        priceRangeData.value = { min: 100, max: 10000 };
+      }
+    } else {
+      console.error("Invalid API response (main page):", response);
+      priceRangeData.value = { min: 100, max: 10000 };
     }
   } catch (error) {
-    console.error("Failed to fetch price range:", error);
+    console.error("Failed to fetch price range (main page):", error);
+    // Set fallback values to prevent component errors
+    priceRangeData.value = { min: 100, max: 10000 };
   }
 };
 
