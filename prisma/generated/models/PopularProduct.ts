@@ -28,33 +28,28 @@ export type AggregatePopularProduct = {
 
 export type PopularProductAvgAggregateOutputType = {
   id: number | null
-  adminId: number | null
   productId: number | null
 }
 
 export type PopularProductSumAggregateOutputType = {
   id: number | null
-  adminId: number | null
   productId: number | null
 }
 
 export type PopularProductMinAggregateOutputType = {
   id: number | null
-  adminId: number | null
   productId: number | null
   addedAt: Date | null
 }
 
 export type PopularProductMaxAggregateOutputType = {
   id: number | null
-  adminId: number | null
   productId: number | null
   addedAt: Date | null
 }
 
 export type PopularProductCountAggregateOutputType = {
   id: number
-  adminId: number
   productId: number
   addedAt: number
   _all: number
@@ -63,33 +58,28 @@ export type PopularProductCountAggregateOutputType = {
 
 export type PopularProductAvgAggregateInputType = {
   id?: true
-  adminId?: true
   productId?: true
 }
 
 export type PopularProductSumAggregateInputType = {
   id?: true
-  adminId?: true
   productId?: true
 }
 
 export type PopularProductMinAggregateInputType = {
   id?: true
-  adminId?: true
   productId?: true
   addedAt?: true
 }
 
 export type PopularProductMaxAggregateInputType = {
   id?: true
-  adminId?: true
   productId?: true
   addedAt?: true
 }
 
 export type PopularProductCountAggregateInputType = {
   id?: true
-  adminId?: true
   productId?: true
   addedAt?: true
   _all?: true
@@ -183,7 +173,6 @@ export type PopularProductGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 
 export type PopularProductGroupByOutputType = {
   id: number
-  adminId: number
   productId: number
   addedAt: Date
   _count: PopularProductCountAggregateOutputType | null
@@ -213,37 +202,30 @@ export type PopularProductWhereInput = {
   OR?: Prisma.PopularProductWhereInput[]
   NOT?: Prisma.PopularProductWhereInput | Prisma.PopularProductWhereInput[]
   id?: Prisma.IntFilter<"PopularProduct"> | number
-  adminId?: Prisma.IntFilter<"PopularProduct"> | number
   productId?: Prisma.IntFilter<"PopularProduct"> | number
   addedAt?: Prisma.DateTimeFilter<"PopularProduct"> | Date | string
-  admin?: Prisma.XOR<Prisma.AdminScalarRelationFilter, Prisma.AdminWhereInput>
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
 }
 
 export type PopularProductOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
-  admin?: Prisma.AdminOrderByWithRelationInput
   product?: Prisma.ProductOrderByWithRelationInput
 }
 
 export type PopularProductWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  productId?: number
   AND?: Prisma.PopularProductWhereInput | Prisma.PopularProductWhereInput[]
   OR?: Prisma.PopularProductWhereInput[]
   NOT?: Prisma.PopularProductWhereInput | Prisma.PopularProductWhereInput[]
-  adminId?: Prisma.IntFilter<"PopularProduct"> | number
-  productId?: Prisma.IntFilter<"PopularProduct"> | number
   addedAt?: Prisma.DateTimeFilter<"PopularProduct"> | Date | string
-  admin?: Prisma.XOR<Prisma.AdminScalarRelationFilter, Prisma.AdminWhereInput>
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
-}, "id">
+}, "id" | "productId">
 
 export type PopularProductOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
   _count?: Prisma.PopularProductCountOrderByAggregateInput
@@ -258,40 +240,34 @@ export type PopularProductScalarWhereWithAggregatesInput = {
   OR?: Prisma.PopularProductScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PopularProductScalarWhereWithAggregatesInput | Prisma.PopularProductScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"PopularProduct"> | number
-  adminId?: Prisma.IntWithAggregatesFilter<"PopularProduct"> | number
   productId?: Prisma.IntWithAggregatesFilter<"PopularProduct"> | number
   addedAt?: Prisma.DateTimeWithAggregatesFilter<"PopularProduct"> | Date | string
 }
 
 export type PopularProductCreateInput = {
   addedAt?: Date | string
-  admin: Prisma.AdminCreateNestedOneWithoutPopularProductsInput
   product: Prisma.ProductCreateNestedOneWithoutPopularProductsInput
 }
 
 export type PopularProductUncheckedCreateInput = {
   id?: number
-  adminId: number
   productId: number
   addedAt?: Date | string
 }
 
 export type PopularProductUpdateInput = {
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  admin?: Prisma.AdminUpdateOneRequiredWithoutPopularProductsNestedInput
   product?: Prisma.ProductUpdateOneRequiredWithoutPopularProductsNestedInput
 }
 
 export type PopularProductUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  adminId?: Prisma.IntFieldUpdateOperationsInput | number
   productId?: Prisma.IntFieldUpdateOperationsInput | number
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PopularProductCreateManyInput = {
   id?: number
-  adminId: number
   productId: number
   addedAt?: Date | string
 }
@@ -302,7 +278,6 @@ export type PopularProductUpdateManyMutationInput = {
 
 export type PopularProductUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  adminId?: Prisma.IntFieldUpdateOperationsInput | number
   productId?: Prisma.IntFieldUpdateOperationsInput | number
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -319,77 +294,30 @@ export type PopularProductOrderByRelationAggregateInput = {
 
 export type PopularProductCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
 }
 
 export type PopularProductAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
 }
 
 export type PopularProductMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
 }
 
 export type PopularProductMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
 }
 
 export type PopularProductSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
-}
-
-export type PopularProductCreateNestedManyWithoutAdminInput = {
-  create?: Prisma.XOR<Prisma.PopularProductCreateWithoutAdminInput, Prisma.PopularProductUncheckedCreateWithoutAdminInput> | Prisma.PopularProductCreateWithoutAdminInput[] | Prisma.PopularProductUncheckedCreateWithoutAdminInput[]
-  connectOrCreate?: Prisma.PopularProductCreateOrConnectWithoutAdminInput | Prisma.PopularProductCreateOrConnectWithoutAdminInput[]
-  createMany?: Prisma.PopularProductCreateManyAdminInputEnvelope
-  connect?: Prisma.PopularProductWhereUniqueInput | Prisma.PopularProductWhereUniqueInput[]
-}
-
-export type PopularProductUncheckedCreateNestedManyWithoutAdminInput = {
-  create?: Prisma.XOR<Prisma.PopularProductCreateWithoutAdminInput, Prisma.PopularProductUncheckedCreateWithoutAdminInput> | Prisma.PopularProductCreateWithoutAdminInput[] | Prisma.PopularProductUncheckedCreateWithoutAdminInput[]
-  connectOrCreate?: Prisma.PopularProductCreateOrConnectWithoutAdminInput | Prisma.PopularProductCreateOrConnectWithoutAdminInput[]
-  createMany?: Prisma.PopularProductCreateManyAdminInputEnvelope
-  connect?: Prisma.PopularProductWhereUniqueInput | Prisma.PopularProductWhereUniqueInput[]
-}
-
-export type PopularProductUpdateManyWithoutAdminNestedInput = {
-  create?: Prisma.XOR<Prisma.PopularProductCreateWithoutAdminInput, Prisma.PopularProductUncheckedCreateWithoutAdminInput> | Prisma.PopularProductCreateWithoutAdminInput[] | Prisma.PopularProductUncheckedCreateWithoutAdminInput[]
-  connectOrCreate?: Prisma.PopularProductCreateOrConnectWithoutAdminInput | Prisma.PopularProductCreateOrConnectWithoutAdminInput[]
-  upsert?: Prisma.PopularProductUpsertWithWhereUniqueWithoutAdminInput | Prisma.PopularProductUpsertWithWhereUniqueWithoutAdminInput[]
-  createMany?: Prisma.PopularProductCreateManyAdminInputEnvelope
-  set?: Prisma.PopularProductWhereUniqueInput | Prisma.PopularProductWhereUniqueInput[]
-  disconnect?: Prisma.PopularProductWhereUniqueInput | Prisma.PopularProductWhereUniqueInput[]
-  delete?: Prisma.PopularProductWhereUniqueInput | Prisma.PopularProductWhereUniqueInput[]
-  connect?: Prisma.PopularProductWhereUniqueInput | Prisma.PopularProductWhereUniqueInput[]
-  update?: Prisma.PopularProductUpdateWithWhereUniqueWithoutAdminInput | Prisma.PopularProductUpdateWithWhereUniqueWithoutAdminInput[]
-  updateMany?: Prisma.PopularProductUpdateManyWithWhereWithoutAdminInput | Prisma.PopularProductUpdateManyWithWhereWithoutAdminInput[]
-  deleteMany?: Prisma.PopularProductScalarWhereInput | Prisma.PopularProductScalarWhereInput[]
-}
-
-export type PopularProductUncheckedUpdateManyWithoutAdminNestedInput = {
-  create?: Prisma.XOR<Prisma.PopularProductCreateWithoutAdminInput, Prisma.PopularProductUncheckedCreateWithoutAdminInput> | Prisma.PopularProductCreateWithoutAdminInput[] | Prisma.PopularProductUncheckedCreateWithoutAdminInput[]
-  connectOrCreate?: Prisma.PopularProductCreateOrConnectWithoutAdminInput | Prisma.PopularProductCreateOrConnectWithoutAdminInput[]
-  upsert?: Prisma.PopularProductUpsertWithWhereUniqueWithoutAdminInput | Prisma.PopularProductUpsertWithWhereUniqueWithoutAdminInput[]
-  createMany?: Prisma.PopularProductCreateManyAdminInputEnvelope
-  set?: Prisma.PopularProductWhereUniqueInput | Prisma.PopularProductWhereUniqueInput[]
-  disconnect?: Prisma.PopularProductWhereUniqueInput | Prisma.PopularProductWhereUniqueInput[]
-  delete?: Prisma.PopularProductWhereUniqueInput | Prisma.PopularProductWhereUniqueInput[]
-  connect?: Prisma.PopularProductWhereUniqueInput | Prisma.PopularProductWhereUniqueInput[]
-  update?: Prisma.PopularProductUpdateWithWhereUniqueWithoutAdminInput | Prisma.PopularProductUpdateWithWhereUniqueWithoutAdminInput[]
-  updateMany?: Prisma.PopularProductUpdateManyWithWhereWithoutAdminInput | Prisma.PopularProductUpdateManyWithWhereWithoutAdminInput[]
-  deleteMany?: Prisma.PopularProductScalarWhereInput | Prisma.PopularProductScalarWhereInput[]
 }
 
 export type PopularProductCreateNestedManyWithoutProductInput = {
@@ -434,61 +362,12 @@ export type PopularProductUncheckedUpdateManyWithoutProductNestedInput = {
   deleteMany?: Prisma.PopularProductScalarWhereInput | Prisma.PopularProductScalarWhereInput[]
 }
 
-export type PopularProductCreateWithoutAdminInput = {
-  addedAt?: Date | string
-  product: Prisma.ProductCreateNestedOneWithoutPopularProductsInput
-}
-
-export type PopularProductUncheckedCreateWithoutAdminInput = {
-  id?: number
-  productId: number
-  addedAt?: Date | string
-}
-
-export type PopularProductCreateOrConnectWithoutAdminInput = {
-  where: Prisma.PopularProductWhereUniqueInput
-  create: Prisma.XOR<Prisma.PopularProductCreateWithoutAdminInput, Prisma.PopularProductUncheckedCreateWithoutAdminInput>
-}
-
-export type PopularProductCreateManyAdminInputEnvelope = {
-  data: Prisma.PopularProductCreateManyAdminInput | Prisma.PopularProductCreateManyAdminInput[]
-  skipDuplicates?: boolean
-}
-
-export type PopularProductUpsertWithWhereUniqueWithoutAdminInput = {
-  where: Prisma.PopularProductWhereUniqueInput
-  update: Prisma.XOR<Prisma.PopularProductUpdateWithoutAdminInput, Prisma.PopularProductUncheckedUpdateWithoutAdminInput>
-  create: Prisma.XOR<Prisma.PopularProductCreateWithoutAdminInput, Prisma.PopularProductUncheckedCreateWithoutAdminInput>
-}
-
-export type PopularProductUpdateWithWhereUniqueWithoutAdminInput = {
-  where: Prisma.PopularProductWhereUniqueInput
-  data: Prisma.XOR<Prisma.PopularProductUpdateWithoutAdminInput, Prisma.PopularProductUncheckedUpdateWithoutAdminInput>
-}
-
-export type PopularProductUpdateManyWithWhereWithoutAdminInput = {
-  where: Prisma.PopularProductScalarWhereInput
-  data: Prisma.XOR<Prisma.PopularProductUpdateManyMutationInput, Prisma.PopularProductUncheckedUpdateManyWithoutAdminInput>
-}
-
-export type PopularProductScalarWhereInput = {
-  AND?: Prisma.PopularProductScalarWhereInput | Prisma.PopularProductScalarWhereInput[]
-  OR?: Prisma.PopularProductScalarWhereInput[]
-  NOT?: Prisma.PopularProductScalarWhereInput | Prisma.PopularProductScalarWhereInput[]
-  id?: Prisma.IntFilter<"PopularProduct"> | number
-  adminId?: Prisma.IntFilter<"PopularProduct"> | number
-  productId?: Prisma.IntFilter<"PopularProduct"> | number
-  addedAt?: Prisma.DateTimeFilter<"PopularProduct"> | Date | string
-}
-
 export type PopularProductCreateWithoutProductInput = {
   addedAt?: Date | string
-  admin: Prisma.AdminCreateNestedOneWithoutPopularProductsInput
 }
 
 export type PopularProductUncheckedCreateWithoutProductInput = {
   id?: number
-  adminId: number
   addedAt?: Date | string
 }
 
@@ -518,49 +397,31 @@ export type PopularProductUpdateManyWithWhereWithoutProductInput = {
   data: Prisma.XOR<Prisma.PopularProductUpdateManyMutationInput, Prisma.PopularProductUncheckedUpdateManyWithoutProductInput>
 }
 
-export type PopularProductCreateManyAdminInput = {
-  id?: number
-  productId: number
-  addedAt?: Date | string
-}
-
-export type PopularProductUpdateWithoutAdminInput = {
-  addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  product?: Prisma.ProductUpdateOneRequiredWithoutPopularProductsNestedInput
-}
-
-export type PopularProductUncheckedUpdateWithoutAdminInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
-  addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type PopularProductUncheckedUpdateManyWithoutAdminInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
-  addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type PopularProductScalarWhereInput = {
+  AND?: Prisma.PopularProductScalarWhereInput | Prisma.PopularProductScalarWhereInput[]
+  OR?: Prisma.PopularProductScalarWhereInput[]
+  NOT?: Prisma.PopularProductScalarWhereInput | Prisma.PopularProductScalarWhereInput[]
+  id?: Prisma.IntFilter<"PopularProduct"> | number
+  productId?: Prisma.IntFilter<"PopularProduct"> | number
+  addedAt?: Prisma.DateTimeFilter<"PopularProduct"> | Date | string
 }
 
 export type PopularProductCreateManyProductInput = {
   id?: number
-  adminId: number
   addedAt?: Date | string
 }
 
 export type PopularProductUpdateWithoutProductInput = {
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  admin?: Prisma.AdminUpdateOneRequiredWithoutPopularProductsNestedInput
 }
 
 export type PopularProductUncheckedUpdateWithoutProductInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  adminId?: Prisma.IntFieldUpdateOperationsInput | number
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PopularProductUncheckedUpdateManyWithoutProductInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  adminId?: Prisma.IntFieldUpdateOperationsInput | number
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -568,61 +429,49 @@ export type PopularProductUncheckedUpdateManyWithoutProductInput = {
 
 export type PopularProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  adminId?: boolean
   productId?: boolean
   addedAt?: boolean
-  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["popularProduct"]>
 
 export type PopularProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  adminId?: boolean
   productId?: boolean
   addedAt?: boolean
-  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["popularProduct"]>
 
 export type PopularProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  adminId?: boolean
   productId?: boolean
   addedAt?: boolean
-  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["popularProduct"]>
 
 export type PopularProductSelectScalar = {
   id?: boolean
-  adminId?: boolean
   productId?: boolean
   addedAt?: boolean
 }
 
-export type PopularProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "adminId" | "productId" | "addedAt", ExtArgs["result"]["popularProduct"]>
+export type PopularProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "productId" | "addedAt", ExtArgs["result"]["popularProduct"]>
 export type PopularProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }
 export type PopularProductIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }
 export type PopularProductIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }
 
 export type $PopularProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PopularProduct"
   objects: {
-    admin: Prisma.$AdminPayload<ExtArgs>
     product: Prisma.$ProductPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    adminId: number
     productId: number
     addedAt: Date
   }, ExtArgs["result"]["popularProduct"]>
@@ -1019,7 +868,6 @@ readonly fields: PopularProductFieldRefs;
  */
 export interface Prisma__PopularProductClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  admin<T extends Prisma.AdminDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminDefaultArgs<ExtArgs>>): Prisma.Prisma__AdminClient<runtime.Types.Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   product<T extends Prisma.ProductDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductClient<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1051,7 +899,6 @@ export interface Prisma__PopularProductClient<T, Null = never, ExtArgs extends r
  */
 export interface PopularProductFieldRefs {
   readonly id: Prisma.FieldRef<"PopularProduct", 'Int'>
-  readonly adminId: Prisma.FieldRef<"PopularProduct", 'Int'>
   readonly productId: Prisma.FieldRef<"PopularProduct", 'Int'>
   readonly addedAt: Prisma.FieldRef<"PopularProduct", 'DateTime'>
 }
