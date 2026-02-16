@@ -229,8 +229,6 @@ export type AdminWhereInput = {
   sales?: Prisma.IntFilter<"Admin"> | number
   avgCheck?: Prisma.IntFilter<"Admin"> | number
   metrics?: Prisma.AdminMetricListRelationFilter
-  popularProducts?: Prisma.PopularProductListRelationFilter
-  promotedProducts?: Prisma.PromotedProductListRelationFilter
   sender?: Prisma.AdminSenderListRelationFilter
   notification?: Prisma.AdminNotificationListRelationFilter
 }
@@ -242,8 +240,6 @@ export type AdminOrderByWithRelationInput = {
   sales?: Prisma.SortOrder
   avgCheck?: Prisma.SortOrder
   metrics?: Prisma.AdminMetricOrderByRelationAggregateInput
-  popularProducts?: Prisma.PopularProductOrderByRelationAggregateInput
-  promotedProducts?: Prisma.PromotedProductOrderByRelationAggregateInput
   sender?: Prisma.AdminSenderOrderByRelationAggregateInput
   notification?: Prisma.AdminNotificationOrderByRelationAggregateInput
 }
@@ -258,8 +254,6 @@ export type AdminWhereUniqueInput = Prisma.AtLeast<{
   sales?: Prisma.IntFilter<"Admin"> | number
   avgCheck?: Prisma.IntFilter<"Admin"> | number
   metrics?: Prisma.AdminMetricListRelationFilter
-  popularProducts?: Prisma.PopularProductListRelationFilter
-  promotedProducts?: Prisma.PromotedProductListRelationFilter
   sender?: Prisma.AdminSenderListRelationFilter
   notification?: Prisma.AdminNotificationListRelationFilter
 }, "id">
@@ -294,8 +288,6 @@ export type AdminCreateInput = {
   sales?: number
   avgCheck?: number
   metrics?: Prisma.AdminMetricCreateNestedManyWithoutAdminInput
-  popularProducts?: Prisma.PopularProductCreateNestedManyWithoutAdminInput
-  promotedProducts?: Prisma.PromotedProductCreateNestedManyWithoutAdminInput
   sender?: Prisma.AdminSenderCreateNestedManyWithoutAdminsInput
   notification?: Prisma.AdminNotificationCreateNestedManyWithoutAdminsInput
 }
@@ -307,8 +299,6 @@ export type AdminUncheckedCreateInput = {
   sales?: number
   avgCheck?: number
   metrics?: Prisma.AdminMetricUncheckedCreateNestedManyWithoutAdminInput
-  popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutAdminInput
-  promotedProducts?: Prisma.PromotedProductUncheckedCreateNestedManyWithoutAdminInput
   sender?: Prisma.AdminSenderUncheckedCreateNestedManyWithoutAdminsInput
   notification?: Prisma.AdminNotificationUncheckedCreateNestedManyWithoutAdminsInput
 }
@@ -319,8 +309,6 @@ export type AdminUpdateInput = {
   sales?: Prisma.IntFieldUpdateOperationsInput | number
   avgCheck?: Prisma.IntFieldUpdateOperationsInput | number
   metrics?: Prisma.AdminMetricUpdateManyWithoutAdminNestedInput
-  popularProducts?: Prisma.PopularProductUpdateManyWithoutAdminNestedInput
-  promotedProducts?: Prisma.PromotedProductUpdateManyWithoutAdminNestedInput
   sender?: Prisma.AdminSenderUpdateManyWithoutAdminsNestedInput
   notification?: Prisma.AdminNotificationUpdateManyWithoutAdminsNestedInput
 }
@@ -332,8 +320,6 @@ export type AdminUncheckedUpdateInput = {
   sales?: Prisma.IntFieldUpdateOperationsInput | number
   avgCheck?: Prisma.IntFieldUpdateOperationsInput | number
   metrics?: Prisma.AdminMetricUncheckedUpdateManyWithoutAdminNestedInput
-  popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutAdminNestedInput
-  promotedProducts?: Prisma.PromotedProductUncheckedUpdateManyWithoutAdminNestedInput
   sender?: Prisma.AdminSenderUncheckedUpdateManyWithoutAdminsNestedInput
   notification?: Prisma.AdminNotificationUncheckedUpdateManyWithoutAdminsNestedInput
 }
@@ -478,34 +464,6 @@ export type AdminUpdateOneRequiredWithoutMetricsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUpdateToOneWithWhereWithoutMetricsInput, Prisma.AdminUpdateWithoutMetricsInput>, Prisma.AdminUncheckedUpdateWithoutMetricsInput>
 }
 
-export type AdminCreateNestedOneWithoutPopularProductsInput = {
-  create?: Prisma.XOR<Prisma.AdminCreateWithoutPopularProductsInput, Prisma.AdminUncheckedCreateWithoutPopularProductsInput>
-  connectOrCreate?: Prisma.AdminCreateOrConnectWithoutPopularProductsInput
-  connect?: Prisma.AdminWhereUniqueInput
-}
-
-export type AdminUpdateOneRequiredWithoutPopularProductsNestedInput = {
-  create?: Prisma.XOR<Prisma.AdminCreateWithoutPopularProductsInput, Prisma.AdminUncheckedCreateWithoutPopularProductsInput>
-  connectOrCreate?: Prisma.AdminCreateOrConnectWithoutPopularProductsInput
-  upsert?: Prisma.AdminUpsertWithoutPopularProductsInput
-  connect?: Prisma.AdminWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUpdateToOneWithWhereWithoutPopularProductsInput, Prisma.AdminUpdateWithoutPopularProductsInput>, Prisma.AdminUncheckedUpdateWithoutPopularProductsInput>
-}
-
-export type AdminCreateNestedOneWithoutPromotedProductsInput = {
-  create?: Prisma.XOR<Prisma.AdminCreateWithoutPromotedProductsInput, Prisma.AdminUncheckedCreateWithoutPromotedProductsInput>
-  connectOrCreate?: Prisma.AdminCreateOrConnectWithoutPromotedProductsInput
-  connect?: Prisma.AdminWhereUniqueInput
-}
-
-export type AdminUpdateOneRequiredWithoutPromotedProductsNestedInput = {
-  create?: Prisma.XOR<Prisma.AdminCreateWithoutPromotedProductsInput, Prisma.AdminUncheckedCreateWithoutPromotedProductsInput>
-  connectOrCreate?: Prisma.AdminCreateOrConnectWithoutPromotedProductsInput
-  upsert?: Prisma.AdminUpsertWithoutPromotedProductsInput
-  connect?: Prisma.AdminWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUpdateToOneWithWhereWithoutPromotedProductsInput, Prisma.AdminUpdateWithoutPromotedProductsInput>, Prisma.AdminUncheckedUpdateWithoutPromotedProductsInput>
-}
-
 export type AdminCreateNestedManyWithoutNotificationInput = {
   create?: Prisma.XOR<Prisma.AdminCreateWithoutNotificationInput, Prisma.AdminUncheckedCreateWithoutNotificationInput> | Prisma.AdminCreateWithoutNotificationInput[] | Prisma.AdminUncheckedCreateWithoutNotificationInput[]
   connectOrCreate?: Prisma.AdminCreateOrConnectWithoutNotificationInput | Prisma.AdminCreateOrConnectWithoutNotificationInput[]
@@ -550,8 +508,6 @@ export type AdminCreateWithoutSenderInput = {
   sales?: number
   avgCheck?: number
   metrics?: Prisma.AdminMetricCreateNestedManyWithoutAdminInput
-  popularProducts?: Prisma.PopularProductCreateNestedManyWithoutAdminInput
-  promotedProducts?: Prisma.PromotedProductCreateNestedManyWithoutAdminInput
   notification?: Prisma.AdminNotificationCreateNestedManyWithoutAdminsInput
 }
 
@@ -562,8 +518,6 @@ export type AdminUncheckedCreateWithoutSenderInput = {
   sales?: number
   avgCheck?: number
   metrics?: Prisma.AdminMetricUncheckedCreateNestedManyWithoutAdminInput
-  popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutAdminInput
-  promotedProducts?: Prisma.PromotedProductUncheckedCreateNestedManyWithoutAdminInput
   notification?: Prisma.AdminNotificationUncheckedCreateNestedManyWithoutAdminsInput
 }
 
@@ -604,8 +558,6 @@ export type AdminCreateWithoutMetricsInput = {
   visits?: number
   sales?: number
   avgCheck?: number
-  popularProducts?: Prisma.PopularProductCreateNestedManyWithoutAdminInput
-  promotedProducts?: Prisma.PromotedProductCreateNestedManyWithoutAdminInput
   sender?: Prisma.AdminSenderCreateNestedManyWithoutAdminsInput
   notification?: Prisma.AdminNotificationCreateNestedManyWithoutAdminsInput
 }
@@ -616,8 +568,6 @@ export type AdminUncheckedCreateWithoutMetricsInput = {
   visits?: number
   sales?: number
   avgCheck?: number
-  popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutAdminInput
-  promotedProducts?: Prisma.PromotedProductUncheckedCreateNestedManyWithoutAdminInput
   sender?: Prisma.AdminSenderUncheckedCreateNestedManyWithoutAdminsInput
   notification?: Prisma.AdminNotificationUncheckedCreateNestedManyWithoutAdminsInput
 }
@@ -643,8 +593,6 @@ export type AdminUpdateWithoutMetricsInput = {
   visits?: Prisma.IntFieldUpdateOperationsInput | number
   sales?: Prisma.IntFieldUpdateOperationsInput | number
   avgCheck?: Prisma.IntFieldUpdateOperationsInput | number
-  popularProducts?: Prisma.PopularProductUpdateManyWithoutAdminNestedInput
-  promotedProducts?: Prisma.PromotedProductUpdateManyWithoutAdminNestedInput
   sender?: Prisma.AdminSenderUpdateManyWithoutAdminsNestedInput
   notification?: Prisma.AdminNotificationUpdateManyWithoutAdminsNestedInput
 }
@@ -655,132 +603,6 @@ export type AdminUncheckedUpdateWithoutMetricsInput = {
   visits?: Prisma.IntFieldUpdateOperationsInput | number
   sales?: Prisma.IntFieldUpdateOperationsInput | number
   avgCheck?: Prisma.IntFieldUpdateOperationsInput | number
-  popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutAdminNestedInput
-  promotedProducts?: Prisma.PromotedProductUncheckedUpdateManyWithoutAdminNestedInput
-  sender?: Prisma.AdminSenderUncheckedUpdateManyWithoutAdminsNestedInput
-  notification?: Prisma.AdminNotificationUncheckedUpdateManyWithoutAdminsNestedInput
-}
-
-export type AdminCreateWithoutPopularProductsInput = {
-  name: string
-  visits?: number
-  sales?: number
-  avgCheck?: number
-  metrics?: Prisma.AdminMetricCreateNestedManyWithoutAdminInput
-  promotedProducts?: Prisma.PromotedProductCreateNestedManyWithoutAdminInput
-  sender?: Prisma.AdminSenderCreateNestedManyWithoutAdminsInput
-  notification?: Prisma.AdminNotificationCreateNestedManyWithoutAdminsInput
-}
-
-export type AdminUncheckedCreateWithoutPopularProductsInput = {
-  id?: number
-  name: string
-  visits?: number
-  sales?: number
-  avgCheck?: number
-  metrics?: Prisma.AdminMetricUncheckedCreateNestedManyWithoutAdminInput
-  promotedProducts?: Prisma.PromotedProductUncheckedCreateNestedManyWithoutAdminInput
-  sender?: Prisma.AdminSenderUncheckedCreateNestedManyWithoutAdminsInput
-  notification?: Prisma.AdminNotificationUncheckedCreateNestedManyWithoutAdminsInput
-}
-
-export type AdminCreateOrConnectWithoutPopularProductsInput = {
-  where: Prisma.AdminWhereUniqueInput
-  create: Prisma.XOR<Prisma.AdminCreateWithoutPopularProductsInput, Prisma.AdminUncheckedCreateWithoutPopularProductsInput>
-}
-
-export type AdminUpsertWithoutPopularProductsInput = {
-  update: Prisma.XOR<Prisma.AdminUpdateWithoutPopularProductsInput, Prisma.AdminUncheckedUpdateWithoutPopularProductsInput>
-  create: Prisma.XOR<Prisma.AdminCreateWithoutPopularProductsInput, Prisma.AdminUncheckedCreateWithoutPopularProductsInput>
-  where?: Prisma.AdminWhereInput
-}
-
-export type AdminUpdateToOneWithWhereWithoutPopularProductsInput = {
-  where?: Prisma.AdminWhereInput
-  data: Prisma.XOR<Prisma.AdminUpdateWithoutPopularProductsInput, Prisma.AdminUncheckedUpdateWithoutPopularProductsInput>
-}
-
-export type AdminUpdateWithoutPopularProductsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  visits?: Prisma.IntFieldUpdateOperationsInput | number
-  sales?: Prisma.IntFieldUpdateOperationsInput | number
-  avgCheck?: Prisma.IntFieldUpdateOperationsInput | number
-  metrics?: Prisma.AdminMetricUpdateManyWithoutAdminNestedInput
-  promotedProducts?: Prisma.PromotedProductUpdateManyWithoutAdminNestedInput
-  sender?: Prisma.AdminSenderUpdateManyWithoutAdminsNestedInput
-  notification?: Prisma.AdminNotificationUpdateManyWithoutAdminsNestedInput
-}
-
-export type AdminUncheckedUpdateWithoutPopularProductsInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  visits?: Prisma.IntFieldUpdateOperationsInput | number
-  sales?: Prisma.IntFieldUpdateOperationsInput | number
-  avgCheck?: Prisma.IntFieldUpdateOperationsInput | number
-  metrics?: Prisma.AdminMetricUncheckedUpdateManyWithoutAdminNestedInput
-  promotedProducts?: Prisma.PromotedProductUncheckedUpdateManyWithoutAdminNestedInput
-  sender?: Prisma.AdminSenderUncheckedUpdateManyWithoutAdminsNestedInput
-  notification?: Prisma.AdminNotificationUncheckedUpdateManyWithoutAdminsNestedInput
-}
-
-export type AdminCreateWithoutPromotedProductsInput = {
-  name: string
-  visits?: number
-  sales?: number
-  avgCheck?: number
-  metrics?: Prisma.AdminMetricCreateNestedManyWithoutAdminInput
-  popularProducts?: Prisma.PopularProductCreateNestedManyWithoutAdminInput
-  sender?: Prisma.AdminSenderCreateNestedManyWithoutAdminsInput
-  notification?: Prisma.AdminNotificationCreateNestedManyWithoutAdminsInput
-}
-
-export type AdminUncheckedCreateWithoutPromotedProductsInput = {
-  id?: number
-  name: string
-  visits?: number
-  sales?: number
-  avgCheck?: number
-  metrics?: Prisma.AdminMetricUncheckedCreateNestedManyWithoutAdminInput
-  popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutAdminInput
-  sender?: Prisma.AdminSenderUncheckedCreateNestedManyWithoutAdminsInput
-  notification?: Prisma.AdminNotificationUncheckedCreateNestedManyWithoutAdminsInput
-}
-
-export type AdminCreateOrConnectWithoutPromotedProductsInput = {
-  where: Prisma.AdminWhereUniqueInput
-  create: Prisma.XOR<Prisma.AdminCreateWithoutPromotedProductsInput, Prisma.AdminUncheckedCreateWithoutPromotedProductsInput>
-}
-
-export type AdminUpsertWithoutPromotedProductsInput = {
-  update: Prisma.XOR<Prisma.AdminUpdateWithoutPromotedProductsInput, Prisma.AdminUncheckedUpdateWithoutPromotedProductsInput>
-  create: Prisma.XOR<Prisma.AdminCreateWithoutPromotedProductsInput, Prisma.AdminUncheckedCreateWithoutPromotedProductsInput>
-  where?: Prisma.AdminWhereInput
-}
-
-export type AdminUpdateToOneWithWhereWithoutPromotedProductsInput = {
-  where?: Prisma.AdminWhereInput
-  data: Prisma.XOR<Prisma.AdminUpdateWithoutPromotedProductsInput, Prisma.AdminUncheckedUpdateWithoutPromotedProductsInput>
-}
-
-export type AdminUpdateWithoutPromotedProductsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  visits?: Prisma.IntFieldUpdateOperationsInput | number
-  sales?: Prisma.IntFieldUpdateOperationsInput | number
-  avgCheck?: Prisma.IntFieldUpdateOperationsInput | number
-  metrics?: Prisma.AdminMetricUpdateManyWithoutAdminNestedInput
-  popularProducts?: Prisma.PopularProductUpdateManyWithoutAdminNestedInput
-  sender?: Prisma.AdminSenderUpdateManyWithoutAdminsNestedInput
-  notification?: Prisma.AdminNotificationUpdateManyWithoutAdminsNestedInput
-}
-
-export type AdminUncheckedUpdateWithoutPromotedProductsInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  visits?: Prisma.IntFieldUpdateOperationsInput | number
-  sales?: Prisma.IntFieldUpdateOperationsInput | number
-  avgCheck?: Prisma.IntFieldUpdateOperationsInput | number
-  metrics?: Prisma.AdminMetricUncheckedUpdateManyWithoutAdminNestedInput
-  popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutAdminNestedInput
   sender?: Prisma.AdminSenderUncheckedUpdateManyWithoutAdminsNestedInput
   notification?: Prisma.AdminNotificationUncheckedUpdateManyWithoutAdminsNestedInput
 }
@@ -791,8 +613,6 @@ export type AdminCreateWithoutNotificationInput = {
   sales?: number
   avgCheck?: number
   metrics?: Prisma.AdminMetricCreateNestedManyWithoutAdminInput
-  popularProducts?: Prisma.PopularProductCreateNestedManyWithoutAdminInput
-  promotedProducts?: Prisma.PromotedProductCreateNestedManyWithoutAdminInput
   sender?: Prisma.AdminSenderCreateNestedManyWithoutAdminsInput
 }
 
@@ -803,8 +623,6 @@ export type AdminUncheckedCreateWithoutNotificationInput = {
   sales?: number
   avgCheck?: number
   metrics?: Prisma.AdminMetricUncheckedCreateNestedManyWithoutAdminInput
-  popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutAdminInput
-  promotedProducts?: Prisma.PromotedProductUncheckedCreateNestedManyWithoutAdminInput
   sender?: Prisma.AdminSenderUncheckedCreateNestedManyWithoutAdminsInput
 }
 
@@ -835,8 +653,6 @@ export type AdminUpdateWithoutSenderInput = {
   sales?: Prisma.IntFieldUpdateOperationsInput | number
   avgCheck?: Prisma.IntFieldUpdateOperationsInput | number
   metrics?: Prisma.AdminMetricUpdateManyWithoutAdminNestedInput
-  popularProducts?: Prisma.PopularProductUpdateManyWithoutAdminNestedInput
-  promotedProducts?: Prisma.PromotedProductUpdateManyWithoutAdminNestedInput
   notification?: Prisma.AdminNotificationUpdateManyWithoutAdminsNestedInput
 }
 
@@ -847,8 +663,6 @@ export type AdminUncheckedUpdateWithoutSenderInput = {
   sales?: Prisma.IntFieldUpdateOperationsInput | number
   avgCheck?: Prisma.IntFieldUpdateOperationsInput | number
   metrics?: Prisma.AdminMetricUncheckedUpdateManyWithoutAdminNestedInput
-  popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutAdminNestedInput
-  promotedProducts?: Prisma.PromotedProductUncheckedUpdateManyWithoutAdminNestedInput
   notification?: Prisma.AdminNotificationUncheckedUpdateManyWithoutAdminsNestedInput
 }
 
@@ -866,8 +680,6 @@ export type AdminUpdateWithoutNotificationInput = {
   sales?: Prisma.IntFieldUpdateOperationsInput | number
   avgCheck?: Prisma.IntFieldUpdateOperationsInput | number
   metrics?: Prisma.AdminMetricUpdateManyWithoutAdminNestedInput
-  popularProducts?: Prisma.PopularProductUpdateManyWithoutAdminNestedInput
-  promotedProducts?: Prisma.PromotedProductUpdateManyWithoutAdminNestedInput
   sender?: Prisma.AdminSenderUpdateManyWithoutAdminsNestedInput
 }
 
@@ -878,8 +690,6 @@ export type AdminUncheckedUpdateWithoutNotificationInput = {
   sales?: Prisma.IntFieldUpdateOperationsInput | number
   avgCheck?: Prisma.IntFieldUpdateOperationsInput | number
   metrics?: Prisma.AdminMetricUncheckedUpdateManyWithoutAdminNestedInput
-  popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutAdminNestedInput
-  promotedProducts?: Prisma.PromotedProductUncheckedUpdateManyWithoutAdminNestedInput
   sender?: Prisma.AdminSenderUncheckedUpdateManyWithoutAdminsNestedInput
 }
 
@@ -898,16 +708,12 @@ export type AdminUncheckedUpdateManyWithoutNotificationInput = {
 
 export type AdminCountOutputType = {
   metrics: number
-  popularProducts: number
-  promotedProducts: number
   sender: number
   notification: number
 }
 
 export type AdminCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   metrics?: boolean | AdminCountOutputTypeCountMetricsArgs
-  popularProducts?: boolean | AdminCountOutputTypeCountPopularProductsArgs
-  promotedProducts?: boolean | AdminCountOutputTypeCountPromotedProductsArgs
   sender?: boolean | AdminCountOutputTypeCountSenderArgs
   notification?: boolean | AdminCountOutputTypeCountNotificationArgs
 }
@@ -932,20 +738,6 @@ export type AdminCountOutputTypeCountMetricsArgs<ExtArgs extends runtime.Types.E
 /**
  * AdminCountOutputType without action
  */
-export type AdminCountOutputTypeCountPopularProductsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PopularProductWhereInput
-}
-
-/**
- * AdminCountOutputType without action
- */
-export type AdminCountOutputTypeCountPromotedProductsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PromotedProductWhereInput
-}
-
-/**
- * AdminCountOutputType without action
- */
 export type AdminCountOutputTypeCountSenderArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.AdminSenderWhereInput
 }
@@ -965,8 +757,6 @@ export type AdminSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   sales?: boolean
   avgCheck?: boolean
   metrics?: boolean | Prisma.Admin$metricsArgs<ExtArgs>
-  popularProducts?: boolean | Prisma.Admin$popularProductsArgs<ExtArgs>
-  promotedProducts?: boolean | Prisma.Admin$promotedProductsArgs<ExtArgs>
   sender?: boolean | Prisma.Admin$senderArgs<ExtArgs>
   notification?: boolean | Prisma.Admin$notificationArgs<ExtArgs>
   _count?: boolean | Prisma.AdminCountOutputTypeDefaultArgs<ExtArgs>
@@ -999,8 +789,6 @@ export type AdminSelectScalar = {
 export type AdminOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "visits" | "sales" | "avgCheck", ExtArgs["result"]["admin"]>
 export type AdminInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   metrics?: boolean | Prisma.Admin$metricsArgs<ExtArgs>
-  popularProducts?: boolean | Prisma.Admin$popularProductsArgs<ExtArgs>
-  promotedProducts?: boolean | Prisma.Admin$promotedProductsArgs<ExtArgs>
   sender?: boolean | Prisma.Admin$senderArgs<ExtArgs>
   notification?: boolean | Prisma.Admin$notificationArgs<ExtArgs>
   _count?: boolean | Prisma.AdminCountOutputTypeDefaultArgs<ExtArgs>
@@ -1012,8 +800,6 @@ export type $AdminPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name: "Admin"
   objects: {
     metrics: Prisma.$AdminMetricPayload<ExtArgs>[]
-    popularProducts: Prisma.$PopularProductPayload<ExtArgs>[]
-    promotedProducts: Prisma.$PromotedProductPayload<ExtArgs>[]
     sender: Prisma.$AdminSenderPayload<ExtArgs>[]
     notification: Prisma.$AdminNotificationPayload<ExtArgs>[]
   }
@@ -1418,8 +1204,6 @@ readonly fields: AdminFieldRefs;
 export interface Prisma__AdminClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   metrics<T extends Prisma.Admin$metricsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$metricsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminMetricPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  popularProducts<T extends Prisma.Admin$popularProductsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$popularProductsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PopularProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  promotedProducts<T extends Prisma.Admin$promotedProductsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$promotedProductsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromotedProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sender<T extends Prisma.Admin$senderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$senderArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminSenderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notification<T extends Prisma.Admin$notificationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$notificationArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1865,54 +1649,6 @@ export type Admin$metricsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.AdminMetricScalarFieldEnum | Prisma.AdminMetricScalarFieldEnum[]
-}
-
-/**
- * Admin.popularProducts
- */
-export type Admin$popularProductsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PopularProduct
-   */
-  select?: Prisma.PopularProductSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the PopularProduct
-   */
-  omit?: Prisma.PopularProductOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PopularProductInclude<ExtArgs> | null
-  where?: Prisma.PopularProductWhereInput
-  orderBy?: Prisma.PopularProductOrderByWithRelationInput | Prisma.PopularProductOrderByWithRelationInput[]
-  cursor?: Prisma.PopularProductWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PopularProductScalarFieldEnum | Prisma.PopularProductScalarFieldEnum[]
-}
-
-/**
- * Admin.promotedProducts
- */
-export type Admin$promotedProductsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PromotedProduct
-   */
-  select?: Prisma.PromotedProductSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the PromotedProduct
-   */
-  omit?: Prisma.PromotedProductOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PromotedProductInclude<ExtArgs> | null
-  where?: Prisma.PromotedProductWhereInput
-  orderBy?: Prisma.PromotedProductOrderByWithRelationInput | Prisma.PromotedProductOrderByWithRelationInput[]
-  cursor?: Prisma.PromotedProductWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PromotedProductScalarFieldEnum | Prisma.PromotedProductScalarFieldEnum[]
 }
 
 /**
