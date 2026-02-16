@@ -264,6 +264,13 @@
                                 Редагувати
                               </button>
                               <button
+                                class="promo_list_btn"
+                                @click="modalStore.showModal('ProductPromoModal', { product })"
+                              >
+                                <ListIcon />
+                              </button>
+
+                              <button
                                 class="delete_btn"
                                 @click="modalStore.showModal('DeleteProduct', { product })"
                               >
@@ -289,16 +296,19 @@
 // ICONS
 
 import CloseIcon from "~/assets/icons/close-icon.svg";
+import ListIcon from "~/assets/icons/promo-list.svg";
 
 import { onMounted, ref, watch } from "vue";
 import { useModalStore } from "@store/modal-store";
 import { useProductStore } from "@store/product-store";
 import { useCategoryStore } from "@/store/category-store";
+// import { useAdminStore } from "@/store/admin-store";
 import gsap from "gsap";
 
 const modalStore = useModalStore();
 const productStore = useProductStore();
 const categoryStore = useCategoryStore();
+// const adminStore = useAdminStore();
 
 const loadingCategoryState = ref(false);
 const categoryElem = ref(null);
@@ -309,6 +319,10 @@ const activeGroup = ref("products");
 
 const fetchedProducts = computed(() => productStore.productList);
 const fetchedCategories = computed(() => categoryStore.categoryList);
+
+// const productPromoHandler = async () => {
+
+// }
 
 watch(fetchedCategories, async () => {
   if (categoryElem.value) {
@@ -798,6 +812,31 @@ onMounted(async () => {
                   align-items: center;
                   justify-content: center;
                   gap: 10px;
+
+                  .promo_list_btn {
+                    border: 1px solid var(--btn-color);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 2px;
+                    cursor: pointer;
+                    transition: all ease 0.3s;
+
+                    @media screen and (min-width: 1024px) {
+                      &:hover svg {
+                        fill: var(--btn-color-hover);
+                      }
+                      &:hover {
+                        border: 1px solid var(--btn-color-hover);
+                        transition: all ease 0.3s;
+                      }
+                    }
+
+                    &:active {
+                      border: 1px solid var(--btn-color-active);
+                      transition: all ease 0.3s;
+                    }
+                  }
                 }
               }
             }

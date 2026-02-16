@@ -343,7 +343,8 @@ definePageMeta({
     grid-template-columns: repeat(3, 1fr);
     gap: 32px 20px;
     width: 100%;
-    height: auto;
+    // height: auto;
+    height: -webkit-fill-available;
 
     @media screen and (max-width: 1024px) {
       grid-template-columns: repeat(2, 1fr);

@@ -28,33 +28,28 @@ export type AggregatePromotedProduct = {
 
 export type PromotedProductAvgAggregateOutputType = {
   id: number | null
-  adminId: number | null
   productId: number | null
 }
 
 export type PromotedProductSumAggregateOutputType = {
   id: number | null
-  adminId: number | null
   productId: number | null
 }
 
 export type PromotedProductMinAggregateOutputType = {
   id: number | null
-  adminId: number | null
   productId: number | null
   addedAt: Date | null
 }
 
 export type PromotedProductMaxAggregateOutputType = {
   id: number | null
-  adminId: number | null
   productId: number | null
   addedAt: Date | null
 }
 
 export type PromotedProductCountAggregateOutputType = {
   id: number
-  adminId: number
   productId: number
   addedAt: number
   _all: number
@@ -63,33 +58,28 @@ export type PromotedProductCountAggregateOutputType = {
 
 export type PromotedProductAvgAggregateInputType = {
   id?: true
-  adminId?: true
   productId?: true
 }
 
 export type PromotedProductSumAggregateInputType = {
   id?: true
-  adminId?: true
   productId?: true
 }
 
 export type PromotedProductMinAggregateInputType = {
   id?: true
-  adminId?: true
   productId?: true
   addedAt?: true
 }
 
 export type PromotedProductMaxAggregateInputType = {
   id?: true
-  adminId?: true
   productId?: true
   addedAt?: true
 }
 
 export type PromotedProductCountAggregateInputType = {
   id?: true
-  adminId?: true
   productId?: true
   addedAt?: true
   _all?: true
@@ -183,7 +173,6 @@ export type PromotedProductGroupByArgs<ExtArgs extends runtime.Types.Extensions.
 
 export type PromotedProductGroupByOutputType = {
   id: number
-  adminId: number
   productId: number
   addedAt: Date
   _count: PromotedProductCountAggregateOutputType | null
@@ -213,37 +202,30 @@ export type PromotedProductWhereInput = {
   OR?: Prisma.PromotedProductWhereInput[]
   NOT?: Prisma.PromotedProductWhereInput | Prisma.PromotedProductWhereInput[]
   id?: Prisma.IntFilter<"PromotedProduct"> | number
-  adminId?: Prisma.IntFilter<"PromotedProduct"> | number
   productId?: Prisma.IntFilter<"PromotedProduct"> | number
   addedAt?: Prisma.DateTimeFilter<"PromotedProduct"> | Date | string
-  admin?: Prisma.XOR<Prisma.AdminScalarRelationFilter, Prisma.AdminWhereInput>
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
 }
 
 export type PromotedProductOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
-  admin?: Prisma.AdminOrderByWithRelationInput
   product?: Prisma.ProductOrderByWithRelationInput
 }
 
 export type PromotedProductWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  productId?: number
   AND?: Prisma.PromotedProductWhereInput | Prisma.PromotedProductWhereInput[]
   OR?: Prisma.PromotedProductWhereInput[]
   NOT?: Prisma.PromotedProductWhereInput | Prisma.PromotedProductWhereInput[]
-  adminId?: Prisma.IntFilter<"PromotedProduct"> | number
-  productId?: Prisma.IntFilter<"PromotedProduct"> | number
   addedAt?: Prisma.DateTimeFilter<"PromotedProduct"> | Date | string
-  admin?: Prisma.XOR<Prisma.AdminScalarRelationFilter, Prisma.AdminWhereInput>
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
-}, "id">
+}, "id" | "productId">
 
 export type PromotedProductOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
   _count?: Prisma.PromotedProductCountOrderByAggregateInput
@@ -258,40 +240,34 @@ export type PromotedProductScalarWhereWithAggregatesInput = {
   OR?: Prisma.PromotedProductScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PromotedProductScalarWhereWithAggregatesInput | Prisma.PromotedProductScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"PromotedProduct"> | number
-  adminId?: Prisma.IntWithAggregatesFilter<"PromotedProduct"> | number
   productId?: Prisma.IntWithAggregatesFilter<"PromotedProduct"> | number
   addedAt?: Prisma.DateTimeWithAggregatesFilter<"PromotedProduct"> | Date | string
 }
 
 export type PromotedProductCreateInput = {
   addedAt?: Date | string
-  admin: Prisma.AdminCreateNestedOneWithoutPromotedProductsInput
   product: Prisma.ProductCreateNestedOneWithoutPromotedProductsInput
 }
 
 export type PromotedProductUncheckedCreateInput = {
   id?: number
-  adminId: number
   productId: number
   addedAt?: Date | string
 }
 
 export type PromotedProductUpdateInput = {
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  admin?: Prisma.AdminUpdateOneRequiredWithoutPromotedProductsNestedInput
   product?: Prisma.ProductUpdateOneRequiredWithoutPromotedProductsNestedInput
 }
 
 export type PromotedProductUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  adminId?: Prisma.IntFieldUpdateOperationsInput | number
   productId?: Prisma.IntFieldUpdateOperationsInput | number
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PromotedProductCreateManyInput = {
   id?: number
-  adminId: number
   productId: number
   addedAt?: Date | string
 }
@@ -302,7 +278,6 @@ export type PromotedProductUpdateManyMutationInput = {
 
 export type PromotedProductUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  adminId?: Prisma.IntFieldUpdateOperationsInput | number
   productId?: Prisma.IntFieldUpdateOperationsInput | number
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -319,77 +294,30 @@ export type PromotedProductOrderByRelationAggregateInput = {
 
 export type PromotedProductCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
 }
 
 export type PromotedProductAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
 }
 
 export type PromotedProductMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
 }
 
 export type PromotedProductMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   addedAt?: Prisma.SortOrder
 }
 
 export type PromotedProductSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  adminId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
-}
-
-export type PromotedProductCreateNestedManyWithoutAdminInput = {
-  create?: Prisma.XOR<Prisma.PromotedProductCreateWithoutAdminInput, Prisma.PromotedProductUncheckedCreateWithoutAdminInput> | Prisma.PromotedProductCreateWithoutAdminInput[] | Prisma.PromotedProductUncheckedCreateWithoutAdminInput[]
-  connectOrCreate?: Prisma.PromotedProductCreateOrConnectWithoutAdminInput | Prisma.PromotedProductCreateOrConnectWithoutAdminInput[]
-  createMany?: Prisma.PromotedProductCreateManyAdminInputEnvelope
-  connect?: Prisma.PromotedProductWhereUniqueInput | Prisma.PromotedProductWhereUniqueInput[]
-}
-
-export type PromotedProductUncheckedCreateNestedManyWithoutAdminInput = {
-  create?: Prisma.XOR<Prisma.PromotedProductCreateWithoutAdminInput, Prisma.PromotedProductUncheckedCreateWithoutAdminInput> | Prisma.PromotedProductCreateWithoutAdminInput[] | Prisma.PromotedProductUncheckedCreateWithoutAdminInput[]
-  connectOrCreate?: Prisma.PromotedProductCreateOrConnectWithoutAdminInput | Prisma.PromotedProductCreateOrConnectWithoutAdminInput[]
-  createMany?: Prisma.PromotedProductCreateManyAdminInputEnvelope
-  connect?: Prisma.PromotedProductWhereUniqueInput | Prisma.PromotedProductWhereUniqueInput[]
-}
-
-export type PromotedProductUpdateManyWithoutAdminNestedInput = {
-  create?: Prisma.XOR<Prisma.PromotedProductCreateWithoutAdminInput, Prisma.PromotedProductUncheckedCreateWithoutAdminInput> | Prisma.PromotedProductCreateWithoutAdminInput[] | Prisma.PromotedProductUncheckedCreateWithoutAdminInput[]
-  connectOrCreate?: Prisma.PromotedProductCreateOrConnectWithoutAdminInput | Prisma.PromotedProductCreateOrConnectWithoutAdminInput[]
-  upsert?: Prisma.PromotedProductUpsertWithWhereUniqueWithoutAdminInput | Prisma.PromotedProductUpsertWithWhereUniqueWithoutAdminInput[]
-  createMany?: Prisma.PromotedProductCreateManyAdminInputEnvelope
-  set?: Prisma.PromotedProductWhereUniqueInput | Prisma.PromotedProductWhereUniqueInput[]
-  disconnect?: Prisma.PromotedProductWhereUniqueInput | Prisma.PromotedProductWhereUniqueInput[]
-  delete?: Prisma.PromotedProductWhereUniqueInput | Prisma.PromotedProductWhereUniqueInput[]
-  connect?: Prisma.PromotedProductWhereUniqueInput | Prisma.PromotedProductWhereUniqueInput[]
-  update?: Prisma.PromotedProductUpdateWithWhereUniqueWithoutAdminInput | Prisma.PromotedProductUpdateWithWhereUniqueWithoutAdminInput[]
-  updateMany?: Prisma.PromotedProductUpdateManyWithWhereWithoutAdminInput | Prisma.PromotedProductUpdateManyWithWhereWithoutAdminInput[]
-  deleteMany?: Prisma.PromotedProductScalarWhereInput | Prisma.PromotedProductScalarWhereInput[]
-}
-
-export type PromotedProductUncheckedUpdateManyWithoutAdminNestedInput = {
-  create?: Prisma.XOR<Prisma.PromotedProductCreateWithoutAdminInput, Prisma.PromotedProductUncheckedCreateWithoutAdminInput> | Prisma.PromotedProductCreateWithoutAdminInput[] | Prisma.PromotedProductUncheckedCreateWithoutAdminInput[]
-  connectOrCreate?: Prisma.PromotedProductCreateOrConnectWithoutAdminInput | Prisma.PromotedProductCreateOrConnectWithoutAdminInput[]
-  upsert?: Prisma.PromotedProductUpsertWithWhereUniqueWithoutAdminInput | Prisma.PromotedProductUpsertWithWhereUniqueWithoutAdminInput[]
-  createMany?: Prisma.PromotedProductCreateManyAdminInputEnvelope
-  set?: Prisma.PromotedProductWhereUniqueInput | Prisma.PromotedProductWhereUniqueInput[]
-  disconnect?: Prisma.PromotedProductWhereUniqueInput | Prisma.PromotedProductWhereUniqueInput[]
-  delete?: Prisma.PromotedProductWhereUniqueInput | Prisma.PromotedProductWhereUniqueInput[]
-  connect?: Prisma.PromotedProductWhereUniqueInput | Prisma.PromotedProductWhereUniqueInput[]
-  update?: Prisma.PromotedProductUpdateWithWhereUniqueWithoutAdminInput | Prisma.PromotedProductUpdateWithWhereUniqueWithoutAdminInput[]
-  updateMany?: Prisma.PromotedProductUpdateManyWithWhereWithoutAdminInput | Prisma.PromotedProductUpdateManyWithWhereWithoutAdminInput[]
-  deleteMany?: Prisma.PromotedProductScalarWhereInput | Prisma.PromotedProductScalarWhereInput[]
 }
 
 export type PromotedProductCreateNestedManyWithoutProductInput = {
@@ -434,61 +362,12 @@ export type PromotedProductUncheckedUpdateManyWithoutProductNestedInput = {
   deleteMany?: Prisma.PromotedProductScalarWhereInput | Prisma.PromotedProductScalarWhereInput[]
 }
 
-export type PromotedProductCreateWithoutAdminInput = {
-  addedAt?: Date | string
-  product: Prisma.ProductCreateNestedOneWithoutPromotedProductsInput
-}
-
-export type PromotedProductUncheckedCreateWithoutAdminInput = {
-  id?: number
-  productId: number
-  addedAt?: Date | string
-}
-
-export type PromotedProductCreateOrConnectWithoutAdminInput = {
-  where: Prisma.PromotedProductWhereUniqueInput
-  create: Prisma.XOR<Prisma.PromotedProductCreateWithoutAdminInput, Prisma.PromotedProductUncheckedCreateWithoutAdminInput>
-}
-
-export type PromotedProductCreateManyAdminInputEnvelope = {
-  data: Prisma.PromotedProductCreateManyAdminInput | Prisma.PromotedProductCreateManyAdminInput[]
-  skipDuplicates?: boolean
-}
-
-export type PromotedProductUpsertWithWhereUniqueWithoutAdminInput = {
-  where: Prisma.PromotedProductWhereUniqueInput
-  update: Prisma.XOR<Prisma.PromotedProductUpdateWithoutAdminInput, Prisma.PromotedProductUncheckedUpdateWithoutAdminInput>
-  create: Prisma.XOR<Prisma.PromotedProductCreateWithoutAdminInput, Prisma.PromotedProductUncheckedCreateWithoutAdminInput>
-}
-
-export type PromotedProductUpdateWithWhereUniqueWithoutAdminInput = {
-  where: Prisma.PromotedProductWhereUniqueInput
-  data: Prisma.XOR<Prisma.PromotedProductUpdateWithoutAdminInput, Prisma.PromotedProductUncheckedUpdateWithoutAdminInput>
-}
-
-export type PromotedProductUpdateManyWithWhereWithoutAdminInput = {
-  where: Prisma.PromotedProductScalarWhereInput
-  data: Prisma.XOR<Prisma.PromotedProductUpdateManyMutationInput, Prisma.PromotedProductUncheckedUpdateManyWithoutAdminInput>
-}
-
-export type PromotedProductScalarWhereInput = {
-  AND?: Prisma.PromotedProductScalarWhereInput | Prisma.PromotedProductScalarWhereInput[]
-  OR?: Prisma.PromotedProductScalarWhereInput[]
-  NOT?: Prisma.PromotedProductScalarWhereInput | Prisma.PromotedProductScalarWhereInput[]
-  id?: Prisma.IntFilter<"PromotedProduct"> | number
-  adminId?: Prisma.IntFilter<"PromotedProduct"> | number
-  productId?: Prisma.IntFilter<"PromotedProduct"> | number
-  addedAt?: Prisma.DateTimeFilter<"PromotedProduct"> | Date | string
-}
-
 export type PromotedProductCreateWithoutProductInput = {
   addedAt?: Date | string
-  admin: Prisma.AdminCreateNestedOneWithoutPromotedProductsInput
 }
 
 export type PromotedProductUncheckedCreateWithoutProductInput = {
   id?: number
-  adminId: number
   addedAt?: Date | string
 }
 
@@ -518,49 +397,31 @@ export type PromotedProductUpdateManyWithWhereWithoutProductInput = {
   data: Prisma.XOR<Prisma.PromotedProductUpdateManyMutationInput, Prisma.PromotedProductUncheckedUpdateManyWithoutProductInput>
 }
 
-export type PromotedProductCreateManyAdminInput = {
-  id?: number
-  productId: number
-  addedAt?: Date | string
-}
-
-export type PromotedProductUpdateWithoutAdminInput = {
-  addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  product?: Prisma.ProductUpdateOneRequiredWithoutPromotedProductsNestedInput
-}
-
-export type PromotedProductUncheckedUpdateWithoutAdminInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
-  addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-export type PromotedProductUncheckedUpdateManyWithoutAdminInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  productId?: Prisma.IntFieldUpdateOperationsInput | number
-  addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type PromotedProductScalarWhereInput = {
+  AND?: Prisma.PromotedProductScalarWhereInput | Prisma.PromotedProductScalarWhereInput[]
+  OR?: Prisma.PromotedProductScalarWhereInput[]
+  NOT?: Prisma.PromotedProductScalarWhereInput | Prisma.PromotedProductScalarWhereInput[]
+  id?: Prisma.IntFilter<"PromotedProduct"> | number
+  productId?: Prisma.IntFilter<"PromotedProduct"> | number
+  addedAt?: Prisma.DateTimeFilter<"PromotedProduct"> | Date | string
 }
 
 export type PromotedProductCreateManyProductInput = {
   id?: number
-  adminId: number
   addedAt?: Date | string
 }
 
 export type PromotedProductUpdateWithoutProductInput = {
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  admin?: Prisma.AdminUpdateOneRequiredWithoutPromotedProductsNestedInput
 }
 
 export type PromotedProductUncheckedUpdateWithoutProductInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  adminId?: Prisma.IntFieldUpdateOperationsInput | number
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PromotedProductUncheckedUpdateManyWithoutProductInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  adminId?: Prisma.IntFieldUpdateOperationsInput | number
   addedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -568,61 +429,49 @@ export type PromotedProductUncheckedUpdateManyWithoutProductInput = {
 
 export type PromotedProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  adminId?: boolean
   productId?: boolean
   addedAt?: boolean
-  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["promotedProduct"]>
 
 export type PromotedProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  adminId?: boolean
   productId?: boolean
   addedAt?: boolean
-  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["promotedProduct"]>
 
 export type PromotedProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  adminId?: boolean
   productId?: boolean
   addedAt?: boolean
-  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["promotedProduct"]>
 
 export type PromotedProductSelectScalar = {
   id?: boolean
-  adminId?: boolean
   productId?: boolean
   addedAt?: boolean
 }
 
-export type PromotedProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "adminId" | "productId" | "addedAt", ExtArgs["result"]["promotedProduct"]>
+export type PromotedProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "productId" | "addedAt", ExtArgs["result"]["promotedProduct"]>
 export type PromotedProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }
 export type PromotedProductIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }
 export type PromotedProductIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }
 
 export type $PromotedProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PromotedProduct"
   objects: {
-    admin: Prisma.$AdminPayload<ExtArgs>
     product: Prisma.$ProductPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    adminId: number
     productId: number
     addedAt: Date
   }, ExtArgs["result"]["promotedProduct"]>
@@ -1019,7 +868,6 @@ readonly fields: PromotedProductFieldRefs;
  */
 export interface Prisma__PromotedProductClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  admin<T extends Prisma.AdminDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminDefaultArgs<ExtArgs>>): Prisma.Prisma__AdminClient<runtime.Types.Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   product<T extends Prisma.ProductDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductClient<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1051,7 +899,6 @@ export interface Prisma__PromotedProductClient<T, Null = never, ExtArgs extends 
  */
 export interface PromotedProductFieldRefs {
   readonly id: Prisma.FieldRef<"PromotedProduct", 'Int'>
-  readonly adminId: Prisma.FieldRef<"PromotedProduct", 'Int'>
   readonly productId: Prisma.FieldRef<"PromotedProduct", 'Int'>
   readonly addedAt: Prisma.FieldRef<"PromotedProduct", 'DateTime'>
 }
