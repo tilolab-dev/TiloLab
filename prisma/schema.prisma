@@ -14,8 +14,6 @@ model Admin {
   sales            Int               @default(0)
   avgCheck         Int               @default(0)
   metrics          AdminMetric[]
-  popularProducts  PopularProduct[]
-  promotedProducts PromotedProduct[]
   sender           AdminSender[]
   notification     AdminNotification[]
 }
@@ -157,19 +155,15 @@ model ProductOptionsTranslation {
 
 model PopularProduct {
   id        Int      @id @default(autoincrement())
-  adminId   Int
-  productId Int
+  productId Int      @unique
   addedAt   DateTime @default(now())
-  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model PromotedProduct {
   id        Int      @id @default(autoincrement())
-  adminId   Int
-  productId Int
+  productId Int      @unique
   addedAt   DateTime @default(now())
-  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 

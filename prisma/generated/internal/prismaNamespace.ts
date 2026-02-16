@@ -2152,7 +2152,6 @@ export type ProductOptionsTranslationScalarFieldEnum = (typeof ProductOptionsTra
 
 export const PopularProductScalarFieldEnum = {
   id: 'id',
-  adminId: 'adminId',
   productId: 'productId',
   addedAt: 'addedAt'
 } as const
@@ -2162,7 +2161,6 @@ export type PopularProductScalarFieldEnum = (typeof PopularProductScalarFieldEnu
 
 export const PromotedProductScalarFieldEnum = {
   id: 'id',
-  adminId: 'adminId',
   productId: 'productId',
   addedAt: 'addedAt'
 } as const

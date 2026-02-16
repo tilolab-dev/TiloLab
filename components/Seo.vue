@@ -28,10 +28,6 @@
           Весь асортимент інтернет-магазину Tilo Lab доступний для замовлення онлайн із швидкою та
           делікатною доставкою по Україні.
         </p>
-        <p>
-          Это я набросал текстовый сео блок Его суть в том что в этот текст нужно добавить наиболее
-          возможные ключевые слова по которым люди будут искать товары в интернете
-        </p>
       </div>
     </div>
   </section>
@@ -92,8 +88,20 @@
     gap: 30px;
 
     p {
-      @include mixins.mainText;
-      font-size: 1rem;
+      color: var(--text-color);
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.125rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 150%;
+      letter-spacing: 0.36px;
+
+      @media screen and (max-width: 768px) {
+        font-size: 1.0625rem;
+      }
+      @media screen and (max-width: 480px) {
+        font-size: 0.875rem;
+      }
     }
   }
 }
