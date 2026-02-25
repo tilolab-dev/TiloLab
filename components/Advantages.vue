@@ -210,14 +210,15 @@ const advantageData = shallowRef([
 
     strong {
       @include mixins.subtitleText;
-      color: var(--accent-color);
+      color: white;
+      font-weight: 700;
     }
     p {
       color: var(--text-color);
       font-family: "Montserrat", sans-serif;
-      font-size: 1.125rem;
+      font-size: 0.82rem;
       font-style: normal;
-      font-weight: 500;
+      font-weight: 400;
       line-height: 150%;
       letter-spacing: 0.36px;
 
