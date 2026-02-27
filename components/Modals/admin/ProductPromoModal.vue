@@ -153,6 +153,14 @@ onMounted(async () => {
       height: 100%;
       stroke: white;
     }
+
+    @media screen and (max-width: 768px) {
+      padding-inline: 15px;
+    }
+
+    @media screen and (max-width: 480px) {
+      padding-inline: 10px;
+    }
   }
 
   &_text {
@@ -163,10 +171,15 @@ onMounted(async () => {
     @media screen and (max-width: 1024px) {
       font-size: 1.0625rem;
     }
+    @media screen and (max-width: 768px) {
+      padding: 0 30px;
+    }
     @media screen and (max-width: 480px) {
+      padding: 0 20px;
       font-size: 0.875rem;
     }
     @media screen and (max-width: 375px) {
+      padding: 0;
       font-size: 0.8125rem;
     }
   }
@@ -182,13 +195,28 @@ onMounted(async () => {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     gap: 50px;
 
+    button {
+      @media screen and (max-width: 768px) {
+        width: 100%;
+        height: auto;
+      }
+    }
+
     @media screen and (max-width: 1024px) {
       font-size: 1.0625rem;
     }
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+      width: 100%;
+      height: auto;
+      gap: 15px;
+    }
     @media screen and (max-width: 480px) {
+      padding: 30px 20px 0;
       font-size: 0.875rem;
     }
     @media screen and (max-width: 375px) {
+      padding: 0;
       font-size: 0.75rem;
     }
   }
@@ -197,8 +225,12 @@ onMounted(async () => {
     padding: 36px 52px;
   }
 
+  @media screen and (max-width: 768px) {
+    padding: 32px 20px;
+  }
+
   @media screen and (max-width: 480px) {
-    padding: 32px 52px;
+    // padding: 32px 52px;
   }
   @media screen and (max-width: 375px) {
     padding: 24px 18px;

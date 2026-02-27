@@ -14,6 +14,12 @@
 
     <div class="add_product">
       <div class="modal_wrapper">
+        <div class="mobile_top_content">
+          <div class="mobile_top">Додати товар</div>
+          <button>
+            <SvgIcon name="close-btn" size="micro" fill="var(--text-color)" />
+          </button>
+        </div>
         <div class="add_image">
           <div class="add_image_content">
             <div class="add_image_wrapper">
@@ -909,6 +915,7 @@ onMounted(async () => {
   background: var(--bg-color);
   border-radius: 10px;
   overflow-x: hidden;
+  width: 100vw;
   height: fit-content;
   color: var(--text-grey);
   overflow: hidden;
@@ -970,6 +977,37 @@ onMounted(async () => {
     gap: 1.25rem;
     height: 90vh;
     position: relative;
+
+    @media screen and (max-width: 1024px) {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      width: 100%;
+      gap: 15px;
+    }
+
+    @media screen and (max-width: 768px) {
+      height: 95vh;
+    }
+  }
+
+  .mobile_top_content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+    height: auto;
+
+    .mobile_top {
+      @include mixins.subtitleText;
+      font-size: 1.5rem;
+    }
+
+    @media screen and (min-width: 1024px) {
+      display: none;
+    }
   }
 
   .add_image {
@@ -978,6 +1016,7 @@ onMounted(async () => {
     flex-direction: column;
     gap: 1.25rem;
     height: 90vh;
+    min-width: 300px;
 
     &_content {
       border-width: 2px;
@@ -1114,6 +1153,9 @@ onMounted(async () => {
         height: 40px;
         object-fit: cover;
       }
+      @media screen and (max-width: 1024px) {
+        margin-right: auto;
+      }
     }
 
     .image_wrapper {
@@ -1146,12 +1188,21 @@ onMounted(async () => {
       padding: 10px 20px;
       cursor: pointer;
     }
+
+    @media screen and (max-width: 1024px) {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: auto;
+    }
   }
 
   .add_info {
     height: 90vh;
-    width: fit-content;
     position: relative;
+    width: clamp(500px, 62vw, 1200px);
+    overflow-x: hidden;
 
     .main_text {
       @include mixins.mainText;
@@ -1160,7 +1211,7 @@ onMounted(async () => {
     .default_text {
       @include mixins.mainText;
       color: var(--grey-color);
-      white-space: nowrap;
+      // white-space: nowrap;
     }
 
     .top_content {
@@ -1170,6 +1221,12 @@ onMounted(async () => {
       h2 {
         @include mixins.subtitleText;
         font-size: 1.5rem;
+      }
+
+      button {
+        @media screen and (max-width: 1024px) {
+          display: none;
+        }
       }
     }
 
@@ -1193,6 +1250,10 @@ onMounted(async () => {
       border-color: var(--dark-color);
       padding: 1rem 1.5rem 1.5rem 0;
       border-radius: 0.5rem;
+
+      @media screen and (max-width: 768px) {
+        padding: 1rem 1rem 1.5rem 0;
+      }
     }
 
     input {
@@ -1263,6 +1324,18 @@ onMounted(async () => {
         select:focus-visible {
           border: 1px solid var(--accent-color);
         }
+
+        @media screen and (max-width: 768px) {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
       }
     }
 
@@ -1281,6 +1354,18 @@ onMounted(async () => {
         flex-direction: column;
         justify-content: flex-start;
         gap: 1rem;
+
+        @media screen and (max-width: 768px) {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
       }
     }
 
@@ -1326,6 +1411,7 @@ onMounted(async () => {
             border: 2px solid var(--accent-color);
             border-radius: 50%;
             cursor: pointer;
+            margin-top: 10px;
           }
 
           input:checked + label {
@@ -1494,6 +1580,10 @@ onMounted(async () => {
       gap: 10px;
       button {
         padding: 10px 20px;
+
+        @media screen and (max-width: 768px) {
+          width: 100%;
+        }
       }
       .btn_transparent {
         background: black;
@@ -1509,6 +1599,16 @@ onMounted(async () => {
         @include mixins.mainText;
       }
     }
+  }
+
+  @media screen and (max-width: 768px) {
+    padding-inline: 15px;
+  }
+  @media screen and (max-width: 480px) {
+    padding-inline: 10px;
+  }
+  @media screen and (max-width: 375px) {
+    padding-inline: 8px;
   }
 }
 </style>

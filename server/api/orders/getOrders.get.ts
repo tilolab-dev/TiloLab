@@ -1,9 +1,9 @@
 import { prisma } from "@/prisma/prisma";
 
 export default defineEventHandler(async () => {
-  console.log("enter");
   try {
     const resFetchOrders = await prisma.order.findMany({
+      orderBy: { createdAt: "desc" },
       include: {
         orderItems: {
           include: {
@@ -19,8 +19,6 @@ export default defineEventHandler(async () => {
         shippingInfo: true
       }
     });
-
-    console.log(resFetchOrders, "resFetchOrders");
 
     return {
       statusCode: 200,

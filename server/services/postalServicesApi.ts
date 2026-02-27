@@ -17,12 +17,13 @@ export default class PostalServiceApi {
       });
 
       if (!res.success) {
-        throw new Error(res.statusText);
+        console.log("NP errors:", res.errors);
+        throw new Error(res.errors?.join(", "));
       }
 
       return res.data;
-    } catch (err) {
-      console.log("Something went wrong", err);
+    } catch (err: any) {
+      console.log("Nova Poshta error:", err?.message || err);
       return null;
     }
   }

@@ -2034,8 +2034,13 @@ export const AdminSenderScalarFieldEnum = {
   surname: 'surname',
   family: 'family',
   phoneNumber: 'phoneNumber',
+  city: 'city',
   postOffice: 'postOffice',
-  postomat: 'postomat'
+  postomat: 'postomat',
+  NPcityId: 'NPcityId',
+  NPsenderId: 'NPsenderId',
+  NPsenderAddressId: 'NPsenderAddressId',
+  NPcontactSenderId: 'NPcontactSenderId'
 } as const
 
 export type AdminSenderScalarFieldEnum = (typeof AdminSenderScalarFieldEnum)[keyof typeof AdminSenderScalarFieldEnum]
@@ -2250,7 +2255,12 @@ export const ShippingInfoScalarFieldEnum = {
   postomat: 'postomat',
   city: 'city',
   address: 'address',
-  country: 'country'
+  country: 'country',
+  NPcityId: 'NPcityId',
+  NPwarehouseId: 'NPwarehouseId',
+  NPrecipientId: 'NPrecipientId',
+  NPrecipientContactId: 'NPrecipientContactId',
+  NPtypeOfWarehouse: 'NPtypeOfWarehouse'
 } as const
 
 export type ShippingInfoScalarFieldEnum = (typeof ShippingInfoScalarFieldEnum)[keyof typeof ShippingInfoScalarFieldEnum]

@@ -60,7 +60,7 @@
 
         <div class="order_info_main">
           <div class="client">
-            <strong> Клієнт: </strong>
+            <strong class="block_description"> Клієнт: </strong>
 
             <div class="client_main">
               <img
@@ -93,6 +93,8 @@
           </div>
 
           <div class="shipping_info">
+            <strong class="block_description"> Доставка: </strong>
+
             <ul class="shipping_info_wrapper">
               <li>
                 <strong>Пошта:</strong>
@@ -173,47 +175,111 @@
       </div>
       <div v-else-if="activeTab === 'create-ttn'" class="order_detail_ttn_info">
         <div class="select_sender">
-          <div>Оберіть відправника</div>
-          <select id="sender" name="sender"></select>
+          <div>Відправник:</div>
+          <select v-if="senderList.length > 0" id="sender" v-model="selectedSenderId" name="sender">
+            <option disabled selected value>Оберіть відправника</option>
+            <option v-for="item in senderList" :key="item.id" :value="item.id">
+              {{ `${item.name}, ${item.family}, ${item.postOffice}` }}
+            </option>
+          </select>
         </div>
         <div class="create_ttn">
-          <p>Створити експресс накладну для замовлення</p>
+          <p>Створити експресс накладну для замовлення:</p>
           <button @click="createTtnHandler">Створити</button>
         </div>
       </div>
       <div v-else class="create_sender">
-        <div class="create_sender_title">Створити відправника</div>
+        <!-- <div v-if="loaderState" class="loader_wrapper">
+          <SharedLoader />
+        </div> -->
+        <div class="create_sender_wrapper">
+          <div class="create_sender_title">Створити відправника</div>
 
-        <div class="items_wrapper">
-          <div class="item">
-            <div class="item_name">Імʼя:</div>
-            <input class="item_input" type="text" placeholder="Введіть імʼя" />
-          </div>
-          <div class="item">
-            <div class="item_name">По батькові:</div>
-            <input type="text" placeholder="Введіть по батькові" />
-          </div>
-          <div class="item">
-            <div class="item_name">Прізвище:</div>
-            <input type="text" placeholder="Введіть прізвище" />
-          </div>
-          <div class="item">
-            <div class="item_name">Номер телефону:</div>
-            <input type="text" placeholder="Введіть номер телефону" />
-          </div>
-          <div class="item">
-            <div class="item_name">Відділення Нової пошти (не обовʼязково):</div>
-            <input type="text" placeholder="Виберіть номер відділення" />
-          </div>
-          <div class="item">
+          <div class="items_wrapper">
+            <!-- <div class="item">
+              <div class="item_name">Імʼя:</div>
+              <input
+                v-model="senderName"
+                class="item_input"
+                type="text"
+                placeholder="Введіть імʼя"
+              />
+            </div>
+            <div class="item">
+              <div class="item_name">По батькові:</div>
+              <input v-model="senderSurname" type="text" placeholder="Введіть по батькові" />
+            </div>
+            <div class="item">
+              <div class="item_name">Прізвище:</div>
+              <input v-model="senderFamily" type="text" placeholder="Введіть прізвище" />
+            </div>
+            <div class="item">
+              <div class="item_name">Номер телефону:</div>
+              <input
+                :value="senderPhoneNumber"
+                type="tel"
+                @input="onPhoneInput"
+                @keydown="onPhoneKeydown"
+              />
+            </div> -->
+            <div class="item">
+              <div class="item_name">Місто:</div>
+              <input
+                v-model="senderCity"
+                type="text"
+                placeholder="Виберіть номер відділення"
+                @input="getCitiesNp"
+              />
+              <ul v-if="fetchedCity.length > 0" class="fetched_list">
+                <li
+                  v-for="(el, i) in fetchedCity"
+                  :key="i"
+                  @click="
+                    ((senderCity = el.MainDescription),
+                    (fetchedCity = []),
+                    (fetchedCityRef = el.Ref))
+                  "
+                >
+                  <!-- {{ console.log(el) }} -->
+                  {{ el.Present }}
+                </li>
+              </ul>
+            </div>
+            <div class="item">
+              <div class="item_name">Відділення Нової пошти:</div>
+              <!-- <input type="text" placeholder="Виберіть номер відділення" /> -->
+
+              <input
+                v-model="postAddress"
+                type="text"
+                placeholder="Введіть номер відділення"
+                @input="getPostOfficeNp"
+              />
+
+              <ul v-if="postAddressList.length > 0 && postAddress.length > 0" class="fetched_list">
+                <li
+                  v-for="(el, i) in postAddressList"
+                  :key="i"
+                  @click="
+                    ((postAddress = el.Description),
+                    (postAddressList = []),
+                    (postAddressRef = el.Ref))
+                  "
+                >
+                  {{ el.Description }}
+                </li>
+              </ul>
+            </div>
+            <!-- <div class="item">
             <div class="item_name">Поштомат (не обовязково):</div>
             <input type="text" placeholder="Виберіть номер поштомату" />
+          </div> -->
           </div>
-        </div>
-        <span class="bottom_note">
+          <!-- <span class="bottom_note">
           Обовʼязково потрібно вибрати номер відділення чи номер поштомату
-        </span>
-        <button class="create_btn" @click="createNewSender">Створити</button>
+        </span> -->
+          <button class="create_btn" @click="createNewSender">Створити</button>
+        </div>
       </div>
     </div>
   </div>
@@ -223,7 +289,7 @@
 import CloseIcon from "~/assets/icons/close-icon.svg";
 // import ErrorIcon from "~/assets/icons/error.svg";
 
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useModalStore } from "@/store/modal-store";
 import { useOrdersStore } from "@/store/orders-store";
 
@@ -232,15 +298,30 @@ const orderStore = useOrdersStore();
 const loaderState = ref(false);
 const selectValue = ref();
 const activeTab = ref("order-info");
+// const isDeleting = ref(false);
+
+// TTN
+
+const senderList = ref([]);
+const selectedSenderId = ref("");
 
 //SENDER
 
-const senderName = ref("");
-const senderSurname = ref("");
-const senderFamily = ref("");
-const senderPhoneNumber = ref("");
+// const senderName = ref("");
+// const senderSurname = ref("");
+// const senderFamily = ref("");
+const senderCity = ref("");
+// const senderPhoneNumber = ref("+38 (0");
 const senderPostomat = ref("");
-const senderPostOffice = ref(false);
+// const senderPostOffice = ref(false);
+
+const fetchedCity = ref([]);
+const fetchedCityRef = ref("");
+const postAddress = ref("");
+const postAddressRef = ref("");
+const postAddressList = ref([]);
+
+let timerId = null;
 
 const modalProps = defineProps({
   order: {
@@ -248,6 +329,152 @@ const modalProps = defineProps({
     required: true
   }
 });
+
+const gentSenderList = async () => {
+  loaderState.value = true;
+  try {
+    const senderListRes = await $fetch("/api/np/get-senders", {
+      method: "GET"
+    });
+
+    if (senderListRes.statusCode === 200) {
+      senderList.value = senderListRes.data;
+    }
+  } catch (err) {
+    console.error(err);
+  } finally {
+    loaderState.value = false;
+  }
+};
+
+watch(activeTab, (newVal) => {
+  if (newVal === "create-ttn") {
+    gentSenderList();
+  }
+});
+
+// const onPhoneKeydown = (e) => {
+//   isDeleting.value = e.key === "Backspace" || e.key === "Delete";
+// };
+// const onPhoneInput = (e) => {
+//   let value = e.target.value;
+//   let digits = value.replace(/\D/g, "");
+
+//   if (isDeleting.value && digits.length <= 3) {
+//     senderPhoneNumber.value = "+38 (0";
+//     e.target.value = senderPhoneNumber.value;
+//     return;
+//   }
+//   const formatted = formatFromDigits(digits);
+//   senderPhoneNumber.value = formatted;
+//   e.target.value = formatted;
+// };
+
+const debounce = (string, fn) => {
+  return () => {
+    clearTimeout(timerId);
+    if (string === "") {
+      return fn();
+    }
+    timerId = setTimeout(() => {
+      fn();
+    }, 700);
+  };
+};
+
+const getCitiesNp = debounce(senderCity.value, async () => {
+  const npCities = await $fetch("/api/np/cities", {
+    method: "POST",
+    body: {
+      city: senderCity.value
+    }
+  });
+
+  if (!npCities.data || !npCities.data[0].Addresses) {
+    return;
+  } else {
+    fetchedCity.value = npCities.data[0].Addresses;
+  }
+});
+
+const getPostOfficeNp = debounce(postAddress.value, async () => {
+  if (!senderCity.value) {
+    alert("Введіть місто");
+    postAddress.value = "";
+    return;
+  }
+  if (!postAddress.value.length) return;
+  // if (state === "reload") {
+  // const getOfficeByNumber = await novaPost.fetchOfficeByNumber(cityName.value, postAddress.value);
+  const getOfficeByNumber = await $fetch("/api/np/postOffice", {
+    method: "POST",
+    body: {
+      cityName: senderCity.value,
+      postNumber: postAddress.value
+    }
+  });
+
+  const filteredOffice = getOfficeByNumber.data.filter(
+    (item) => item.CategoryOfWarehouse === "Branch"
+  );
+
+  postAddressList.value = filteredOffice;
+  //   return;
+  // }
+  // if (preventReloadBox.value) {
+  //   return;
+  // }
+  // if (!cityName.value) {
+  //   // tooltip({
+  //   //   status: "info",
+  //   //   message: "Виберіть місто"
+  //   // });
+  //   alert("Виберіть місто");
+  //   event.preventDefault();
+  //   return;
+  // }
+  // const postOfficeNp = await novaPost.fetchPostAddresses(cityName.value);
+  // // console.log(postOfficeNp, 'postOfficeNp');
+  // const filteredOffice = postOfficeNp.data.filter((item) => item.CategoryOfWarehouse === "Branch");
+  // postAddressList.value = filteredOffice;
+});
+
+// const formatFromDigits = (digits) => {
+//   digits = digits.slice(0, 12);
+
+//   let result = "+38";
+
+//   if (digits.length > 2) {
+//     result += " (" + digits.slice(2, 5);
+//   }
+
+//   if (digits.length >= 5) {
+//     result += ") " + digits.slice(5, 8);
+//   }
+
+//   if (digits.length >= 8) {
+//     result += "-" + digits.slice(8, 10);
+//   }
+
+//   if (digits.length >= 10) {
+//     result += "-" + digits.slice(10, 12);
+//   }
+
+//   if (result.length === 17 && isDeleting.value) {
+//     result = result.slice(0, -1);
+//   }
+//   if (result.length === 14 && isDeleting.value) {
+//     result = result.slice(0, -1);
+//   }
+//   if (result.length === 10 && isDeleting.value) {
+//     result = result.slice(0, -1);
+//   }
+//   if (result.length === 9 && isDeleting.value) {
+//     result = result.replace(")", "");
+//   }
+
+//   return result;
+// };
 
 const activeButton = computed(() => {
   return selectValue.value !== modalProps.order.status;
@@ -292,53 +519,176 @@ const selectData = ref([
 ]);
 
 const createNewSender = async () => {
-  if (senderName.value.length < 2) {
-    alert("Імʼя повинно бути більше 2х символів");
-    return;
-  }
-  if (senderSurname.value.length < 2) {
-    alert("По батькові повинно бути більше 2х символів");
-    return;
-  }
-  if (senderFamily.value.length < 2) {
-    alert("Прізвище повинно бути більше 2х символів");
-    return;
-  }
-  if (senderPostomat.value.length < 2 && senderPostOffice.value.length < 2) {
-    alert("Оберіть номер відділення чи номер поштомату");
-    return;
-  }
+  // if (senderName.value.length < 2) {
+  //   console.log(senderName.value);
+  //   alert("Імʼя повинно бути більше 2х символів");
+  //   return;
+  // }
+  // if (senderSurname.value.length < 2) {
+  //   alert("По батькові повинно бути більше 2х символів");
+  //   return;
+  // }
+  // if (senderFamily.value.length < 2) {
+  //   alert("Прізвище повинно бути більше 2х символів");
+  //   return;
+  // }
+  // if (senderPostomat.value.length < 2 && senderPostOffice.value.length < 2) {
+  //   alert("Оберіть номер відділення чи номер поштомату");
+  //   return;
+  // }
+  loaderState.value = true;
+
+  // const formattedPhoneNumber = senderPhoneNumber.value
+  //   .replaceAll("-", "")
+  //   .replaceAll(" ", "")
+  //   .replaceAll("(", "")
+  //   .replaceAll(")", "");
   try {
+    // const createCounterPartyRes = await $fetch("/api/np/create-counterparty", {
+    //   method: "POST",
+    //   body: {
+    //     firstName: senderName.value,
+    //     lastName: senderFamily.value,
+    //     phone: formattedPhoneNumber
+    //   }
+    // });
+
+    // const counterPartyRef = createCounterPartyRes.data[0].Ref;
+
+    // if (!counterPartyRef) {
+    //   alert("Щось пішло не так спробуйте пізніше");
+    //   return;
+    // }
+
+    // const createContactPerson = await $fetch("/api/np/create-contact-person", {
+    //   method: "POST",
+    //   body: {
+    //     firstName: senderName.value,
+    //     lastName: senderFamily.value,
+    //     phone: formattedPhoneNumber
+    //     // counterPartyId: counterPartyRef
+    //   }
+    // });
+
+    // if (!createContactPerson) {
+    //   alert("Щось пішло не так спробуйте пізніше");
+    //   return;
+    // }
+
+    // const contactPersonRef = createContactPerson.data[0].Ref;
+
+    if (!senderCity.value) {
+      alert("Введіть місто");
+      return;
+    }
+
+    if (!postAddress.value && !senderCity.value) {
+      alert("Введіть місто та номер відділення");
+      return;
+    }
+
+    const getSenderProperty = await $fetch("/api/np/get-sender-property", {
+      method: "POST"
+    });
+
+    if (getSenderProperty.statusCode !== 200) {
+      alert("Щось пішло не так спробуйте пізніше");
+      return;
+    }
+
+    const senderData = getSenderProperty.data[0];
+
+    const senderName = senderData.FirstName;
+    const senderSurname = senderData.MiddleName;
+    const senderFamily = senderData.LastName;
+    const senderPhoneNumber = senderData.Phones;
+
     const createSenderRes = await $fetch("/api/np/create-sender", {
       method: "POST",
       body: {
-        name: senderName.value,
-        surname: senderSurname.value,
-        family: senderFamily.value,
-        phoneNumber: senderPhoneNumber.value,
+        name: senderName,
+        surname: senderSurname,
+        family: senderFamily,
+        phoneNumber: senderPhoneNumber,
+        senderCity: senderCity.value,
+        senderPostOffice: postAddress.value,
         senderPostomat: senderPostomat.value,
-        senderPostOffice: senderPostOffice.value
+
+        cityId: fetchedCityRef.value,
+        // counterPartyId: counterPartyRef,
+        // contactPersonId: contactPersonRef,
+        postAddressId: postAddressRef.value
       }
     });
-
+    console.log(createSenderRes, "createSenderRes");
     if (createSenderRes.statusCode === 200) {
+      // senderName.value = "";
+      // senderSurname.value = "";
+      // senderFamily.value = "";
+      // senderPhoneNumber.value = "";
+      senderCity.value = "";
+      postAddress.value = "";
+      fetchedCityRef.value = "";
+      postAddressRef.value = "";
       alert("Відправник створенний успішно");
     }
   } catch (err) {
     console.error(err);
+  } finally {
+    loaderState.value = false;
   }
 };
 
-const createTtnHandler = async (order) => {
-  console.log(order);
+const createTtnHandler = async () => {
+  // console.log(order);
+
+  const sender = senderList.value.find((el) => el.id === selectedSenderId.value);
+
+  if (!sender) {
+    alert("Оберіть відправника, чи створіть нового");
+    return;
+  }
+
+  const order = modalProps.order;
+  console.log(sender, "sender");
+  console.log(modalProps.order, "order");
+
+  const [recipientFirstName, recipientLastName] = order.shippingInfo.recipient.split(" ");
+
+  console.log(recipientFirstName, "recipientFirstName");
+  console.log(recipientLastName, "recipientLastName");
+
+  const formattedRecipientPhone = order.shippingInfo.phoneNumber
+    .replaceAll(" ", "")
+    .replaceAll("(", "")
+    .replaceAll(")", "")
+    .replaceAll("-", "");
+
   try {
-    const getTtnRes = await $fetch("/api/np/get-ttn", {
+    const getTtnRes = await $fetch("/api/np/create-ttn", {
       method: "POST",
       body: {
-        cost: "any",
-        weight: "any",
-        citySender: "any",
-        cityRecipient: "any"
+        orderId: order.orderNumber,
+
+        // SENDER
+
+        senderCityId: sender.NPcityId,
+        senderContactId: sender.NPcontactSenderId,
+        senderAddressId: sender.NPsenderAddressId,
+        senderId: sender.NPsenderId,
+        senderPhoneNumber: sender.phoneNumber,
+
+        // RECIPIENT
+
+        recipientCityId: order.shippingInfo.NPcityId,
+        recipientWarehouseId: order.shippingInfo.NPwarehouseId,
+        recipientName: recipientFirstName,
+        recipientLastName: recipientLastName,
+        recipientPhone: formattedRecipientPhone,
+        recipientId: order.shippingInfo.NPrecipientId,
+        recipientContactId: order.shippingInfo.NPrecipientContactId,
+
+        orderPrice: modalProps.order.totalPrice < 300 ? 300 : modalProps.order.totalPrice
       }
     });
 
@@ -382,14 +732,16 @@ onMounted(() => {
   min-width: 50vw;
   max-height: 65vh;
   border-radius: 10px;
-  height: fit-content;
+  // height: fit-content;
   position: relative;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden;
+  // overflow-y: scroll;
   .loader_content {
-    width: 100%;
-    height: 100%;
-    position: absolute;
+    // width: 100%;
+    // height: 100%;
+    inset: 0;
+    position: fixed;
+    top: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -397,25 +749,37 @@ onMounted(() => {
     background: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(7px);
   }
+
+  @media screen and (max-width: 850px) {
+    min-width: unset;
+    max-height: unset;
+    width: 100vw;
+    height: 100vh;
+    top: 50%;
+    position: fixed;
+    border-radius: 0;
+    border: unset;
+  }
 }
 
 .order_detail_wrapper {
-  padding-block: 10px;
+  // padding-block: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 10px;
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
+  flex: 1;
 
   .order_detail_top {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding-inline: 20px;
+    padding: 15px 10px;
     border-bottom: 1px solid var(--accent-grey);
-    padding-bottom: 10px;
     width: 100%;
   }
 
@@ -477,7 +841,7 @@ onMounted(() => {
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--accent-grey);
-    padding-bottom: 10px;
+    padding-block: 10px;
     width: 100%;
     height: auto;
     .section {
@@ -500,9 +864,13 @@ onMounted(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-inline: 20px;
-    padding-bottom: 10px;
+    padding: 10px 20px;
     border-bottom: 1px solid var(--accent-grey);
+
+    h3 {
+      @include mixins.subtitleText;
+      font-size: 1.1rem;
+    }
   }
 
   .order_info_main {
@@ -512,15 +880,53 @@ onMounted(() => {
     width: 100%;
     height: auto;
     padding-inline: 20px;
-    padding-bottom: 10px;
+    padding-block: 10px;
     border-bottom: 1px solid var(--accent-grey);
     gap: 20px;
+    .block_description {
+      @include mixins.subtitleText;
+      font-size: 1.1rem;
+    }
+
+    .client_main,
+    .shipping_info_wrapper {
+      strong {
+        @include mixins.mainText;
+        font-size: 1rem;
+      }
+      p {
+        @include mixins.mainText;
+        font-size: 1rem;
+      }
+    }
 
     .client {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      position: relative;
+      width: 100%;
+      height: auto;
+      gap: 10px;
       flex: 1;
+
+      .info_wrapper {
+        padding-top: 15px;
+      }
+
+      &_main {
+        width: 100%;
+        height: auto;
+      }
     }
 
     .shipping_info {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 20px;
       flex: 1;
     }
 
@@ -528,6 +934,10 @@ onMounted(() => {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
+    }
+
+    @media screen and (max-width: 550px) {
+      flex-direction: column;
     }
   }
 
@@ -550,13 +960,14 @@ onMounted(() => {
       gap: 20px;
 
       select {
-        width: 80%;
-        height: 30px;
+        width: 90%;
+        height: 50px;
         background: black;
         border-radius: 5px;
         padding: 5px 10px;
         outline: var(--accent-red);
         margin: 0 auto;
+        color: white;
       }
     }
   }
@@ -567,14 +978,24 @@ onMounted(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-inline: 20px;
-    padding-bottom: 10px;
+    padding: 5px 20px 10px;
     border-bottom: 1px solid var(--accent-grey);
+
+    .info,
+    .total_price {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 10px;
+      @include mixins.subtitleText;
+      font-size: 1.1rem;
+    }
   }
 
   .items_info {
     width: 100%;
-    height: 100%;
+    height: auto;
     position: relative;
     padding-inline: 20px;
     display: flex;
@@ -582,8 +1003,13 @@ onMounted(() => {
     justify-content: flex-start;
     align-items: flex-start;
     gap: 20px;
-    padding-bottom: 20px;
+    padding-block: 20px;
     border-bottom: 1px solid var(--accent-grey);
+
+    strong {
+      @include mixins.subtitleText;
+      font-size: 1.1rem;
+    }
 
     &_wrapper {
       display: flex;
@@ -630,8 +1056,13 @@ onMounted(() => {
     height: auto;
     padding-inline: 20px;
     gap: 20px;
-    padding-bottom: 20px;
+    padding-block: 20px;
     border-bottom: 1px solid var(--accent-grey);
+
+    strong {
+      @include mixins.subtitleText;
+      font-size: 1.1rem;
+    }
 
     select {
       background: var(--accent-grey);
@@ -713,6 +1144,8 @@ onMounted(() => {
 
     button {
       @include mixins.accentBtn;
+      padding: 5px 25px;
+      font-size: 1rem;
     }
   }
 
@@ -727,6 +1160,13 @@ onMounted(() => {
     position: relative;
     padding: 15px 20px;
 
+    &_wrapper {
+      width: 100%;
+      height: auto;
+      flex: 1;
+      padding-bottom: 50px;
+    }
+
     &_title {
       @include mixins.mainText;
     }
@@ -736,6 +1176,7 @@ onMounted(() => {
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
+      padding-bottom: 70px;
       width: 80%;
       height: auto;
       gap: 10px;
@@ -749,7 +1190,38 @@ onMounted(() => {
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
+      position: relative;
       gap: 8px;
+
+      .fetched_list {
+        width: 100%;
+        height: auto;
+        max-height: 30dvh;
+        overflow-y: scroll;
+        padding-bottom: 20px;
+        position: absolute;
+        background: var(--bg-color);
+        top: 100%;
+        left: 0;
+        z-index: 1;
+        li {
+          @include mixins.subtitleText;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          color: var(--text-grey);
+          transition: all ease 0.3s;
+          font-size: 1rem;
+          padding-block: 5px;
+          cursor: pointer;
+          @media screen and (min-width: 1024px) {
+            &:hover {
+              background: rgba(255, 255, 255, 0.04);
+              transition: all ease 0.3s;
+              color: white;
+            }
+          }
+        }
+      }
     }
     input {
       width: 100%;
