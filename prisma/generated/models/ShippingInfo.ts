@@ -46,6 +46,11 @@ export type ShippingInfoMinAggregateOutputType = {
   city: string | null
   address: string | null
   country: string | null
+  NPcityId: string | null
+  NPwarehouseId: string | null
+  NPrecipientId: string | null
+  NPrecipientContactId: string | null
+  NPtypeOfWarehouse: string | null
 }
 
 export type ShippingInfoMaxAggregateOutputType = {
@@ -60,6 +65,11 @@ export type ShippingInfoMaxAggregateOutputType = {
   city: string | null
   address: string | null
   country: string | null
+  NPcityId: string | null
+  NPwarehouseId: string | null
+  NPrecipientId: string | null
+  NPrecipientContactId: string | null
+  NPtypeOfWarehouse: string | null
 }
 
 export type ShippingInfoCountAggregateOutputType = {
@@ -74,6 +84,11 @@ export type ShippingInfoCountAggregateOutputType = {
   city: number
   address: number
   country: number
+  NPcityId: number
+  NPwarehouseId: number
+  NPrecipientId: number
+  NPrecipientContactId: number
+  NPtypeOfWarehouse: number
   _all: number
 }
 
@@ -98,6 +113,11 @@ export type ShippingInfoMinAggregateInputType = {
   city?: true
   address?: true
   country?: true
+  NPcityId?: true
+  NPwarehouseId?: true
+  NPrecipientId?: true
+  NPrecipientContactId?: true
+  NPtypeOfWarehouse?: true
 }
 
 export type ShippingInfoMaxAggregateInputType = {
@@ -112,6 +132,11 @@ export type ShippingInfoMaxAggregateInputType = {
   city?: true
   address?: true
   country?: true
+  NPcityId?: true
+  NPwarehouseId?: true
+  NPrecipientId?: true
+  NPrecipientContactId?: true
+  NPtypeOfWarehouse?: true
 }
 
 export type ShippingInfoCountAggregateInputType = {
@@ -126,6 +151,11 @@ export type ShippingInfoCountAggregateInputType = {
   city?: true
   address?: true
   country?: true
+  NPcityId?: true
+  NPwarehouseId?: true
+  NPrecipientId?: true
+  NPrecipientContactId?: true
+  NPtypeOfWarehouse?: true
   _all?: true
 }
 
@@ -227,6 +257,11 @@ export type ShippingInfoGroupByOutputType = {
   city: string
   address: string | null
   country: string
+  NPcityId: string | null
+  NPwarehouseId: string | null
+  NPrecipientId: string | null
+  NPrecipientContactId: string | null
+  NPtypeOfWarehouse: string | null
   _count: ShippingInfoCountAggregateOutputType | null
   _avg: ShippingInfoAvgAggregateOutputType | null
   _sum: ShippingInfoSumAggregateOutputType | null
@@ -264,6 +299,11 @@ export type ShippingInfoWhereInput = {
   city?: Prisma.StringFilter<"ShippingInfo"> | string
   address?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null
   country?: Prisma.StringFilter<"ShippingInfo"> | string
+  NPcityId?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null
+  NPwarehouseId?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null
+  NPrecipientId?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null
+  NPrecipientContactId?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null
+  NPtypeOfWarehouse?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
 }
 
@@ -279,6 +319,11 @@ export type ShippingInfoOrderByWithRelationInput = {
   city?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrder
+  NPcityId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPwarehouseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPrecipientId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPrecipientContactId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPtypeOfWarehouse?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.OrderOrderByWithRelationInput
 }
 
@@ -297,6 +342,11 @@ export type ShippingInfoWhereUniqueInput = Prisma.AtLeast<{
   city?: Prisma.StringFilter<"ShippingInfo"> | string
   address?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null
   country?: Prisma.StringFilter<"ShippingInfo"> | string
+  NPcityId?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null
+  NPwarehouseId?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null
+  NPrecipientId?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null
+  NPrecipientContactId?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null
+  NPtypeOfWarehouse?: Prisma.StringNullableFilter<"ShippingInfo"> | string | null
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
 }, "id" | "orderId">
 
@@ -312,6 +362,11 @@ export type ShippingInfoOrderByWithAggregationInput = {
   city?: Prisma.SortOrder
   address?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrder
+  NPcityId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPwarehouseId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPrecipientId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPrecipientContactId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPtypeOfWarehouse?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ShippingInfoCountOrderByAggregateInput
   _avg?: Prisma.ShippingInfoAvgOrderByAggregateInput
   _max?: Prisma.ShippingInfoMaxOrderByAggregateInput
@@ -334,6 +389,11 @@ export type ShippingInfoScalarWhereWithAggregatesInput = {
   city?: Prisma.StringWithAggregatesFilter<"ShippingInfo"> | string
   address?: Prisma.StringNullableWithAggregatesFilter<"ShippingInfo"> | string | null
   country?: Prisma.StringWithAggregatesFilter<"ShippingInfo"> | string
+  NPcityId?: Prisma.StringNullableWithAggregatesFilter<"ShippingInfo"> | string | null
+  NPwarehouseId?: Prisma.StringNullableWithAggregatesFilter<"ShippingInfo"> | string | null
+  NPrecipientId?: Prisma.StringNullableWithAggregatesFilter<"ShippingInfo"> | string | null
+  NPrecipientContactId?: Prisma.StringNullableWithAggregatesFilter<"ShippingInfo"> | string | null
+  NPtypeOfWarehouse?: Prisma.StringNullableWithAggregatesFilter<"ShippingInfo"> | string | null
 }
 
 export type ShippingInfoCreateInput = {
@@ -346,6 +406,11 @@ export type ShippingInfoCreateInput = {
   city: string
   address?: string | null
   country: string
+  NPcityId?: string | null
+  NPwarehouseId?: string | null
+  NPrecipientId?: string | null
+  NPrecipientContactId?: string | null
+  NPtypeOfWarehouse?: string | null
   order: Prisma.OrderCreateNestedOneWithoutShippingInfoInput
 }
 
@@ -361,6 +426,11 @@ export type ShippingInfoUncheckedCreateInput = {
   city: string
   address?: string | null
   country: string
+  NPcityId?: string | null
+  NPwarehouseId?: string | null
+  NPrecipientId?: string | null
+  NPrecipientContactId?: string | null
+  NPtypeOfWarehouse?: string | null
 }
 
 export type ShippingInfoUpdateInput = {
@@ -373,6 +443,11 @@ export type ShippingInfoUpdateInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPwarehouseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPrecipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPrecipientContactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPtypeOfWarehouse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.OrderUpdateOneRequiredWithoutShippingInfoNestedInput
 }
 
@@ -388,6 +463,11 @@ export type ShippingInfoUncheckedUpdateInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPwarehouseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPrecipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPrecipientContactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPtypeOfWarehouse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ShippingInfoCreateManyInput = {
@@ -402,6 +482,11 @@ export type ShippingInfoCreateManyInput = {
   city: string
   address?: string | null
   country: string
+  NPcityId?: string | null
+  NPwarehouseId?: string | null
+  NPrecipientId?: string | null
+  NPrecipientContactId?: string | null
+  NPtypeOfWarehouse?: string | null
 }
 
 export type ShippingInfoUpdateManyMutationInput = {
@@ -414,6 +499,11 @@ export type ShippingInfoUpdateManyMutationInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPwarehouseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPrecipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPrecipientContactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPtypeOfWarehouse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ShippingInfoUncheckedUpdateManyInput = {
@@ -428,6 +518,11 @@ export type ShippingInfoUncheckedUpdateManyInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPwarehouseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPrecipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPrecipientContactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPtypeOfWarehouse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ShippingInfoNullableScalarRelationFilter = {
@@ -447,6 +542,11 @@ export type ShippingInfoCountOrderByAggregateInput = {
   city?: Prisma.SortOrder
   address?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  NPcityId?: Prisma.SortOrder
+  NPwarehouseId?: Prisma.SortOrder
+  NPrecipientId?: Prisma.SortOrder
+  NPrecipientContactId?: Prisma.SortOrder
+  NPtypeOfWarehouse?: Prisma.SortOrder
 }
 
 export type ShippingInfoAvgOrderByAggregateInput = {
@@ -465,6 +565,11 @@ export type ShippingInfoMaxOrderByAggregateInput = {
   city?: Prisma.SortOrder
   address?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  NPcityId?: Prisma.SortOrder
+  NPwarehouseId?: Prisma.SortOrder
+  NPrecipientId?: Prisma.SortOrder
+  NPrecipientContactId?: Prisma.SortOrder
+  NPtypeOfWarehouse?: Prisma.SortOrder
 }
 
 export type ShippingInfoMinOrderByAggregateInput = {
@@ -479,6 +584,11 @@ export type ShippingInfoMinOrderByAggregateInput = {
   city?: Prisma.SortOrder
   address?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  NPcityId?: Prisma.SortOrder
+  NPwarehouseId?: Prisma.SortOrder
+  NPrecipientId?: Prisma.SortOrder
+  NPrecipientContactId?: Prisma.SortOrder
+  NPtypeOfWarehouse?: Prisma.SortOrder
 }
 
 export type ShippingInfoSumOrderByAggregateInput = {
@@ -527,6 +637,11 @@ export type ShippingInfoCreateWithoutOrderInput = {
   city: string
   address?: string | null
   country: string
+  NPcityId?: string | null
+  NPwarehouseId?: string | null
+  NPrecipientId?: string | null
+  NPrecipientContactId?: string | null
+  NPtypeOfWarehouse?: string | null
 }
 
 export type ShippingInfoUncheckedCreateWithoutOrderInput = {
@@ -540,6 +655,11 @@ export type ShippingInfoUncheckedCreateWithoutOrderInput = {
   city: string
   address?: string | null
   country: string
+  NPcityId?: string | null
+  NPwarehouseId?: string | null
+  NPrecipientId?: string | null
+  NPrecipientContactId?: string | null
+  NPtypeOfWarehouse?: string | null
 }
 
 export type ShippingInfoCreateOrConnectWithoutOrderInput = {
@@ -568,6 +688,11 @@ export type ShippingInfoUpdateWithoutOrderInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPwarehouseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPrecipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPrecipientContactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPtypeOfWarehouse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ShippingInfoUncheckedUpdateWithoutOrderInput = {
@@ -581,6 +706,11 @@ export type ShippingInfoUncheckedUpdateWithoutOrderInput = {
   city?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPwarehouseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPrecipientId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPrecipientContactId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPtypeOfWarehouse?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -597,6 +727,11 @@ export type ShippingInfoSelect<ExtArgs extends runtime.Types.Extensions.Internal
   city?: boolean
   address?: boolean
   country?: boolean
+  NPcityId?: boolean
+  NPwarehouseId?: boolean
+  NPrecipientId?: boolean
+  NPrecipientContactId?: boolean
+  NPtypeOfWarehouse?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["shippingInfo"]>
 
@@ -612,6 +747,11 @@ export type ShippingInfoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   city?: boolean
   address?: boolean
   country?: boolean
+  NPcityId?: boolean
+  NPwarehouseId?: boolean
+  NPrecipientId?: boolean
+  NPrecipientContactId?: boolean
+  NPtypeOfWarehouse?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["shippingInfo"]>
 
@@ -627,6 +767,11 @@ export type ShippingInfoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   city?: boolean
   address?: boolean
   country?: boolean
+  NPcityId?: boolean
+  NPwarehouseId?: boolean
+  NPrecipientId?: boolean
+  NPrecipientContactId?: boolean
+  NPtypeOfWarehouse?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["shippingInfo"]>
 
@@ -642,9 +787,14 @@ export type ShippingInfoSelectScalar = {
   city?: boolean
   address?: boolean
   country?: boolean
+  NPcityId?: boolean
+  NPwarehouseId?: boolean
+  NPrecipientId?: boolean
+  NPrecipientContactId?: boolean
+  NPtypeOfWarehouse?: boolean
 }
 
-export type ShippingInfoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "recipient" | "phoneNumber" | "deliveryMethod" | "postCompany" | "postOffice" | "postomat" | "city" | "address" | "country", ExtArgs["result"]["shippingInfo"]>
+export type ShippingInfoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "recipient" | "phoneNumber" | "deliveryMethod" | "postCompany" | "postOffice" | "postomat" | "city" | "address" | "country" | "NPcityId" | "NPwarehouseId" | "NPrecipientId" | "NPrecipientContactId" | "NPtypeOfWarehouse", ExtArgs["result"]["shippingInfo"]>
 export type ShippingInfoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
 }
@@ -672,6 +822,11 @@ export type $ShippingInfoPayload<ExtArgs extends runtime.Types.Extensions.Intern
     city: string
     address: string | null
     country: string
+    NPcityId: string | null
+    NPwarehouseId: string | null
+    NPrecipientId: string | null
+    NPrecipientContactId: string | null
+    NPtypeOfWarehouse: string | null
   }, ExtArgs["result"]["shippingInfo"]>
   composites: {}
 }
@@ -1107,6 +1262,11 @@ export interface ShippingInfoFieldRefs {
   readonly city: Prisma.FieldRef<"ShippingInfo", 'String'>
   readonly address: Prisma.FieldRef<"ShippingInfo", 'String'>
   readonly country: Prisma.FieldRef<"ShippingInfo", 'String'>
+  readonly NPcityId: Prisma.FieldRef<"ShippingInfo", 'String'>
+  readonly NPwarehouseId: Prisma.FieldRef<"ShippingInfo", 'String'>
+  readonly NPrecipientId: Prisma.FieldRef<"ShippingInfo", 'String'>
+  readonly NPrecipientContactId: Prisma.FieldRef<"ShippingInfo", 'String'>
+  readonly NPtypeOfWarehouse: Prisma.FieldRef<"ShippingInfo", 'String'>
 }
     
 

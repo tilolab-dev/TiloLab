@@ -40,8 +40,13 @@ export type AdminSenderMinAggregateOutputType = {
   surname: string | null
   family: string | null
   phoneNumber: string | null
+  city: string | null
   postOffice: string | null
   postomat: string | null
+  NPcityId: string | null
+  NPsenderId: string | null
+  NPsenderAddressId: string | null
+  NPcontactSenderId: string | null
 }
 
 export type AdminSenderMaxAggregateOutputType = {
@@ -50,8 +55,13 @@ export type AdminSenderMaxAggregateOutputType = {
   surname: string | null
   family: string | null
   phoneNumber: string | null
+  city: string | null
   postOffice: string | null
   postomat: string | null
+  NPcityId: string | null
+  NPsenderId: string | null
+  NPsenderAddressId: string | null
+  NPcontactSenderId: string | null
 }
 
 export type AdminSenderCountAggregateOutputType = {
@@ -60,8 +70,13 @@ export type AdminSenderCountAggregateOutputType = {
   surname: number
   family: number
   phoneNumber: number
+  city: number
   postOffice: number
   postomat: number
+  NPcityId: number
+  NPsenderId: number
+  NPsenderAddressId: number
+  NPcontactSenderId: number
   _all: number
 }
 
@@ -80,8 +95,13 @@ export type AdminSenderMinAggregateInputType = {
   surname?: true
   family?: true
   phoneNumber?: true
+  city?: true
   postOffice?: true
   postomat?: true
+  NPcityId?: true
+  NPsenderId?: true
+  NPsenderAddressId?: true
+  NPcontactSenderId?: true
 }
 
 export type AdminSenderMaxAggregateInputType = {
@@ -90,8 +110,13 @@ export type AdminSenderMaxAggregateInputType = {
   surname?: true
   family?: true
   phoneNumber?: true
+  city?: true
   postOffice?: true
   postomat?: true
+  NPcityId?: true
+  NPsenderId?: true
+  NPsenderAddressId?: true
+  NPcontactSenderId?: true
 }
 
 export type AdminSenderCountAggregateInputType = {
@@ -100,8 +125,13 @@ export type AdminSenderCountAggregateInputType = {
   surname?: true
   family?: true
   phoneNumber?: true
+  city?: true
   postOffice?: true
   postomat?: true
+  NPcityId?: true
+  NPsenderId?: true
+  NPsenderAddressId?: true
+  NPcontactSenderId?: true
   _all?: true
 }
 
@@ -197,8 +227,13 @@ export type AdminSenderGroupByOutputType = {
   surname: string
   family: string
   phoneNumber: string
+  city: string
   postOffice: string | null
   postomat: string | null
+  NPcityId: string | null
+  NPsenderId: string | null
+  NPsenderAddressId: string | null
+  NPcontactSenderId: string | null
   _count: AdminSenderCountAggregateOutputType | null
   _avg: AdminSenderAvgAggregateOutputType | null
   _sum: AdminSenderSumAggregateOutputType | null
@@ -230,8 +265,13 @@ export type AdminSenderWhereInput = {
   surname?: Prisma.StringFilter<"AdminSender"> | string
   family?: Prisma.StringFilter<"AdminSender"> | string
   phoneNumber?: Prisma.StringFilter<"AdminSender"> | string
+  city?: Prisma.StringFilter<"AdminSender"> | string
   postOffice?: Prisma.StringNullableFilter<"AdminSender"> | string | null
   postomat?: Prisma.StringNullableFilter<"AdminSender"> | string | null
+  NPcityId?: Prisma.StringNullableFilter<"AdminSender"> | string | null
+  NPsenderId?: Prisma.StringNullableFilter<"AdminSender"> | string | null
+  NPsenderAddressId?: Prisma.StringNullableFilter<"AdminSender"> | string | null
+  NPcontactSenderId?: Prisma.StringNullableFilter<"AdminSender"> | string | null
   orders?: Prisma.OrderListRelationFilter
   admins?: Prisma.AdminListRelationFilter
 }
@@ -242,8 +282,13 @@ export type AdminSenderOrderByWithRelationInput = {
   surname?: Prisma.SortOrder
   family?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   postOffice?: Prisma.SortOrderInput | Prisma.SortOrder
   postomat?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPcityId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPsenderId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPsenderAddressId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPcontactSenderId?: Prisma.SortOrderInput | Prisma.SortOrder
   orders?: Prisma.OrderOrderByRelationAggregateInput
   admins?: Prisma.AdminOrderByRelationAggregateInput
 }
@@ -257,8 +302,13 @@ export type AdminSenderWhereUniqueInput = Prisma.AtLeast<{
   surname?: Prisma.StringFilter<"AdminSender"> | string
   family?: Prisma.StringFilter<"AdminSender"> | string
   phoneNumber?: Prisma.StringFilter<"AdminSender"> | string
+  city?: Prisma.StringFilter<"AdminSender"> | string
   postOffice?: Prisma.StringNullableFilter<"AdminSender"> | string | null
   postomat?: Prisma.StringNullableFilter<"AdminSender"> | string | null
+  NPcityId?: Prisma.StringNullableFilter<"AdminSender"> | string | null
+  NPsenderId?: Prisma.StringNullableFilter<"AdminSender"> | string | null
+  NPsenderAddressId?: Prisma.StringNullableFilter<"AdminSender"> | string | null
+  NPcontactSenderId?: Prisma.StringNullableFilter<"AdminSender"> | string | null
   orders?: Prisma.OrderListRelationFilter
   admins?: Prisma.AdminListRelationFilter
 }, "id">
@@ -269,8 +319,13 @@ export type AdminSenderOrderByWithAggregationInput = {
   surname?: Prisma.SortOrder
   family?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   postOffice?: Prisma.SortOrderInput | Prisma.SortOrder
   postomat?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPcityId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPsenderId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPsenderAddressId?: Prisma.SortOrderInput | Prisma.SortOrder
+  NPcontactSenderId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AdminSenderCountOrderByAggregateInput
   _avg?: Prisma.AdminSenderAvgOrderByAggregateInput
   _max?: Prisma.AdminSenderMaxOrderByAggregateInput
@@ -287,8 +342,13 @@ export type AdminSenderScalarWhereWithAggregatesInput = {
   surname?: Prisma.StringWithAggregatesFilter<"AdminSender"> | string
   family?: Prisma.StringWithAggregatesFilter<"AdminSender"> | string
   phoneNumber?: Prisma.StringWithAggregatesFilter<"AdminSender"> | string
+  city?: Prisma.StringWithAggregatesFilter<"AdminSender"> | string
   postOffice?: Prisma.StringNullableWithAggregatesFilter<"AdminSender"> | string | null
   postomat?: Prisma.StringNullableWithAggregatesFilter<"AdminSender"> | string | null
+  NPcityId?: Prisma.StringNullableWithAggregatesFilter<"AdminSender"> | string | null
+  NPsenderId?: Prisma.StringNullableWithAggregatesFilter<"AdminSender"> | string | null
+  NPsenderAddressId?: Prisma.StringNullableWithAggregatesFilter<"AdminSender"> | string | null
+  NPcontactSenderId?: Prisma.StringNullableWithAggregatesFilter<"AdminSender"> | string | null
 }
 
 export type AdminSenderCreateInput = {
@@ -296,8 +356,13 @@ export type AdminSenderCreateInput = {
   surname: string
   family: string
   phoneNumber: string
+  city: string
   postOffice?: string | null
   postomat?: string | null
+  NPcityId?: string | null
+  NPsenderId?: string | null
+  NPsenderAddressId?: string | null
+  NPcontactSenderId?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutAdminSendersInput
   admins?: Prisma.AdminCreateNestedManyWithoutSenderInput
 }
@@ -308,8 +373,13 @@ export type AdminSenderUncheckedCreateInput = {
   surname: string
   family: string
   phoneNumber: string
+  city: string
   postOffice?: string | null
   postomat?: string | null
+  NPcityId?: string | null
+  NPsenderId?: string | null
+  NPsenderAddressId?: string | null
+  NPcontactSenderId?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutAdminSendersInput
   admins?: Prisma.AdminUncheckedCreateNestedManyWithoutSenderInput
 }
@@ -319,8 +389,13 @@ export type AdminSenderUpdateInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   family?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
   postOffice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postomat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderAddressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcontactSenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutAdminSendersNestedInput
   admins?: Prisma.AdminUpdateManyWithoutSenderNestedInput
 }
@@ -331,8 +406,13 @@ export type AdminSenderUncheckedUpdateInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   family?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
   postOffice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postomat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderAddressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcontactSenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutAdminSendersNestedInput
   admins?: Prisma.AdminUncheckedUpdateManyWithoutSenderNestedInput
 }
@@ -343,8 +423,13 @@ export type AdminSenderCreateManyInput = {
   surname: string
   family: string
   phoneNumber: string
+  city: string
   postOffice?: string | null
   postomat?: string | null
+  NPcityId?: string | null
+  NPsenderId?: string | null
+  NPsenderAddressId?: string | null
+  NPcontactSenderId?: string | null
 }
 
 export type AdminSenderUpdateManyMutationInput = {
@@ -352,8 +437,13 @@ export type AdminSenderUpdateManyMutationInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   family?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
   postOffice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postomat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderAddressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcontactSenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AdminSenderUncheckedUpdateManyInput = {
@@ -362,8 +452,13 @@ export type AdminSenderUncheckedUpdateManyInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   family?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
   postOffice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postomat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderAddressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcontactSenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AdminSenderListRelationFilter = {
@@ -382,8 +477,13 @@ export type AdminSenderCountOrderByAggregateInput = {
   surname?: Prisma.SortOrder
   family?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   postOffice?: Prisma.SortOrder
   postomat?: Prisma.SortOrder
+  NPcityId?: Prisma.SortOrder
+  NPsenderId?: Prisma.SortOrder
+  NPsenderAddressId?: Prisma.SortOrder
+  NPcontactSenderId?: Prisma.SortOrder
 }
 
 export type AdminSenderAvgOrderByAggregateInput = {
@@ -396,8 +496,13 @@ export type AdminSenderMaxOrderByAggregateInput = {
   surname?: Prisma.SortOrder
   family?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   postOffice?: Prisma.SortOrder
   postomat?: Prisma.SortOrder
+  NPcityId?: Prisma.SortOrder
+  NPsenderId?: Prisma.SortOrder
+  NPsenderAddressId?: Prisma.SortOrder
+  NPcontactSenderId?: Prisma.SortOrder
 }
 
 export type AdminSenderMinOrderByAggregateInput = {
@@ -406,8 +511,13 @@ export type AdminSenderMinOrderByAggregateInput = {
   surname?: Prisma.SortOrder
   family?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   postOffice?: Prisma.SortOrder
   postomat?: Prisma.SortOrder
+  NPcityId?: Prisma.SortOrder
+  NPsenderId?: Prisma.SortOrder
+  NPsenderAddressId?: Prisma.SortOrder
+  NPcontactSenderId?: Prisma.SortOrder
 }
 
 export type AdminSenderSumOrderByAggregateInput = {
@@ -499,8 +609,13 @@ export type AdminSenderCreateWithoutAdminsInput = {
   surname: string
   family: string
   phoneNumber: string
+  city: string
   postOffice?: string | null
   postomat?: string | null
+  NPcityId?: string | null
+  NPsenderId?: string | null
+  NPsenderAddressId?: string | null
+  NPcontactSenderId?: string | null
   orders?: Prisma.OrderCreateNestedManyWithoutAdminSendersInput
 }
 
@@ -510,8 +625,13 @@ export type AdminSenderUncheckedCreateWithoutAdminsInput = {
   surname: string
   family: string
   phoneNumber: string
+  city: string
   postOffice?: string | null
   postomat?: string | null
+  NPcityId?: string | null
+  NPsenderId?: string | null
+  NPsenderAddressId?: string | null
+  NPcontactSenderId?: string | null
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutAdminSendersInput
 }
 
@@ -545,8 +665,13 @@ export type AdminSenderScalarWhereInput = {
   surname?: Prisma.StringFilter<"AdminSender"> | string
   family?: Prisma.StringFilter<"AdminSender"> | string
   phoneNumber?: Prisma.StringFilter<"AdminSender"> | string
+  city?: Prisma.StringFilter<"AdminSender"> | string
   postOffice?: Prisma.StringNullableFilter<"AdminSender"> | string | null
   postomat?: Prisma.StringNullableFilter<"AdminSender"> | string | null
+  NPcityId?: Prisma.StringNullableFilter<"AdminSender"> | string | null
+  NPsenderId?: Prisma.StringNullableFilter<"AdminSender"> | string | null
+  NPsenderAddressId?: Prisma.StringNullableFilter<"AdminSender"> | string | null
+  NPcontactSenderId?: Prisma.StringNullableFilter<"AdminSender"> | string | null
 }
 
 export type AdminSenderCreateWithoutOrdersInput = {
@@ -554,8 +679,13 @@ export type AdminSenderCreateWithoutOrdersInput = {
   surname: string
   family: string
   phoneNumber: string
+  city: string
   postOffice?: string | null
   postomat?: string | null
+  NPcityId?: string | null
+  NPsenderId?: string | null
+  NPsenderAddressId?: string | null
+  NPcontactSenderId?: string | null
   admins?: Prisma.AdminCreateNestedManyWithoutSenderInput
 }
 
@@ -565,8 +695,13 @@ export type AdminSenderUncheckedCreateWithoutOrdersInput = {
   surname: string
   family: string
   phoneNumber: string
+  city: string
   postOffice?: string | null
   postomat?: string | null
+  NPcityId?: string | null
+  NPsenderId?: string | null
+  NPsenderAddressId?: string | null
+  NPcontactSenderId?: string | null
   admins?: Prisma.AdminUncheckedCreateNestedManyWithoutSenderInput
 }
 
@@ -596,8 +731,13 @@ export type AdminSenderUpdateWithoutAdminsInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   family?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
   postOffice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postomat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderAddressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcontactSenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUpdateManyWithoutAdminSendersNestedInput
 }
 
@@ -607,8 +747,13 @@ export type AdminSenderUncheckedUpdateWithoutAdminsInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   family?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
   postOffice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postomat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderAddressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcontactSenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orders?: Prisma.OrderUncheckedUpdateManyWithoutAdminSendersNestedInput
 }
 
@@ -618,8 +763,13 @@ export type AdminSenderUncheckedUpdateManyWithoutAdminsInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   family?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
   postOffice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postomat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderAddressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcontactSenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AdminSenderUpdateWithoutOrdersInput = {
@@ -627,8 +777,13 @@ export type AdminSenderUpdateWithoutOrdersInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   family?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
   postOffice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postomat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderAddressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcontactSenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   admins?: Prisma.AdminUpdateManyWithoutSenderNestedInput
 }
 
@@ -638,8 +793,13 @@ export type AdminSenderUncheckedUpdateWithoutOrdersInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   family?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
   postOffice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postomat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderAddressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcontactSenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   admins?: Prisma.AdminUncheckedUpdateManyWithoutSenderNestedInput
 }
 
@@ -649,8 +809,13 @@ export type AdminSenderUncheckedUpdateManyWithoutOrdersInput = {
   surname?: Prisma.StringFieldUpdateOperationsInput | string
   family?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  city?: Prisma.StringFieldUpdateOperationsInput | string
   postOffice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   postomat?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcityId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPsenderAddressId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  NPcontactSenderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -699,8 +864,13 @@ export type AdminSenderSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   surname?: boolean
   family?: boolean
   phoneNumber?: boolean
+  city?: boolean
   postOffice?: boolean
   postomat?: boolean
+  NPcityId?: boolean
+  NPsenderId?: boolean
+  NPsenderAddressId?: boolean
+  NPcontactSenderId?: boolean
   orders?: boolean | Prisma.AdminSender$ordersArgs<ExtArgs>
   admins?: boolean | Prisma.AdminSender$adminsArgs<ExtArgs>
   _count?: boolean | Prisma.AdminSenderCountOutputTypeDefaultArgs<ExtArgs>
@@ -712,8 +882,13 @@ export type AdminSenderSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   surname?: boolean
   family?: boolean
   phoneNumber?: boolean
+  city?: boolean
   postOffice?: boolean
   postomat?: boolean
+  NPcityId?: boolean
+  NPsenderId?: boolean
+  NPsenderAddressId?: boolean
+  NPcontactSenderId?: boolean
 }, ExtArgs["result"]["adminSender"]>
 
 export type AdminSenderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -722,8 +897,13 @@ export type AdminSenderSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   surname?: boolean
   family?: boolean
   phoneNumber?: boolean
+  city?: boolean
   postOffice?: boolean
   postomat?: boolean
+  NPcityId?: boolean
+  NPsenderId?: boolean
+  NPsenderAddressId?: boolean
+  NPcontactSenderId?: boolean
 }, ExtArgs["result"]["adminSender"]>
 
 export type AdminSenderSelectScalar = {
@@ -732,11 +912,16 @@ export type AdminSenderSelectScalar = {
   surname?: boolean
   family?: boolean
   phoneNumber?: boolean
+  city?: boolean
   postOffice?: boolean
   postomat?: boolean
+  NPcityId?: boolean
+  NPsenderId?: boolean
+  NPsenderAddressId?: boolean
+  NPcontactSenderId?: boolean
 }
 
-export type AdminSenderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "surname" | "family" | "phoneNumber" | "postOffice" | "postomat", ExtArgs["result"]["adminSender"]>
+export type AdminSenderOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "surname" | "family" | "phoneNumber" | "city" | "postOffice" | "postomat" | "NPcityId" | "NPsenderId" | "NPsenderAddressId" | "NPcontactSenderId", ExtArgs["result"]["adminSender"]>
 export type AdminSenderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | Prisma.AdminSender$ordersArgs<ExtArgs>
   admins?: boolean | Prisma.AdminSender$adminsArgs<ExtArgs>
@@ -757,8 +942,13 @@ export type $AdminSenderPayload<ExtArgs extends runtime.Types.Extensions.Interna
     surname: string
     family: string
     phoneNumber: string
+    city: string
     postOffice: string | null
     postomat: string | null
+    NPcityId: string | null
+    NPsenderId: string | null
+    NPsenderAddressId: string | null
+    NPcontactSenderId: string | null
   }, ExtArgs["result"]["adminSender"]>
   composites: {}
 }
@@ -1189,8 +1379,13 @@ export interface AdminSenderFieldRefs {
   readonly surname: Prisma.FieldRef<"AdminSender", 'String'>
   readonly family: Prisma.FieldRef<"AdminSender", 'String'>
   readonly phoneNumber: Prisma.FieldRef<"AdminSender", 'String'>
+  readonly city: Prisma.FieldRef<"AdminSender", 'String'>
   readonly postOffice: Prisma.FieldRef<"AdminSender", 'String'>
   readonly postomat: Prisma.FieldRef<"AdminSender", 'String'>
+  readonly NPcityId: Prisma.FieldRef<"AdminSender", 'String'>
+  readonly NPsenderId: Prisma.FieldRef<"AdminSender", 'String'>
+  readonly NPsenderAddressId: Prisma.FieldRef<"AdminSender", 'String'>
+  readonly NPcontactSenderId: Prisma.FieldRef<"AdminSender", 'String'>
 }
     
 

@@ -5,13 +5,34 @@ interface ISender {
   surname: string;
   family: string;
   phoneNumber: string;
-  senderPostomat?: string | null;
+  senderCity: string;
   senderPostOffice?: string | null;
+  senderPostomat?: string | null;
+  cityId: string;
+  counterPartyId: string;
+  contactPersonId: string;
+  postAddressId: string;
 }
 export default defineEventHandler(async (event) => {
   const body = await readBody<ISender>(event);
 
-  const { name, surname, family, phoneNumber, senderPostomat, senderPostOffice } = body;
+  const {
+    name,
+    surname,
+    family,
+    phoneNumber,
+    senderCity,
+    senderPostOffice,
+    senderPostomat,
+    cityId,
+    // counterPartyId,
+    // contactPersonId,
+    postAddressId
+  } = body;
+
+  const config = useRuntimeConfig();
+
+  const counterPartyId = config.nova_post_sender_ref;
 
   if (!name) {
     return {
@@ -38,7 +59,13 @@ export default defineEventHandler(async (event) => {
       message: "Missed phone number"
     };
   }
-  if (!senderPostomat && !senderPostOffice) {
+  if (!senderCity) {
+    return {
+      statusCode: 400,
+      message: "Sender city required"
+    };
+  }
+  if (!senderPostOffice) {
     return {
       statusCode: 400,
       message: "Missed post office or postomat number"
@@ -51,17 +78,27 @@ export default defineEventHandler(async (event) => {
         name: name,
         surname: surname,
         family: family,
+        city: senderCity,
         phoneNumber: phoneNumber,
         postOffice: senderPostOffice,
-        postomat: senderPostomat
+        postomat: senderPostomat,
+        NPcityId: cityId,
+        NPsenderId: counterPartyId,
+        NPsenderAddressId: postAddressId,
+        NPcontactSenderId: counterPartyId
       }
     });
     console.log(createSenderRes);
+
+    return {
+      statusCode: 200,
+      message: "Success"
+    };
   } catch (err) {
     console.error(err);
     return {
       statusCode: 500,
-      message: `Something wewnt wrong ${err}`
+      message: `Something went wrong ${err}`
     };
   }
 });

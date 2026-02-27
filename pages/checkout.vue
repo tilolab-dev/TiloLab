@@ -22,7 +22,7 @@
                   <li
                     v-for="(el, i) in fetchedCity"
                     :key="i"
-                    @click="((cityRef = el.MainDescription), (fetchedCity = []))"
+                    @click="((cityRef = el.MainDescription), (fetchedCity = []), (cityId = el.Ref))"
                   >
                     {{ el.Present }}
                   </li>
@@ -37,6 +37,7 @@
                   v-model="selectedDelivery"
                   type="radio"
                   name="accordeon"
+                  value="branch"
                   checked
                   @click="getPostOfficeNp(e, 'reload')"
                 />
@@ -58,7 +59,11 @@
                     <li
                       v-for="(el, i) in postAddressList"
                       :key="i"
-                      @click="((postAddress = el.Description), (postAddressList = []))"
+                      @click="
+                        (((postAddress = el.Description), (postAddressList = [])),
+                        (postAddressId = el.Ref),
+                        (categoryOfWarehouse = el.CategoryOfWarehouse))
+                      "
                     >
                       {{ el.Description }}
                     </li>
@@ -68,7 +73,13 @@
 
                 <!-- v-model="" -->
 
-                <input id="menu2" type="radio" name="accordeon" />
+                <input
+                  id="menu2"
+                  v-model="selectedDelivery"
+                  value="postomat"
+                  type="radio"
+                  name="accordeon"
+                />
                 <label for="menu2" class="radio-elem">
                   <div class="radio-btn"></div>
                   <span>Поштомат Нової пошти</span>
@@ -89,7 +100,12 @@
                     <li
                       v-for="(el, i) in postomatList"
                       :key="i"
-                      @click="((postomatNumber = el.ShortAddress), (postomatList = []))"
+                      @click="
+                        ((postomatNumber = el.ShortAddress),
+                        (postomatList = []),
+                        (postomatId = el.Ref),
+                        (categoryOfWarehouse = el.CategoryOfWarehouse))
+                      "
                     >
                       {{ el.Description }}
                     </li>
@@ -247,6 +263,10 @@ const loggedInUser = userStore.isLoggedIn;
 const cityRef = ref("");
 // const selectedCity = ref(null);
 const fetchedCity = ref([]);
+const cityId = ref("");
+const postAddressId = ref("");
+const postomatId = ref("");
+const categoryOfWarehouse = ref("");
 // const unknownCity = ref(false);
 
 const isMounted = ref(false);
@@ -398,6 +418,34 @@ const confirmOrderHandler = async () => {
 
   // const amountInCents = Math.round(totalDeliveryPrice.value * 100);
 
+  const getRecipientId = await $fetch("/api/np/create-counterparty", {
+    method: "POST",
+    body: {
+      firstName: name.value,
+      lastName: surname.value,
+      phone: formatPhoneNumber(phone.value)
+    }
+  });
+
+  const recipientId = getRecipientId.data[0].Ref;
+
+  console.log(recipientId);
+
+  const getRecipientContactId = await $fetch("/api/np/create-contact-person", {
+    method: "POST",
+    body: {
+      firstName: name.value,
+      lastName: surname.value,
+      phone: formatPhoneNumber(phone.value),
+      counterPartyId: recipientId
+      // postAddress: postAddress.value
+    }
+  });
+
+  const recipientContactId = getRecipientContactId.data[0].Ref;
+
+  console.log(recipientContactId);
+
   try {
     const getOrderId = await $fetch("/api/orders/newOrder", {
       method: "POST",
@@ -415,7 +463,13 @@ const confirmOrderHandler = async () => {
           postOffice: postAddress.value,
           postomat: postomatNumber.value,
           city: cityRef.value,
-          country: "Ukraine"
+          country: "Ukraine",
+          cityId: cityId.value,
+          warehouseType: categoryOfWarehouse.value,
+          postAddressId: postAddressId.value,
+          postomatId: postomatId.value,
+          recipientId: recipientId,
+          recipientContactId: recipientContactId
         }
       }
     });
@@ -718,11 +772,9 @@ const debounce = (string, fn) => {
   return () => {
     clearTimeout(timerId);
     if (string === "") {
-      console.log("string is empty");
       return fn();
     }
     timerId = setTimeout(() => {
-      console.log("log debounce");
       fn();
     }, 700);
   };

@@ -4,6 +4,7 @@ interface IPayloadTtn {
   PayerType: string;
   PaymentMethod: string;
   CargoType: string;
+  VolumeGeneral: string | number;
   Weight: string | number;
   ServiceType: string;
   SeatsAmount: string | number;
@@ -13,13 +14,13 @@ interface IPayloadTtn {
 
   CitySender: string;
   Sender: string;
-  SenderAdress: string;
+  SenderAddress: string;
   ContactSender: string;
   SendersPhone: string;
 
   FirstName: string;
   LastName: string;
-  Phone: string;
+  RecipientsPhone: string;
 
   CityRecipient: string;
   RecipientAddress: string;
@@ -65,7 +66,23 @@ export default class NovaPoshtaApi extends PostalServiceApi {
       }
     };
 
-    return this.request("", {
+    return await this.request("", {
+      method: "POST",
+      body
+    });
+  }
+
+  async getSenderProperty(counterpartyId: string) {
+    const body = {
+      apiKey: this.apiKey,
+      modelName: "Counterparty",
+      calledMethod: "getCounterpartyContactPersons",
+      methodProperties: {
+        Ref: counterpartyId
+      }
+    };
+
+    return await this.request("", {
       method: "POST",
       body
     });
@@ -83,7 +100,28 @@ export default class NovaPoshtaApi extends PostalServiceApi {
       }
     };
 
-    return super.request("", {
+    return await super.request("", {
+      method: "POST",
+      body
+    });
+  }
+
+  async createCounterParty(firstName: string, lastName: string, phone: string) {
+    const body = {
+      apiKey: this.apiKey,
+      modelName: "Counterparty",
+      calledMethod: "save",
+      methodProperties: {
+        FirstName: firstName,
+        LastName: lastName,
+        Phone: phone,
+        Email: "",
+        CounterpartyType: "PrivatePerson",
+        CounterpartyProperty: "Recipient"
+      }
+    };
+
+    return await this.request("", {
       method: "POST",
       body
     });
@@ -103,13 +141,38 @@ export default class NovaPoshtaApi extends PostalServiceApi {
       }
     };
 
-    return this.request("", {
+    return await this.request("", {
       method: "POST",
       body
     });
   }
 
-  async getTtn(payload: IPayloadTtn) {
+  async createContactPerson(
+    firstName: string,
+    lastName: string,
+    phone: string,
+    counterPartyId: string
+  ) {
+    const body = {
+      apiKey: this.apiKey,
+      modelName: "ContactPerson",
+      calledMethod: "save",
+      methodProperties: {
+        CounterpartyRef: counterPartyId,
+        FirstName: firstName,
+        LastName: lastName,
+        Phone: phone
+      }
+    };
+
+    return await this.request("", {
+      method: "POST",
+      body
+    });
+  }
+
+  async createTtn(payload: IPayloadTtn) {
+    console.log(payload, "payload");
     const body = {
       apiKey: this.apiKey,
       modelName: "InternetDocument",
@@ -117,7 +180,7 @@ export default class NovaPoshtaApi extends PostalServiceApi {
       methodProperties: payload
     };
 
-    return this.request("", {
+    return await this.request("", {
       method: "POST",
       body
     });
