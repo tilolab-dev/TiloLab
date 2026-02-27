@@ -35,7 +35,7 @@
           <ul class="summary_content_final">
             <li>
               <div class="option">Сума товарів:</div>
-              <div class="value">{{ orderInfo.totalPrice / 100 }} грн</div>
+              <div class="value">{{ orderInfo.totalPrice }} грн</div>
             </li>
             <li>
               <div class="option">Вартість доставки:</div>
@@ -43,7 +43,7 @@
             </li>
             <li>
               <div class="option">До сплати:</div>
-              <div class="value">{{ orderInfo.totalPrice / 100 }} грн (оплата онлайн)</div>
+              <div class="value">{{ orderInfo.totalPrice }} грн (оплата онлайн)</div>
             </li>
           </ul>
           <div class="divider"></div>

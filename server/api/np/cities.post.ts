@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
 
   const config = useRuntimeConfig();
 
-  const np = new NovaPoshtaApi(config.public.nova_post_uri, config.nova_post_api);
+  const np = new NovaPoshtaApi(config.public.nova_post_uri, config.new_post_api);
 
   try {
     const npData = await np.fetchCity(city);

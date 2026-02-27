@@ -426,6 +426,11 @@ onMounted(async () => {
 
         .el {
           cursor: pointer;
+          text-align: center;
+          @media screen and (max-width: 650px) {
+            flex: 1;
+            font-size: 1.3rem;
+          }
         }
 
         .el-active {
@@ -449,7 +454,22 @@ onMounted(async () => {
             }
           }
         }
+
+        @media screen and (max-width: 650px) {
+          width: 100%;
+          padding: 10px 0;
+          margin-top: 10px;
+        }
       }
+
+      @media screen and (max-width: 650px) {
+        width: 100%;
+        padding: 0;
+      }
+    }
+
+    @media screen and (max-width: 650px) {
+      flex-direction: column;
     }
   }
 
@@ -473,7 +493,25 @@ onMounted(async () => {
         align-items: center;
         gap: 0.5rem;
         padding-left: 0.5rem;
+        @media screen and (max-width: 650px) {
+          width: 100%;
+          height: auto;
+          input {
+            padding: 10px 5px;
+          }
+        }
       }
+      @media screen and (max-width: 650px) {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    @media screen and (max-width: 650px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
   }
 
@@ -495,6 +533,29 @@ onMounted(async () => {
       background: var(--btn-color);
       border-radius: 5px;
       cursor: pointer;
+
+      @media screen and (max-width: 650px) {
+        flex: 1;
+      }
+
+      @media screen and (max-width: 375px) {
+        width: 100%;
+      }
+    }
+
+    @media screen and (max-width: 650px) {
+      justify-content: center;
+      padding-left: 0rem;
+      padding-right: 0rem;
+      width: 100%;
+      gap: 10px;
+    }
+
+    @media screen and (max-width: 375px) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      // gap: 15px;
     }
   }
 
@@ -843,6 +904,10 @@ onMounted(async () => {
           }
         }
       }
+    }
+
+    @media screen and (max-width: 650px) {
+      padding: 0 0 30px;
     }
   }
 }

@@ -2,7 +2,7 @@ import { prisma } from "@/prisma/prisma";
 
 export default defineEventHandler(async () => {
   try {
-    const getSendersRes = await prisma.adminMetric.findMany();
+    const getSendersRes = await prisma.adminSender.findMany();
 
     console.log(getSendersRes);
 

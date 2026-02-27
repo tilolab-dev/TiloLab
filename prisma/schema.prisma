@@ -19,16 +19,20 @@ model Admin {
 }
 
 model AdminSender {
-  id              Int                 @id @default(autoincrement())
-  name            String
-  surname         String
-  family          String
-  phoneNumber     String
-  postOffice      String?
-  postomat        String?
+  id                    Int                 @id @default(autoincrement())
+  name                  String
+  surname               String
+  family                String
+  phoneNumber           String
+  city                  String
+  postOffice            String?
+  postomat              String?
+  NPcityId              String?
+  NPsenderId            String?
+  NPsenderAddressId     String?
+  NPcontactSenderId     String?
 
   orders          Order[]
-
   admins Admin[]
 }
 
@@ -251,17 +255,22 @@ model OrderItem {
 }
 
 model ShippingInfo {
-  id             Int     @id @default(autoincrement())
-  orderId        String  @unique
-  recipient      String
-  phoneNumber    String
-  deliveryMethod String?
-  postCompany    String?
-  postOffice     String?
-  postomat       String?
-  city           String
-  address        String?
-  country        String
+  id                      Int     @id @default(autoincrement())
+  orderId                 String  @unique
+  recipient               String
+  phoneNumber             String
+  deliveryMethod          String?
+  postCompany             String?
+  postOffice              String?
+  postomat                String?
+  city                    String
+  address                 String?
+  country                 String
+  NPcityId                String?
+  NPwarehouseId           String?
+  NPrecipientId           String?
+  NPrecipientContactId    String?
+  NPtypeOfWarehouse       String?
   order          Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([city])
