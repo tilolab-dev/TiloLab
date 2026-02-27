@@ -102,7 +102,12 @@ export default eventHandler(async (event: any) => {
               postOffice: shippingInfo.postOffice,
               postomat: shippingInfo.postomat,
               city: shippingInfo.city,
-              country: shippingInfo.country
+              country: shippingInfo.country,
+              NPtypeOfWarehouse: shippingInfo.warehouseType,
+              NPcityId: shippingInfo.cityId,
+              NPwarehouseId: shippingInfo.postAddressId,
+              NPrecipientId: shippingInfo.recipientId,
+              NPrecipientContactId: shippingInfo.recipientContactId
             }
           }
         }

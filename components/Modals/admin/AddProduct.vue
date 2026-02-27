@@ -5,39 +5,45 @@
     </div>
     <div class="add_product">
       <div class="modal_wrapper">
+        <div class="mobile_top_content">
+          <div class="mobile_top">Додати товар</div>
+          <button>
+            <SvgIcon name="close-btn" size="micro" fill="var(--text-color)" />
+          </button>
+        </div>
         <div class="add_image">
           <div class="add_image_content">
-            <div
-              class="add_image_wrapper flex items-center justify-center flex-col relative top-10 w-4/5"
-            >
-              <div class="picture_container relative mb-5">
+            <div class="add_image_wrapper">
+              <div class="picture_container">
                 <div class="picture first"></div>
                 <div class="picture second"></div>
                 <div class="picture third"></div>
               </div>
-              <h2 class="img-title text-center">Завантажте файли зображення</h2>
-              <span class="text-center">
-                Зображення повинні бути в форматі .jpg, .png, .jpeg, .webp
-              </span>
-              <label for="product-file" class="icon_label">
-                <div class="btn_fill">Вибрати</div>
-              </label>
+              <div class="picture_info">
+                <h2 class="img-title text-center">Завантажте файли зображення</h2>
+                <span class="text-center">
+                  Зображення повинні бути в форматі .jpg, .png, .jpeg, .webp
+                </span>
+                <label for="product-file" class="icon_label">
+                  <div class="btn_fill">Вибрати</div>
+                </label>
 
-              <input
-                id="product-file"
-                ref="productFileInput"
-                type="file"
-                class="hidden"
-                multiple
-                @change="
-                  handleFileUpload(
-                    $event,
-                    'product',
-                    productFileState,
-                    productFileState.productFiles.value.length
-                  )
-                "
-              />
+                <input
+                  id="product-file"
+                  ref="productFileInput"
+                  type="file"
+                  class="hidden"
+                  multiple
+                  @change="
+                    handleFileUpload(
+                      $event,
+                      'product',
+                      productFileState,
+                      productFileState.productFiles.value.length
+                    )
+                  "
+                />
+              </div>
             </div>
           </div>
 
@@ -161,7 +167,7 @@
                     type="text"
                     placeholder="Введіть значення розміру"
                   />
-                  <label for="productPrice" class="product_checkbox"></label>
+                  <!-- <label for="productPrice" class="product_checkbox"></label> -->
                 </div>
                 <div class="wrapper">
                   <span class="default_text"> Відображати товар на сайті </span>
@@ -188,7 +194,7 @@
                     type="text"
                     placeholder="Введіть значення розміру"
                   />
-                  <label for="productSize" class="product_checkbox"></label>
+                  <!-- <label for="productSize" class="product_checkbox"></label> -->
                 </div>
                 <div class="wrapper">
                   <h4 class="default_text">Матеріал товару</h4>
@@ -776,6 +782,7 @@ onMounted(async () => {
   background: var(--bg-color);
   border-radius: 10px;
   overflow-x: hidden;
+  width: 100vw;
   height: fit-content;
   color: var(--text-grey);
   overflow: hidden;
@@ -837,6 +844,37 @@ onMounted(async () => {
     gap: 1.25rem;
     height: 90vh;
     position: relative;
+
+    @media screen and (max-width: 1024px) {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      width: 100%;
+      gap: 15px;
+    }
+
+    @media screen and (max-width: 768px) {
+      height: 95vh;
+    }
+  }
+
+  .mobile_top_content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+    height: auto;
+
+    .mobile_top {
+      @include mixins.subtitleText;
+      font-size: 1.5rem;
+    }
+
+    @media screen and (min-width: 1024px) {
+      display: none;
+    }
   }
 
   .add_image {
@@ -845,6 +883,7 @@ onMounted(async () => {
     flex-direction: column;
     gap: 1.25rem;
     height: 90vh;
+    min-width: 300px;
 
     &_content {
       border-width: 2px;
@@ -879,9 +918,23 @@ onMounted(async () => {
       .picture_container {
         position: relative;
         margin-bottom: 20px;
+        width: inherit;
+        height: auto;
+
+        @media screen and (max-width: 1024px) {
+          display: none;
+          // position: relative;
+          // top: 70px;
+        }
       }
       input {
         display: none;
+      }
+      .picture_info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
       }
       .picture {
         width: clamp(50px, 10vw, 100px);
@@ -899,6 +952,13 @@ onMounted(async () => {
       }
       .third {
         transform: translateX(-10%) translateY(-10%) rotate(0deg);
+      }
+
+      @media screen and (max-width: 1024px) {
+        flex-direction: row;
+        // width: clamp(300px, 95vw, 1000px);
+        width: unset;
+        top: unset;
       }
     }
 
@@ -936,6 +996,9 @@ onMounted(async () => {
         height: 40px;
         object-fit: cover;
       }
+      @media screen and (max-width: 1024px) {
+        margin-right: auto;
+      }
     }
 
     .image_wrapper {
@@ -968,12 +1031,22 @@ onMounted(async () => {
       padding: 10px 20px;
       cursor: pointer;
     }
+
+    @media screen and (max-width: 1024px) {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: auto;
+    }
   }
 
   .add_info {
     height: 90vh;
-    width: fit-content;
     position: relative;
+    // max-width: 60vw;
+    width: clamp(500px, 62vw, 1200px);
+    overflow-x: hidden;
 
     .main_text {
       @include mixins.mainText;
@@ -982,7 +1055,7 @@ onMounted(async () => {
     .default_text {
       @include mixins.mainText;
       color: var(--grey-color);
-      white-space: nowrap;
+      // white-space: nowrap;
     }
 
     .top_content {
@@ -993,9 +1066,21 @@ onMounted(async () => {
         @include mixins.subtitleText;
         font-size: 1.5rem;
       }
+
+      button {
+        @media screen and (max-width: 1024px) {
+          display: none;
+        }
+      }
     }
 
     .header_description {
+      width: 100%;
+      height: auto;
+      .default_text {
+        width: 100%;
+        white-space: unset;
+      }
       .accent_text {
         color: red;
       }
@@ -1015,6 +1100,10 @@ onMounted(async () => {
       border-color: var(--dark-color);
       padding: 1rem 1.5rem 1.5rem 0;
       border-radius: 0.5rem;
+
+      @media screen and (max-width: 768px) {
+        padding: 1rem 1rem 1.5rem 0;
+      }
     }
 
     input {
@@ -1085,6 +1174,18 @@ onMounted(async () => {
         select:focus-visible {
           border: 1px solid var(--accent-color);
         }
+
+        @media screen and (max-width: 768px) {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
       }
     }
 
@@ -1103,6 +1204,18 @@ onMounted(async () => {
         flex-direction: column;
         justify-content: flex-start;
         gap: 1rem;
+
+        @media screen and (max-width: 768px) {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
       }
     }
 
@@ -1131,6 +1244,7 @@ onMounted(async () => {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        // gap: 10px;
 
         .checkbox-wrap {
           input {
@@ -1144,6 +1258,7 @@ onMounted(async () => {
             border: 2px solid var(--accent-color);
             border-radius: 50%;
             cursor: pointer;
+            margin-top: 10px;
           }
 
           input:checked + label {
@@ -1303,6 +1418,10 @@ onMounted(async () => {
       gap: 10px;
       button {
         padding: 10px 20px;
+
+        @media screen and (max-width: 768px) {
+          width: 100%;
+        }
       }
       .btn_transparent {
         background: black;
@@ -1317,7 +1436,26 @@ onMounted(async () => {
         color: var(--bg-color);
         @include mixins.mainText;
       }
+
+      @media screen and (max-width: 768px) {
+        justify-content: center;
+        flex-direction: column;
+      }
     }
+
+    @media screen and (max-width: 1024px) {
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    padding-inline: 15px;
+  }
+  @media screen and (max-width: 480px) {
+    padding-inline: 10px;
+  }
+  @media screen and (max-width: 375px) {
+    padding-inline: 8px;
   }
 }
 </style>

@@ -19,13 +19,62 @@
                 </option>
               </select> -->
                 <div class="radio_status">
-                  <button @click="orderByStatus = 'PAID'">Оплачений</button>
-                  <button @click="orderByStatus = 'PROCESSING'">В обробці</button>
-                  <button @click="orderByStatus = 'SHIPPED'">Відправлений</button>
-                  <button @click="orderByStatus = 'DELIVERED'">Доставлений</button>
-                  <button @click="orderByStatus = 'RETURNED'">Повернутий</button>
-                  <button @click="orderByStatus = 'CANCELED'">Скасований</button>
-                  <button @click="orderByStatus = 'EXPIRED'">Вичерпаний</button>
+                  <button
+                    class="status_btn"
+                    :class="orderByStatus === 'ALL' ? 'active_status_btn' : ''"
+                    @click="orderByStatus = 'ALL'"
+                  >
+                    Всі
+                  </button>
+                  <button
+                    class="status_btn"
+                    :class="orderByStatus === 'PAID' ? 'active_status_btn' : ''"
+                    @click="orderByStatus = 'PAID'"
+                  >
+                    Оплачений
+                  </button>
+                  <button
+                    class="status_btn"
+                    :class="orderByStatus === 'PROCESSING' ? 'active_status_btn' : ''"
+                    @click="orderByStatus = 'PROCESSING'"
+                  >
+                    В обробці
+                  </button>
+                  <button
+                    class="status_btn"
+                    :class="orderByStatus === 'SHIPPED' ? 'active_status_btn' : ''"
+                    @click="orderByStatus = 'SHIPPED'"
+                  >
+                    Відправлений
+                  </button>
+                  <button
+                    class="status_btn"
+                    :class="orderByStatus === 'DELIVERED' ? 'active_status_btn' : ''"
+                    @click="orderByStatus = 'DELIVERED'"
+                  >
+                    Доставлений
+                  </button>
+                  <button
+                    class="status_btn"
+                    :class="orderByStatus === 'RETURNED' ? 'active_status_btn' : ''"
+                    @click="orderByStatus = 'RETURNED'"
+                  >
+                    Повернутий
+                  </button>
+                  <button
+                    class="status_btn"
+                    :class="orderByStatus === 'CANCELED' ? 'active_status_btn' : ''"
+                    @click="orderByStatus = 'CANCELED'"
+                  >
+                    Скасований
+                  </button>
+                  <button
+                    class="status_btn"
+                    :class="orderByStatus === 'EXPIRED' ? 'active_status_btn' : ''"
+                    @click="orderByStatus = 'EXPIRED'"
+                  >
+                    Вичерпаний
+                  </button>
                 </div>
               </div>
               <div class="table_content">
@@ -101,11 +150,21 @@
                           <div class="table_main">
                             <!-- v-if="product.img?.length" -->
 
-                            <img src="../../public/images/icons/credit-card.webp" alt="icon" />
+                            <img
+                              :src="order.useId === null ? '/icons/user/' : '/icons/user/user.webp'"
+                              alt="user"
+                            />
                             <!-- <div v-else class="fallback_img"></div> -->
                             <!-- src="../public/images/icons.credit-card.webp" -->
 
-                            <h6>{{ order.userId === null ? "Гість" : "Користувач" }}</h6>
+                            {{ console.log(order) }}
+
+                            <div class="recipient">
+                              <div>
+                                {{ order.userId === null ? "Гість" : "Користувач" }}
+                              </div>
+                              <div>{{ order.shippingInfo.recipient }}</div>
+                            </div>
                           </div>
                         </td>
                         <td>
@@ -189,14 +248,14 @@ import { storeToRefs } from "pinia";
 import { useModalStore } from "@/store/modal-store";
 
 const modalStore = useModalStore();
-const orderByStatus = ref("");
+const orderByStatus = ref("ALL");
 const orderListByStatus = ref([]);
 
 watch(orderByStatus, (newVal) => {
-  console.log(newVal);
   orderListByStatus.value = ordersStore.ordersList.filter(
     (order) => order.status === orderByStatus.value
   );
+  return newVal;
 });
 
 // const loadingState = ref(false);
@@ -378,14 +437,21 @@ definePageMeta({
             width: 100%;
             height: auto;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
             gap: 15px;
 
             button {
-              background: var(--btn-color);
               border: 1px solid var(--border-color);
+              cursor: pointer;
               padding: 3px 7px;
               border-radius: 5px;
+              transition: all ease 0.2s;
+            }
+
+            .active_status_btn {
+              background: var(--btn-color);
+              transition: all ease 0.2s;
             }
           }
         }
@@ -533,6 +599,16 @@ definePageMeta({
                     align-items: center;
                     justify-content: flex-start;
                     padding-inline: 0.5rem;
+
+                    .recipient {
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: center;
+                      align-items: flex-start;
+                      color: white;
+                      font-weight: 500;
+                      gap: 5px;
+                    }
                   }
                   img {
                     display: inline-flex;

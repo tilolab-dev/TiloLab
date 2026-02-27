@@ -71,6 +71,19 @@ const deleteProduct = async (productId) => {
   height: fit-content;
   position: relative;
   overflow: hidden;
+
+  @media screen and (max-width: 1024px) {
+    max-width: unset;
+    width: 75vw;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 85vw;
+  }
+
+  @media screen and (max-width: 480px) {
+    width: 95vw;
+  }
 }
 
 .delete_note {
@@ -211,6 +224,13 @@ const deleteProduct = async (productId) => {
       @include mixins.mainText;
       font-size: 1rem;
       cursor: pointer;
+      @media screen and (max-width: 375px) {
+        width: 100%;
+      }
+    }
+
+    @media screen and (max-width: 375px) {
+      flex-direction: column-reverse;
     }
   }
 }

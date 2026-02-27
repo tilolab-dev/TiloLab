@@ -4,13 +4,13 @@
       <SharedLoader />
     </div>
     <div class="add_category">
-      <div class="top_row flex justify-between items-center">
+      <div class="top_row">
         <h2>Додати категорію</h2>
         <button @click="modalStore.closeModal">
           <CloseIcon />
         </button>
       </div>
-      <div class="main_modal flex flex-col gap-2 mt-5">
+      <div class="main_modal">
         <div class="add_icon">
           <span class="default_text"> Іконка категорії (не обов'язково) </span>
           <div class="icon_wrapper">
@@ -55,30 +55,26 @@
             />
           </div>
         </div>
-        <div class="category_description flex flex-col gap-2 mt-5">
-          <span class="default_text text-[var(--dark-color)] font-sm text-base">
-            Опис категорії (українською)
-          </span>
+        <div class="category_description">
+          <span class="default_text"> Опис категорії (українською) </span>
           <textarea
             id=""
             v-model="categoryTextUk"
-            class="border border-solid border-[var(--dark-color)] resize-none rounded-lg p-2"
+            class=""
             placeholder="Введіть опис категорії"
             name="textUk"
             rows="3"
           />
         </div>
 
-        <div class="checkbox_wrapper flex flex-col">
-          <span class="default_text text-[var(--dark-color)] font-sm text-base pb-2">
-            Показувати групу на сайті? (опціонально)
-          </span>
+        <div class="checkbox_wrapper">
+          <span class="default_text"> Показувати групу на сайті? (опціонально) </span>
 
           <input id="categoryCheckbox" v-model="categoryVisible" type="checkbox" />
           <label for="categoryCheckbox" class="checkbox-elem"> </label>
         </div>
       </div>
-      <div class="button-group flex justify-end items-center gap-2 w-full">
+      <div class="button-group">
         <button class="closeModal" @click="resetForm">Скасувати</button>
         <button class="addItem" @click="addNewCategory">Додати</button>
       </div>
@@ -141,6 +137,7 @@ const handleFileUpload = (event) => {
     // });
     alert("Файл повинен бути формату .svg .png, webp");
     resetForm();
+    modalStore.closeModal();
     return;
   }
 };
@@ -311,7 +308,6 @@ const addNewCategory = () => {
 
 <style scoped lang="scss">
 .add_category_content {
-  position: fixed;
   top: 30%;
   transform: translateY(-50%);
   background: var(--bg-color);
@@ -331,6 +327,15 @@ const addNewCategory = () => {
     z-index: 10;
     background: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(7px);
+  }
+
+  @media screen and (max-width: 768px) {
+    position: fixed;
+    transform: translateY(0);
+    border-radius: 0;
+    border: unset;
+    left: 0;
+    top: 0;
   }
 }
 .top_row {
@@ -507,6 +512,13 @@ const addNewCategory = () => {
       color: white;
       font-weight: 500;
       border-radius: 5px;
+
+      @media screen and (max-width: 768px) {
+        margin: 0;
+        width: 100%;
+        font-size: 1.1rem;
+        padding: 8px 0;
+      }
     }
     .closeModal {
       background: black;
@@ -516,6 +528,21 @@ const addNewCategory = () => {
       background: var(--btn-color);
       border: 1px solid var(--border-color);
     }
+
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+      padding: 50px 0 20px;
+      gap: 20px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    // top: 0;
+    // left: 0;
   }
 }
 </style>

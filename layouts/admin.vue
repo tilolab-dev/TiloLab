@@ -620,6 +620,9 @@ onBeforeUnmount(() => {
     margin-left: 18rem;
     padding-top: 0;
   }
+  @media screen and (max-width: 650px) {
+    padding-top: 0;
+  }
 }
 .logout_wrapper {
   width: 100%;

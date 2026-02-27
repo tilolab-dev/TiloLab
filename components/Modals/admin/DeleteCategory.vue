@@ -91,6 +91,19 @@ const deleteCategory = async (category) => {
     background: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(7px);
   }
+
+  @media screen and (max-width: 1024px) {
+    max-width: unset;
+    width: 75vw;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 85vw;
+  }
+
+  @media screen and (max-width: 480px) {
+    width: 95vw;
+  }
 }
 
 .delete_note {
@@ -231,6 +244,14 @@ const deleteCategory = async (category) => {
       @include mixins.mainText;
       font-size: 1rem;
       cursor: pointer;
+
+      @media screen and (max-width: 375px) {
+        width: 100%;
+      }
+    }
+
+    @media screen and (max-width: 375px) {
+      flex-direction: column-reverse;
     }
   }
 }
