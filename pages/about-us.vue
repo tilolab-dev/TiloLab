@@ -69,6 +69,10 @@
             — лабораторія, де кожне відкриття починається з тебе.
           </h3>
         </div>
+
+        <div class="about_us_content_summary">
+          <h3>TEST TEST</h3>
+        </div>
       </div>
     </div>
   </section>
