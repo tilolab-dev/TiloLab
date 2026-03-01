@@ -71,7 +71,7 @@
         </div>
 
         <div class="about_us_content_summary">
-          <h3>TEST TEST</h3>
+          <h3>TEST TEST TEST</h3>
         </div>
       </div>
     </div>
