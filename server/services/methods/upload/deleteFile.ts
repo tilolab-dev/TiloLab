@@ -1,8 +1,9 @@
 // import { useSupabaseAdmin } from "@/server/utils/supabase";
 import { prisma } from "@/prisma/prisma";
+import supabase from "@/utils/supabase";
 
 async function deleteFile(event: any) {
-  const supabase = useSupabaseAdmin();
+  // const supabase = useSupabaseAdmin();
   // const supabase = useSu;
 
   const body = await readBody(event);
