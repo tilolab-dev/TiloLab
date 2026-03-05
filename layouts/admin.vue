@@ -100,7 +100,7 @@
 
       <slot />
     </main>
-    <Tooltips v-if="showTooltip" :tooltipStatus="tooltipStatus">
+    <Tooltips v-if="showTooltip" :tooltip-status="tooltipStatus">
       {{ tooltipMessage }}
     </Tooltips>
     <Modal @tooltip="tooltip">
@@ -258,7 +258,6 @@ const isActive = (item) => {
 
 const tooltip = (obj) => {
   const { status, message } = obj;
-
   tooltipStatus.value = status;
   tooltipMessage.value = message;
   showTooltip.value = true;

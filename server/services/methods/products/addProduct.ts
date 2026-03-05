@@ -29,9 +29,6 @@ async function addProduct(event: any) {
     options: IOptions[];
   }>(event);
 
-  console.log(body, "body");
-  // return;
-
   if (!body) {
     return {
       statusCode: 400,
@@ -39,53 +36,17 @@ async function addProduct(event: any) {
     };
   }
 
-  const {
-    categoryId,
-    visibility,
-    productPrice,
-    stockState,
-    stockValue,
-    discountPercent,
-    productSize,
-    translations
-  } = body;
+  const { categoryId, productPrice, stockState, stockValue, translations } = body;
 
   if (
     categoryId === undefined ||
-    !visibility ||
     productPrice === undefined ||
     stockValue === undefined ||
     stockState === undefined ||
-    discountPercent === undefined ||
-    !productSize ||
     !translations ||
-    typeof visibility !== "boolean" ||
     typeof stockState !== "boolean"
   ) {
-    // if (categoryId === undefined) {
-    //     console.log('categoryId is undefined');
-    // }
-    // if (productPrice === undefined) {
-    //     console.log('productPrice is undefined');
-    // }
-    // if (stockValue === undefined) {
-    //     console.log('stockValue is undefined');
-    // }
-    // if (discountPercent === undefined) {
-    //     console.log('discountPercent is undefined');
-    // }
-    // if (!productSize) {
-    //     console.log('productSize is undefined');
-    // }
-    // if (!translations) {
-    //     console.log('translations is undefined');
-    // }
-    // if (typeof visibility !== "boolean") {
-    //     console.log('visibility is not a boolean');
-    // }
-    // if (typeof stockState !== "boolean") {
-    //     console.log('stockState is not a boolean');
-    // }
+    console.log("Missing required fields!");
 
     return {
       statusCode: 400,
@@ -156,32 +117,11 @@ async function addProduct(event: any) {
       }
     });
 
-    console.log(newProduct, "log product");
-
     return {
-      // data: jsonData
       statusCode: 200,
       message: "Product created successfully",
       product: newProduct
     };
-
-    // for (const item of files) {
-
-    // console.log(item, 'item api')
-    //     return {response: item}
-
-    // if (item.type) {
-    //     // uploadedFiles.push(item);
-
-    // }
-    //  else if (item.name) {
-    //     textFields[item.name] = item.data.toString();
-    // } else {
-    //     console.log('Item without a name:', item);
-    // }
-    // }
-
-    // const getFiles = uploadedFiles[0]
   } catch (error) {
     return {
       statusCode: 500,
