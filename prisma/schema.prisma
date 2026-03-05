@@ -96,7 +96,7 @@ model Product {
   stockState       Boolean
   stockValue       Int?                 @default(0)
   discountPercent  Int?
-  productSize      String
+  productSize      String?
   productPrice     Float
   stockReserved    Int?                 @default(0)
   orderItems       OrderItem[]
@@ -136,9 +136,9 @@ model ProductTranslation {
   productId          Int
   language           String
   title              String
-  productDescription String?
-  productColor       String
-  productMaterial    String
+  productDescription String? @default("-")
+  productColor       String? @default("-")
+  productMaterial    String? @default("-")
   productManufacture String? @default("-")
   Product            Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 

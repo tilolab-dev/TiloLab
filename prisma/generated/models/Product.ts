@@ -230,7 +230,7 @@ export type ProductGroupByOutputType = {
   stockState: boolean
   stockValue: number | null
   discountPercent: number | null
-  productSize: string
+  productSize: string | null
   productPrice: number
   stockReserved: number | null
   _count: ProductCountAggregateOutputType | null
@@ -265,7 +265,7 @@ export type ProductWhereInput = {
   stockState?: Prisma.BoolFilter<"Product"> | boolean
   stockValue?: Prisma.IntNullableFilter<"Product"> | number | null
   discountPercent?: Prisma.IntNullableFilter<"Product"> | number | null
-  productSize?: Prisma.StringFilter<"Product"> | string
+  productSize?: Prisma.StringNullableFilter<"Product"> | string | null
   productPrice?: Prisma.FloatFilter<"Product"> | number
   stockReserved?: Prisma.IntNullableFilter<"Product"> | number | null
   orderItems?: Prisma.OrderItemListRelationFilter
@@ -284,7 +284,7 @@ export type ProductOrderByWithRelationInput = {
   stockState?: Prisma.SortOrder
   stockValue?: Prisma.SortOrderInput | Prisma.SortOrder
   discountPercent?: Prisma.SortOrderInput | Prisma.SortOrder
-  productSize?: Prisma.SortOrder
+  productSize?: Prisma.SortOrderInput | Prisma.SortOrder
   productPrice?: Prisma.SortOrder
   stockReserved?: Prisma.SortOrderInput | Prisma.SortOrder
   orderItems?: Prisma.OrderItemOrderByRelationAggregateInput
@@ -306,7 +306,7 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   stockState?: Prisma.BoolFilter<"Product"> | boolean
   stockValue?: Prisma.IntNullableFilter<"Product"> | number | null
   discountPercent?: Prisma.IntNullableFilter<"Product"> | number | null
-  productSize?: Prisma.StringFilter<"Product"> | string
+  productSize?: Prisma.StringNullableFilter<"Product"> | string | null
   productPrice?: Prisma.FloatFilter<"Product"> | number
   stockReserved?: Prisma.IntNullableFilter<"Product"> | number | null
   orderItems?: Prisma.OrderItemListRelationFilter
@@ -325,7 +325,7 @@ export type ProductOrderByWithAggregationInput = {
   stockState?: Prisma.SortOrder
   stockValue?: Prisma.SortOrderInput | Prisma.SortOrder
   discountPercent?: Prisma.SortOrderInput | Prisma.SortOrder
-  productSize?: Prisma.SortOrder
+  productSize?: Prisma.SortOrderInput | Prisma.SortOrder
   productPrice?: Prisma.SortOrder
   stockReserved?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ProductCountOrderByAggregateInput
@@ -345,7 +345,7 @@ export type ProductScalarWhereWithAggregatesInput = {
   stockState?: Prisma.BoolWithAggregatesFilter<"Product"> | boolean
   stockValue?: Prisma.IntNullableWithAggregatesFilter<"Product"> | number | null
   discountPercent?: Prisma.IntNullableWithAggregatesFilter<"Product"> | number | null
-  productSize?: Prisma.StringWithAggregatesFilter<"Product"> | string
+  productSize?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   productPrice?: Prisma.FloatWithAggregatesFilter<"Product"> | number
   stockReserved?: Prisma.IntNullableWithAggregatesFilter<"Product"> | number | null
 }
@@ -355,7 +355,7 @@ export type ProductCreateInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
@@ -374,7 +374,7 @@ export type ProductUncheckedCreateInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
@@ -390,7 +390,7 @@ export type ProductUpdateInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
@@ -409,7 +409,7 @@ export type ProductUncheckedUpdateInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
@@ -427,7 +427,7 @@ export type ProductCreateManyInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
 }
@@ -437,7 +437,7 @@ export type ProductUpdateManyMutationInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
@@ -449,7 +449,7 @@ export type ProductUncheckedUpdateManyInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
@@ -662,7 +662,7 @@ export type ProductCreateWithoutCategoryInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
@@ -679,7 +679,7 @@ export type ProductUncheckedCreateWithoutCategoryInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
@@ -726,7 +726,7 @@ export type ProductScalarWhereInput = {
   stockState?: Prisma.BoolFilter<"Product"> | boolean
   stockValue?: Prisma.IntNullableFilter<"Product"> | number | null
   discountPercent?: Prisma.IntNullableFilter<"Product"> | number | null
-  productSize?: Prisma.StringFilter<"Product"> | string
+  productSize?: Prisma.StringNullableFilter<"Product"> | string | null
   productPrice?: Prisma.FloatFilter<"Product"> | number
   stockReserved?: Prisma.IntNullableFilter<"Product"> | number | null
 }
@@ -736,7 +736,7 @@ export type ProductCreateWithoutOptionsInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
@@ -754,7 +754,7 @@ export type ProductUncheckedCreateWithoutOptionsInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
@@ -785,7 +785,7 @@ export type ProductUpdateWithoutOptionsInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
@@ -803,7 +803,7 @@ export type ProductUncheckedUpdateWithoutOptionsInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
@@ -818,7 +818,7 @@ export type ProductCreateWithoutImgInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
@@ -836,7 +836,7 @@ export type ProductUncheckedCreateWithoutImgInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
@@ -867,7 +867,7 @@ export type ProductUpdateWithoutImgInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
@@ -885,7 +885,7 @@ export type ProductUncheckedUpdateWithoutImgInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
@@ -900,7 +900,7 @@ export type ProductCreateWithoutTranslationsInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
@@ -918,7 +918,7 @@ export type ProductUncheckedCreateWithoutTranslationsInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
@@ -949,7 +949,7 @@ export type ProductUpdateWithoutTranslationsInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
@@ -967,7 +967,7 @@ export type ProductUncheckedUpdateWithoutTranslationsInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
@@ -982,7 +982,7 @@ export type ProductCreateWithoutPopularProductsInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
@@ -1000,7 +1000,7 @@ export type ProductUncheckedCreateWithoutPopularProductsInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
@@ -1031,7 +1031,7 @@ export type ProductUpdateWithoutPopularProductsInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
@@ -1049,7 +1049,7 @@ export type ProductUncheckedUpdateWithoutPopularProductsInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
@@ -1064,7 +1064,7 @@ export type ProductCreateWithoutPromotedProductsInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
@@ -1082,7 +1082,7 @@ export type ProductUncheckedCreateWithoutPromotedProductsInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
@@ -1113,7 +1113,7 @@ export type ProductUpdateWithoutPromotedProductsInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
@@ -1131,7 +1131,7 @@ export type ProductUncheckedUpdateWithoutPromotedProductsInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
@@ -1146,7 +1146,7 @@ export type ProductCreateWithoutOrderItemsInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
@@ -1164,7 +1164,7 @@ export type ProductUncheckedCreateWithoutOrderItemsInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
@@ -1195,7 +1195,7 @@ export type ProductUpdateWithoutOrderItemsInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
@@ -1213,7 +1213,7 @@ export type ProductUncheckedUpdateWithoutOrderItemsInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
@@ -1229,7 +1229,7 @@ export type ProductCreateManyCategoryInput = {
   stockState: boolean
   stockValue?: number | null
   discountPercent?: number | null
-  productSize: string
+  productSize?: string | null
   productPrice: number
   stockReserved?: number | null
 }
@@ -1239,7 +1239,7 @@ export type ProductUpdateWithoutCategoryInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
@@ -1256,7 +1256,7 @@ export type ProductUncheckedUpdateWithoutCategoryInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
@@ -1273,7 +1273,7 @@ export type ProductUncheckedUpdateManyWithoutCategoryInput = {
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  productSize?: Prisma.StringFieldUpdateOperationsInput | string
+  productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
@@ -1448,7 +1448,7 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     stockState: boolean
     stockValue: number | null
     discountPercent: number | null
-    productSize: string
+    productSize: string | null
     productPrice: number
     stockReserved: number | null
   }, ExtArgs["result"]["product"]>
