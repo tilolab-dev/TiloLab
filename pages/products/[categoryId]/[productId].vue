@@ -1073,17 +1073,17 @@ onUnmounted(() => {
   height: 621px;
   overflow: hidden;
 
-  @media screen and (max-width: 1024px) {
-    height: 465px;
-  }
+  // @media screen and (max-width: 1024px) {
+  //   height: 465px;
+  // }
 
-  @media screen and (max-width: 768px) {
-    height: 365px;
-  }
+  // @media screen and (max-width: 768px) {
+  //   height: 365px;
+  // }
 
-  @media screen and (max-width: 480px) {
-    height: 265px;
-  }
+  // @media screen and (max-width: 480px) {
+  //   height: 265px;
+  // }
 
   swiper-slide {
     img {
