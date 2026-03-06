@@ -7,7 +7,7 @@
       <div class="modal_wrapper">
         <div class="mobile_top_content">
           <div class="mobile_top">Додати товар</div>
-          <button>
+          <button @click="closeModal">
             <SvgIcon name="close-btn" size="micro" fill="var(--text-color)" />
           </button>
         </div>
@@ -127,22 +127,21 @@
               </div>
               <div class="description_option_content">
                 <h4 class="default_text">
-                  Відображати кількість товару на складі
-                  <strong v-if="productAvailability"> * </strong>
+                  Кількість товару на складі
+                  <strong> * </strong>
                 </h4>
                 <div class="checkbox">
                   <!-- <span> Відображати кількість товару на складі </span> -->
-                  <input
+                  <!-- <input
                     id="stockState"
                     v-model="productStockState"
                     type="checkbox"
                     value="false"
                     @change="productAvailability = !productAvailability"
                   />
-                  <label for="stockState" class="product_checkbox"></label>
+                  <label for="stockState" class="product_checkbox"></label> -->
                 </div>
                 <input
-                  v-if="productAvailability"
                   v-model="productStockValue"
                   class="product_availability"
                   type="number"
@@ -171,7 +170,7 @@
                 </div>
                 <div class="wrapper">
                   <span class="default_text"> Відображати товар на сайті </span>
-                  <div class="checkbox-wrap flex items-center justify-start">
+                  <div class="checkbox-wrap">
                     <input
                       id="productVisibility"
                       v-model="productVisibility"
@@ -183,10 +182,7 @@
                   </div>
                 </div>
                 <div class="wrapper">
-                  <span class="default_text">
-                    Розмір товару
-                    <strong> * </strong>
-                  </span>
+                  <span class="default_text"> Розмір товару </span>
                   <input
                     id="productSize"
                     v-model="productSize"
@@ -240,7 +236,7 @@
                 </div>
                 <div class="wrapper">
                   <span class="default_text"> Акційний товар </span>
-                  <div class="checkbox-wrap flex items-center justify-start">
+                  <div class="checkbox-wrap">
                     <input
                       id="discountState"
                       v-model="discountState"
@@ -249,17 +245,18 @@
                     />
                     <label for="discountState" class="product_checkbox"></label>
                   </div>
-                </div>
-                <div v-if="discountState" class="wrapper">
-                  <span class="default_text"> Відсоток знижки </span>
-                  <div class="input-wrap flex items-center justify-start">
-                    <input
-                      id="discountState"
-                      v-model="productDiscountPersent"
-                      class="discount-price"
-                      type="number"
-                      placeholder="%"
-                    />
+
+                  <div v-if="discountState" class="wrapper_discount_content">
+                    <span class="default_text"> Відсоток знижки </span>
+                    <div class="input-wrap">
+                      <input
+                        id="discountState"
+                        v-model="productDiscountPersent"
+                        class="discount-price"
+                        type="number"
+                        placeholder="%"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -423,7 +420,7 @@ const price = ref(0); // Стандартная цена
 // const wholesaleDescriptionEn = ref("");
 // const wholesaleDescriptionRu = ref("");
 // const packageType = ref("Bag"); // Значение типа упаковки
-const productAvailability = ref(false);
+// const productAvailability = ref(false);
 const productDiscountPersent = ref(0); // процент скидки
 const productPrice = ref(null);
 const productMaterialUk = ref("");
@@ -505,7 +502,7 @@ const clearModal = () => {
   optionFileState.optionFilesPreview.value = [];
   optionFileState.optionReady.value = false;
   discountState.value = false;
-  productAvailability.value = false;
+  // productAvailability.value = false;
   productMaterialUk.value = "";
   productPrice.value = null;
   price.value = 0;
@@ -585,27 +582,37 @@ const removeOption = (index) => {
 };
 
 const addNewProduct = async () => {
-  //   if (!productCategory.value) {
-  //     emit("tooltip", {
-  //       status: "error",
-  //       message: "Оберіть категорію товару",
-  //     });
-  //     return;
-  //   }
-  //   if (!productNameUk.value || !productNameRu.value || !productNameEn.value) {
-  //     emit("tooltip", {
-  //       status: "error",
-  //       message: "Введіть назву товару",
-  //     });
-  //     return;
-  //   }
-  //   if (!price.value) {
-  //     emit("tooltip", {
-  //       status: "error",
-  //       message: "Введіть роздрібну ціну товару",
-  //     });
-  //     return;
-  //   }
+  if (!productCategory.value) {
+    emit("tooltip", {
+      status: "error",
+      message: "Оберіть категорію товару"
+    });
+    return;
+  }
+
+  if (!productNameUk.value) {
+    emit("tooltip", {
+      status: "error",
+      message: "Введіть назву товару"
+    });
+    return;
+  }
+
+  if (productStockValue.value <= 0) {
+    emit("tooltip", {
+      status: "error",
+      message: "Введіть кількість товару"
+    });
+    return;
+  }
+
+  if (!productPrice.value) {
+    emit("tooltip", {
+      status: "error",
+      message: "Введіть ціну товару"
+    });
+    return;
+  }
 
   const categoryData = fetchedCategories.value.filter((item) => item.id === productCategory.value);
 
@@ -684,12 +691,8 @@ const addNewProduct = async () => {
     toRaw(addOptionsRef.value).map((elem, index) => {
       toRaw(elem.fileImg)[0] = optionImgPath[index];
     });
-    // const res = await $fetch("/api/products", {
 
     const newProduct = productStore.addProduct({
-      // const res = await $fetch("/api/products", {
-      // method: "POST",
-      // body: {
       categoryId: productCategory.value,
       visibility: productVisibility.value,
       img: productImgPath,
@@ -715,10 +718,6 @@ const addNewProduct = async () => {
     if (newProduct.statusCode === 200) {
       alert("Товар успішно додано");
     }
-
-    // return {
-    //   data: res
-    // };
   };
 
   const uploadAllData = async () => {
@@ -731,8 +730,6 @@ const addNewProduct = async () => {
       console.log("Изображения загружены:", productImgPath, optionImgPath);
 
       await uploadData(productImgPath, optionImgPath);
-
-      // console.log("Данные загружены:", result);
 
       clearModal();
 
@@ -1202,7 +1199,7 @@ onMounted(async () => {
       &_content {
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: space-between;
         gap: 1rem;
 
         @media screen and (max-width: 768px) {
@@ -1264,6 +1261,10 @@ onMounted(async () => {
           input:checked + label {
             border: 5px solid var(--accent-color);
           }
+        }
+
+        &_discount_content {
+          margin-top: 15px;
         }
       }
     }

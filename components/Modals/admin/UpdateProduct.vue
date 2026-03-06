@@ -16,7 +16,7 @@
       <div class="modal_wrapper">
         <div class="mobile_top_content">
           <div class="mobile_top">Додати товар</div>
-          <button>
+          <button @click="closeModal">
             <SvgIcon name="close-btn" size="micro" fill="var(--text-color)" />
           </button>
         </div>

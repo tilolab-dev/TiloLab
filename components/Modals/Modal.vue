@@ -8,6 +8,7 @@
       v-bind="modalProps"
       :open-modal="openModal"
       :close-modal="closeModal"
+      @tooltip="(payload) => emit('tooltip', payload)"
     />
     <!-- @tooltip="tooltip" -->
 
@@ -46,6 +47,8 @@ const currentModal = computed(() => modalStore.currentModal);
 const modalProps = computed(() => modalStore.modalProps);
 
 // const emit = defineEmits(["addNewItem", "tooltip"]);
+
+const emit = defineEmits(["tooltip"]);
 
 const modalComponents = {
   CartModal,
