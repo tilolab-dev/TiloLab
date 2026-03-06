@@ -24,7 +24,7 @@
           <li>
             <NuxtLink to="/products"> Всі товари </NuxtLink>
           </li>
-          <li v-for="(item, index) in indexStore.fetchedCategories" :key="index">
+          <li v-for="(item, index) in activeCategories" :key="index">
             <NuxtLink :to="`/products/${item.group.toLowerCase()}`">
               {{ item.translations[0].title }}
             </NuxtLink>
@@ -172,6 +172,10 @@ const currentCategory = computed(() => {
     (cat) => cat.group.toLowerCase() === route.params.categoryId?.toLowerCase()
   );
   return result;
+});
+
+const activeCategories = computed(() => {
+  return indexStore.fetchedCategories.filter((el) => el.visible === true);
 });
 
 // Watch for category changes
