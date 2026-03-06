@@ -121,6 +121,8 @@ onMounted(async () => {
   overflow: hidden;
   position: relative;
 
+  padding: 80px 0 140px;
+
   .hero_video {
     position: absolute;
     will-change: transform;
@@ -140,18 +142,18 @@ onMounted(async () => {
   }
 
   @media screen and (max-width: 1024px) {
-    height: auto;
+    // height: auto;
     max-height: 100dvh;
-    padding-block: 237px;
+    // padding-block: 237px;
   }
   @media screen and (max-width: 768px) {
-    padding-block: 366px;
+    // padding-block: 366px;
   }
   @media screen and (max-width: 480px) {
-    padding-block: 234px;
+    // padding-block: 234px;
   }
   @media screen and (max-width: 375px) {
-    padding-block: 125px;
+    // padding-block: 125px;
   }
 }
 
@@ -159,7 +161,8 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  // justify-content: center;
+  justify-content: space-between;
   position: relative;
   width: 100%;
   height: 100%;
