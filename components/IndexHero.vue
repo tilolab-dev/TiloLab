@@ -15,7 +15,7 @@
 
     <video
       ref="videoRef"
-      src="/video/banner.mp4"
+      src="/banner.mp4"
       class="hero_video"
       autoplay
       muted
