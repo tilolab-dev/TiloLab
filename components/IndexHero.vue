@@ -1,18 +1,5 @@
 <template>
   <section class="index_hero">
-    <!-- <NuxtImg
-      ref="imgRef"
-      src="/images/index-img/hero.webp"
-      class="hero_img"
-      quality="80"
-      width="1200"
-      height="600"
-      alt="hero"
-      style="transform: scale(1.15); opacity: 0.7"
-      priority
-      sizes="(max-width: 480px) 480px, (max-width: 1024px) 1024px, 1200px"
-    /> -->
-
     <video
       ref="videoRef"
       src="/banner.mp4"
