@@ -204,7 +204,7 @@ onMounted(async () => {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  height: -webkit-fill-available;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -271,7 +271,7 @@ onMounted(async () => {
   }
 
   @media screen and (max-width: 480px) {
-    padding-top: 3vw;
+    padding-top: 5vw;
     align-items: flex-start;
   }
 }
