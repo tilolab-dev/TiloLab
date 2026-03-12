@@ -28,7 +28,7 @@
 import Advantage1 from "@/assets/icons/advantage1.svg";
 import Advantage2 from "@/assets/icons/advantage2.svg";
 import Advantage3 from "@/assets/icons/advantage3.svg";
-import Advantage4 from "@/assets/icons/advantage4.svg";
+// import Advantage4 from "@/assets/icons/advantage4.svg";
 import Advantage5 from "@/assets/icons/advantage5.svg";
 import Advantage6 from "@/assets/icons/advantage6.svg";
 import Advantage7 from "@/assets/icons/advantage7.svg";
@@ -55,27 +55,27 @@ const advantageData = shallowRef([
     strongText: "Делікатна експрес-доставка",
     mainText: "Оперативне оформлення замовлень і акуратна, непомітна упаковка."
   },
+  // {
+  //   id: 4,
+  //   icon: Advantage4,
+  //   strongText: "Безкомпромісна якість",
+  //   mainText:
+  //     "Ми відбираємо лише продукцію перевірених брендів, що відповідає високим стандартам безпеки та комфорту."
+  // },
   {
     id: 4,
-    icon: Advantage4,
-    strongText: "Безкомпромісна якість",
-    mainText:
-      "Ми відбираємо лише продукцію перевірених брендів, що відповідає високим стандартам безпеки та комфорту."
-  },
-  {
-    id: 5,
     icon: Advantage5,
     strongText: "Зручний сервіс обміну",
     mainText: "Максимально прості та прозорі умови повернення."
   },
   {
-    id: 6,
+    id: 5,
     icon: Advantage6,
     strongText: "Особливі пропозиції",
     mainText: "Преміальні товари за привабливою вартістю та ексклюзивні акції для наших клієнтів."
   },
   {
-    id: 7,
+    id: 6,
     icon: Advantage7,
     strongText: "Персональний супровід",
     mainText: "Делікатна консультація та індивідуальний підхід до кожного запиту."
@@ -92,6 +92,7 @@ const advantageData = shallowRef([
   width: 100%;
   height: auto;
   z-index: 0;
+  overflow-x: hidden;
 
   @media screen and (max-width: 1024px) {
     padding: 65px 0 0;
@@ -116,17 +117,19 @@ const advantageData = shallowRef([
 
     @media screen and (max-width: 1024px) {
       font-size: 1.75rem;
+      margin-bottom: 60px;
     }
 
     @media screen and (max-width: 768px) {
       font-size: clamp(1.5rem, 5vw, 1.75rem);
+      margin-bottom: 50px;
     }
 
     @media screen and (max-width: 480px) {
       font-size: clamp(1rem, 5vw, 1.5rem);
+      margin-bottom: 40px;
     }
   }
-
   &_wrapper {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -150,11 +153,12 @@ const advantageData = shallowRef([
     background: #161616;
     padding: 20px;
     position: relative;
+    // overflow: hidden;
     gap: 25px;
     &::before {
       content: "";
       position: absolute;
-      inset: -40px;
+      inset: 0;
       background: radial-gradient(circle, rgba(255, 169, 214, 0.35), transparent 55%);
       filter: blur(40px);
       z-index: -1;
