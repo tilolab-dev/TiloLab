@@ -109,7 +109,7 @@
       <nav v-else>
         <NuxtLink to="/products?page=1&category"> Всі товари </NuxtLink>
         <NuxtLink
-          v-for="(item, index) in fetchCategories"
+          v-for="(item, index) in activeCategories"
           :key="index"
           :to="`/products/${item.group.toLowerCase()}`"
         >
@@ -173,7 +173,9 @@ watch(burger, () => {
     : (document.body.style.overflow = "unset");
 });
 
-const fetchCategories = computed(() => indexStore.fetchedCategories);
+const activeCategories = computed(() => {
+  return indexStore.fetchedCategories.filter((el) => el.visible === true);
+});
 
 const onScroll = () => {
   const currentScroll = window.scrollY || document.documentElement.scrollTop;
@@ -197,7 +199,7 @@ onMounted(() => {
   lastScrollPosition.value = window.scrollY;
 
   window.addEventListener("scroll", onScroll);
-  loaderState.value = fetchCategories?.value?.length > 0;
+  loaderState.value = activeCategories?.value?.length > 0;
   mounted.value = true;
 });
 

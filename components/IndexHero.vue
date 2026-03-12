@@ -1,6 +1,6 @@
 <template>
   <section class="index_hero">
-    <NuxtImg
+    <!-- <NuxtImg
       ref="imgRef"
       src="/images/index-img/hero.webp"
       class="hero_img"
@@ -11,6 +11,20 @@
       style="transform: scale(1.15); opacity: 0.7"
       priority
       sizes="(max-width: 480px) 480px, (max-width: 1024px) 1024px, 1200px"
+    /> -->
+
+    <video
+      ref="videoRef"
+      src="/banner.mp4"
+      class="hero_video"
+      autoplay
+      muted
+      loop
+      playsinline
+      width="1200"
+      height="600"
+      style="transform: scale(1.15); opacity: 0.7"
+      @loadeddata="onVideoLoaded"
     />
 
     <div class="hero_overlay"></div>
@@ -33,25 +47,52 @@
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
 
-const imgRef = ref(null);
+const videoRef = ref(null);
 const contentRef = ref(null);
+
+const onVideoLoaded = () => {
+  // Attempt to play video with user interaction fallback for iOS
+  const playVideo = async () => {
+    try {
+      if (videoRef.value) {
+        await videoRef.value.play();
+      }
+    } catch {
+      // Autoplay prevented, waiting for user interaction
+      // Fallback: add click listener to start video on first user interaction
+      document.addEventListener("click", playVideo, { once: true });
+    }
+  };
+
+  playVideo();
+};
 
 onMounted(async () => {
   const { gsap } = await import("gsap");
   await nextTick();
+
+  // Wait for video to be ready
+  const waitForVideo = () => {
+    return new Promise((resolve) => {
+      if (videoRef.value && videoRef.value.readyState >= 2) {
+        resolve();
+      } else {
+        videoRef.value?.addEventListener("loadeddata", resolve, { once: true });
+      }
+    });
+  };
+
+  await waitForVideo();
+
   const tl = gsap.timeline({ defaults: { ease: "back.out(1.1)" } });
-  // const el = imgRef.value;
-  const imgEl = imgRef.value.imgEl;
+  const videoEl = videoRef.value;
 
-  // console.log(imgEl);
+  if (!videoEl) return;
 
-  if (!imgEl) return;
-
-  tl.to(imgEl, {
+  tl.to(videoEl, {
     scale: 1,
     opacity: 1,
     duration: 1.8,
-    // ease: "back.out(1.2)" ,
     ease: "power4.out"
   });
 
@@ -80,7 +121,9 @@ onMounted(async () => {
   overflow: hidden;
   position: relative;
 
-  .hero_img {
+  padding: 80px 0 140px;
+
+  .hero_video {
     position: absolute;
     will-change: transform;
     width: 100%;
@@ -99,18 +142,18 @@ onMounted(async () => {
   }
 
   @media screen and (max-width: 1024px) {
-    height: auto;
+    // height: auto;
     max-height: 100dvh;
-    padding-block: 237px;
+    // padding-block: 237px;
   }
   @media screen and (max-width: 768px) {
-    padding-block: 366px;
+    // padding-block: 366px;
   }
   @media screen and (max-width: 480px) {
-    padding-block: 234px;
+    // padding-block: 234px;
   }
   @media screen and (max-width: 375px) {
-    padding-block: 125px;
+    // padding-block: 125px;
   }
 }
 
@@ -118,7 +161,8 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  // justify-content: center;
+  justify-content: space-between;
   position: relative;
   width: 100%;
   height: 100%;

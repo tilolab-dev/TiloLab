@@ -20,7 +20,7 @@
             <li>
               <NuxtLink to="/products?page=1&category"> Всі товари </NuxtLink>
             </li>
-            <li v-for="(item, index) in indexStore.fetchedCategories" :key="index">
+            <li v-for="(item, index) in activeCategories" :key="index">
               <NuxtLink :to="`/products/${item.group.toLowerCase()}`">
                 {{ item.translations[0].title }}
               </NuxtLink>
@@ -89,7 +89,7 @@
 
 <script setup>
 import AngleDown from "~/assets/icons/angle-down.svg";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useProductStore } from "@/store/product-store";
 import { useIndexStore } from "@/store/index-store";
 const loaderState = ref(true);
@@ -104,6 +104,10 @@ const priceRangeData = ref(null);
 const handleRangeChange = (range) => {
   productStore.setPriceRange(range);
 };
+
+const activeCategories = computed(() => {
+  return indexStore.fetchedCategories.filter((el) => el.visible === true);
+});
 
 const fetchPriceRange = async () => {
   try {
