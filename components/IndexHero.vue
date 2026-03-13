@@ -43,16 +43,16 @@
           <NuxtLink to="/products?page=1&category" class="hero_btn">
             <SharedAccentBtn class="hero_btn"> Обрати девайс </SharedAccentBtn>
           </NuxtLink>
+
+          <button class="toggle_sound" @click="soundMuteHandler">
+            <PlaySoundIcon v-if="muteState" />
+            <MuteSoundIcon v-else />
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="toggle_sound_wrapper">
-      <button @click="soundMuteHandler">
-        <PlaySoundIcon v-if="muteState" />
-        <MuteSoundIcon v-else />
-      </button>
-    </div>
+    <!-- <div class="toggle_sound_wrapper"></div> -->
 
     <!-- </div> -->
   </section>
@@ -103,10 +103,7 @@ onMounted(async () => {
 
   if (!mobileDevice) {
     const headerHeight = document.getElementsByClassName("header").item(0)?.offsetHeight || 0;
-    console.log("Header element:", headerHeight);
     headerHeightValue.value = headerHeight;
-
-    console.log("Header height:", headerHeightValue.value);
   }
 
   // Wait for video to be ready
@@ -215,14 +212,13 @@ onMounted(async () => {
 .hero_content {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 2vw;
-  padding-bottom: 5vw;
+  align-items: flex-start;
+  padding: 5vw 3vw 7vw;
   // justify-content: center;
   justify-content: space-between;
   position: relative;
   width: 100%;
-  height: auto;
+  height: 100%;
   gap: 2rem;
   z-index: 3;
 
@@ -231,28 +227,15 @@ onMounted(async () => {
     width: 100%;
     height: auto;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
   }
 
-  // .link_wrapper {
-  //   justify-content: flex-end;
-  // }
-}
+  .link_wrapper {
+    justify-content: space-between;
+  }
 
-.toggle_sound_wrapper {
-  width: 100%;
-  height: -webkit-fill-available;
-  position: absolute;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  padding-right: 3vw;
-  padding-bottom: 5vw;
-  top: 0;
-  left: 0;
-
-  button {
+  .link_wrapper .toggle_sound {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -270,11 +253,46 @@ onMounted(async () => {
     }
   }
 
-  @media screen and (max-width: 480px) {
-    padding-top: 5vw;
-    align-items: flex-start;
-  }
+  // .link_wrapper {
+  //   justify-content: flex-end;
+  // }
 }
+
+// .toggle_sound_wrapper {
+//   width: 100%;
+//   height: -webkit-fill-available;
+//   position: absolute;
+//   display: flex;
+//   justify-content: flex-end;
+//   align-items: flex-end;
+//   padding-right: 3vw;
+//   padding-bottom: 5vw;
+//   top: 0;
+//   left: 0;
+
+//   button {
+//     width: 50px;
+//     height: 50px;
+//     border-radius: 50%;
+//     background: rgb(36, 14, 24);
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     border: 1px solid var(--border-color);
+//     z-index: 5;
+//     // padding: 10px;
+//     cursor: pointer;
+//     svg {
+//       width: 25px;
+//       height: 25px;
+//     }
+//   }
+
+//   // @media screen and (max-width: 480px) {
+//   //   padding-top: 5vw;
+//   //   align-items: flex-start;
+//   // }
+// }
 
 .main_text {
   color: var(--text-color);
@@ -284,7 +302,6 @@ onMounted(async () => {
   line-height: 150%;
   letter-spacing: 0.8;
   text-transform: uppercase;
-  text-align: center;
 
   @media screen and (max-width: 1024px) {
     font-size: 2rem;

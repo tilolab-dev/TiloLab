@@ -125,7 +125,7 @@
           </div>
           <NuxtImg
             class="sectionImg"
-            src="./images/index-img/banner.webp"
+            src="./images/faq-main.webp"
             quality="80"
             alt="preview"
             width="600"

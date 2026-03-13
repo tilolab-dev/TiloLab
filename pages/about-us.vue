@@ -28,7 +28,7 @@
           </div>
           <NuxtImg
             class="main_img"
-            src="./images/index-img/banner.webp"
+            src="./images/about-main.webp"
             alt="preview"
             width="500"
             height="500"
@@ -40,7 +40,7 @@
         <div class="about_us_content_secondary">
           <NuxtImg
             class="secondary_img"
-            src="./images/index-img/banner.webp"
+            src="./images/about-main.webp"
             quality="80"
             alt="preview"
             width="500"
