@@ -144,7 +144,7 @@ onMounted(async () => {
         ease: "power3.out",
         scrollTrigger: {
           trigger: el,
-          start: "top 40%",
+          start: "top 45%",
           once: true
         }
       });
