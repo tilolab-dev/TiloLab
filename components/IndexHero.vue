@@ -51,9 +51,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <div class="toggle_sound_wrapper"></div> -->
-
     <!-- </div> -->
   </section>
 </template>
@@ -177,22 +174,15 @@ onMounted(async () => {
   }
 
   @media screen and (max-width: 1024px) {
-    // height: auto;
     max-height: 100vh;
-    // padding-block: 237px;
   }
   @media screen and (max-width: 768px) {
     max-height: 70vh;
-
-    // padding-block: 366px;
   }
   @media screen and (max-width: 480px) {
     max-height: 60vh;
-
-    // padding-block: 234px;
   }
   @media screen and (max-width: 375px) {
-    // padding-block: 125px;
   }
 }
 
@@ -206,15 +196,17 @@ onMounted(async () => {
   justify-content: center;
   align-items: flex-end;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0 auto;
+  z-index: 2;
 }
 
 .hero_content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 5vw 3vw 7vw;
-  // justify-content: center;
+  padding: 5vw 0 7vw;
   justify-content: space-between;
   position: relative;
   width: 100%;
