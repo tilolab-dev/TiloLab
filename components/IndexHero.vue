@@ -1,8 +1,21 @@
 <template>
-  <section class="index_hero">
+  <section class="index_hero" :style="{ height: `calc(100vh - ${headerHeightValue}px)` }">
+    <!-- <NuxtImg
+      ref="imgRef"
+      src="/images/index-img/hero.webp"
+      class="hero_img"
+      quality="80"
+      width="1200"
+      height="600"
+      alt="hero"
+      style="transform: scale(1.15); opacity: 0.7"
+      priority
+      sizes="(max-width: 480px) 480px, (max-width: 1024px) 1024px, 1200px"
+    /> -->
+
     <video
       ref="videoRef"
-      src="/banner.mp4"
+      src="https://pub-0a8d6c93bd2743669515202d259de491.r2.dev/output.mp4"
       class="hero_video"
       autoplay
       muted
@@ -16,26 +29,51 @@
 
     <div class="hero_overlay"></div>
 
-    <div class="container">
+    <!-- <div class="container"> -->
+    <div class="hero_content_wrapper">
       <div ref="contentRef" class="hero_content">
-        <h1 class="main_text">
-          Секс-девайси про ніжність <br />
-          до тіла, а не про сором.
-        </h1>
+        <div class="text_wrapper">
+          <h1 class="main_text">
+            Секс-девайси про ніжність <br />
+            до тіла, а не про сором.
+          </h1>
+        </div>
 
-        <NuxtLink to="/products?page=1&category" class="hero_btn">
-          <SharedAccentBtn class="hero_btn"> Обрати девайс </SharedAccentBtn>
-        </NuxtLink>
+        <div class="link_wrapper">
+          <NuxtLink to="/products?page=1&category" class="hero_btn">
+            <SharedAccentBtn class="hero_btn"> Обрати девайс </SharedAccentBtn>
+          </NuxtLink>
+
+          <button class="toggle_sound" @click="soundMuteHandler">
+            <PlaySoundIcon v-if="muteState" />
+            <MuteSoundIcon v-else />
+          </button>
+        </div>
       </div>
     </div>
+    <!-- </div> -->
   </section>
 </template>
 
 <script setup>
+// ICONS
+
+import PlaySoundIcon from "@/assets/icons/play-sound.svg";
+import MuteSoundIcon from "@/assets/icons/mute-sound.svg";
+
 import { ref, onMounted, nextTick } from "vue";
 
 const videoRef = ref(null);
 const contentRef = ref(null);
+const headerHeightValue = ref(0);
+const muteState = ref(true);
+
+const soundMuteHandler = () => {
+  if (videoRef.value) {
+    videoRef.value.muted = !videoRef.value.muted;
+    muteState.value = videoRef.value.muted;
+  }
+};
 
 const onVideoLoaded = () => {
   // Attempt to play video with user interaction fallback for iOS
@@ -57,6 +95,13 @@ const onVideoLoaded = () => {
 onMounted(async () => {
   const { gsap } = await import("gsap");
   await nextTick();
+
+  const mobileDevice = window.innerWidth <= 768;
+
+  if (!mobileDevice) {
+    const headerHeight = document.getElementsByClassName("header").item(0)?.offsetHeight || 0;
+    headerHeightValue.value = headerHeight;
+  }
 
   // Wait for video to be ready
   const waitForVideo = () => {
@@ -124,38 +169,122 @@ onMounted(async () => {
   .hero_overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.3) 100%);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%);
     z-index: 2;
   }
 
   @media screen and (max-width: 1024px) {
-    // height: auto;
-    max-height: 100dvh;
-    // padding-block: 237px;
+    max-height: 100vh;
   }
   @media screen and (max-width: 768px) {
-    // padding-block: 366px;
+    max-height: 70vh;
   }
   @media screen and (max-width: 480px) {
-    // padding-block: 234px;
+    max-height: 60vh;
   }
   @media screen and (max-width: 375px) {
-    // padding-block: 125px;
   }
+}
+
+.hero_content_wrapper {
+  position: absolute;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0 auto;
+  z-index: 2;
 }
 
 .hero_content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  // justify-content: center;
+  padding: 5vw 0 7vw;
   justify-content: space-between;
   position: relative;
   width: 100%;
   height: 100%;
   gap: 2rem;
   z-index: 3;
+
+  .text_wrapper,
+  .link_wrapper {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .link_wrapper {
+    justify-content: space-between;
+  }
+
+  .link_wrapper .toggle_sound {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgb(36, 14, 24);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    z-index: 5;
+    // padding: 10px;
+    cursor: pointer;
+    svg {
+      width: 25px;
+      height: 25px;
+    }
+  }
+
+  // .link_wrapper {
+  //   justify-content: flex-end;
+  // }
 }
+
+// .toggle_sound_wrapper {
+//   width: 100%;
+//   height: -webkit-fill-available;
+//   position: absolute;
+//   display: flex;
+//   justify-content: flex-end;
+//   align-items: flex-end;
+//   padding-right: 3vw;
+//   padding-bottom: 5vw;
+//   top: 0;
+//   left: 0;
+
+//   button {
+//     width: 50px;
+//     height: 50px;
+//     border-radius: 50%;
+//     background: rgb(36, 14, 24);
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     border: 1px solid var(--border-color);
+//     z-index: 5;
+//     // padding: 10px;
+//     cursor: pointer;
+//     svg {
+//       width: 25px;
+//       height: 25px;
+//     }
+//   }
+
+//   // @media screen and (max-width: 480px) {
+//   //   padding-top: 5vw;
+//   //   align-items: flex-start;
+//   // }
+// }
 
 .main_text {
   color: var(--text-color);

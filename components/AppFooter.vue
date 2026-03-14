@@ -44,9 +44,12 @@
             <a href="tel:+380000000000">+380 00 000 00 00</a>
 
             <div class="socials">
-              <button>
+              <NuxtLink
+                to="https://www.instagram.com/tilolab?igsh=enhsaHlmZno1b2pw"
+                target="_blank"
+              >
                 <InstagramIcon />
-              </button>
+              </NuxtLink>
               <button>
                 <TelegramIcon />
               </button>
@@ -118,10 +121,12 @@
         <div class="footer_mobile_links_docs">
           <h3>Документи</h3>
           <ul>
-            <li>Політика конфіденційності</li>
-            <li>Оплата і доставка</li>
-            <li>Обмін і гарантія</li>
-            <li>Публічна оферта</li>
+            <li>
+              <NuxtLink to="/privacy-policy"> Політика конфіденційності </NuxtLink>
+            </li>
+            <li>
+              <NuxtLink to="/public-offer"> Публічна оферта </NuxtLink>
+            </li>
           </ul>
         </div>
       </div>
@@ -283,7 +288,8 @@ import TelegramIcon from "~/assets/icons/telegram.svg";
       margin-top: 8px;
       gap: 19px;
 
-      button {
+      button,
+      a {
         display: flex;
         align-items: center;
         justify-content: center;
