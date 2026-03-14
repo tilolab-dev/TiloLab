@@ -244,7 +244,7 @@
 <script setup>
 import ProductPagePopular from "@/components/ProductPagePopular.vue";
 
-import { ref, computed, onMounted, nextTick } from "vue";
+import { ref, computed, onMounted, nextTick, watchEffect } from "vue";
 import { useProductStore } from "@/store/product-store";
 import { useCartStore } from "@/store/cart-store";
 import { useIndexStore } from "@/store/index-store";
@@ -273,9 +273,26 @@ const route = useRoute();
 const categoryId = route.params.categoryId;
 const productId = route.params.productId;
 
+// Product data for template (handle array structure like store)
+const productForTemplate = computed(() => {
+  const products = productStore.selectedProducts;
+  const product = Array.isArray(products) ? products[0] : products;
+  if (process.dev) {
+    console.log("productForTemplate computed - selectedProducts:", products);
+    console.log("productForTemplate computed - extracted product:", product);
+  }
+  return product;
+});
+
 // Dynamic SEO Meta Tags based on product
 const { selectedProducts } = storeToRefs(productStore);
-const currentProduct = computed(() => selectedProducts.value);
+const currentProduct = computed(() => {
+  const product = selectedProducts.value;
+  if (process.dev) {
+    console.log("currentProduct computed - selectedProducts:", product);
+  }
+  return Array.isArray(product) ? product[0] : product;
+});
 
 const currentCategory = computed(() => {
   return indexStore.fetchedCategories.find((cat) => cat.group.toLowerCase() === categoryId);
@@ -320,15 +337,79 @@ const seoMeta = computed(() => {
   };
 });
 
+// Fetch product data during SSR for proper SEO
+const { data: productData, pending } = await useAsyncData(`product-${productId}`, async () => {
+  const res = await $fetch(`/api/products/${productId}`);
+  return res.data || res;
+});
+
+// SEO using productData from useAsyncData
+const seoMetaFromAsyncData = computed(() => {
+  // Debug logging
+  if (process.dev) {
+    console.log("SEO Debug - pending:", pending.value);
+    console.log("SEO Debug - productData:", productData.value);
+  }
+
+  // Show loading state while pending
+  if (pending.value) {
+    return {
+      title: "Завантаження продукту... - Tilo Lab",
+      description: "Завантаження продукту... Анонімна доставка по Україні.",
+      ogTitle: "Завантаження продукту... - Tilo Lab",
+      ogDescription: "Завантаження продукту...",
+      ogImage: "https://tilolab.com.ua/images/about-main.webp",
+      ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
+      twitterCard: "summary_large_image"
+    };
+  }
+
+  const product = productData.value;
+  const category = currentCategory.value;
+
+  if (!product || !product.translations?.[0]) {
+    return {
+      title: "Продукт не знайдено - Tilo Lab",
+      description: "Продукт не знайдено. Перегляньте наш каталог інтимних товарів.",
+      ogTitle: "Продукт не знайдено - Tilo Lab",
+      ogDescription: "Продукт не знайдено. Перегляньте наш каталог інтимних товарів.",
+      ogImage: "https://tilolab.com.ua/images/about-main.webp",
+      ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
+      twitterCard: "summary_large_image"
+    };
+  }
+
+  const description =
+    product.translations[0].productDescription || product.translations[0].description || "";
+  const shortDesc = description.length > 150 ? description.substring(0, 150) + "..." : description;
+  const shortDescOg =
+    description.length > 100 ? description.substring(0, 100) + "..." : description;
+
+  return {
+    title: `${product.translations[0].title} - Tilo Lab | ${category?.translations?.[0]?.title || "Інтимні товари"}`,
+    description: `${shortDesc} Купити з доставкою по Україні. Анонімна упаковка.`,
+    ogTitle: product.translations[0].title,
+    ogDescription: shortDescOg,
+    ogImage:
+      product.img && product.img.length > 0
+        ? typeof product.img[0] === "string"
+          ? product.img[0]
+          : product.img[0]?.path || "https://tilolab.com.ua/images/about-main.webp"
+        : "https://tilolab.com.ua/images/about-main.webp",
+    ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
+    twitterCard: "summary_large_image"
+  };
+});
+
 useHead(() => ({
-  title: seoMeta.value.title,
+  title: seoMetaFromAsyncData.value.title,
   meta: [
-    { name: "description", content: seoMeta.value.description },
-    { property: "og:title", content: seoMeta.value.ogTitle },
-    { property: "og:description", content: seoMeta.value.ogDescription },
-    { property: "og:image", content: seoMeta.value.ogImage },
-    { property: "og:url", content: seoMeta.value.ogUrl },
-    { name: "twitter:card", content: seoMeta.value.twitterCard }
+    { name: "description", content: seoMetaFromAsyncData.value.description },
+    { property: "og:title", content: seoMetaFromAsyncData.value.ogTitle },
+    { property: "og:description", content: seoMetaFromAsyncData.value.ogDescription },
+    { property: "og:image", content: seoMetaFromAsyncData.value.ogImage },
+    { property: "og:url", content: seoMetaFromAsyncData.value.ogUrl },
+    { name: "twitter:card", content: seoMetaFromAsyncData.value.twitterCard }
   ]
 }));
 
@@ -624,6 +705,7 @@ const fetchProductById = async () => {
 
     productImages.value = Array.isArray(productData.images) ? productData.images : [];
 
+    // Update SEO when product data loads
     if (productData && productData.translations?.[0]) {
       const category = indexStore.fetchedCategories.find(
         (cat) => cat.group.toLowerCase() === categoryId
@@ -663,8 +745,6 @@ const fetchProductById = async () => {
         ]
       });
     }
-
-    await $nextTick();
 
     return productImages.value;
   } catch {
@@ -708,15 +788,7 @@ const addToCart = () => {
 };
 
 onMounted(async () => {
-  // if (productStore?.selectedProducts?.id === routeId) {
-  //   loadState.value = false;
-  // } else if (routeId) {
   await fetchProductById();
-  // loadState.value = false;
-  // } else {
-  //   navigateTo("/404");
-  // }
-
   // Force re-initialization of swipers when route changes
   swiperKey.value += 1;
 });
