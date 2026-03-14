@@ -249,6 +249,7 @@ import { useProductStore } from "@/store/product-store";
 import { useCartStore } from "@/store/cart-store";
 import { useIndexStore } from "@/store/index-store";
 import { useWishlistStore } from "@/store/wishlist-store";
+import { useSeoMeta } from "#imports";
 
 import { useRoute } from "vue-router";
 // components
@@ -265,6 +266,188 @@ const productStore = useProductStore();
 const indexStore = useIndexStore();
 const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
+
+// Get route parameters
+const route = useRoute();
+const categoryId = route.params.categoryId;
+const productId = route.params.productId;
+
+// Dynamic SEO Meta Tags based on product
+const currentProduct = computed(() => {
+  return productStore.productList.find((product) => product.id === productId);
+});
+
+const currentCategory = computed(() => {
+  return indexStore.fetchedCategories.find((cat) => cat.group.toLowerCase() === categoryId);
+});
+
+useSeoMeta({
+  title: computed(() => {
+    const product = currentProduct.value;
+    const category = currentCategory.value;
+    if (product && product.translations?.[0]) {
+      return `${product.translations[0].title} - Tilo Lab | ${category?.translations?.[0]?.title || "Інтимні товари"}`;
+    }
+    return "Продукт - Tilo Lab";
+  }),
+  description: computed(() => {
+    const product = currentProduct.value;
+    if (product && product.translations?.[0]) {
+      const description = product.translations[0].description || "";
+      const shortDesc =
+        description.length > 150 ? description.substring(0, 150) + "..." : description;
+      return `${shortDesc} Купити з доставкою по Україні. Анонімна упаковка.`;
+    }
+    return "Інтимні товари для дорослих. Анонімна доставка по Україні.";
+  }),
+  ogTitle: computed(() => {
+    const product = currentProduct.value;
+    return product?.translations?.[0]?.title || "Продукт - Tilo Lab";
+  }),
+  ogDescription: computed(() => {
+    const product = currentProduct.value;
+    if (product && product.translations?.[0]) {
+      const description = product.translations[0].description || "";
+      const shortDesc =
+        description.length > 100 ? description.substring(0, 100) + "..." : description;
+      return shortDesc;
+    }
+    return "Інтимні товари для дорослих";
+  }),
+  ogImage: computed(() => {
+    const product = currentProduct.value;
+    return product?.image_url || "https://tilolab.com.ua/images/about-main.webp";
+  }),
+  ogUrl: computed(() => `https://tilolab.com.ua/products/${categoryId}/${productId}`),
+  twitterCard: "summary_large_image"
+});
+
+// Structured Data for Product SEO
+const productStructuredData = computed(() => {
+  const product = currentProduct.value;
+  const category = currentCategory.value;
+
+  if (!product || !product.translations?.[0]) {
+    return null;
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.translations[0].title,
+    description: product.translations[0].description || "",
+    image: product.image_url
+      ? [product.image_url]
+      : ["https://tilolab.com.ua/images/about-main.webp"],
+    brand: {
+      "@type": "Brand",
+      name: "Tilo Lab"
+    },
+    category: category?.translations?.[0]?.title || "Інтимні товари",
+    offers: {
+      "@type": "Offer",
+      price: product.price || 0,
+      priceCurrency: "UAH",
+      availability:
+        product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      seller: {
+        "@type": "Organization",
+        name: "Tilo Lab",
+        url: "https://tilolab.com.ua"
+      },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: "0.00",
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          businessDays: {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: [
+              "https://schema.org/Monday",
+              "https://schema.org/Tuesday",
+              "https://schema.org/Wednesday",
+              "https://schema.org/Thursday",
+              "https://schema.org/Friday"
+            ]
+          }
+        }
+      }
+    },
+    aggregateRating: product.rating
+      ? {
+          "@type": "AggregateRating",
+          ratingValue: product.rating,
+          reviewCount: product.review_count || 1
+        }
+      : undefined,
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Material",
+        value: product.material || "Body-safe materials"
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Waterproof",
+        value: product.waterproof ? "Yes" : "No"
+      }
+    ]
+  };
+});
+
+// Breadcrumb structured data
+const breadcrumbStructuredData = computed(() => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Головна",
+        item: "https://tilolab.com.ua"
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Каталог",
+        item: "https://tilolab.com.ua/products"
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: currentCategory.value?.translations?.[0]?.title || "Категорія",
+        item: `https://tilolab.com.ua/products/${categoryId}`
+      },
+      {
+        "@type": "ListItem",
+        position: 4,
+        name: currentProduct.value?.translations?.[0]?.title || "Продукт",
+        item: `https://tilolab.com.ua/products/${categoryId}/${productId}`
+      }
+    ]
+  };
+});
+
+useHead({
+  script: computed(() => {
+    const scripts = [];
+
+    if (productStructuredData.value) {
+      scripts.push({
+        type: "application/ld+json",
+        children: JSON.stringify(productStructuredData.value)
+      });
+    }
+
+    scripts.push({
+      type: "application/ld+json",
+      children: JSON.stringify(breadcrumbStructuredData.value)
+    });
+
+    return scripts;
+  })
+});
 
 // refs
 const containerMainRef = ref(null);
@@ -383,7 +566,6 @@ const breadCrumbLinks = computed(() => {
 });
 
 // routes
-const route = useRoute();
 
 const toggleDescription = () => {
   isDescriptionCollapsed.value = !isDescriptionCollapsed.value;

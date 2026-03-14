@@ -110,14 +110,113 @@ import { useProductStore } from "@/store/product-store";
 
 // Utility imports
 import { ref, onMounted, computed, watch } from "vue";
+import { useSeoMeta } from "#imports";
+import { useRoute } from "vue-router"; // Add this line
 
-// const fetchedProducts = ref([]);
-// const categoryName = ref("");
-// const currentPage = ref(1);
-// const totalPages = ref(12); // Mock total pages for demonstration
+// Get route parameters
+const route = useRoute();
+const categoryId = route.params.categoryId;
+
+// Dynamic SEO Meta Tags based on category
+const currentCategory = computed(() => {
+  return indexStore.fetchedCategories.find((cat) => cat.group.toLowerCase() === categoryId);
+});
+
+useSeoMeta({
+  title: computed(() =>
+    currentCategory.value
+      ? `${currentCategory.value.translations[0]?.title} - Tilo Lab | Купити з доставкою`
+      : "Категорія товарів - Tilo Lab"
+  ),
+  description: computed(() => {
+    const categoryTitle = currentCategory.value?.translations[0]?.title || "товарів";
+    return `Замовити ${categoryTitle} в Tilo Lab. Великий вибір якісних товарів, анонімна доставка по всій Україні. Гарантія конфіденційності.`;
+  }),
+  ogTitle: computed(() =>
+    currentCategory.value
+      ? `${currentCategory.value.translations[0]?.title} - Tilo Lab`
+      : "Категорія товарів - Tilo Lab"
+  ),
+  ogDescription: computed(() => {
+    const categoryTitle = currentCategory.value?.translations[0]?.title || "товарів";
+    return `${categoryTitle} з доставкою по Україні. Анонімна упаковка.`;
+  }),
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  ogUrl: computed(() => `https://tilolab.com.ua/products/${categoryId}`),
+  twitterCard: "summary_large_image"
+});
+
+// Structured Data for Category SEO
+const categoryStructuredData = computed(() => {
+  const category = currentCategory.value;
+  if (!category) return null;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: category.translations[0]?.title || "Категорія",
+    description: `Замовити ${category.translations[0]?.title || "товари"} в Tilo Lab. Великий вибір якісних товарів, анонімна доставка по всій Україні.`,
+    url: `https://tilolab.com.ua/products/${categoryId}`,
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: productStore.productList.length,
+      itemListElement: productStore.productList.slice(0, 10).map((product, index) => ({
+        "@type": "Product",
+        position: index + 1,
+        name: product.translations[0]?.title || "Продукт",
+        url: `https://tilolab.com.ua/products/${categoryId}/${product.id}`,
+        image: product.image_url || "https://tilolab.com.ua/images/about-main.webp",
+        offers: {
+          "@type": "Offer",
+          price: product.price || 0,
+          priceCurrency: "UAH",
+          availability:
+            product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+        }
+      }))
+    },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Головна",
+          item: "https://tilolab.com.ua"
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Каталог",
+          item: "https://tilolab.com.ua/products"
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: category.translations[0]?.title || "Категорія",
+          item: `https://tilolab.com.ua/products/${categoryId}`
+        }
+      ]
+    }
+  };
+});
+
+useHead({
+  script: computed(() => {
+    if (categoryStructuredData.value) {
+      return [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(categoryStructuredData.value)
+        }
+      ];
+    }
+    return [];
+  })
+});
+
 const loaderState = ref(false);
 
-const route = useRoute();
 const indexStore = useIndexStore();
 const productStore = useProductStore();
 const toggleCategory = ref(false);
@@ -162,17 +261,6 @@ const fetchPriceRange = async () => {
     priceRangeData.value = { min: 100, max: 10000 };
   }
 };
-
-const currentCategory = computed(() => {
-  if (!indexStore.fetchedCategories.length) {
-    return null;
-  }
-
-  const result = indexStore.fetchedCategories.find(
-    (cat) => cat.group.toLowerCase() === route.params.categoryId?.toLowerCase()
-  );
-  return result;
-});
 
 const activeCategories = computed(() => {
   return indexStore.fetchedCategories.filter((el) => el.visible === true);

@@ -74,7 +74,21 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import { useSeoMeta } from "#imports";
+
+useSeoMeta({
+  title: "Про нас - Tilo Lab | Наша філософія та місія",
+  description:
+    "Дізнайтеся більше про Tilo Lab - нашу філософію інтимного здоров'я, підхід до вибору продуктів та місію створення безпечного простору для дослідження тілесної гармонії.",
+  ogTitle: "Про нас - Tilo Lab",
+  ogDescription:
+    "Наша філософія базується на ідеї, що чуттєвість — це природна частина людини. Ретельно досліджуємо кожен продукт.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  ogType: "website",
+  ogUrl: "https://tilolab.com.ua/about-us"
+});
+</script>
 
 <style lang="scss">
 @use "@/style/mixins.scss" as mixins;

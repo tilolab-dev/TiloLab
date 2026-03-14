@@ -198,7 +198,18 @@
   </section>
 </template>
 
-<script></script>
+<script setup>
+import { useSeoMeta } from "#imports";
+useSeoMeta({
+  title: "Доставка та оплата - Tilo Lab | Умови замовлення",
+  description:
+    "Доставка по всій Україні Новою Поштою. Анонімна упаковка, швидка обробка замовлень. Детальна інформація про умови доставки та способи оплати.",
+  ogTitle: "Доставка та оплата - Tilo Lab",
+  ogDescription:
+    "Доставка по всій Україні Новою Поштою. Анонімна упаковка та зручні способи оплати.",
+  ogUrl: "https://tilolab.com.ua/delivery"
+});
+</script>
 
 <style lang="scss">
 @use "@/style/mixins.scss" as mixins;
