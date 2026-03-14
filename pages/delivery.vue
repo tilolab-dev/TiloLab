@@ -198,7 +198,18 @@
   </section>
 </template>
 
-<script></script>
+<script setup>
+import { useSeoMeta } from "#imports";
+useSeoMeta({
+  title: "Доставка і оплата",
+  description:
+    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
+  ogTitle: "Доставка і оплата",
+  ogDescription:
+    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
+  ogImage: "https://tilolab.com/public/images/about-main.webp"
+});
+</script>
 
 <style lang="scss">
 @use "@/style/mixins.scss" as mixins;

@@ -40,6 +40,17 @@
 </template>
 
 <script setup>
+import { useSeoMeta } from "#imports";
+useSeoMeta({
+  title: "Пошук",
+  description:
+    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
+  ogTitle: "Пошук",
+  ogDescription:
+    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
+  ogImage: "https://tilolab.com/public/images/about-main.webp"
+});
+
 import { onMounted, ref, watch } from "vue";
 import { useProductStore } from "@/store/product-store";
 
