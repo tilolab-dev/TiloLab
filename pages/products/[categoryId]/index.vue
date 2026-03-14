@@ -108,6 +108,10 @@ import DoubleRange from "@/components/DoubleRange.vue";
 import { useIndexStore } from "@/store/index-store";
 import { useProductStore } from "@/store/product-store";
 
+// Initialize stores
+const indexStore = useIndexStore();
+const productStore = useProductStore();
+
 // Utility imports
 import { ref, onMounted, computed, watch } from "vue";
 import { useSeoMeta } from "#imports";
@@ -125,7 +129,7 @@ const currentCategory = computed(() => {
 useSeoMeta({
   title: computed(() =>
     currentCategory.value
-      ? `${currentCategory.value.translations[0]?.title} - Tilo Lab | Купити з доставкою`
+      ? `${currentCategory.value.translations[0].title} - Tilo Lab | Купити з доставкою`
       : "Категорія товарів - Tilo Lab"
   ),
   description: computed(() => {
@@ -134,7 +138,7 @@ useSeoMeta({
   }),
   ogTitle: computed(() =>
     currentCategory.value
-      ? `${currentCategory.value.translations[0]?.title} - Tilo Lab`
+      ? `${currentCategory.value.translations[0].title} - Tilo Lab`
       : "Категорія товарів - Tilo Lab"
   ),
   ogDescription: computed(() => {
@@ -216,9 +220,6 @@ useHead({
 });
 
 const loaderState = ref(false);
-
-const indexStore = useIndexStore();
-const productStore = useProductStore();
 const toggleCategory = ref(false);
 const priceRangeData = ref(null);
 

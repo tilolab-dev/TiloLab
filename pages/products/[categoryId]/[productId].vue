@@ -274,53 +274,51 @@ const productId = route.params.productId;
 
 // Dynamic SEO Meta Tags based on product
 const currentProduct = computed(() => {
-  return productStore.productList.find((product) => product.id === productId);
+  return productStore.selectedProducts;
 });
 
 const currentCategory = computed(() => {
   return indexStore.fetchedCategories.find((cat) => cat.group.toLowerCase() === categoryId);
 });
 
-useSeoMeta({
-  title: computed(() => {
-    const product = currentProduct.value;
-    const category = currentCategory.value;
-    if (product && product.translations?.[0]) {
-      return `${product.translations[0].title} - Tilo Lab | ${category?.translations?.[0]?.title || "Інтимні товари"}`;
-    }
-    return "Продукт - Tilo Lab";
-  }),
-  description: computed(() => {
-    const product = currentProduct.value;
-    if (product && product.translations?.[0]) {
-      const description = product.translations[0].description || "";
-      const shortDesc =
-        description.length > 150 ? description.substring(0, 150) + "..." : description;
-      return `${shortDesc} Купити з доставкою по Україні. Анонімна упаковка.`;
-    }
-    return "Інтимні товари для дорослих. Анонімна доставка по Україні.";
-  }),
-  ogTitle: computed(() => {
-    const product = currentProduct.value;
-    return product?.translations?.[0]?.title || "Продукт - Tilo Lab";
-  }),
-  ogDescription: computed(() => {
-    const product = currentProduct.value;
-    if (product && product.translations?.[0]) {
-      const description = product.translations[0].description || "";
-      const shortDesc =
-        description.length > 100 ? description.substring(0, 100) + "..." : description;
-      return shortDesc;
-    }
-    return "Інтимні товари для дорослих";
-  }),
-  ogImage: computed(() => {
-    const product = currentProduct.value;
-    return product?.image_url || "https://tilolab.com.ua/images/about-main.webp";
-  }),
-  ogUrl: computed(() => `https://tilolab.com.ua/products/${categoryId}/${productId}`),
-  twitterCard: "summary_large_image"
+// Reactive SEO meta tags
+const seoMeta = computed(() => {
+  const product = currentProduct.value;
+  const category = currentCategory.value;
+
+  if (!product || !product.translations?.[0]) {
+    return {
+      title: "Завантаження... - Tilo Lab",
+      description: "Завантаження продукту... Анонімна доставка по Україні.",
+      ogTitle: "Завантаження... - Tilo Lab",
+      ogDescription: "Завантаження продукту...",
+      ogImage: "https://tilolab.com.ua/images/about-main.webp",
+      ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
+      twitterCard: "summary_large_image"
+    };
+  }
+
+  const description =
+    product.translations[0].productDescription || product.translations[0].description || "";
+  const shortDesc = description.length > 150 ? description.substring(0, 150) + "..." : description;
+  const shortDescOg =
+    description.length > 100 ? description.substring(0, 100) + "..." : description;
+
+  return {
+    title: `${product.translations[0].title} - Tilo Lab | ${category?.translations?.[0]?.title || "Інтимні товари"}`,
+    description: `${shortDesc} Купити з доставкою по Україні. Анонімна упаковка.`,
+    ogTitle: product.translations[0].title,
+    ogDescription: shortDescOg,
+    ogImage:
+      product.img && product.img.length > 0
+        ? product.img[0]
+        : "https://tilolab.com.ua/images/about-main.webp",
+    ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
+    twitterCard: "summary_large_image"
+  };
 });
+
+useSeoMeta(seoMeta);
 
 // Structured Data for Product SEO
 const productStructuredData = computed(() => {
