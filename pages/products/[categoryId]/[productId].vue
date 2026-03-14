@@ -320,6 +320,38 @@ const seoMeta = computed(() => {
 
 useSeoMeta(seoMeta);
 
+// Watch for product changes and update SEO
+watch(
+  currentProduct,
+  (newProduct) => {
+    if (newProduct && newProduct.translations?.[0]) {
+      const category = currentCategory.value;
+      const description =
+        newProduct.translations[0].productDescription ||
+        newProduct.translations[0].description ||
+        "";
+      const shortDesc =
+        description.length > 150 ? description.substring(0, 150) + "..." : description;
+      const shortDescOg =
+        description.length > 100 ? description.substring(0, 100) + "..." : description;
+
+      useSeoMeta({
+        title: `${newProduct.translations[0].title} - Tilo Lab | ${category?.translations?.[0]?.title || "Інтимні товари"}`,
+        description: `${shortDesc} Купити з доставкою по Україні. Анонімна упаковка.`,
+        ogTitle: newProduct.translations[0].title,
+        ogDescription: shortDescOg,
+        ogImage:
+          newProduct.img && newProduct.img.length > 0
+            ? newProduct.img[0]
+            : "https://tilolab.com.ua/images/about-main.webp",
+        ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
+        twitterCard: "summary_large_image"
+      });
+    }
+  },
+  { immediate: true }
+);
+
 // Structured Data for Product SEO
 const productStructuredData = computed(() => {
   const product = currentProduct.value;
@@ -333,10 +365,12 @@ const productStructuredData = computed(() => {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.translations[0].title,
-    description: product.translations[0].description || "",
-    image: product.image_url
-      ? [product.image_url]
-      : ["https://tilolab.com.ua/images/about-main.webp"],
+    description:
+      product.translations[0].productDescription || product.translations[0].description || "",
+    image:
+      product.img && product.img.length > 0
+        ? product.img
+        : ["https://tilolab.com.ua/images/about-main.webp"],
     brand: {
       "@type": "Brand",
       name: "Tilo Lab"
@@ -344,10 +378,12 @@ const productStructuredData = computed(() => {
     category: category?.translations?.[0]?.title || "Інтимні товари",
     offers: {
       "@type": "Offer",
-      price: product.price || 0,
+      price: product.productPrice || product.price || 0,
       priceCurrency: "UAH",
       availability:
-        product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+        product.availableProduct > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
       seller: {
         "@type": "Organization",
         name: "Tilo Lab",
@@ -382,7 +418,12 @@ const productStructuredData = computed(() => {
       {
         "@type": "PropertyValue",
         name: "Material",
-        value: product.material || "Body-safe materials"
+        value: product.translations[0]?.productMaterial || "Body-safe materials"
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Color",
+        value: product.translations[0]?.productColor || "Various colors"
       },
       {
         "@type": "PropertyValue",

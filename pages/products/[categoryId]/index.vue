@@ -145,7 +145,18 @@ useSeoMeta({
     const categoryTitle = currentCategory.value?.translations[0]?.title || "товарів";
     return `${categoryTitle} з доставкою по Україні. Анонімна упаковка.`;
   }),
-  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  ogImage: computed(() => {
+    const category = currentCategory.value;
+    // Use category image if available and valid, otherwise fallback to main image
+    if (
+      category?.categoryImg &&
+      category.categoryImg.startsWith("http") &&
+      !category.categoryImg.includes("undefined")
+    ) {
+      return category.categoryImg;
+    }
+    return "https://tilolab.com.ua/images/about-main.webp";
+  }),
   ogUrl: computed(() => `https://tilolab.com.ua/products/${categoryId}`),
   twitterCard: "summary_large_image"
 });
@@ -169,13 +180,15 @@ const categoryStructuredData = computed(() => {
         position: index + 1,
         name: product.translations[0]?.title || "Продукт",
         url: `https://tilolab.com.ua/products/${categoryId}/${product.id}`,
-        image: product.image_url || "https://tilolab.com.ua/images/about-main.webp",
+        image: product.categoryImg || "https://tilolab.com.ua/images/about-main.webp",
         offers: {
           "@type": "Offer",
-          price: product.price || 0,
+          price: product.productPrice || product.price || 0,
           priceCurrency: "UAH",
           availability:
-            product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+            product.availableProduct > 0
+              ? "https://schema.org/InStock"
+              : "https://schema.org/OutOfStock"
         }
       }))
     },
