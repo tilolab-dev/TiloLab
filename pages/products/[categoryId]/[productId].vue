@@ -311,7 +311,9 @@ const seoMeta = computed(() => {
     ogDescription: shortDescOg,
     ogImage:
       product.img && product.img.length > 0
-        ? product.img[0]
+        ? typeof product.img[0] === "string"
+          ? product.img[0]
+          : product.img[0]?.path || "https://tilolab.com.ua/images/about-main.webp"
         : "https://tilolab.com.ua/images/about-main.webp",
     ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
     twitterCard: "summary_large_image"
@@ -342,7 +344,9 @@ watch(
         ogDescription: shortDescOg,
         ogImage:
           newProduct.img && newProduct.img.length > 0
-            ? newProduct.img[0]
+            ? typeof newProduct.img[0] === "string"
+              ? newProduct.img[0]
+              : newProduct.img[0]?.path || "https://tilolab.com.ua/images/about-main.webp"
             : "https://tilolab.com.ua/images/about-main.webp",
         ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
         twitterCard: "summary_large_image"
@@ -369,7 +373,11 @@ const productStructuredData = computed(() => {
       product.translations[0].productDescription || product.translations[0].description || "",
     image:
       product.img && product.img.length > 0
-        ? product.img
+        ? product.img.map((img) =>
+            typeof img === "string"
+              ? img
+              : img?.path || "https://tilolab.com.ua/images/about-main.webp"
+          )
         : ["https://tilolab.com.ua/images/about-main.webp"],
     brand: {
       "@type": "Brand",
