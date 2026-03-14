@@ -273,9 +273,19 @@ const categoryId = route.params.categoryId;
 const productId = route.params.productId;
 
 // Dynamic SEO Meta Tags based on product
-const currentProduct = computed(() => {
-  return productStore.selectedProducts;
-});
+const currentProduct = computed(
+  () => {
+    return productStore.selectedProducts;
+  },
+  {
+    get() {
+      return productStore.selectedProducts;
+    },
+    set() {
+      // Force reactivity
+    }
+  }
+);
 
 const currentCategory = computed(() => {
   return indexStore.fetchedCategories.find((cat) => cat.group.toLowerCase() === categoryId);
@@ -288,9 +298,9 @@ const seoMeta = computed(() => {
 
   if (!product || !product.translations?.[0]) {
     return {
-      title: "Завантаження... - Tilo Lab",
+      title: "Завантаження продукту... - Tilo Lab",
       description: "Завантаження продукту... Анонімна доставка по Україні.",
-      ogTitle: "Завантаження... - Tilo Lab",
+      ogTitle: "Завантаження продукту... - Tilo Lab",
       ogDescription: "Завантаження продукту...",
       ogImage: "https://tilolab.com.ua/images/about-main.webp",
       ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
@@ -320,41 +330,17 @@ const seoMeta = computed(() => {
   };
 });
 
-useSeoMeta(seoMeta);
-
-// Watch for product changes and update SEO
-watch(
-  currentProduct,
-  (newProduct) => {
-    if (newProduct && newProduct.translations?.[0]) {
-      const category = currentCategory.value;
-      const description =
-        newProduct.translations[0].productDescription ||
-        newProduct.translations[0].description ||
-        "";
-      const shortDesc =
-        description.length > 150 ? description.substring(0, 150) + "..." : description;
-      const shortDescOg =
-        description.length > 100 ? description.substring(0, 100) + "..." : description;
-
-      useSeoMeta({
-        title: `${newProduct.translations[0].title} - Tilo Lab | ${category?.translations?.[0]?.title || "Інтимні товари"}`,
-        description: `${shortDesc} Купити з доставкою по Україні. Анонімна упаковка.`,
-        ogTitle: newProduct.translations[0].title,
-        ogDescription: shortDescOg,
-        ogImage:
-          newProduct.img && newProduct.img.length > 0
-            ? typeof newProduct.img[0] === "string"
-              ? newProduct.img[0]
-              : newProduct.img[0]?.path || "https://tilolab.com.ua/images/about-main.webp"
-            : "https://tilolab.com.ua/images/about-main.webp",
-        ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
-        twitterCard: "summary_large_image"
-      });
-    }
-  },
-  { immediate: true }
-);
+useHead(() => ({
+  title: seoMeta.value.title,
+  meta: [
+    { name: "description", content: seoMeta.value.description },
+    { property: "og:title", content: seoMeta.value.ogTitle },
+    { property: "og:description", content: seoMeta.value.ogDescription },
+    { property: "og:image", content: seoMeta.value.ogImage },
+    { property: "og:url", content: seoMeta.value.ogUrl },
+    { name: "twitter:card", content: seoMeta.value.twitterCard }
+  ]
+}));
 
 // Structured Data for Product SEO
 const productStructuredData = computed(() => {
@@ -639,16 +625,19 @@ const fetchProductById = async () => {
     const res = await $fetch(`/api/products/${routeId}`);
 
     console.log(!res.data, "Products page fetchProductById res.data is empty");
-
     console.log(res, "res");
 
-    productStore.setSelectedProducts(res.data);
+    // Handle API response structure
+    const productData = res.data || res;
 
-    productImages.value = Array.isArray(res.data.images) ? res.data.images : [];
+    productStore.setSelectedProducts(productData);
+
+    productImages.value = Array.isArray(productData.images) ? productData.images : [];
 
     return productImages.value;
   } catch {
-    // Handle error silently or show user feedback
+    console.error("Error fetching product");
+    return [];
   } finally {
     loadState.value = false;
   }
