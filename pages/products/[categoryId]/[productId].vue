@@ -244,7 +244,7 @@
 <script setup>
 import ProductPagePopular from "@/components/ProductPagePopular.vue";
 
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, nextTick } from "vue";
 import { useProductStore } from "@/store/product-store";
 import { useCartStore } from "@/store/cart-store";
 import { useIndexStore } from "@/store/index-store";
@@ -262,6 +262,7 @@ import PlusIcon from "~/assets/icons/plus-icon.svg";
 import MinusIcon from "~/assets/icons/minus-icon.svg";
 
 // stores
+import { storeToRefs } from "pinia";
 const productStore = useProductStore();
 const indexStore = useIndexStore();
 const cartStore = useCartStore();
@@ -273,19 +274,8 @@ const categoryId = route.params.categoryId;
 const productId = route.params.productId;
 
 // Dynamic SEO Meta Tags based on product
-const currentProduct = computed(
-  () => {
-    return productStore.selectedProducts;
-  },
-  {
-    get() {
-      return productStore.selectedProducts;
-    },
-    set() {
-      // Force reactivity
-    }
-  }
-);
+const { selectedProducts } = storeToRefs(productStore);
+const currentProduct = computed(() => selectedProducts.value);
 
 const currentCategory = computed(() => {
   return indexStore.fetchedCategories.find((cat) => cat.group.toLowerCase() === categoryId);
@@ -633,6 +623,48 @@ const fetchProductById = async () => {
     productStore.setSelectedProducts(productData);
 
     productImages.value = Array.isArray(productData.images) ? productData.images : [];
+
+    if (productData && productData.translations?.[0]) {
+      const category = indexStore.fetchedCategories.find(
+        (cat) => cat.group.toLowerCase() === categoryId
+      );
+      const description =
+        productData.translations[0].productDescription ||
+        productData.translations[0].description ||
+        "";
+      const shortDesc =
+        description.length > 150 ? description.substring(0, 150) + "..." : description;
+      const shortDescOg =
+        description.length > 100 ? description.substring(0, 100) + "..." : description;
+
+      useHead({
+        title: `${productData.translations[0].title} - Tilo Lab | ${category?.translations?.[0]?.title || "Інтимні товари"}`,
+        meta: [
+          {
+            name: "description",
+            content: `${shortDesc} Купити з доставкою по Україні. Анонімна упаковка.`
+          },
+          { property: "og:title", content: productData.translations[0].title },
+          { property: "og:description", content: shortDescOg },
+          {
+            property: "og:image",
+            content:
+              productData.img && productData.img.length > 0
+                ? typeof productData.img[0] === "string"
+                  ? productData.img[0]
+                  : productData.img[0]?.path || "https://tilolab.com.ua/images/about-main.webp"
+                : "https://tilolab.com.ua/images/about-main.webp"
+          },
+          {
+            property: "og:url",
+            content: `https://tilolab.com.ua/products/${categoryId}/${productId}`
+          },
+          { name: "twitter:card", content: "summary_large_image" }
+        ]
+      });
+    }
+
+    await $nextTick();
 
     return productImages.value;
   } catch {
