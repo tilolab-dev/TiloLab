@@ -16,7 +16,7 @@ export default defineNuxtConfig({
         { property: "og:type", content: "website" },
         { property: "og:site_name", content: "Tilolab" }
       ],
-      link: [{ rel: "icon", type: "image/webp", href: "/public/images/about-main.webp" }]
+      link: [{ rel: "icon", type: "image/webp", href: "/images/about-main.webp" }]
     }
   },
   // experimental: {
