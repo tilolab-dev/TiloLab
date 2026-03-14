@@ -1,2 +1,28 @@
 User-Agent: *
-Disallow:
+Allow: /
+Crawl-delay: 1
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /summary/
+Disallow: /api/
+Disallow: /_nuxt/
+Disallow: /.well-known/
+
+# Allow specific resources
+Allow: /api/products/
+Allow: /api/categories/
+
+# Sitemap location
+Sitemap: https://tilolab.com.ua/sitemap.xml
+
+# Additional crawlers
+User-Agent: Googlebot
+Allow: /
+
+User-Agent: Bingbot
+Allow: /
+
+User-Agent: Slurp
+Allow: /

@@ -70,6 +70,17 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxt/image",
     [
+      "@nuxtjs/sitemap",
+      {
+        hostname: "https://tilolab.com.ua",
+        exclude: ["/admin/**", "/auth/**", "/summary/**"],
+        routes: async () => {
+          // You can add dynamic routes here if needed
+          return [];
+        }
+      }
+    ],
+    [
       "@nuxtjs/google-fonts",
       {
         families: {

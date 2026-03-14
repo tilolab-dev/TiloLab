@@ -18,14 +18,45 @@
 
 <script setup>
 import { useSeoMeta } from "#imports";
+
 useSeoMeta({
-  title: "Головна",
+  title: "Tilo Lab - Інтимне здоров'я та тілесна гармонія | Головна",
   description:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogTitle: "Головна",
+    "Tilo Lab - сучасний простір для дослідження інтимного здоров'я та задоволення. Інноваційні продукти, делікатний сервіс та турбота про ваше тіло. Доставка по всій Україні.",
+  ogTitle: "Tilo Lab - Інтимне здоров'я та тілесна гармонія",
   ogDescription:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogImage: "https://tilolab.com.ua/images/about-main.webp"
+    "Сучасний простір дослідження інтимного здоров'я, задоволення та тілесної гармонії. Інновації, наука та турбота про тіло.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  ogUrl: "https://tilolab.com.ua/",
+  twitterCard: "summary_large_image",
+  twitterTitle: "Tilo Lab - Інтимне здоров'я та тілесна гармонія",
+  twitterDescription:
+    "Сучасний простір дослідження інтимного здоров'я та задоволення. Інноваційні продукти та турбота про тіло.",
+  twitterImage: "https://tilolab.com.ua/images/about-main.webp"
+});
+
+// Structured Data for SEO
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Tilo Lab",
+  url: "https://tilolab.com.ua",
+  description: "Сучасний простір дослідження інтимного здоров'я, задоволення та тілесної гармонії",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://tilolab.com.ua/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  },
+  sameAs: ["https://www.instagram.com/tilolab.ua", "https://www.facebook.com/tilolab.ua"]
+};
+
+useHead({
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify(structuredData)
+    }
+  ]
 });
 </script>
 

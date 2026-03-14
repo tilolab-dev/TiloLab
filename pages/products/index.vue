@@ -92,6 +92,22 @@ import AngleDown from "~/assets/icons/angle-down.svg";
 import { onMounted, ref, watch, computed } from "vue";
 import { useProductStore } from "@/store/product-store";
 import { useIndexStore } from "@/store/index-store";
+import { useSeoMeta } from "#imports";
+
+// SEO Meta Tags
+useSeoMeta({
+  title: "Каталог товарів - Tilo Lab | Інтимні товари та аксесуари",
+  description:
+    "Повний каталог інтимних товарів та аксесуарів в Tilo Lab. Вібратори, лубриканти, BDSM-атрибутика та інші товари для дорослих. Анонімна доставка по Україні.",
+  ogTitle: "Каталог товарів - Tilo Lab",
+  ogDescription: "Інтимні товари та аксесуари для дорослих. Великий вибір, анонімна доставка.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  ogUrl: "https://tilolab.com.ua/products",
+  twitterCard: "summary_large_image",
+  twitterTitle: "Каталог товарів - Tilo Lab",
+  twitterDescription: "Інтимні товари та аксесуари для дорослих. Великий вибір, анонімна доставка."
+});
+
 const loaderState = ref(true);
 
 const route = useRoute();
