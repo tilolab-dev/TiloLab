@@ -248,7 +248,7 @@ useSeoMeta({
   ogTitle: "Політика конфіденційності",
   ogDescription:
     "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogImage: "https://tilolab.com/public/images/about-main.webp"
+  ogImage: "https://tilolab.com.ua/images/about-main.webp"
 });
 </script>
 
