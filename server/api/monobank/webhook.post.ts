@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { prisma } from "@/prisma/prisma";
+import { sendTelegramMessage } from "@/server/utils/telegram";
 
 export default defineEventHandler(async (event) => {
   const rawBody = await readRawBody(event);
@@ -79,6 +80,11 @@ export default defineEventHandler(async (event) => {
     return { ok: true, message: `Замовлення вже оплачено: ${order.status}` };
   }
 
+  const orderDetails = await prisma.order.findUnique({
+    where: { id: order.id },
+    include: { shippingInfo: true }
+  });
+
   let runningOutItems = [] as any[];
 
   await prisma.$transaction(async (tx) => {
@@ -120,6 +126,22 @@ export default defineEventHandler(async (event) => {
     });
 
     // IMPLEMENT NOTIFICATION FEATURE
+
+    await sendTelegramMessage(`
+      🛒 Нове замовлення!  
+     
+      📦 **ID:** ${orderDetails?.orderNumber}
+
+      👤 **Отримувач:** ${orderDetails?.shippingInfo?.recipient}
+      📞 **Телефон:** ${orderDetails?.shippingInfo?.phoneNumber}
+
+      💰 **Сума:** ${orderDetails?.totalPrice}
+
+      🚚 **Доставка**
+      🏙️ Місто — ${orderDetails?.shippingInfo?.city}
+      🏤 Відділення — ${orderDetails?.shippingInfo?.postOffice}
+      📦 Поштомат — ${orderDetails?.shippingInfo?.postomat}
+    `);
   });
 
   for (const item of runningOutItems) {

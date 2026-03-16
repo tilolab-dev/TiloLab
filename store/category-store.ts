@@ -46,10 +46,23 @@ export const useCategoryStore = defineStore("category", {
         const getCategories = await $fetch<IFetchCategory>("/api/category");
         this.categoryList = getCategories.data;
 
+        // this.categoryList = getCategories.data.sort((a, b) => a.listPosition - b.listPosition);
+
         console.log(!this.categoryList, "Category store getCategories categoryList is empty");
       } catch (err) {
         console.error("Something went wrong", err);
       }
+    },
+    async saveCategoryOrder(categories: ICategory[]) {
+      const payload = categories.map((cat, index) => ({
+        id: cat.id,
+        listPosition: index
+      }));
+
+      await $fetch("/api/categories/reorder", {
+        method: "POST",
+        body: payload
+      });
     },
     async deleteCategory(category: ICategory) {
       const id = category.id;

@@ -49,6 +49,11 @@
               <div ref="categoryElem" class="wrapper_content">
                 <div class="table_name">
                   <h6 class="dark:text-white">Категорії товарів</h6>
+                  <div v-if="hasOrderChanges" class="list_order_control">
+                    <button>Зберегти порядок</button>
+                    <button @click="hasOrderChanges = false">Скасувати зміни</button>
+                  </div>
+                  <button v-else @click="hasOrderChanges = true">Змінити порядок</button>
                 </div>
 
                 <div class="table_content">
@@ -304,6 +309,7 @@ import { useProductStore } from "@store/product-store";
 import { useCategoryStore } from "@/store/category-store";
 // import { useAdminStore } from "@/store/admin-store";
 import gsap from "gsap";
+// import draggable from "vuedraggable";
 
 const modalStore = useModalStore();
 const productStore = useProductStore();
@@ -319,6 +325,9 @@ const activeGroup = ref("products");
 
 const fetchedProducts = computed(() => productStore.productList);
 const fetchedCategories = computed(() => categoryStore.categoryList);
+
+// const localCategories = ref([]);
+const hasOrderChanges = ref(false);
 
 // const productPromoHandler = async () => {
 
@@ -371,6 +380,20 @@ const showGroup = async (group) => {
       break;
   }
 };
+
+// const saveOrder = async () => {
+//   await categoryStore.saveCategoryOrder(localCategories.value);
+
+//   categoryStore.categoryList = JSON.parse(JSON.stringify(localCategories.value));
+
+//   hasOrderChanges.value = false;
+// };
+
+// const resetOrder = () => {
+//   localCategories.value = JSON.parse(JSON.stringify(categoryStore.categoryList));
+
+//   hasOrderChanges.value = false;
+// };
 
 onMounted(async () => {
   loadingProductState.value = true;
@@ -601,6 +624,15 @@ onMounted(async () => {
           border-bottom: 0px solid transparent;
           border-top-left-radius: 1rem;
           border-top-right-radius: 1rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          button {
+            @include mixins.accentBtn;
+            padding: 5px 10px;
+            font-size: 0.7rem;
+          }
         }
         .table_content {
           flex: 1 1 auto;
