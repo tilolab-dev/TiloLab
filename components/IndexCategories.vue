@@ -4,8 +4,8 @@
       <div class="categories_head">
         <div class="head_content">
           <div class="left_content">
-            <h4 class="head_title">Будь у моменті.</h4>
-            <h5 class="left_content">Створюйте момент удвох</h5>
+            <h2 class="head_title">Будь у моменті.</h2>
+            <h3 class="left_content">Створюйте момент удвох</h3>
           </div>
           <div class="right_content">
             <p class="category_description">

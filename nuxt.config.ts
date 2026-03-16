@@ -5,13 +5,16 @@ export default defineNuxtConfig({
   app: {
     baseURL: "/",
     head: {
+      htmlAttrs: {
+        lang: 'uk'
+      },
       title: "Tilolab",
       meta: [
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
           name: "description",
           content:
-            "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс."
+            "Tilo Lab — це сучасний простір дослідження інтимного здоров'я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс."
         },
         { property: "og:type", content: "website" },
         { property: "og:site_name", content: "Tilolab" }
