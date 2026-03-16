@@ -2,7 +2,7 @@
   <section class="seo">
     <div class="container">
       <div class="seo_title">
-        <h6>Інтернет-магазин Tilo Lab</h6>
+        <h4>Інтернет-магазин Tilo Lab</h4>
       </div>
 
       <div class="text_wrapper">

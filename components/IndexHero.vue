@@ -44,7 +44,11 @@
             <SharedAccentBtn class="hero_btn"> Обрати девайс </SharedAccentBtn>
           </NuxtLink>
 
-          <button class="toggle_sound" @click="soundMuteHandler">
+          <button
+            class="toggle_sound"
+            :aria-label="muteState ? 'Увімкнути звук' : 'Вимкнути звук'"
+            @click="soundMuteHandler"
+          >
             <PlaySoundIcon v-if="muteState" />
             <MuteSoundIcon v-else />
           </button>
@@ -206,7 +210,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 5vw 0 7vw;
+  padding: 5vw 20px 7vw;
   justify-content: space-between;
   position: relative;
   width: 100%;

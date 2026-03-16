@@ -3,7 +3,7 @@
     <div class="top_header" :class="catalogBtnState ? 'top_header_active' : ''">
       <div class="container">
         <div class="main_header">
-          <NuxtLink to="/">
+          <NuxtLink to="/" aria-label="Tilo Lab - Головна сторінка">
             <svg
               class="logo_btn"
               xmlns="http://www.w3.org/2000/svg"
@@ -62,10 +62,14 @@
                 placeholder="Пошук..."
                 @keyup.enter="performSearch"
               />
-              <button class="desktop_search_btn" @click="performSearch">
+              <button class="desktop_search_btn" aria-label="Пошук" @click="performSearch">
                 <SearchIcon />
               </button>
-              <button class="mobile_search_btn" @click="mobileSearch = !mobileSearch">
+              <button
+                class="mobile_search_btn"
+                aria-label="Пошук"
+                @click="mobileSearch = !mobileSearch"
+              >
                 <SearchIcon />
               </button>
             </div>
@@ -78,21 +82,26 @@
                 :to="userLoginComputedLink"
                 class="user_btn"
                 :class="{ active: userStore.isLoggedIn }"
+                :aria-label="userStore.isLoggedIn ? 'Мій профіль' : 'Увійти'"
               >
                 <ProfileIcon />
               </NuxtLink>
             </ClientOnly>
 
-            <NuxtLink to="/wishlist" class="wishlist_btn">
+            <NuxtLink to="/wishlist" class="wishlist_btn" aria-label="Список бажань">
               <HeartIcon />
             </NuxtLink>
-            <button class="cart_btn" @click="modalStore.showModal('CartModal')">
+            <button class="cart_btn" aria-label="Кошик" @click="modalStore.showModal('CartModal')">
               <CartIcon />
               <div v-if="mounted && cartStore?.cart?.length !== 0" class="quantity_label">
                 {{ cartStore?.cart?.length }}
               </div>
             </button>
-            <button class="burger_btn" @click="modalStore.showModal('BurgerMenu')">
+            <button
+              class="burger_btn"
+              aria-label="Меню"
+              @click="modalStore.showModal('BurgerMenu')"
+            >
               <BurgerIcon />
             </button>
           </div>

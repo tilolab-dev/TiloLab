@@ -2,7 +2,7 @@
   <section class="advantages">
     <div class="container">
       <div ref="titleRef" class="advantages_title">
-        <h5>Наші переваги</h5>
+        <h3>Наші переваги</h3>
       </div>
       <div ref="wrapperRef" class="advantages_wrapper">
         <div

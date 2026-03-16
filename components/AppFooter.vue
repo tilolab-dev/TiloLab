@@ -4,7 +4,7 @@
       <div class="footer_wrapper">
         <div class="footer_content">
           <div class="footer_content_main">
-            <NuxtLink to="/">
+            <NuxtLink to="/" aria-label="Tilo Lab - Головна сторінка">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="130"
@@ -47,10 +47,11 @@
               <NuxtLink
                 to="https://www.instagram.com/tilolab?igsh=enhsaHlmZno1b2pw"
                 target="_blank"
+                aria-label="Instagram"
               >
                 <InstagramIcon />
               </NuxtLink>
-              <button>
+              <button aria-label="Telegram">
                 <TelegramIcon />
               </button>
             </div>
