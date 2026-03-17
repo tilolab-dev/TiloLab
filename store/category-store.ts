@@ -5,6 +5,11 @@ interface IFetchCategory {
   data: ICategory[];
 }
 
+interface ICategoryOrderPayload {
+  id: number;
+  listPosition: number;
+}
+
 interface ICategoryResult {
   statusCode: number;
   message: string;
@@ -47,22 +52,24 @@ export const useCategoryStore = defineStore("category", {
         this.categoryList = getCategories.data;
 
         // this.categoryList = getCategories.data.sort((a, b) => a.listPosition - b.listPosition);
-
-        console.log(!this.categoryList, "Category store getCategories categoryList is empty");
       } catch (err) {
         console.error("Something went wrong", err);
       }
     },
-    async saveCategoryOrder(categories: ICategory[]) {
+    async saveCategoryOrder(categories: ICategoryOrderPayload[]) {
       const payload = categories.map((cat, index) => ({
         id: cat.id,
         listPosition: index
       }));
 
-      await $fetch("/api/categories/reorder", {
-        method: "POST",
-        body: payload
+      console.log(payload, "payload from save category order");
+
+      const res = await $fetch("/api/category/reorder-list", {
+        method: "PATCH",
+        body: { payload }
       });
+
+      console.log(res, "response from save category order");
     },
     async deleteCategory(category: ICategory) {
       const id = category.id;

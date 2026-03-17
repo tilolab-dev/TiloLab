@@ -1,11 +1,5 @@
 <template>
   <div class="login">
-    <div class="tooltip_wrapper">
-      <div class="tooltip_item">
-        <span class="tooltip_type"> Error : </span>
-        <span class="tooltip_message"> fglgmzerlmlemlemgsrlgm </span>
-      </div>
-    </div>
     <div class="login_container">
       <div v-if="loading" class="loader" :class="{ active_loader: loading }">
         <SharedLoader />

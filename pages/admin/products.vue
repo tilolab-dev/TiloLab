@@ -35,10 +35,30 @@
               </div>
             </div>
             <div class="adding_content">
-              <button class="text-nowrap" @click="modalStore.showModal('AddCategory')">
+              <button v-if="editOrderMode" @click="saveOrder">Зберегти порядок</button>
+
+              <button
+                v-if="
+                  activeGroup === 'categories' ||
+                  (activeGroup === 'product' && activeProductCategory !== 'all')
+                "
+                @click="editOrderMode ? resetOrderMode() : changeCategoryOrder()"
+              >
+                <span v-if="!editOrderMode"> Змінити порядок </span>
+                <span v-else> Скасувати зміни </span>
+              </button>
+              <button
+                class="text-nowrap"
+                :class="editOrderMode ? 'avoid_click' : ''"
+                @click="modalStore.showModal('AddCategory')"
+              >
                 Додати категорію
               </button>
-              <button class="text-nowrap" @click="modalStore.showModal('AddProduct')">
+              <button
+                class="text-nowrap"
+                :class="editOrderMode ? 'avoid_click' : ''"
+                @click="modalStore.showModal('AddProduct')"
+              >
                 Додати товар
               </button>
             </div>
@@ -49,11 +69,6 @@
               <div ref="categoryElem" class="wrapper_content">
                 <div class="table_name">
                   <h6 class="dark:text-white">Категорії товарів</h6>
-                  <div v-if="hasOrderChanges" class="list_order_control">
-                    <button>Зберегти порядок</button>
-                    <button @click="hasOrderChanges = false">Скасувати зміни</button>
-                  </div>
-                  <button v-else @click="hasOrderChanges = true">Змінити порядок</button>
                 </div>
 
                 <div class="table_content">
@@ -70,9 +85,7 @@
                         </tr>
                       </thead>
                       <tbody v-if="loadingCategoryState" class="t_body">
-                        <!-- Skeleton -->
                         <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
-                          <!-- Author -->
                           <td class="skeleton_content">
                             <div class="main_cell">
                               <div class="main_cell_circle skeleton_item"></div>
@@ -82,51 +95,43 @@
                               </div>
                             </div>
                           </td>
-                          <!-- Function -->
                           <td class="skeleton_content">
                             <div class="skeleton_item"></div>
                             <div class="skeleton_item"></div>
                           </td>
-                          <!-- Status -->
                           <td class="skeleton_content">
                             <div class="skeleton_item"></div>
                           </td>
-                          <!-- Employed -->
                           <td class="skeleton_content">
                             <div class="skeleton_item"></div>
                           </td>
-                          <!-- Edit -->
                           <td class="skeleton_content">
                             <div class="skeleton_item"></div>
                           </td>
                         </tr>
-                        <!-- Data -->
                       </tbody>
-                      <tbody v-else class="t_body">
-                        <!-- v-for="category in fetchedCategories" -->
-
-                        <tr v-for="(category, i) in fetchedCategories" :key="i">
+                      <tbody v-else-if="!editOrderMode" class="t_body">
+                        <tr v-for="category in fetchedCategories" :key="category.id">
                           <td class="table_row">
                             <div class="table_main">
-                              <img :src="category.categoryImg" alt="user1" />
+                              <img :src="category.categoryImg" />
                               <div class="table_main_wrapper">
                                 <h6>{{ category.translations[0].title }}</h6>
                               </div>
                             </div>
                           </td>
+
                           <td>
                             <p>{{ category.products.length }}</p>
                           </td>
-                          <!-- <td>
-                        <span> Online </span>
-                      </td> -->
-                          <td>
-                            <!-- <span> 23/04/18 </span> -->
-                          </td>
+
+                          <td></td>
+
                           <td>
                             <p v-if="category.visible">Активна категорія</p>
                             <p v-else>Неактивна категорія</p>
                           </td>
+
                           <td class="button_cell">
                             <div class="table_btn_wrap">
                               <button
@@ -135,6 +140,7 @@
                               >
                                 Редагувати
                               </button>
+
                               <button
                                 class="delete_btn"
                                 @click="modalStore.showModal('DeleteCategory', { category })"
@@ -145,6 +151,62 @@
                           </td>
                         </tr>
                       </tbody>
+                      <draggable
+                        v-else
+                        v-model="localCategories"
+                        item-key="id"
+                        tag="tbody"
+                        class="t_body"
+                        :animation="200"
+                        :force-fallback="true"
+                        ghost-class="drag-ghost"
+                        chosen-class="drag-chosen"
+                        drag-class="drag-dragging"
+                      >
+                        <template #item="{ element: category }">
+                          <tr>
+                            <td class="drag-handle">☰</td>
+
+                            <td class="table_row">
+                              <div class="table_main">
+                                <img :src="category.categoryImg" />
+                                <div class="table_main_wrapper">
+                                  <h6>{{ category.translations[0].title }}</h6>
+                                </div>
+                              </div>
+                            </td>
+
+                            <td>
+                              <p>{{ category.products.length }}</p>
+                            </td>
+
+                            <td></td>
+
+                            <td>
+                              <p v-if="category.visible">Активна категорія</p>
+                              <p v-else>Неактивна категорія</p>
+                            </td>
+
+                            <td class="button_cell">
+                              <div class="table_btn_wrap">
+                                <button
+                                  class="edit_btn"
+                                  @click="modalStore.showModal('UpdateCategory', { category })"
+                                >
+                                  Редагувати
+                                </button>
+
+                                <button
+                                  class="delete_btn"
+                                  @click="modalStore.showModal('DeleteCategory', { category })"
+                                >
+                                  <CloseIcon />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        </template>
+                      </draggable>
                     </table>
                   </div>
                 </div>
@@ -309,7 +371,7 @@ import { useProductStore } from "@store/product-store";
 import { useCategoryStore } from "@/store/category-store";
 // import { useAdminStore } from "@/store/admin-store";
 import gsap from "gsap";
-// import draggable from "vuedraggable";
+import draggable from "vuedraggable";
 
 const modalStore = useModalStore();
 const productStore = useProductStore();
@@ -322,16 +384,14 @@ const loadingProductState = ref(false);
 const productElem = ref(null);
 
 const activeGroup = ref("products");
+const activeProductCategory = ref("all");
 
 const fetchedProducts = computed(() => productStore.productList);
 const fetchedCategories = computed(() => categoryStore.categoryList);
 
-// const localCategories = ref([]);
-const hasOrderChanges = ref(false);
-
-// const productPromoHandler = async () => {
-
-// }
+const localCategories = ref([]);
+const localCategoryProducts = ref([]);
+const editOrderMode = ref(false);
 
 watch(fetchedCategories, async () => {
   if (categoryElem.value) {
@@ -371,29 +431,53 @@ const showGroup = async (group) => {
       await productStore.fetchProducts();
       activeGroup.value = "products";
       loadingCategoryState.value = false;
+      editOrderMode.value = false;
       break;
     case "categories":
       loadingCategoryState.value = true;
       await categoryStore.getCategories();
       activeGroup.value = "categories";
       loadingCategoryState.value = false;
+      editOrderMode.value = false;
+
       break;
   }
 };
 
-// const saveOrder = async () => {
-//   await categoryStore.saveCategoryOrder(localCategories.value);
+const saveOrder = async () => {
+  const payload = localCategories.value.map((cat, index) => ({
+    id: cat.id,
+    listPosition: index
+  }));
 
-//   categoryStore.categoryList = JSON.parse(JSON.stringify(localCategories.value));
+  await categoryStore.saveCategoryOrder(payload);
 
-//   hasOrderChanges.value = false;
-// };
+  await categoryStore.getCategories();
 
-// const resetOrder = () => {
-//   localCategories.value = JSON.parse(JSON.stringify(categoryStore.categoryList));
+  editOrderMode.value = false;
+};
 
-//   hasOrderChanges.value = false;
-// };
+const resetOrderMode = () => {
+  localCategories.value = [];
+
+  editOrderMode.value = false;
+};
+
+const changeCategoryOrder = () => {
+  const productHandler = () => {
+    localCategoryProducts.value = JSON.parse(JSON.stringify(fetchedProducts.value));
+    editOrderMode.value = true;
+  };
+
+  const categoryHandler = () => {
+    localCategories.value = JSON.parse(JSON.stringify(fetchedCategories.value));
+
+    console.log(localCategories.value, "categories");
+    editOrderMode.value = true;
+  };
+
+  activeGroup.value === "products" ? productHandler() : categoryHandler();
+};
 
 onMounted(async () => {
   loadingProductState.value = true;
@@ -452,7 +536,7 @@ onMounted(async () => {
           text-align: center;
           @media screen and (max-width: 650px) {
             flex: 1;
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 2vw, 1.3rem);
           }
         }
 
@@ -516,7 +600,7 @@ onMounted(async () => {
         align-items: center;
         gap: 0.5rem;
         padding-left: 0.5rem;
-        @media screen and (max-width: 650px) {
+        @media screen and (max-width: 780px) {
           width: 100%;
           height: auto;
           input {
@@ -524,13 +608,13 @@ onMounted(async () => {
           }
         }
       }
-      @media screen and (max-width: 650px) {
+      @media screen and (max-width: 780px) {
         width: 100%;
         height: auto;
       }
     }
 
-    @media screen and (max-width: 650px) {
+    @media screen and (max-width: 780px) {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -557,8 +641,12 @@ onMounted(async () => {
       border-radius: 5px;
       cursor: pointer;
 
-      @media screen and (max-width: 650px) {
+      @media screen and (max-width: 780px) {
         flex: 1;
+      }
+
+      @media screen and (max-width: 480px) {
+        font-size: clamp(0.7rem, 2vw, 0.9rem);
       }
 
       @media screen and (max-width: 375px) {
@@ -566,7 +654,16 @@ onMounted(async () => {
       }
     }
 
-    @media screen and (max-width: 650px) {
+    .avoid_click {
+      pointer-events: none;
+      opacity: 0.6;
+
+      @media screen and (max-width: 1024px) {
+        display: none;
+      }
+    }
+
+    @media screen and (max-width: 780px) {
       justify-content: center;
       padding-left: 0rem;
       padding-right: 0rem;
@@ -676,6 +773,38 @@ onMounted(async () => {
               }
               .t_body {
                 border-top: 1px solid rgba(0, 0, 0, 0.1);
+                position: relative;
+                width: 100%;
+
+                .draggable_body {
+                  width: 100%;
+                  height: auto;
+                }
+
+                tr {
+                  // position: relative;
+                  width: 100%;
+                  table-layout: fixed;
+                }
+
+                .drag-ghost,
+                .drag-chosen,
+                .drag-dragging {
+                  // display: table;
+                  width: 100%;
+                  table-layout: fixed;
+                }
+
+                .change_order_overlay {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background: rgba(0, 0, 0, 0.6);
+                  border-bottom: 1px solid var(--text-color);
+                  z-index: 10;
+                }
 
                 .skeleton_content {
                   padding: 0.75rem 1.5rem;
@@ -778,6 +907,45 @@ onMounted(async () => {
                     align-items: center;
                     justify-content: flex-start;
                     padding-inline: 0.5rem;
+                    gap: 1vw;
+
+                    // .order_burger {
+                    //   background-color: var(--light-color);
+                    //   display: flex;
+                    //   flex-direction: column;
+                    //   justify-content: center;
+                    //   align-items: center;
+                    //   cursor: pointer;
+                    //   width: 1.3rem;
+                    //   height: 2rem;
+                    //   z-index: 11;
+                    //   .top {
+                    //     width: 100%;
+                    //     height: 0.125rem;
+                    //     background-color: var(--text-color);
+                    //     margin: 0.125rem 0;
+                    //     border-radius: 0.125rem;
+                    //     transition: all 0.3s ease;
+                    //   }
+
+                    //   .middle {
+                    //     width: 100%;
+                    //     height: 0.125rem;
+                    //     background-color: var(--text-color);
+                    //     margin: 0.125rem 0;
+                    //     border-radius: 0.125rem;
+                    //     transition: all 0.3s ease;
+                    //   }
+
+                    //   .bottom {
+                    //     width: 100%;
+                    //     height: 0.125rem;
+                    //     background-color: var(--text-color);
+                    //     margin: 0.125rem 0;
+                    //     border-radius: 0.125rem;
+                    //     transition: all 0.3s ease;
+                    //   }
+                    // }
                   }
                   img {
                     display: inline-flex;
