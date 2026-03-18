@@ -76,6 +76,9 @@
                     <table class="table_wrapper">
                       <thead class="t_head">
                         <tr>
+                          <template v-if="editOrderMode">
+                            <th class="t_head_cell">№</th>
+                          </template>
                           <th class="t_head_cell">Назва категорії</th>
                           <th class="t_head_cell">Кількість товарів</th>
                           <th class="t_head_cell"></th>
@@ -790,7 +793,7 @@ onMounted(async () => {
                 .drag-ghost,
                 .drag-chosen,
                 .drag-dragging {
-                  // display: table;
+                  display: table-row;
                   width: 100%;
                   table-layout: fixed;
                 }
