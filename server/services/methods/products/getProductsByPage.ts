@@ -38,6 +38,7 @@ const getProductsByPage = defineEventHandler(async (event) => {
           translations: true,
           img: true
         },
+        orderBy: [{ listPosition: { sort: "asc", nulls: "last" } }, { id: "asc" }],
         skip: (Number(page) - 1) * Number(limit),
         take: Number(limit)
       }),

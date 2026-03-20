@@ -14,7 +14,9 @@
           <div class="modelValue_group">
             <input
               v-model="formValue.username"
+              name="username"
               type="text"
+              autocomplete="username"
               @focus="focused.username = true"
               @blur="
                 touched.username = true;
@@ -30,6 +32,8 @@
             <input
               v-model="formValue.password"
               :type="hiddenPassword ? 'password' : 'text'"
+              name="password"
+              autocomplete="current-password"
               @focus="focused.password = true"
               @blur="
                 focused.password = false;

@@ -179,25 +179,45 @@
                 </div>
 
                 <ul>
-                  <li>
+                  <li
+                    v-if="
+                      productStore.selectedProducts.translations[0].productColor !== '-' &&
+                      productStore.selectedProducts.translations[0].productColor !== ''
+                    "
+                  >
                     <span>
                       <strong> Колір: </strong> &nbsp;
                       {{ productStore.selectedProducts.translations[0].productColor }}
                     </span>
                   </li>
-                  <li>
+                  <li
+                    v-if="
+                      productStore.selectedProducts.translations[0].productMaterial !== '-' &&
+                      productStore.selectedProducts.translations[0].productMaterial !== ''
+                    "
+                  >
                     <span>
                       <strong> Матеріал: </strong> &nbsp;
                       {{ productStore.selectedProducts.translations[0].productMaterial }}
                     </span>
                   </li>
-                  <li>
+                  <li
+                    v-if="
+                      productStore.selectedProducts.productSize !== '-' &&
+                      productStore.selectedProducts.productSize !== ''
+                    "
+                  >
                     <span>
                       <strong> Розмір: </strong> &nbsp;
                       {{ productStore.selectedProducts.productSize }}
                     </span>
                   </li>
-                  <li>
+                  <li
+                    v-if="
+                      productStore.selectedProducts.translations[0].productManufacture !== '-' &&
+                      productStore.selectedProducts.translations[0].productManufacture !== ''
+                    "
+                  >
                     <span>
                       <strong> Країна виробник: </strong> &nbsp;
                       {{ productStore.selectedProducts.translations[0].productManufacture }}
@@ -559,7 +579,7 @@ const containerGalleryRef = ref(null);
 const productImages = ref([]);
 const loadState = ref(true);
 const swiperKey = ref(0);
-const isDescriptionCollapsed = ref(true);
+const isDescriptionCollapsed = ref(false);
 const counter = ref(1);
 const productQuantity = ref(1);
 
@@ -695,8 +715,8 @@ const fetchProductById = async () => {
   try {
     const res = await $fetch(`/api/products/${routeId}`);
 
-    console.log(!res.data, "Products page fetchProductById res.data is empty");
-    console.log(res, "res");
+    // console.log(!res.data, "Products page fetchProductById res.data is empty");
+    // console.log(res, "res");
 
     // Handle API response structure
     const productData = res.data || res;

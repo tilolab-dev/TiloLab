@@ -2102,6 +2102,7 @@ export const ProductScalarFieldEnum = {
   categoryId: 'categoryId',
   visible: 'visible',
   stockState: 'stockState',
+  listPosition: 'listPosition',
   stockValue: 'stockValue',
   discountPercent: 'discountPercent',
   productSize: 'productSize',

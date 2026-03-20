@@ -9,11 +9,12 @@
 
       <div class="popular_cards">
         <SharedSwiperSlider>
-          <swiper-slide v-for="(product, i) in popularCards" :key="i" class="card">
+          <swiper-slide v-for="(item, i) in popularCards" :key="i" class="card">
+            {{ console.log(item.product, "layout") }}
             <ItemCard
-              :link="`/products/${product.category.group.toLowerCase()}/${product.id}`"
-              :product="product"
-              @click="productStore.setSelectedProducts(product)"
+              :link="`/products/${item.product.category.group.toLowerCase()}/${item.product.id}`"
+              :product="item.product"
+              @click="productStore.setSelectedProducts(item.product)"
             />
           </swiper-slide>
         </SharedSwiperSlider>
@@ -32,8 +33,8 @@ const productStore = useProductStore();
 
 onMounted(async () => {
   try {
-    await productStore.fetchProducts();
-    popularCards.value = productStore.productList;
+    await productStore.getAlsoBuyProducts();
+    popularCards.value = productStore.alsoBuyList;
   } catch (err) {
     console.log(err);
   }
