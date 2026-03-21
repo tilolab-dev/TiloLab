@@ -139,7 +139,17 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import { useSeoMeta } from "#imports";
+useSeoMeta({
+  title: "FAQ - Tilo Lab | Часті запитання",
+  description:
+    "Відповіді на часті запитання про доставку, оплату, гарантію та обслуговування в Tilo Lab. Анонімна доставка, умови повернення та підтримка клієнтів.",
+  ogTitle: "FAQ - Tilo Lab",
+  ogDescription: "Часті запитання про доставку, оплату та обслуговування в Tilo Lab.",
+  ogUrl: "https://tilolab.com.ua/faq"
+});
+</script>
 
 <style lang="scss">
 @use "@/style/mixins.scss" as mixins;

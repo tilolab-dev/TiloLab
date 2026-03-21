@@ -1,10 +1,10 @@
 <template>
   <ClientOnly>
     <div class="button_items">
-      <button @click="swiper?.slidePrev()">
+      <button aria-label="Попередній слайд" @click="swiper?.slidePrev()">
         <AngleLeftIcon />
       </button>
-      <button @click="swiper?.slideNext()">
+      <button aria-label="Наступний слайд" @click="swiper?.slideNext()">
         <AngleRightIcon />
       </button>
     </div>

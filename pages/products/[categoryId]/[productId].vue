@@ -244,11 +244,12 @@
 <script setup>
 import ProductPagePopular from "@/components/ProductPagePopular.vue";
 
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, nextTick, watchEffect } from "vue";
 import { useProductStore } from "@/store/product-store";
 import { useCartStore } from "@/store/cart-store";
 import { useIndexStore } from "@/store/index-store";
 import { useWishlistStore } from "@/store/wishlist-store";
+import { useSeoMeta } from "#imports";
 
 import { useRoute } from "vue-router";
 // components
@@ -261,10 +262,296 @@ import PlusIcon from "~/assets/icons/plus-icon.svg";
 import MinusIcon from "~/assets/icons/minus-icon.svg";
 
 // stores
+import { storeToRefs } from "pinia";
 const productStore = useProductStore();
 const indexStore = useIndexStore();
 const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
+
+// Get route parameters
+const route = useRoute();
+const categoryId = route.params.categoryId;
+const productId = route.params.productId;
+
+// Product data for template (handle array structure like store)
+const productForTemplate = computed(() => {
+  const products = productStore.selectedProducts;
+  const product = Array.isArray(products) ? products[0] : products;
+  if (process.dev) {
+    console.log("productForTemplate computed - selectedProducts:", products);
+    console.log("productForTemplate computed - extracted product:", product);
+  }
+  return product;
+});
+
+// Dynamic SEO Meta Tags based on product
+const { selectedProducts } = storeToRefs(productStore);
+const currentProduct = computed(() => {
+  const product = selectedProducts.value;
+  if (process.dev) {
+    console.log("currentProduct computed - selectedProducts:", product);
+  }
+  return Array.isArray(product) ? product[0] : product;
+});
+
+const currentCategory = computed(() => {
+  return indexStore.fetchedCategories.find((cat) => cat.group.toLowerCase() === categoryId);
+});
+
+// Reactive SEO meta tags
+const seoMeta = computed(() => {
+  const product = currentProduct.value;
+  const category = currentCategory.value;
+
+  if (!product || !product.translations?.[0]) {
+    return {
+      title: "Завантаження продукту... - Tilo Lab",
+      description: "Завантаження продукту... Анонімна доставка по Україні.",
+      ogTitle: "Завантаження продукту... - Tilo Lab",
+      ogDescription: "Завантаження продукту...",
+      ogImage: "https://tilolab.com.ua/images/about-main.webp",
+      ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
+      twitterCard: "summary_large_image"
+    };
+  }
+
+  const description =
+    product.translations[0].productDescription || product.translations[0].description || "";
+  const shortDesc = description.length > 150 ? description.substring(0, 150) + "..." : description;
+  const shortDescOg =
+    description.length > 100 ? description.substring(0, 100) + "..." : description;
+
+  return {
+    title: `${product.translations[0].title} - Tilo Lab | ${category?.translations?.[0]?.title || "Інтимні товари"}`,
+    description: `${shortDesc} Купити з доставкою по Україні. Анонімна упаковка.`,
+    ogTitle: product.translations[0].title,
+    ogDescription: shortDescOg,
+    ogImage:
+      product.img && product.img.length > 0
+        ? typeof product.img[0] === "string"
+          ? product.img[0]
+          : product.img[0]?.path || "https://tilolab.com.ua/images/about-main.webp"
+        : "https://tilolab.com.ua/images/about-main.webp",
+    ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
+    twitterCard: "summary_large_image"
+  };
+});
+
+// Fetch product data during SSR for proper SEO
+const { data: productData, pending } = await useAsyncData(`product-${productId}`, async () => {
+  const res = await $fetch(`/api/products/${productId}`);
+  return res.data || res;
+});
+
+// SEO using productData from useAsyncData
+const seoMetaFromAsyncData = computed(() => {
+  // Debug logging
+  if (process.dev) {
+    console.log("SEO Debug - pending:", pending.value);
+    console.log("SEO Debug - productData:", productData.value);
+  }
+
+  // Show loading state while pending
+  if (pending.value) {
+    return {
+      title: "Завантаження продукту... - Tilo Lab",
+      description: "Завантаження продукту... Анонімна доставка по Україні.",
+      ogTitle: "Завантаження продукту... - Tilo Lab",
+      ogDescription: "Завантаження продукту...",
+      ogImage: "https://tilolab.com.ua/images/about-main.webp",
+      ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
+      twitterCard: "summary_large_image"
+    };
+  }
+
+  const product = productData.value;
+  const category = currentCategory.value;
+
+  if (!product || !product.translations?.[0]) {
+    return {
+      title: "Продукт не знайдено - Tilo Lab",
+      description: "Продукт не знайдено. Перегляньте наш каталог інтимних товарів.",
+      ogTitle: "Продукт не знайдено - Tilo Lab",
+      ogDescription: "Продукт не знайдено. Перегляньте наш каталог інтимних товарів.",
+      ogImage: "https://tilolab.com.ua/images/about-main.webp",
+      ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
+      twitterCard: "summary_large_image"
+    };
+  }
+
+  const description =
+    product.translations[0].productDescription || product.translations[0].description || "";
+  const shortDesc = description.length > 150 ? description.substring(0, 150) + "..." : description;
+  const shortDescOg =
+    description.length > 100 ? description.substring(0, 100) + "..." : description;
+
+  return {
+    title: `${product.translations[0].title} - Tilo Lab | ${category?.translations?.[0]?.title || "Інтимні товари"}`,
+    description: `${shortDesc} Купити з доставкою по Україні. Анонімна упаковка.`,
+    ogTitle: product.translations[0].title,
+    ogDescription: shortDescOg,
+    ogImage:
+      product.img && product.img.length > 0
+        ? typeof product.img[0] === "string"
+          ? product.img[0]
+          : product.img[0]?.path || "https://tilolab.com.ua/images/about-main.webp"
+        : "https://tilolab.com.ua/images/about-main.webp",
+    ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
+    twitterCard: "summary_large_image"
+  };
+});
+
+useHead(() => ({
+  title: seoMetaFromAsyncData.value.title,
+  meta: [
+    { name: "description", content: seoMetaFromAsyncData.value.description },
+    { property: "og:title", content: seoMetaFromAsyncData.value.ogTitle },
+    { property: "og:description", content: seoMetaFromAsyncData.value.ogDescription },
+    { property: "og:image", content: seoMetaFromAsyncData.value.ogImage },
+    { property: "og:url", content: seoMetaFromAsyncData.value.ogUrl },
+    { name: "twitter:card", content: seoMetaFromAsyncData.value.twitterCard }
+  ]
+}));
+
+// Structured Data for Product SEO
+const productStructuredData = computed(() => {
+  const product = currentProduct.value;
+  const category = currentCategory.value;
+
+  if (!product || !product.translations?.[0]) {
+    return null;
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.translations[0].title,
+    description:
+      product.translations[0].productDescription || product.translations[0].description || "",
+    image:
+      product.img && product.img.length > 0
+        ? product.img.map((img) =>
+            typeof img === "string"
+              ? img
+              : img?.path || "https://tilolab.com.ua/images/about-main.webp"
+          )
+        : ["https://tilolab.com.ua/images/about-main.webp"],
+    brand: {
+      "@type": "Brand",
+      name: "Tilo Lab"
+    },
+    category: category?.translations?.[0]?.title || "Інтимні товари",
+    offers: {
+      "@type": "Offer",
+      price: product.productPrice || product.price || 0,
+      priceCurrency: "UAH",
+      availability:
+        product.availableProduct > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      seller: {
+        "@type": "Organization",
+        name: "Tilo Lab",
+        url: "https://tilolab.com.ua"
+      },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: "0.00",
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          businessDays: {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: [
+              "https://schema.org/Monday",
+              "https://schema.org/Tuesday",
+              "https://schema.org/Wednesday",
+              "https://schema.org/Thursday",
+              "https://schema.org/Friday"
+            ]
+          }
+        }
+      }
+    },
+    aggregateRating: product.rating
+      ? {
+          "@type": "AggregateRating",
+          ratingValue: product.rating,
+          reviewCount: product.review_count || 1
+        }
+      : undefined,
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "Material",
+        value: product.translations[0]?.productMaterial || "Body-safe materials"
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Color",
+        value: product.translations[0]?.productColor || "Various colors"
+      },
+      {
+        "@type": "PropertyValue",
+        name: "Waterproof",
+        value: product.waterproof ? "Yes" : "No"
+      }
+    ]
+  };
+});
+
+// Breadcrumb structured data
+const breadcrumbStructuredData = computed(() => {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Головна",
+        item: "https://tilolab.com.ua"
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Каталог",
+        item: "https://tilolab.com.ua/products"
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: currentCategory.value?.translations?.[0]?.title || "Категорія",
+        item: `https://tilolab.com.ua/products/${categoryId}`
+      },
+      {
+        "@type": "ListItem",
+        position: 4,
+        name: currentProduct.value?.translations?.[0]?.title || "Продукт",
+        item: `https://tilolab.com.ua/products/${categoryId}/${productId}`
+      }
+    ]
+  };
+});
+
+useHead({
+  script: computed(() => {
+    const scripts = [];
+
+    if (productStructuredData.value) {
+      scripts.push({
+        type: "application/ld+json",
+        children: JSON.stringify(productStructuredData.value)
+      });
+    }
+
+    scripts.push({
+      type: "application/ld+json",
+      children: JSON.stringify(breadcrumbStructuredData.value)
+    });
+
+    return scripts;
+  })
+});
 
 // refs
 const containerMainRef = ref(null);
@@ -383,7 +670,6 @@ const breadCrumbLinks = computed(() => {
 });
 
 // routes
-const route = useRoute();
 
 const toggleDescription = () => {
   isDescriptionCollapsed.value = !isDescriptionCollapsed.value;
@@ -410,16 +696,60 @@ const fetchProductById = async () => {
     const res = await $fetch(`/api/products/${routeId}`);
 
     console.log(!res.data, "Products page fetchProductById res.data is empty");
-
     console.log(res, "res");
 
-    productStore.setSelectedProducts(res.data);
+    // Handle API response structure
+    const productData = res.data || res;
 
-    productImages.value = Array.isArray(res.data.images) ? res.data.images : [];
+    productStore.setSelectedProducts(productData);
+
+    productImages.value = Array.isArray(productData.images) ? productData.images : [];
+
+    // Update SEO when product data loads
+    if (productData && productData.translations?.[0]) {
+      const category = indexStore.fetchedCategories.find(
+        (cat) => cat.group.toLowerCase() === categoryId
+      );
+      const description =
+        productData.translations[0].productDescription ||
+        productData.translations[0].description ||
+        "";
+      const shortDesc =
+        description.length > 150 ? description.substring(0, 150) + "..." : description;
+      const shortDescOg =
+        description.length > 100 ? description.substring(0, 100) + "..." : description;
+
+      useHead({
+        title: `${productData.translations[0].title} - Tilo Lab | ${category?.translations?.[0]?.title || "Інтимні товари"}`,
+        meta: [
+          {
+            name: "description",
+            content: `${shortDesc} Купити з доставкою по Україні. Анонімна упаковка.`
+          },
+          { property: "og:title", content: productData.translations[0].title },
+          { property: "og:description", content: shortDescOg },
+          {
+            property: "og:image",
+            content:
+              productData.img && productData.img.length > 0
+                ? typeof productData.img[0] === "string"
+                  ? productData.img[0]
+                  : productData.img[0]?.path || "https://tilolab.com.ua/images/about-main.webp"
+                : "https://tilolab.com.ua/images/about-main.webp"
+          },
+          {
+            property: "og:url",
+            content: `https://tilolab.com.ua/products/${categoryId}/${productId}`
+          },
+          { name: "twitter:card", content: "summary_large_image" }
+        ]
+      });
+    }
 
     return productImages.value;
   } catch {
-    // Handle error silently or show user feedback
+    console.error("Error fetching product");
+    return [];
   } finally {
     loadState.value = false;
   }
@@ -458,15 +788,7 @@ const addToCart = () => {
 };
 
 onMounted(async () => {
-  // if (productStore?.selectedProducts?.id === routeId) {
-  //   loadState.value = false;
-  // } else if (routeId) {
   await fetchProductById();
-  // loadState.value = false;
-  // } else {
-  //   navigateTo("/404");
-  // }
-
   // Force re-initialization of swipers when route changes
   swiperKey.value += 1;
 });
