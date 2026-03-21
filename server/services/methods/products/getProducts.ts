@@ -51,7 +51,8 @@ async function getProducts() {
             translations: true
           }
         }
-      }
+      },
+      orderBy: [{ listPosition: { sort: "asc", nulls: "last" } }, { id: "asc" }]
     });
 
     // await redisClient.set(cacheKey, JSON.stringify(products), "EX", 3600);

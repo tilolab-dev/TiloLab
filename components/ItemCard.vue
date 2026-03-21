@@ -50,6 +50,7 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
 // import { useModalStore } from "@/store/modal-store";
 // import { useProductStore } from "@/store/product-store";
 
@@ -68,6 +69,8 @@ const props = defineProps({
     required: true
   }
 });
+
+console.log(props, "props in ItemCard");
 
 const hasDiscount = computed(() => {
   const percentNumber = Number(props.product.discountPercent);
@@ -93,6 +96,10 @@ const discountedPrice = computed(() => {
 //   event.preventDefault();
 //   modalStore.showModal("ProductToCart", props);
 // };
+
+onMounted(() => {
+  console.log(props, "props in ItemCard onMounted");
+});
 </script>
 
 <style scoped lang="scss">

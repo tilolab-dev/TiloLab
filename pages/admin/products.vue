@@ -35,10 +35,30 @@
               </div>
             </div>
             <div class="adding_content">
-              <button class="text-nowrap" @click="modalStore.showModal('AddCategory')">
+              <button v-if="editOrderMode" @click="saveOrder">Зберегти порядок</button>
+
+              <button
+                v-if="
+                  activeGroup === 'categories' ||
+                  (activeGroup === 'products' && activeProductCategory !== 'all')
+                "
+                @click="editOrderMode ? resetOrderMode() : changeCategoryOrder()"
+              >
+                <span v-if="!editOrderMode"> Змінити порядок </span>
+                <span v-else> Скасувати зміни </span>
+              </button>
+              <button
+                class="text-nowrap"
+                :class="editOrderMode ? 'avoid_click' : ''"
+                @click="modalStore.showModal('AddCategory')"
+              >
                 Додати категорію
               </button>
-              <button class="text-nowrap" @click="modalStore.showModal('AddProduct')">
+              <button
+                class="text-nowrap"
+                :class="editOrderMode ? 'avoid_click' : ''"
+                @click="modalStore.showModal('AddProduct')"
+              >
                 Додати товар
               </button>
             </div>
@@ -56,18 +76,21 @@
                     <table class="table_wrapper">
                       <thead class="t_head">
                         <tr>
+                          <!-- <template v-if="editOrderMode">
+                            <th class="t_head_cell">№</th>
+                          </template> -->
+                          <!-- <th v-if="editOrderMode" class="t_head_cell">№</th> -->
+
                           <th class="t_head_cell">Назва категорії</th>
+                          <th v-if="editOrderMode" class="t_head_cell"></th>
                           <th class="t_head_cell">Кількість товарів</th>
                           <th class="t_head_cell"></th>
                           <th class="t_head_cell">Статус</th>
-
                           <th class="t_head_cell"></th>
                         </tr>
                       </thead>
                       <tbody v-if="loadingCategoryState" class="t_body">
-                        <!-- Skeleton -->
                         <tr v-for="i in 5" :key="'skeleton-' + i" class="skeleton_content_row">
-                          <!-- Author -->
                           <td class="skeleton_content">
                             <div class="main_cell">
                               <div class="main_cell_circle skeleton_item"></div>
@@ -77,51 +100,43 @@
                               </div>
                             </div>
                           </td>
-                          <!-- Function -->
                           <td class="skeleton_content">
                             <div class="skeleton_item"></div>
                             <div class="skeleton_item"></div>
                           </td>
-                          <!-- Status -->
                           <td class="skeleton_content">
                             <div class="skeleton_item"></div>
                           </td>
-                          <!-- Employed -->
                           <td class="skeleton_content">
                             <div class="skeleton_item"></div>
                           </td>
-                          <!-- Edit -->
                           <td class="skeleton_content">
                             <div class="skeleton_item"></div>
                           </td>
                         </tr>
-                        <!-- Data -->
                       </tbody>
-                      <tbody v-else class="t_body">
-                        <!-- v-for="category in fetchedCategories" -->
-
-                        <tr v-for="(category, i) in fetchedCategories" :key="i">
+                      <tbody v-else-if="!editOrderMode" class="t_body">
+                        <tr v-for="category in fetchedCategories" :key="category.id">
                           <td class="table_row">
                             <div class="table_main">
-                              <img :src="category.categoryImg" alt="user1" />
+                              <img :src="category.categoryImg" />
                               <div class="table_main_wrapper">
                                 <h6>{{ category.translations[0].title }}</h6>
                               </div>
                             </div>
                           </td>
+
                           <td>
                             <p>{{ category.products.length }}</p>
                           </td>
-                          <!-- <td>
-                        <span> Online </span>
-                      </td> -->
-                          <td>
-                            <!-- <span> 23/04/18 </span> -->
-                          </td>
+
+                          <td></td>
+
                           <td>
                             <p v-if="category.visible">Активна категорія</p>
                             <p v-else>Неактивна категорія</p>
                           </td>
+
                           <td class="button_cell">
                             <div class="table_btn_wrap">
                               <button
@@ -130,6 +145,7 @@
                               >
                                 Редагувати
                               </button>
+
                               <button
                                 class="delete_btn"
                                 @click="modalStore.showModal('DeleteCategory', { category })"
@@ -140,6 +156,61 @@
                           </td>
                         </tr>
                       </tbody>
+                      <draggable
+                        v-else
+                        v-model="localCategories"
+                        item-key="id"
+                        tag="tbody"
+                        class="t_body t_body_draggable"
+                        :animation="200"
+                        :force-fallback="true"
+                        ghost-class="drag-ghost"
+                        chosen-class="drag-chosen"
+                        drag-class="drag-dragging"
+                      >
+                        <template #item="{ element: category }">
+                          <tr>
+                            <td class="table_row">
+                              <div class="table_main">
+                                <div class="drag-handle">☰</div>
+                                <img :src="category.categoryImg" />
+                                <div class="table_main_wrapper">
+                                  <h6>{{ category.translations[0].title }}</h6>
+                                </div>
+                              </div>
+                            </td>
+                            <td></td>
+                            <td>
+                              <p>{{ category.products.length }}</p>
+                            </td>
+
+                            <td></td>
+
+                            <td>
+                              <p v-if="category.visible">Активна категорія</p>
+                              <p v-else>Неактивна категорія</p>
+                            </td>
+
+                            <td class="button_cell">
+                              <div class="table_btn_wrap">
+                                <button
+                                  class="edit_btn"
+                                  @click="modalStore.showModal('UpdateCategory', { category })"
+                                >
+                                  Редагувати
+                                </button>
+
+                                <button
+                                  class="delete_btn"
+                                  @click="modalStore.showModal('DeleteCategory', { category })"
+                                >
+                                  <CloseIcon />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        </template>
+                      </draggable>
                     </table>
                   </div>
                 </div>
@@ -152,6 +223,16 @@
               <div ref="productElem" class="wrapper_content">
                 <div class="table_name">
                   <h6 class="dark:text-white">Товари</h6>
+                  <select v-model="activeProductCategory" name="product-select">
+                    <option value="all">Всі товари</option>
+                    <option
+                      v-for="category in fetchedCategories"
+                      :key="category.id"
+                      :value="category.id"
+                    >
+                      {{ category.translations[0].title }}
+                    </option>
+                  </select>
                 </div>
                 <div class="table_content">
                   <div class="table_inner">
@@ -179,29 +260,22 @@
                               </div>
                             </div>
                           </td>
-                          <!-- Function -->
                           <td class="skeleton_content">
                             <div class="skeleton_item"></div>
                             <div class="skeleton_item"></div>
                           </td>
-                          <!-- Status -->
                           <td class="skeleton_content">
                             <div class="skeleton_item"></div>
                           </td>
-                          <!-- Employed -->
                           <td class="skeleton_content">
                             <div class="skeleton_item"></div>
                           </td>
-                          <!-- Edit -->
                           <td class="skeleton_content">
                             <div class="skeleton_item"></div>
                           </td>
                         </tr>
-                        <!-- </div> -->
                       </tbody>
-                      <tbody v-else class="t_body">
-                        <!-- v-for="product in fetchedProducts" -->
-
+                      <tbody v-else-if="activeProductCategory === 'all'" class="t_body">
                         <tr v-for="(product, i) in fetchedProducts" :key="i">
                           <td class="table_row">
                             <div class="table_main">
@@ -212,7 +286,6 @@
                               />
                               <div v-else class="fallback_img"></div>
                               <h6>
-                                <!-- {{ product.translations[0].title }} -->
                                 {{ product.translations?.[0]?.title ?? "" }}
                               </h6>
                             </div>
@@ -280,6 +353,180 @@
                           </td>
                         </tr>
                       </tbody>
+                      <tbody
+                        v-else-if="activeProductCategory !== 'all' && !editOrderMode"
+                        class="t_body"
+                      >
+                        <tr v-for="(product, i) in localCategoryProducts" :key="i">
+                          <td class="table_row">
+                            <div class="table_main">
+                              <img
+                                v-if="product.img?.length"
+                                :src="product.img[0].path"
+                                alt="item"
+                              />
+                              <div v-else class="fallback_img"></div>
+                              <h6>
+                                {{ product.translations?.[0]?.title ?? "" }}
+                              </h6>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="product_option price_option">
+                              <span
+                                class="price"
+                                :style="{
+                                  textDecoration: product.discountPercent > 0 ? 'line-through' : '',
+                                  color: product.discountPercent > 0 ? 'var(--accent-red)' : ''
+                                }"
+                              >
+                                {{ product.productPrice }} UAH
+                              </span>
+                              <span v-if="product.discountPercent > 0" class="discount_price">
+                                {{
+                                  Math.round(
+                                    product.productPrice -
+                                      (product.productPrice * product.discountPercent) / 100
+                                  )
+                                }}
+                                UAH
+                              </span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="product_option">
+                              <span v-if="product.visible">Активний</span>
+                              <span v-else>Не активний</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div class="product_option">
+                              {{ product.category?.group ?? "" }}
+                            </div>
+                          </td>
+                          <td>
+                            <div class="product_quantity">
+                              {{ product.stockValue }}
+                            </div>
+                          </td>
+                          <td class="button_cell">
+                            <div class="table_btn_wrap">
+                              <button
+                                class="edit_btn"
+                                @click="modalStore.showModal('UpdateProduct', { product })"
+                              >
+                                Редагувати
+                              </button>
+                              <button
+                                class="promo_list_btn"
+                                @click="modalStore.showModal('ProductPromoModal', { product })"
+                              >
+                                <ListIcon />
+                              </button>
+
+                              <button
+                                class="delete_btn"
+                                @click="modalStore.showModal('DeleteProduct', { product })"
+                              >
+                                <CloseIcon />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <draggable
+                        v-else
+                        v-model="localCategoryProducts"
+                        item-key="id"
+                        tag="tbody"
+                        class="t_body t_body_draggable"
+                        :animation="200"
+                        :force-fallback="true"
+                        ghost-class="drag-ghost"
+                        chosen-class="drag-chosen"
+                        drag-class="drag-dragging"
+                      >
+                        <template #item="{ element: product }">
+                          <tr>
+                            <td class="table_row">
+                              <div class="table_main">
+                                <div class="drag-handle">☰</div>
+                                <img
+                                  v-if="product.img?.length"
+                                  :src="product.img[0].path"
+                                  alt="item"
+                                />
+                                <div v-else class="fallback_img"></div>
+                                <div class="table_main_wrapper">
+                                  {{ product.translations?.[0]?.title ?? "" }}
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="product_option price_option">
+                                <span
+                                  class="price"
+                                  :style="{
+                                    textDecoration:
+                                      product.discountPercent > 0 ? 'line-through' : '',
+                                    color: product.discountPercent > 0 ? 'var(--accent-red)' : ''
+                                  }"
+                                >
+                                  {{ product.productPrice }} UAH
+                                </span>
+                                <span v-if="product.discountPercent > 0" class="discount_price">
+                                  {{
+                                    Math.round(
+                                      product.productPrice -
+                                        (product.productPrice * product.discountPercent) / 100
+                                    )
+                                  }}
+                                  UAH
+                                </span>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="product_option">
+                                <span v-if="product.visible">Активний</span>
+                                <span v-else>Не активний</span>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="product_option">
+                                {{ product.category?.group ?? "" }}
+                              </div>
+                            </td>
+                            <td>
+                              <div class="product_quantity">
+                                {{ product.stockValue }}
+                              </div>
+                            </td>
+                            <td class="button_cell">
+                              <div class="table_btn_wrap">
+                                <button
+                                  class="edit_btn"
+                                  @click="modalStore.showModal('UpdateProduct', { product })"
+                                >
+                                  Редагувати
+                                </button>
+                                <button
+                                  class="promo_list_btn"
+                                  @click="modalStore.showModal('ProductPromoModal', { product })"
+                                >
+                                  <ListIcon />
+                                </button>
+
+                                <button
+                                  class="delete_btn"
+                                  @click="modalStore.showModal('DeleteProduct', { product })"
+                                >
+                                  <CloseIcon />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        </template>
+                      </draggable>
                     </table>
                   </div>
                 </div>
@@ -304,6 +551,7 @@ import { useProductStore } from "@store/product-store";
 import { useCategoryStore } from "@/store/category-store";
 // import { useAdminStore } from "@/store/admin-store";
 import gsap from "gsap";
+import draggable from "vuedraggable";
 
 const modalStore = useModalStore();
 const productStore = useProductStore();
@@ -316,13 +564,39 @@ const loadingProductState = ref(false);
 const productElem = ref(null);
 
 const activeGroup = ref("products");
+const activeProductCategory = ref("all");
 
 const fetchedProducts = computed(() => productStore.productList);
 const fetchedCategories = computed(() => categoryStore.categoryList);
 
-// const productPromoHandler = async () => {
+const localCategories = ref([]);
+const localCategoryProducts = ref([]);
+const editOrderMode = ref(false);
 
-// }
+watch(activeProductCategory, (newValue) => {
+  const getAllProducts = async () => {
+    localCategoryProducts.value = [];
+    editOrderMode.value = false;
+    return;
+    // await productStore.fetchProducts();
+  };
+
+  const getProductsByCat = async (groupId) => {
+    editOrderMode.value = false;
+
+    const res = await $fetch(`/api/products/get-category-product`, {
+      method: "GET",
+      query: {
+        categoryId: groupId
+      }
+    });
+
+    localCategoryProducts.value = JSON.parse(JSON.stringify(res.data));
+  };
+
+  newValue === "all" ? getAllProducts() : getProductsByCat(newValue);
+  console.log(newValue, "newValue");
+});
 
 watch(fetchedCategories, async () => {
   if (categoryElem.value) {
@@ -361,21 +635,85 @@ const showGroup = async (group) => {
       loadingCategoryState.value = true;
       await productStore.fetchProducts();
       activeGroup.value = "products";
+      activeProductCategory.value = "all";
       loadingCategoryState.value = false;
+      editOrderMode.value = false;
       break;
     case "categories":
       loadingCategoryState.value = true;
       await categoryStore.getCategories();
       activeGroup.value = "categories";
       loadingCategoryState.value = false;
+      editOrderMode.value = false;
+
       break;
   }
 };
 
+const saveOrder = async () => {
+  const saveCategoryOrder = async () => {
+    const payload = localCategories.value.map((cat, index) => ({
+      id: cat.id,
+      listPosition: index
+    }));
+
+    await categoryStore.saveCategoryOrder(payload);
+
+    await categoryStore.getCategories();
+  };
+
+  const saveProductOrder = async () => {
+    const payload = localCategoryProducts.value.map((prod, index) => ({
+      id: prod.id,
+      listPosition: index
+    }));
+
+    await $fetch("/api/products/reorder-list", {
+      method: "PATCH",
+      body: {
+        payload
+      }
+    });
+  };
+
+  // activeGroup.value === "products" ? saveProductOrder() : saveCategoryOrder();
+  await (activeGroup.value === "products" ? saveProductOrder() : saveCategoryOrder());
+  editOrderMode.value = false;
+};
+
+const resetOrderMode = () => {
+  localCategories.value = [];
+
+  editOrderMode.value = false;
+};
+
+const changeCategoryOrder = () => {
+  const productHandler = () => {
+    editOrderMode.value = true;
+
+    return;
+    // localCategoryProducts.value = JSON.parse(JSON.stringify(fetchedProducts.value));
+  };
+
+  const categoryHandler = () => {
+    localCategories.value = JSON.parse(JSON.stringify(fetchedCategories.value));
+
+    console.log(localCategories.value, "categories");
+    editOrderMode.value = true;
+  };
+
+  activeGroup.value === "products" ? productHandler() : categoryHandler();
+};
+
 onMounted(async () => {
   loadingProductState.value = true;
-  await productStore.fetchProducts();
-  loadingProductState.value = false;
+  try {
+    await Promise.all([categoryStore.getCategories(), productStore.fetchProducts()]);
+  } catch (e) {
+    console.error(e);
+  } finally {
+    loadingProductState.value = false;
+  }
 });
 </script>
 
@@ -429,7 +767,7 @@ onMounted(async () => {
           text-align: center;
           @media screen and (max-width: 650px) {
             flex: 1;
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 2vw, 1.3rem);
           }
         }
 
@@ -493,7 +831,7 @@ onMounted(async () => {
         align-items: center;
         gap: 0.5rem;
         padding-left: 0.5rem;
-        @media screen and (max-width: 650px) {
+        @media screen and (max-width: 780px) {
           width: 100%;
           height: auto;
           input {
@@ -501,13 +839,13 @@ onMounted(async () => {
           }
         }
       }
-      @media screen and (max-width: 650px) {
+      @media screen and (max-width: 780px) {
         width: 100%;
         height: auto;
       }
     }
 
-    @media screen and (max-width: 650px) {
+    @media screen and (max-width: 780px) {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -534,8 +872,12 @@ onMounted(async () => {
       border-radius: 5px;
       cursor: pointer;
 
-      @media screen and (max-width: 650px) {
+      @media screen and (max-width: 780px) {
         flex: 1;
+      }
+
+      @media screen and (max-width: 480px) {
+        font-size: clamp(0.7rem, 2vw, 0.9rem);
       }
 
       @media screen and (max-width: 375px) {
@@ -543,7 +885,16 @@ onMounted(async () => {
       }
     }
 
-    @media screen and (max-width: 650px) {
+    .avoid_click {
+      pointer-events: none;
+      opacity: 0.6;
+
+      @media screen and (max-width: 1024px) {
+        display: none;
+      }
+    }
+
+    @media screen and (max-width: 780px) {
       justify-content: center;
       padding-left: 0rem;
       padding-right: 0rem;
@@ -555,7 +906,6 @@ onMounted(async () => {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      // gap: 15px;
     }
   }
 
@@ -601,6 +951,28 @@ onMounted(async () => {
           border-bottom: 0px solid transparent;
           border-top-left-radius: 1rem;
           border-top-right-radius: 1rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          button {
+            @include mixins.accentBtn;
+            padding: 5px 10px;
+            font-size: 0.7rem;
+          }
+
+          select {
+            width: 150px;
+            height: 30px;
+            background: transparent;
+            border: 1px solid var(--text-grey);
+            color: var(--text-color);
+            padding: 5px;
+            border-radius: 5px;
+          }
+          select::outline {
+            border: none;
+          }
         }
         .table_content {
           flex: 1 1 auto;
@@ -644,6 +1016,32 @@ onMounted(async () => {
               }
               .t_body {
                 border-top: 1px solid rgba(0, 0, 0, 0.1);
+                position: relative;
+                width: 100%;
+
+                tr {
+                  width: 100%;
+                  table-layout: fixed;
+                }
+
+                .drag-ghost,
+                .drag-chosen,
+                .drag-dragging {
+                  display: table-row;
+                  width: 100%;
+                  table-layout: fixed;
+                }
+
+                .change_order_overlay {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background: rgba(0, 0, 0, 0.6);
+                  border-bottom: 1px solid var(--text-color);
+                  z-index: 10;
+                }
 
                 .skeleton_content {
                   padding: 0.75rem 1.5rem;
@@ -746,6 +1144,7 @@ onMounted(async () => {
                     align-items: center;
                     justify-content: flex-start;
                     padding-inline: 0.5rem;
+                    gap: 1vw;
                   }
                   img {
                     display: inline-flex;
@@ -898,6 +1297,13 @@ onMounted(async () => {
                       transition: all ease 0.3s;
                     }
                   }
+                }
+              }
+              .t_body_draggable {
+                button {
+                  pointer-events: none;
+                  cursor: not-allowed;
+                  opacity: 0.6;
                 }
               }
             }

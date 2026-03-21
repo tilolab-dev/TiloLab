@@ -4,6 +4,9 @@ import { prisma } from "@/prisma/prisma";
 async function getAllCategories() {
   try {
     const categories = await prisma.category.findMany({
+      orderBy: {
+        listPosition: "asc"
+      },
       include: {
         subcategories: true,
         translations: true,
