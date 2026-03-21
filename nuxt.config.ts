@@ -50,6 +50,8 @@ export default defineNuxtConfig({
     admin_user_name: process.env.ADMIN_USERNAME,
     admin_password: process.env.ADMIN_PASSWORD,
     jwt_secret: process.env.JWT_SECRET,
+    telegram_token: process.env.TELEGRAM_TOKEN,
+    telegram_chat_id: process.env.TELEGRAM_CHAT_ID,
     public: {
       api_base_url: process.env.API_BASE_URL,
       nova_post_uri: process.env.NOVA_POST_URI,
@@ -107,7 +109,7 @@ export default defineNuxtConfig({
   },
   vite: {
     server: {
-      allowedHosts: ["8e57-46-150-69-76.ngrok-free.app"],
+      allowedHosts: ["0e6f-88-154-6-98.ngrok-free.app"],
       strictPort: false
     },
     plugins: [

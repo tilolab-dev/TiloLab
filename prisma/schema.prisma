@@ -94,6 +94,7 @@ model Product {
   categoryId       Int
   visible          Boolean
   stockState       Boolean
+  listPosition     Int?
   stockValue       Int?                 @default(0)
   discountPercent  Int?
   productSize      String?

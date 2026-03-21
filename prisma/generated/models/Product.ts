@@ -29,6 +29,7 @@ export type AggregateProduct = {
 export type ProductAvgAggregateOutputType = {
   id: number | null
   categoryId: number | null
+  listPosition: number | null
   stockValue: number | null
   discountPercent: number | null
   productPrice: number | null
@@ -38,6 +39,7 @@ export type ProductAvgAggregateOutputType = {
 export type ProductSumAggregateOutputType = {
   id: number | null
   categoryId: number | null
+  listPosition: number | null
   stockValue: number | null
   discountPercent: number | null
   productPrice: number | null
@@ -49,6 +51,7 @@ export type ProductMinAggregateOutputType = {
   categoryId: number | null
   visible: boolean | null
   stockState: boolean | null
+  listPosition: number | null
   stockValue: number | null
   discountPercent: number | null
   productSize: string | null
@@ -61,6 +64,7 @@ export type ProductMaxAggregateOutputType = {
   categoryId: number | null
   visible: boolean | null
   stockState: boolean | null
+  listPosition: number | null
   stockValue: number | null
   discountPercent: number | null
   productSize: string | null
@@ -73,6 +77,7 @@ export type ProductCountAggregateOutputType = {
   categoryId: number
   visible: number
   stockState: number
+  listPosition: number
   stockValue: number
   discountPercent: number
   productSize: number
@@ -85,6 +90,7 @@ export type ProductCountAggregateOutputType = {
 export type ProductAvgAggregateInputType = {
   id?: true
   categoryId?: true
+  listPosition?: true
   stockValue?: true
   discountPercent?: true
   productPrice?: true
@@ -94,6 +100,7 @@ export type ProductAvgAggregateInputType = {
 export type ProductSumAggregateInputType = {
   id?: true
   categoryId?: true
+  listPosition?: true
   stockValue?: true
   discountPercent?: true
   productPrice?: true
@@ -105,6 +112,7 @@ export type ProductMinAggregateInputType = {
   categoryId?: true
   visible?: true
   stockState?: true
+  listPosition?: true
   stockValue?: true
   discountPercent?: true
   productSize?: true
@@ -117,6 +125,7 @@ export type ProductMaxAggregateInputType = {
   categoryId?: true
   visible?: true
   stockState?: true
+  listPosition?: true
   stockValue?: true
   discountPercent?: true
   productSize?: true
@@ -129,6 +138,7 @@ export type ProductCountAggregateInputType = {
   categoryId?: true
   visible?: true
   stockState?: true
+  listPosition?: true
   stockValue?: true
   discountPercent?: true
   productSize?: true
@@ -228,6 +238,7 @@ export type ProductGroupByOutputType = {
   categoryId: number
   visible: boolean
   stockState: boolean
+  listPosition: number | null
   stockValue: number | null
   discountPercent: number | null
   productSize: string | null
@@ -263,6 +274,7 @@ export type ProductWhereInput = {
   categoryId?: Prisma.IntFilter<"Product"> | number
   visible?: Prisma.BoolFilter<"Product"> | boolean
   stockState?: Prisma.BoolFilter<"Product"> | boolean
+  listPosition?: Prisma.IntNullableFilter<"Product"> | number | null
   stockValue?: Prisma.IntNullableFilter<"Product"> | number | null
   discountPercent?: Prisma.IntNullableFilter<"Product"> | number | null
   productSize?: Prisma.StringNullableFilter<"Product"> | string | null
@@ -282,6 +294,7 @@ export type ProductOrderByWithRelationInput = {
   categoryId?: Prisma.SortOrder
   visible?: Prisma.SortOrder
   stockState?: Prisma.SortOrder
+  listPosition?: Prisma.SortOrderInput | Prisma.SortOrder
   stockValue?: Prisma.SortOrderInput | Prisma.SortOrder
   discountPercent?: Prisma.SortOrderInput | Prisma.SortOrder
   productSize?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -304,6 +317,7 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   categoryId?: Prisma.IntFilter<"Product"> | number
   visible?: Prisma.BoolFilter<"Product"> | boolean
   stockState?: Prisma.BoolFilter<"Product"> | boolean
+  listPosition?: Prisma.IntNullableFilter<"Product"> | number | null
   stockValue?: Prisma.IntNullableFilter<"Product"> | number | null
   discountPercent?: Prisma.IntNullableFilter<"Product"> | number | null
   productSize?: Prisma.StringNullableFilter<"Product"> | string | null
@@ -323,6 +337,7 @@ export type ProductOrderByWithAggregationInput = {
   categoryId?: Prisma.SortOrder
   visible?: Prisma.SortOrder
   stockState?: Prisma.SortOrder
+  listPosition?: Prisma.SortOrderInput | Prisma.SortOrder
   stockValue?: Prisma.SortOrderInput | Prisma.SortOrder
   discountPercent?: Prisma.SortOrderInput | Prisma.SortOrder
   productSize?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -343,6 +358,7 @@ export type ProductScalarWhereWithAggregatesInput = {
   categoryId?: Prisma.IntWithAggregatesFilter<"Product"> | number
   visible?: Prisma.BoolWithAggregatesFilter<"Product"> | boolean
   stockState?: Prisma.BoolWithAggregatesFilter<"Product"> | boolean
+  listPosition?: Prisma.IntNullableWithAggregatesFilter<"Product"> | number | null
   stockValue?: Prisma.IntNullableWithAggregatesFilter<"Product"> | number | null
   discountPercent?: Prisma.IntNullableWithAggregatesFilter<"Product"> | number | null
   productSize?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
@@ -353,6 +369,7 @@ export type ProductScalarWhereWithAggregatesInput = {
 export type ProductCreateInput = {
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -372,6 +389,7 @@ export type ProductUncheckedCreateInput = {
   categoryId: number
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -388,6 +406,7 @@ export type ProductUncheckedCreateInput = {
 export type ProductUpdateInput = {
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -407,6 +426,7 @@ export type ProductUncheckedUpdateInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -425,6 +445,7 @@ export type ProductCreateManyInput = {
   categoryId: number
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -435,6 +456,7 @@ export type ProductCreateManyInput = {
 export type ProductUpdateManyMutationInput = {
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -447,6 +469,7 @@ export type ProductUncheckedUpdateManyInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -469,6 +492,7 @@ export type ProductCountOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   visible?: Prisma.SortOrder
   stockState?: Prisma.SortOrder
+  listPosition?: Prisma.SortOrder
   stockValue?: Prisma.SortOrder
   discountPercent?: Prisma.SortOrder
   productSize?: Prisma.SortOrder
@@ -479,6 +503,7 @@ export type ProductCountOrderByAggregateInput = {
 export type ProductAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+  listPosition?: Prisma.SortOrder
   stockValue?: Prisma.SortOrder
   discountPercent?: Prisma.SortOrder
   productPrice?: Prisma.SortOrder
@@ -490,6 +515,7 @@ export type ProductMaxOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   visible?: Prisma.SortOrder
   stockState?: Prisma.SortOrder
+  listPosition?: Prisma.SortOrder
   stockValue?: Prisma.SortOrder
   discountPercent?: Prisma.SortOrder
   productSize?: Prisma.SortOrder
@@ -502,6 +528,7 @@ export type ProductMinOrderByAggregateInput = {
   categoryId?: Prisma.SortOrder
   visible?: Prisma.SortOrder
   stockState?: Prisma.SortOrder
+  listPosition?: Prisma.SortOrder
   stockValue?: Prisma.SortOrder
   discountPercent?: Prisma.SortOrder
   productSize?: Prisma.SortOrder
@@ -512,6 +539,7 @@ export type ProductMinOrderByAggregateInput = {
 export type ProductSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+  listPosition?: Prisma.SortOrder
   stockValue?: Prisma.SortOrder
   discountPercent?: Prisma.SortOrder
   productPrice?: Prisma.SortOrder
@@ -660,6 +688,7 @@ export type ProductUpdateOneRequiredWithoutOrderItemsNestedInput = {
 export type ProductCreateWithoutCategoryInput = {
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -677,6 +706,7 @@ export type ProductUncheckedCreateWithoutCategoryInput = {
   id?: number
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -724,6 +754,7 @@ export type ProductScalarWhereInput = {
   categoryId?: Prisma.IntFilter<"Product"> | number
   visible?: Prisma.BoolFilter<"Product"> | boolean
   stockState?: Prisma.BoolFilter<"Product"> | boolean
+  listPosition?: Prisma.IntNullableFilter<"Product"> | number | null
   stockValue?: Prisma.IntNullableFilter<"Product"> | number | null
   discountPercent?: Prisma.IntNullableFilter<"Product"> | number | null
   productSize?: Prisma.StringNullableFilter<"Product"> | string | null
@@ -734,6 +765,7 @@ export type ProductScalarWhereInput = {
 export type ProductCreateWithoutOptionsInput = {
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -752,6 +784,7 @@ export type ProductUncheckedCreateWithoutOptionsInput = {
   categoryId: number
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -783,6 +816,7 @@ export type ProductUpdateToOneWithWhereWithoutOptionsInput = {
 export type ProductUpdateWithoutOptionsInput = {
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -801,6 +835,7 @@ export type ProductUncheckedUpdateWithoutOptionsInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -816,6 +851,7 @@ export type ProductUncheckedUpdateWithoutOptionsInput = {
 export type ProductCreateWithoutImgInput = {
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -834,6 +870,7 @@ export type ProductUncheckedCreateWithoutImgInput = {
   categoryId: number
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -865,6 +902,7 @@ export type ProductUpdateToOneWithWhereWithoutImgInput = {
 export type ProductUpdateWithoutImgInput = {
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -883,6 +921,7 @@ export type ProductUncheckedUpdateWithoutImgInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -898,6 +937,7 @@ export type ProductUncheckedUpdateWithoutImgInput = {
 export type ProductCreateWithoutTranslationsInput = {
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -916,6 +956,7 @@ export type ProductUncheckedCreateWithoutTranslationsInput = {
   categoryId: number
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -947,6 +988,7 @@ export type ProductUpdateToOneWithWhereWithoutTranslationsInput = {
 export type ProductUpdateWithoutTranslationsInput = {
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -965,6 +1007,7 @@ export type ProductUncheckedUpdateWithoutTranslationsInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -980,6 +1023,7 @@ export type ProductUncheckedUpdateWithoutTranslationsInput = {
 export type ProductCreateWithoutPopularProductsInput = {
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -998,6 +1042,7 @@ export type ProductUncheckedCreateWithoutPopularProductsInput = {
   categoryId: number
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -1029,6 +1074,7 @@ export type ProductUpdateToOneWithWhereWithoutPopularProductsInput = {
 export type ProductUpdateWithoutPopularProductsInput = {
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1047,6 +1093,7 @@ export type ProductUncheckedUpdateWithoutPopularProductsInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1062,6 +1109,7 @@ export type ProductUncheckedUpdateWithoutPopularProductsInput = {
 export type ProductCreateWithoutPromotedProductsInput = {
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -1080,6 +1128,7 @@ export type ProductUncheckedCreateWithoutPromotedProductsInput = {
   categoryId: number
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -1111,6 +1160,7 @@ export type ProductUpdateToOneWithWhereWithoutPromotedProductsInput = {
 export type ProductUpdateWithoutPromotedProductsInput = {
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1129,6 +1179,7 @@ export type ProductUncheckedUpdateWithoutPromotedProductsInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1144,6 +1195,7 @@ export type ProductUncheckedUpdateWithoutPromotedProductsInput = {
 export type ProductCreateWithoutOrderItemsInput = {
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -1162,6 +1214,7 @@ export type ProductUncheckedCreateWithoutOrderItemsInput = {
   categoryId: number
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -1193,6 +1246,7 @@ export type ProductUpdateToOneWithWhereWithoutOrderItemsInput = {
 export type ProductUpdateWithoutOrderItemsInput = {
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1211,6 +1265,7 @@ export type ProductUncheckedUpdateWithoutOrderItemsInput = {
   categoryId?: Prisma.IntFieldUpdateOperationsInput | number
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1227,6 +1282,7 @@ export type ProductCreateManyCategoryInput = {
   id?: number
   visible: boolean
   stockState: boolean
+  listPosition?: number | null
   stockValue?: number | null
   discountPercent?: number | null
   productSize?: string | null
@@ -1237,6 +1293,7 @@ export type ProductCreateManyCategoryInput = {
 export type ProductUpdateWithoutCategoryInput = {
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1254,6 +1311,7 @@ export type ProductUncheckedUpdateWithoutCategoryInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1271,6 +1329,7 @@ export type ProductUncheckedUpdateManyWithoutCategoryInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   visible?: Prisma.BoolFieldUpdateOperationsInput | boolean
   stockState?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  listPosition?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   stockValue?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   discountPercent?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1359,6 +1418,7 @@ export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   categoryId?: boolean
   visible?: boolean
   stockState?: boolean
+  listPosition?: boolean
   stockValue?: boolean
   discountPercent?: boolean
   productSize?: boolean
@@ -1379,6 +1439,7 @@ export type ProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   categoryId?: boolean
   visible?: boolean
   stockState?: boolean
+  listPosition?: boolean
   stockValue?: boolean
   discountPercent?: boolean
   productSize?: boolean
@@ -1392,6 +1453,7 @@ export type ProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   categoryId?: boolean
   visible?: boolean
   stockState?: boolean
+  listPosition?: boolean
   stockValue?: boolean
   discountPercent?: boolean
   productSize?: boolean
@@ -1405,6 +1467,7 @@ export type ProductSelectScalar = {
   categoryId?: boolean
   visible?: boolean
   stockState?: boolean
+  listPosition?: boolean
   stockValue?: boolean
   discountPercent?: boolean
   productSize?: boolean
@@ -1412,7 +1475,7 @@ export type ProductSelectScalar = {
   stockReserved?: boolean
 }
 
-export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "categoryId" | "visible" | "stockState" | "stockValue" | "discountPercent" | "productSize" | "productPrice" | "stockReserved", ExtArgs["result"]["product"]>
+export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "categoryId" | "visible" | "stockState" | "listPosition" | "stockValue" | "discountPercent" | "productSize" | "productPrice" | "stockReserved", ExtArgs["result"]["product"]>
 export type ProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orderItems?: boolean | Prisma.Product$orderItemsArgs<ExtArgs>
   popularProducts?: boolean | Prisma.Product$popularProductsArgs<ExtArgs>
@@ -1446,6 +1509,7 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     categoryId: number
     visible: boolean
     stockState: boolean
+    listPosition: number | null
     stockValue: number | null
     discountPercent: number | null
     productSize: string | null
@@ -1885,6 +1949,7 @@ export interface ProductFieldRefs {
   readonly categoryId: Prisma.FieldRef<"Product", 'Int'>
   readonly visible: Prisma.FieldRef<"Product", 'Boolean'>
   readonly stockState: Prisma.FieldRef<"Product", 'Boolean'>
+  readonly listPosition: Prisma.FieldRef<"Product", 'Int'>
   readonly stockValue: Prisma.FieldRef<"Product", 'Int'>
   readonly discountPercent: Prisma.FieldRef<"Product", 'Int'>
   readonly productSize: Prisma.FieldRef<"Product", 'String'>

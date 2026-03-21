@@ -1,86 +1,3 @@
-// import { defineStore } from "pinia";
-// import type { IProduct } from "~/types/product";
-
-// interface IProductResponce {
-//   data: IProduct[];
-//   message: string;
-// }
-// interface INewProductResponce {
-//   statusCode: number;
-//   message: string;
-//   product: IProduct;
-// }
-
-// export const useProductStore = defineStore("product", {
-//   state: () => ({
-//     selectedProducts: null as IProduct[] | null,
-//     productList: [] as IProduct[]
-//   }),
-//   actions: {
-//     setSelectedProducts(products: IProduct[] | null) {
-//       this.selectedProducts = products;
-
-//       // console.log(this.selectedProducts, "from store");
-//     },
-//     async fetchProducts() {
-//       try {
-//         const resFetch = await $fetch<IProductResponce>("/api/products");
-
-//         this.productList = resFetch.data || [];
-//       } catch (error) {
-//         console.log(error, "error");
-//       }
-//     },
-//     async deleteProduct(productId: number | string) {
-//       try {
-//         const deleteReq = await $fetch(`/api/products/${productId}`, {
-//           method: "DELETE"
-//         });
-//         if (deleteReq?.statusCode === 200) {
-//           alert("Товар успішно видалено");
-//         }
-//         this.productList = this.productList.filter((p) => p.id !== <Number | String>productId);
-//       } catch (error) {
-//         console.log(error, "error");
-//       }
-//     },
-//     async updateProduct(id: number, product: IProduct) {
-//       // console.log(id, "id");
-//       // console.log(product, "product");
-//       try {
-//         const updateReq = await $fetch(`/api/products/${id}`, {
-//           method: "PATCH",
-//           body: product
-//         });
-//         if (updateReq?.statusCode === 200) {
-//           await this.fetchProducts();
-//           alert("Товар успішно оновлено");
-//         }
-//       } catch (err) {
-//         console.log(err, "error");
-//       }
-//     },
-//     async addProduct(product: IProduct) {
-//       try {
-//         const addReq = await $fetch<INewProductResponce>("/api/products", {
-//           method: "POST",
-//           body: product
-//         });
-
-//         if (addReq.statusCode === 200) {
-//           // this.productList.push(addReq.product);
-//           await this.fetchProducts();
-//           return addReq;
-//         }
-
-//         throw new Error(addReq.message);
-//       } catch (err) {
-//         console.log(err, "error");
-//       }
-//     }
-//   }
-// });
-
 import { defineStore } from "pinia";
 import type { IProduct } from "~/types/product";
 
@@ -99,6 +16,8 @@ interface INewProductResponse {
 export const useProductStore = defineStore("product", () => {
   const selectedProducts = ref<IProduct[] | null>(null);
   const productList = ref<IProduct[]>([]);
+  const popularList = ref<IProduct[]>([]);
+  const alsoBuyList = ref<IProduct[]>([]);
 
   const page = ref(1);
   const limit = ref(12);
@@ -124,6 +43,30 @@ export const useProductStore = defineStore("product", () => {
       });
       productList.value = resFetch.data || [];
       console.log(!productList.value, "Products store fetchProducts productList is empty");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function getAlsoBuyProducts() {
+    try {
+      const resFetch = await $fetch<IProductResponse>("/api/admin/promoted/popular/get-list", {
+        method: "GET"
+      });
+
+      alsoBuyList.value = resFetch.data || [];
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function getPopularProducts() {
+    try {
+      const resFetch = await $fetch<IProductResponse>("/api/admin/promoted/promo/get-list", {
+        method: "GET"
+      });
+      popularList.value = resFetch.data || [];
+      console.log(!popularList.value, "Products store getPopularProducts popularList is empty");
     } catch (err) {
       console.error(err);
     }
@@ -301,6 +244,10 @@ export const useProductStore = defineStore("product", () => {
     addProduct,
     setCategory,
     setPriceRange,
-    goToPage
+    goToPage,
+    popularList,
+    alsoBuyList,
+    getAlsoBuyProducts,
+    getPopularProducts
   };
 });

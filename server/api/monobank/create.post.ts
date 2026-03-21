@@ -54,11 +54,11 @@ export default defineEventHandler(async (event: any) => {
       body: {
         amount: amount * 100,
         ccy: 980,
-        // redirectUrl: `https://edd85ac46640.ngrok-free.app/summary`,
-        // webHookUrl: "https://edd85ac46640.ngrok-free.app/api/monobank/webhook",
         redirectUrl: `https://www.tilolab.com.ua/summary/${orderId}`,
         webHookUrl: "https://www.tilolab.com.ua/api/monobank/webhook",
-        // webHookUrl: "https://8e57-46-150-69-76.ngrok-free.app/api/monobank/webhook",
+        // TEST ENVIRONMENT
+        // redirectUrl: `https://0e6f-88-154-6-98.ngrok-free.app/summary/${orderId}`,
+        // webHookUrl: "https://0e6f-88-154-6-98.ngrok-free.app/api/monobank/webhook",
 
         validity: 3600,
         merchantPaymInfo: {

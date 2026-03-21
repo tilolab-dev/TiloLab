@@ -1,11 +1,5 @@
 <template>
   <div class="login">
-    <div class="tooltip_wrapper">
-      <div class="tooltip_item">
-        <span class="tooltip_type"> Error : </span>
-        <span class="tooltip_message"> fglgmzerlmlemlemgsrlgm </span>
-      </div>
-    </div>
     <div class="login_container">
       <div v-if="loading" class="loader" :class="{ active_loader: loading }">
         <SharedLoader />
@@ -20,7 +14,9 @@
           <div class="modelValue_group">
             <input
               v-model="formValue.username"
+              name="username"
               type="text"
+              autocomplete="username"
               @focus="focused.username = true"
               @blur="
                 touched.username = true;
@@ -36,6 +32,8 @@
             <input
               v-model="formValue.password"
               :type="hiddenPassword ? 'password' : 'text'"
+              name="password"
+              autocomplete="current-password"
               @focus="focused.password = true"
               @blur="
                 focused.password = false;

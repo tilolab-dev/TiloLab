@@ -7,7 +7,8 @@ export default defineEventHandler(async () => {
         product: {
           include: {
             img: true,
-            translations: true
+            translations: true,
+            category: true
           }
         }
       }
