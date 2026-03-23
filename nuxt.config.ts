@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     baseURL: "/",
     head: {
       htmlAttrs: {
-        lang: 'uk'
+        lang: "uk"
       },
       title: "Tilolab",
       meta: [

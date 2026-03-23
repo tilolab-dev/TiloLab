@@ -54,7 +54,6 @@
             <div v-else class="img_gallery_placeholder">
               <p>No images available</p>
             </div>
-
             <div class="product_id_info">
               <div class="product_id_info_main">
                 <div class="description_head">
@@ -129,6 +128,25 @@
                   class="no_available"
                 >
                   <span>Товар закінчився</span>
+                </div>
+
+                <div v-if="productStore.selectedProducts.options.length" class="options_wrapper">
+                  <div class="option_item">
+                    <NuxtImg :src="productStore.selectedProducts.img[0].path" alt="option" />
+                    <span>
+                      {{ productStore.selectedProducts.translations[0].productColor }}
+                    </span>
+                  </div>
+                  <div
+                    v-for="option in productStore.selectedProducts.options"
+                    :key="option.id"
+                    class="option_item"
+                  >
+                    <NuxtImg :src="option.optionImg" alt="option" />
+                    <span>
+                      {{ option.translations[0].optionInfo }}
+                    </span>
+                  </div>
                 </div>
 
                 <div class="product_quantity">
@@ -988,6 +1006,36 @@ onUnmounted(() => {
       }
     }
 
+    .options_wrapper {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 5px;
+    }
+
+    .option_item {
+      width: 100px;
+      height: auto;
+      // aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      overflow: hidden;
+      gap: 5px;
+      img {
+        width: 100px;
+        height: 100px;
+        aspect-ratio: 1 / 1;
+        border: 1px solid var(--accent-color);
+        border-radius: 5px;
+      }
+    }
+
     h3 {
       font-family: "Montserrat", sans-serif;
       color: #fff;
@@ -1373,6 +1421,7 @@ onUnmounted(() => {
       font-size: 1.125rem;
       height: auto;
       transition: height 0.3s ease;
+      white-space: pre-line;
 
       &.description_collapsed {
         height: 0;

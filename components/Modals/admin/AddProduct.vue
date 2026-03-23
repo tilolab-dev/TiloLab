@@ -328,6 +328,29 @@
                     placeholder="Введіть ціну на опційний товар"
                   />
                 </div>
+                <div class="new_option flex flex-col gap-2">
+                  <div class="new_option_wrapper">
+                    <span class="default_text"> Додати залишок для опційного товару </span>
+                    <div class="checkbox_wrap">
+                      <input
+                        id="optionStockValue"
+                        v-model="optionStockState"
+                        value="false"
+                        class="checkbox"
+                        type="checkbox"
+                      />
+                      <label for="optionStockValue" class="product_checkbox"></label>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="optionStockState" class="new_option">
+                  <input
+                    v-model="optionStockValue"
+                    type="number"
+                    placeholder="Введіть залишок на опційний товар"
+                  />
+                </div>
+
                 <div class="new_option_btn">
                   <button class="btn_fill" @click="addNewOption('text', 'value')">
                     <!-- @click="addTestData" -->
@@ -444,6 +467,8 @@ const productSize = ref("");
 const addOptionsRef = ref([]);
 const discountState = ref(false);
 const addOptionTextUk = ref("");
+const optionStockState = ref(false);
+const optionStockValue = ref(0);
 // const addOptionTextEn = ref("");
 // const addOptionTextRu = ref("");
 const addOptionPrice = ref(false);
@@ -534,46 +559,66 @@ const addNewOption = () => {
   //     return;
   //   }
 
+  if (!addOptionTextUk.value) {
+    emit("tooltip", {
+      status: "error",
+      message: "Введіть короткий опис для опції"
+    });
+    return;
+  }
+
   if (optionFileState.optionFilesPreview.value.length > 0) {
-    console.log("addNew1");
-    if (
-      addOptionTextUk.value
-      //   addOptionTextEn.value &&
-      //   addOptionTextRu.value
-    ) {
-      console.log("addNew");
-      addOptionsRef.value.push({
-        file: toRaw(optionFileState.optionFiles.value),
-        fileImg: optionFileState.optionFilesPreview.value,
-        // file: [...toRaw(optionFileState.optionFiles.value)],
-        // fileImg: [...optionFileState.optionFilesPreview.value],
-        optionPrice: optionPrice.value,
-        translations: [
-          {
-            language: "uk",
-            optionInfo: addOptionTextUk.value
-          }
-          //   {
-          //     language: "en",
-          //     optionInfo: addOptionTextEn.value,
-          //   },
-          //   {
-          //     language: "ru",
-          //     optionInfo: addOptionTextRu.value,
-          //   },
-        ]
-      });
-    }
+    addOptionsRef.value.push({
+      file: toRaw(optionFileState.optionFiles.value),
+      fileImg: optionFileState.optionFilesPreview.value,
+
+      optionPrice: optionPrice.value,
+      translations: [
+        {
+          language: "uk",
+          optionInfo: addOptionTextUk.value
+        }
+        //   {
+        //     language: "en",
+        //     optionInfo: addOptionTextEn.value,
+        //   },
+        //   {
+        //     language: "ru",
+        //     optionInfo: addOptionTextRu.value,
+        //   },
+      ]
+    });
 
     optionFileState.optionFiles.value = [];
     optionFileState.optionFilesPreview.value = [];
     addOptionTextUk.value = "";
     // addOptionTextEn.value = "";
     // addOptionTextRu.value = "";
-    // optionFileState.optionReady.value = false;
     optionFileInput.value.value = "";
     addOptionPrice.value = false;
     optionPrice.value = 0;
+  } else {
+    addOptionsRef.value.push({
+      file: [],
+      fileImg: "",
+      optionPrice: optionPrice.value,
+      translations: [
+        {
+          language: "uk",
+          optionInfo: addOptionTextUk.value
+        }
+      ]
+    });
+    optionFileState.optionFiles.value = [];
+    optionFileState.optionFilesPreview.value = [];
+    addOptionTextUk.value = "";
+    // addOptionTextEn.value = "";
+    // addOptionTextRu.value = "";
+    optionFileInput.value.value = "";
+    addOptionPrice.value = false;
+    optionPrice.value = 0;
+
+    console.log(addOptionsRef.value, "add option ref after push without file");
   }
 };
 
@@ -598,7 +643,7 @@ const addNewProduct = async () => {
     return;
   }
 
-  if (productStockValue.value <= 0) {
+  if (productStockValue.value < 0) {
     emit("tooltip", {
       status: "error",
       message: "Введіть кількість товару"
@@ -689,7 +734,9 @@ const addNewProduct = async () => {
 
   const uploadData = async (productImgPath, optionImgPath) => {
     toRaw(addOptionsRef.value).map((elem, index) => {
-      toRaw(elem.fileImg)[0] = optionImgPath[index];
+      if (elem.fileImg && elem.fileImg.length > 0) {
+        toRaw(elem.fileImg)[0] = optionImgPath[index];
+      }
     });
 
     const newProduct = productStore.addProduct({
@@ -1158,6 +1205,13 @@ onMounted(async () => {
       gap: 1rem;
 
       &_content {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
         select {
           width: 100%;
           height: 100%;
@@ -1233,6 +1287,7 @@ onMounted(async () => {
       display: flex;
       justify-content: flex-start;
       flex-wrap: wrap;
+      width: 100%;
       gap: 10px;
       .wrapper {
         min-width: 250px;

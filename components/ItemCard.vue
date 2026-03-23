@@ -164,7 +164,8 @@ onMounted(() => {
   }
   h3 {
     color: var(--text-color);
-    font-size: clamp(0.8rem, 2vw, 1.4rem);
+    // font-size: clamp(0.8rem, 2vw, 1.4rem);
+    font-size: clamp(0.8rem, 2vw, 1.25rem);
     transition: all ease 0.3s;
     font-weight: 500;
 
@@ -187,7 +188,8 @@ onMounted(() => {
   .description_content {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    // justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
     transition: all ease 0.3s;
     width: 100%;

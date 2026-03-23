@@ -301,7 +301,7 @@
               </div>
             </div>
 
-            <div v-if="currentOptionFiles.length > 0" class="option add_new">
+            <div v-if="currentOptionFiles?.length > 0" class="option add_new">
               <h4 class="option_title">Опції товару:</h4>
 
               <div class="added_options">

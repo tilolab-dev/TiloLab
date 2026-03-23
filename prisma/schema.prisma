@@ -115,8 +115,9 @@ model Product {
 model ProductOptions {
   id           Int                         @id @default(autoincrement())
   optionId     Int
-  optionImg    String
+  optionImg    String?
   optionPrice  Float?
+  optionStock  Int?                        @default(0)
   Product      Product                     @relation(fields: [optionId], references: [id], onDelete: Cascade)
   translations ProductOptionsTranslation[]
 
