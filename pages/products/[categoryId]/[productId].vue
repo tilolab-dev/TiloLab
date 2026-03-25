@@ -264,12 +264,11 @@
 <script setup>
 import ProductPagePopular from "@/components/ProductPagePopular.vue";
 
-import { ref, computed, onMounted, nextTick, watchEffect } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useProductStore } from "@/store/product-store";
 import { useCartStore } from "@/store/cart-store";
 import { useIndexStore } from "@/store/index-store";
 import { useWishlistStore } from "@/store/wishlist-store";
-import { useSeoMeta } from "#imports";
 
 import { useRoute } from "vue-router";
 // components
@@ -293,24 +292,10 @@ const route = useRoute();
 const categoryId = route.params.categoryId;
 const productId = route.params.productId;
 
-// Product data for template (handle array structure like store)
-const productForTemplate = computed(() => {
-  const products = productStore.selectedProducts;
-  const product = Array.isArray(products) ? products[0] : products;
-  if (process.dev) {
-    console.log("productForTemplate computed - selectedProducts:", products);
-    console.log("productForTemplate computed - extracted product:", product);
-  }
-  return product;
-});
-
 // Dynamic SEO Meta Tags based on product
 const { selectedProducts } = storeToRefs(productStore);
 const currentProduct = computed(() => {
   const product = selectedProducts.value;
-  if (process.dev) {
-    console.log("currentProduct computed - selectedProducts:", product);
-  }
   return Array.isArray(product) ? product[0] : product;
 });
 
@@ -365,12 +350,6 @@ const { data: productData, pending } = await useAsyncData(`product-${productId}`
 
 // SEO using productData from useAsyncData
 const seoMetaFromAsyncData = computed(() => {
-  // Debug logging
-  if (process.dev) {
-    console.log("SEO Debug - pending:", pending.value);
-    console.log("SEO Debug - productData:", productData.value);
-  }
-
   // Show loading state while pending
   if (pending.value) {
     return {
@@ -796,9 +775,6 @@ const addToCart = () => {
       ? discountedPrice.value
       : productStore.selectedProducts.productPrice;
 
-  console.log(checkDiscountPrice);
-
-  // const productTotalPrice = productStore.selectedProducts.productPrice * counter.value;
   const productTotalPrice = checkDiscountPrice * counter.value;
 
   cartStore.addProduct(productStore.selectedProducts, counter.value, productTotalPrice);
@@ -811,10 +787,6 @@ onMounted(async () => {
   await fetchProductById();
   // Force re-initialization of swipers when route changes
   swiperKey.value += 1;
-});
-
-onUnmounted(() => {
-  // Clean up will be handled automatically by key change
 });
 </script>
 
@@ -1178,6 +1150,7 @@ onUnmounted(() => {
         width: 100%;
         height: 100%;
         fill: var(--text-color);
+        stroke: var(--text-color);
       }
       .counter_disabled {
         background: transparent;

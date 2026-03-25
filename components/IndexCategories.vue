@@ -52,7 +52,9 @@ import { useIndexStore } from "@/store/index-store";
 
 const indexStore = useIndexStore();
 
-const fetchCategories = computed(() => indexStore?.fetchedCategories);
+const fetchCategories = computed(() =>
+  indexStore?.fetchedCategories.filter((el) => el.visible === true)
+);
 </script>
 
 <style lang="scss" scoped>
