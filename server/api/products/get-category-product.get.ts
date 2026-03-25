@@ -18,6 +18,11 @@ export default defineEventHandler(async (event) => {
       include: {
         translations: true,
         category: true,
+        options: {
+          include: {
+            translations: true
+          }
+        },
         img: true
       }
     });

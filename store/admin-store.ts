@@ -111,7 +111,8 @@ export const useAdminStore = defineStore("admin-store", {
     },
     async getPopularList() {
       try {
-        const getPopularRes = await $fetch<any>("/api/admin/promoted/popular/get-list", {
+        // /api/admin/promoted/popular/get-list
+        const getPopularRes = await $fetch<any>("/api/products/promoted/popular/get-list", {
           method: "GET"
         });
 
@@ -124,14 +125,14 @@ export const useAdminStore = defineStore("admin-store", {
     },
     async updatePopularItem(id: string | number) {
       try {
-        const updatePopularRes = await $fetch("/api/admin/promoted/popular/patch-list", {
+        const updatePopularRes = await $fetch<any>("/api/products/promoted/popular/patch-list", {
           method: "PATCH",
           body: {
             productId: id
           }
         });
 
-        console.log(updatePopularRes);
+        // console.log(updatePopularRes);
 
         this.popularList.push(updatePopularRes.data);
       } catch (err) {
@@ -140,14 +141,14 @@ export const useAdminStore = defineStore("admin-store", {
     },
     async deletePopularItem(id: string | number) {
       try {
-        const deleteItemRes = await $fetch<any>("/api/admin/promoted/popular/delete-item", {
+        const deleteItemRes = await $fetch<any>("/api/products/promoted/popular/delete-item", {
           method: "DELETE",
           body: {
             productId: id
           }
         });
 
-        console.log(deleteItemRes);
+        // console.log(deleteItemRes);
 
         this.popularList = this.popularList.filter((el: any) => el.id !== deleteItemRes.data.id);
       } catch (err) {
@@ -156,11 +157,11 @@ export const useAdminStore = defineStore("admin-store", {
     },
     async getPromotedList() {
       try {
-        const getPromotedRes = await $fetch<any>("/api/admin/promoted/promo/get-list", {
+        const getPromotedRes = await $fetch<any>("/api/products/promoted/promo/get-list", {
           method: "GET"
         });
 
-        console.log(getPromotedRes);
+        // console.log(getPromotedRes);
 
         this.promotedList = getPromotedRes.data;
       } catch (err) {
@@ -169,14 +170,14 @@ export const useAdminStore = defineStore("admin-store", {
     },
     async updatePromoItem(id: string | number) {
       try {
-        const updatePromoRes = await $fetch("/api/admin/promoted/promo/patch-list", {
+        const updatePromoRes = await $fetch<any>("/api/products/promoted/promo/patch-list", {
           method: "PATCH",
           body: {
             productId: id
           }
         });
 
-        console.log(updatePromoRes);
+        // console.log(updatePromoRes);
 
         this.promotedList.push(updatePromoRes.data);
       } catch (err) {
@@ -186,7 +187,7 @@ export const useAdminStore = defineStore("admin-store", {
     async deletePromoItem(id: string | number) {
       try {
         console.log(id, "id from store");
-        const deleteItemRes = await $fetch<any>("/api/admin/promoted/promo/delete-item", {
+        const deleteItemRes = await $fetch<any>("/api/products/promoted/promo/delete-item", {
           method: "DELETE",
           body: {
             productId: id

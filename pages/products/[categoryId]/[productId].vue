@@ -54,17 +54,25 @@
             <div v-else class="img_gallery_placeholder">
               <p>No images available</p>
             </div>
-
             <div class="product_id_info">
               <div class="product_id_info_main">
                 <div class="description_head">
                   <h3>
                     {{ productStore.selectedProducts.translations[0].title }}
+                    {{
+                      selectedOption !== null
+                        ? ` - (${selectedOption.translations[0].optionInfo})`
+                        : ""
+                    }}
                   </h3>
                   <div class="product_price">
                     <span v-if="productStore.selectedProducts.discountPercent === 0">
                       {{
-                        (productStore.selectedProducts.productPrice * productQuantity).toFixed(2)
+                        selectedOption !== null
+                          ? (selectedOption.optionPrice * productQuantity).toFixed(2)
+                          : (productStore.selectedProducts.productPrice * productQuantity).toFixed(
+                              2
+                            )
                       }}
                       грн
                     </span>
@@ -129,6 +137,35 @@
                   class="no_available"
                 >
                   <span>Товар закінчився</span>
+                </div>
+
+                <div v-if="productStore.selectedProducts.options.length" class="options_wrapper">
+                  <div
+                    class="option_item"
+                    :class="selectedOption === null ? 'selected_option' : ''"
+                    @click="selectedOption = null"
+                  >
+                    <NuxtImg :src="productStore.selectedProducts.img[0].path" alt="option" />
+                    <span>
+                      {{
+                        productStore.selectedProducts.translations[0].productColor.length < 1
+                          ? "Стандарт"
+                          : productStore.selectedProducts.translations[0].productColor
+                      }}
+                    </span>
+                  </div>
+                  <div
+                    v-for="option in productStore.selectedProducts.options"
+                    :key="option.id"
+                    class="option_item"
+                    :class="option.id === selectedOption?.id ? 'selected_option' : ''"
+                    @click="selectedOption = option"
+                  >
+                    <NuxtImg :src="option.optionImg" alt="option" />
+                    <span>
+                      {{ option.translations[0].optionInfo }}
+                    </span>
+                  </div>
                 </div>
 
                 <div class="product_quantity">
@@ -291,6 +328,24 @@ const wishlistStore = useWishlistStore();
 const route = useRoute();
 const categoryId = route.params.categoryId;
 const productId = route.params.productId;
+
+// Options
+const selectedOption = ref(null);
+
+// const selectOption = (option) => {
+//   selectedOption.value = option;
+// }
+
+// Product data for template (handle array structure like store)
+const productForTemplate = computed(() => {
+  const products = productStore.selectedProducts;
+  const product = Array.isArray(products) ? products[0] : products;
+  if (process.dev) {
+    console.log("productForTemplate computed - selectedProducts:", products);
+    console.log("productForTemplate computed - extracted product:", product);
+  }
+  return product;
+});
 
 // Dynamic SEO Meta Tags based on product
 const { selectedProducts } = storeToRefs(productStore);
@@ -960,6 +1015,42 @@ onMounted(async () => {
       }
     }
 
+    .options_wrapper {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 5px;
+    }
+
+    .option_item {
+      width: 100px;
+      height: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 5px;
+      filter: grayscale(0.75) brightness(0.75);
+      cursor: pointer;
+      gap: 5px;
+      img {
+        width: 100px;
+        height: 100px;
+        aspect-ratio: 1 / 1;
+      }
+    }
+
+    .selected_option {
+      filter: grayscale(0) brightness(1);
+
+      border: 1px solid var(--accent-color);
+    }
+
     h3 {
       font-family: "Montserrat", sans-serif;
       color: #fff;
@@ -1346,6 +1437,7 @@ onMounted(async () => {
       font-size: 1.125rem;
       height: auto;
       transition: height 0.3s ease;
+      white-space: pre-line;
 
       &.description_collapsed {
         height: 0;

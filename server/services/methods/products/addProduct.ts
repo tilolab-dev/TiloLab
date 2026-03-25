@@ -4,7 +4,7 @@ import { prisma } from "@/prisma/prisma";
 // import supabase from "@/utils/supabase";
 
 interface IOptions {
-  optionImg: string;
+  optionImg: string | null;
   optionPrice: number;
   translations: {
     language: string;
@@ -100,7 +100,7 @@ async function addProduct(event: any) {
 
         options: {
           create: body.options.map((option: any) => ({
-            optionImg: option.fileImg[0],
+            optionImg: option.fileImg[0] || null,
             optionPrice: Number(option.optionPrice),
 
             translations: {
