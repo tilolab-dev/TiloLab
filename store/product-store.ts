@@ -41,8 +41,9 @@ export const useProductStore = defineStore("product", () => {
           getMethod: "all"
         }
       });
-      productList.value = resFetch.data || [];
-      console.log(!productList.value, "Products store fetchProducts productList is empty");
+      const filteredProducts = resFetch.data.filter((p) => p.visible);
+      productList.value = filteredProducts || [];
+      // console.log(!productList.value, "Products store fetchProducts productList is empty");
     } catch (err) {
       console.error(err);
     }
@@ -50,7 +51,8 @@ export const useProductStore = defineStore("product", () => {
 
   async function getAlsoBuyProducts() {
     try {
-      const resFetch = await $fetch<IProductResponse>("/api/admin/promoted/popular/get-list", {
+      // /api/admin/promoted/popular/get-list
+      const resFetch = await $fetch<IProductResponse>("/api/products/promoted/popular/get-list", {
         method: "GET"
       });
 
@@ -62,11 +64,11 @@ export const useProductStore = defineStore("product", () => {
 
   async function getPopularProducts() {
     try {
-      const resFetch = await $fetch<IProductResponse>("/api/admin/promoted/promo/get-list", {
+      // /api/admin/promoted/promo/get-list
+      const resFetch = await $fetch<IProductResponse>("/api/products/promoted/promo/get-list", {
         method: "GET"
       });
       popularList.value = resFetch.data || [];
-      console.log(!popularList.value, "Products store getPopularProducts popularList is empty");
     } catch (err) {
       console.error(err);
     }
@@ -102,10 +104,12 @@ export const useProductStore = defineStore("product", () => {
         params
       });
 
-      console.log(resFetch, "Products store fetchProductsByPage resFetch from store");
+      // console.log(resFetch, "Products store fetchProductsByPage resFetch from store");
 
-      const newItems = resFetch.data || [];
-      console.log(!newItems, "Products store fetchProductsByPage newItems is empty");
+      const filteredProducts = resFetch.data.filter((p) => p.visible);
+
+      const newItems = filteredProducts || [];
+      // console.log(!newItems, "Products store fetchProductsByPage newItems is empty");
       productList.value.push(...newItems);
       total.value = resFetch.productTotal || 0;
       page.value++;

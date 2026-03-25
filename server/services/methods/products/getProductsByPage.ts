@@ -36,6 +36,11 @@ const getProductsByPage = defineEventHandler(async (event) => {
             }
           },
           translations: true,
+          options: {
+            include: {
+              translations: true
+            }
+          },
           img: true
         },
         orderBy: [{ listPosition: { sort: "asc", nulls: "last" } }, { id: "asc" }],

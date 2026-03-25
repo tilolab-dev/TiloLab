@@ -301,7 +301,7 @@
               </div>
             </div>
 
-            <div v-if="currentOptionFiles.length > 0" class="option add_new">
+            <div v-if="currentOptionFiles?.length > 0" class="option add_new">
               <h4 class="option_title">Опції товару:</h4>
 
               <div class="added_options">
@@ -311,31 +311,35 @@
                     :key="index"
                     class="added_options_item"
                   >
-                    <img :src="option.optionImg" alt="img" width="25px" />
-                    <div class="separator"></div>
-                    <span>
-                      {{ option.translations[0].optionInfo }}
-                    </span>
-                    <div class="separator"></div>
+                    <img :src="option.optionImg" alt="img" />
+                    <span> Опис: {{ option.translations[0].optionInfo }} </span>
                     <span v-if="option.optionPrice !== 0">
-                      {{ option.optionPrice }}
+                      Ціна: {{ option.optionPrice }}
                       UAH
                     </span>
-                    <div v-if="option.optionPrice !== 0" class="separator"></div>
 
-                    <button
-                      @click="
-                        errorHandler(
-                          'Видалити опцію',
-                          'Опцію буде видалено остаточно',
-                          `Ви впевнені, що бажаєте видалити опцію ${option.translations[0].optionInfo} з товару?`,
-                          'removeOptionDB',
-                          option
-                        )
-                      "
-                    >
-                      <SvgIcon name="close-btn" size="micro" fill="rgb(25, 25, 25)" />
-                    </button>
+                    <span> Залишок: {{ option.optionStock }} </span>
+
+                    <div class="option_buttons">
+                      <button class="edit_btn" @click="openEditOption(option)">
+                        <EditIcon />
+                      </button>
+
+                      <button
+                        class="remove_btn"
+                        @click="
+                          errorHandler(
+                            'Видалити опцію',
+                            'Опцію буде видалено остаточно',
+                            `Ви впевнені, що бажаєте видалити опцію ${option.translations[0].optionInfo} з товару?`,
+                            'removeOptionDB',
+                            option
+                          )
+                        "
+                      >
+                        <SvgIcon name="close-btn" size="micro" fill="var(--error-border)" />
+                      </button>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -407,12 +411,30 @@
                     placeholder="Введіть ціну на опційний товар"
                   />
                 </div>
+                <div class="new_option flex flex-col gap-2">
+                  <div class="new_option_wrapper">
+                    <span class="default_text"> Додати залишок для опційного товару </span>
+                    <div class="checkbox_wrap">
+                      <input
+                        id="optionStockValue"
+                        v-model="optionStockState"
+                        value="false"
+                        class="checkbox"
+                        type="checkbox"
+                      />
+                      <label for="optionStockValue" class="product_checkbox"></label>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="optionStockState" class="new_option">
+                  <input
+                    v-model="optionStockValue"
+                    type="number"
+                    placeholder="Введіть залишок на опційний товар"
+                  />
+                </div>
                 <div class="new_option_btn">
                   <button class="btn_fill" @click="addNewOption('text', 'value')">
-                    <!-- @click="addTestData" -->
-
-                    <!-- @click="addNewOption('text', 'value')" -->
-
                     Додати опцію
                   </button>
                 </div>
@@ -426,20 +448,26 @@
                     class="added_options_item"
                   >
                     <img :src="option.fileImg" alt="img" width="25px" />
-                    <div class="separator"></div>
+                    <!-- <div class="separator"></div> -->
                     <span>
+                      Опис:
                       {{ option.translations[0].optionInfo }}
                     </span>
-                    <div class="separator"></div>
+                    <!-- <div class="separator"></div> -->
                     <span v-if="option.optionPrice !== 0">
+                      Ціна:
                       {{ option.optionPrice }}
                       UAH
                     </span>
-                    <div v-if="option.optionPrice !== 0" class="separator"></div>
+                    <!-- <div v-if="option.optionPrice !== 0" class="separator"></div> -->
 
-                    <button @click="removeOption(index)">
-                      <SvgIcon name="close-btn" size="micro" fill="rgb(25, 25, 25)" />
-                    </button>
+                    <span> Залишок: {{ option.optionStock }} </span>
+
+                    <div class="option_buttons">
+                      <button class="remove_btn" @click="removeOption(index)">
+                        <SvgIcon name="close-btn" size="micro" fill="var(--error-border)" />
+                      </button>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -452,13 +480,22 @@
         </div>
       </div>
     </div>
+
+    <EditProductOption
+      v-if="editOptionState"
+      :option="selectedOpton"
+      @cancel-changes="cancelOptionChanges"
+      @save-option="saveChangedOption"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, toRaw, reactive } from "vue";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
+import EditIcon from "~/assets/icons/edit-btn.svg";
 import CloseIcon from "~/assets/icons/close-icon.svg";
+import EditProductOption from "@/components/Modals/admin/EditProductOption.vue";
 import { useModalStore } from "@/store/modal-store";
 import { useCategoryStore } from "@/store/category-store";
 import { useProductStore } from "@/store/product-store";
@@ -474,6 +511,9 @@ import { useFileUpload } from "@/helpers/uploadFiles";
 const { handleFileUpload } = useFileUpload(emit);
 
 const fetchedCategories = ref([]);
+
+const editOptionState = ref(false);
+const selectedOpton = ref(null);
 
 const currentProductFiles = ref([]);
 const currentOptionFiles = ref([]);
@@ -501,6 +541,8 @@ const productSize = ref("");
 const addOptionsRef = ref([]);
 const discountState = ref(false);
 const addOptionTextUk = ref("");
+const optionStockState = ref(false);
+const optionStockValue = ref(0);
 const addOptionPrice = ref(false);
 const optionPrice = ref(0);
 
@@ -531,6 +573,28 @@ const closeError = () => {
   errorState.text2 = "";
   errorState.method = "";
   errorState.item = null;
+};
+
+const openEditOption = (option) => {
+  selectedOpton.value = option;
+  editOptionState.value = true;
+};
+
+const cancelOptionChanges = () => {
+  editOptionState.value = false;
+};
+
+const saveChangedOption = (data) => {
+  // console.log(data, "save changed option");
+
+  const getOption = currentOptionFiles.value.find((option) => option.id === data.optionId);
+
+  // console.log(getOption, "getOption");
+  getOption.translations[0].optionInfo = data.description;
+  getOption.optionPrice = data.price;
+  getOption.optionStock = data.stock;
+
+  editOptionState.value = false;
 };
 
 const deleteImgDb = async (item, path, filetype) => {
@@ -644,14 +708,13 @@ const clearModal = () => {
 };
 
 const addNewOption = () => {
-  console.log(optionFileState.optionFilesPreview.value, "option ref");
-
   if (optionFileState.optionFilesPreview.value.length > 0) {
     if (addOptionTextUk.value) {
       addOptionsRef.value.push({
         file: toRaw(optionFileState.optionFiles.value),
         fileImg: optionFileState.optionFilesPreview.value,
         optionPrice: optionPrice.value,
+        optionStock: optionStockValue.value,
         translations: [
           {
             language: "uk",
@@ -663,6 +726,8 @@ const addNewOption = () => {
 
     optionFileState.optionFiles.value = [];
     optionFileState.optionFilesPreview.value = [];
+    optionStockState.value = false;
+    optionStockValue.value = 0;
     addOptionTextUk.value = "";
     optionFileInput.value.value = "";
     addOptionPrice.value = false;
@@ -877,6 +942,13 @@ onMounted(async () => {
 
   discountState.value = modalProps.product.discountPercent > 0 ? true : false;
   productDiscountPersent.value = modalProps.product.discountPercent;
+  // addOptionsRef.value = modalProps.product.options.map((option) => ({
+  //   optionImg: option.optionImg,
+  //   optionPrice: option.optionPrice,
+  //   translations: option.translations[0].optionInfo
+  // }));
+
+  // console.log(modalProps.product, "modal props log");
 
   // productCategory.value = modalProps.product.category.translations[0].title;
   //   console.log(modalProps.product.category.translations[0].title);
@@ -1553,17 +1625,76 @@ onMounted(async () => {
         flex-wrap: wrap;
       }
       &_item {
-        background: rgb(226, 226, 226);
+        // background: var(--bg-color);
+        background: black;
         border-radius: 8px;
         width: fit-content;
         height: auto;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
         padding: 0.5rem;
-        color: rgb(25, 25, 25);
+        font-size: 0.75rem;
+        color: var(--text-color);
         font-weight: 500;
+        position: relative;
+        overflow: visible;
+
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+
+        @media screen and (min-width: 1024px) {
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+          }
+        }
+
+        img {
+          width: 100px;
+          height: 100px;
+          aspect-ratio: 1 /1;
+          object-fit: cover;
+          border-radius: 5px;
+        }
+
+        .option_buttons {
+          position: absolute;
+          top: 6px;
+          right: 2px;
+          display: flex;
+          gap: 6px;
+          transform: translateY(-55%);
+          transition: all 0.2s ease;
+
+          z-index: 10;
+        }
+
+        .added_options_item:hover .option_buttons {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .option_buttons button {
+          width: 26px;
+          height: 26px;
+          border-radius: 6px;
+          backdrop-filter: blur(6px);
+          background: rgba(0, 0, 0, 0.5);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          padding: 6px;
+        }
+        .edit_btn {
+          fill: var(--warning-border);
+        }
       }
       .separator {
         width: 1px;
