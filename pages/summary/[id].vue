@@ -26,7 +26,7 @@
             <h2>Склад замовлення</h2>
             <ul>
               <li v-for="item in orderInfo.orderItems" :key="item.id">
-                <div class="option">{{ item.product.translations[0].title }}</div>
+                <div class="option">{{ item.name }}</div>
                 <div class="value">{{ item.quantity }} шт</div>
               </li>
             </ul>
