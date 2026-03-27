@@ -25,35 +25,6 @@ export default defineEventHandler(async (event) => {
     signatureBuffer
   );
 
-  // const rawBody = await readRawBody(event);
-  // const sign = getHeader(event, "x-sign");
-  // const signatureBuffer = Buffer.from(sign!, "base64");
-
-  // const expected = crypto
-  //   // .createHmac("sha256", process.env.BANK_API_KEY!)
-  //   .createHmac("sha256", process.env.TEST_BANK_API_KEY!)
-  //   .update(rawBody!)
-  //   .digest("base64");
-
-  // console.log(signature, expected, "signature");
-
-  // if (signature !== expected) {
-  //   throw createError({ statusCode: 403 });
-  // }
-
-  // const publicKey = process.env.BANK_TEST_PUBLIC_KEY;
-
-  // const isValid = crypto.verify(
-  //   "sha256",
-  //   rawBody!,
-  //   {
-  //     key: publicKey,
-  //     format: "pem",
-  //     type: "spki"
-  //   },
-  //   signatureBuffer
-  // );
-
   if (!isValid) throw createError({ statusCode: 403, message: "Invalid signature" });
 
   const data = JSON.parse(rawBody!.toString());
@@ -126,8 +97,9 @@ export default defineEventHandler(async (event) => {
     });
 
     // IMPLEMENT NOTIFICATION FEATURE
+  });
 
-    await sendTelegramMessage(`
+  await sendTelegramMessage(`
       🛒 Нове замовлення!  
      
       📦 **ID:** ${orderDetails?.orderNumber}
@@ -142,7 +114,6 @@ export default defineEventHandler(async (event) => {
       🏤 Відділення — ${orderDetails?.shippingInfo?.postOffice}
       📦 Поштомат — ${orderDetails?.shippingInfo?.postomat}
     `);
-  });
 
   for (const item of runningOutItems) {
     await prisma.adminNotification.create({

@@ -847,7 +847,7 @@ const updateProduct = async () => {
       productPrice: productPrice.value,
       stockState: productStockState.value,
       stockValue: productStockValue.value,
-      discountPercent: productDiscountPersent.value,
+      discountPercent: discountState.value ? productDiscountPersent.value : 0,
       productSize: productSize.value,
       translations: [
         {
@@ -923,7 +923,7 @@ onMounted(async () => {
 
   // console.log(categoryStore.categoryList);
 
-  console.log(modalProps.product.options, "modalProps");
+  // console.log(modalProps.product, "modalProps");
 
   fetchedCategories.value = categoryStore.categoryList;
   currentProductFiles.value = modalProps.product.img;

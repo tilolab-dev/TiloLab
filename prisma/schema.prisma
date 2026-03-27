@@ -118,6 +118,7 @@ model ProductOptions {
   optionImg    String?
   optionPrice  Float?
   optionStock  Int?                        @default(0)
+  optionReserved Int?                      @default(0)
   Product      Product                     @relation(fields: [optionId], references: [id], onDelete: Cascade)
   translations ProductOptionsTranslation[]
 
@@ -248,7 +249,10 @@ model OrderItem {
   id        Int     @id @default(autoincrement())
   orderId   String
   productId Int
+  optionId  Int?
   quantity  Int     @default(1)
+  price     Float?
+  name      String?
   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
