@@ -3,6 +3,11 @@ import NovaPoshtaApi from "@/server/services/novaPostApi";
 
 interface IBodyType {
   orderId: string;
+  selectedCargoType: string;
+  weight: number;
+  length: number;
+  width: number;
+  height: number;
   senderCityId: string;
   // senderContactId: string;
   senderAddressId: string;
@@ -28,6 +33,11 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const {
     orderId,
+    selectedCargoType,
+    weight,
+    length,
+    width,
+    height,
     senderCityId,
     // senderContactId,
     senderAddressId,
@@ -69,12 +79,15 @@ export default defineEventHandler(async (event) => {
   const payload = {
     PayerType: "Recipient",
     PaymentMethod: "Cash",
-    CargoType: "Parcel",
-    Weight: "0.1",
-    VolumeGeneral: "0.001",
-    Length: "10",
-    Width: "10",
-    Height: "10",
+    CargoType: selectedCargoType,
+    //box value
+    Weight: weight.toString(),
+    Length: length.toString(),
+    Width: width.toString(),
+    Height: height.toString(),
+    VolumeGeneral: ((length * width * height) / 1000000).toFixed(3),
+    // VolumeGeneral: "0.001",
+
     ServiceType: "WarehouseWarehouse",
     SeatsAmount: "1",
     Description: `Інтернет замовлення ${orderId}`,

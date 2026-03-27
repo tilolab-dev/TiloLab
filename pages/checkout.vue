@@ -16,7 +16,6 @@
                 <input :value="phone" type="tel" @input="onPhoneInput" @keydown="onPhoneKeydown" />
                 <input v-model="email" type="text" placeholder="Електронна пошта" />
                 <input v-model="cityRef" type="text" placeholder="Місто" @input="getCitiesNp" />
-                <!-- :value="selectedCity !== null ? `${selectedCity.Present}` : ''" -->
 
                 <ul v-if="fetchedCity.length > 0" class="fetched_list">
                   <li
@@ -70,8 +69,6 @@
                   </ul>
                   <span>За тарифами перевізника</span>
                 </div>
-
-                <!-- v-model="" -->
 
                 <input
                   id="menu2"
@@ -195,16 +192,21 @@
               </div>
 
               <ul class="cart_items">
-                <li v-for="(item, i) in cartStore.cart" :key="i" class="cart_item">
+                <li
+                  v-for="item in cartStore.cart"
+                  :key="item.product.id + '-' + item.optionId"
+                  class="cart_item"
+                >
                   <div class="cart_item_main">
                     <img :src="item?.product?.img[0]?.path" alt="preview" />
+
                     <div class="main_wrapper">
-                      <p>{{ item.product.translations[0].title }}</p>
-                      <span class="mobile_price"> {{ item.product.productPrice }} грн</span>
+                      <p>{{ item.title }}</p>
+                      <span class="mobile_price"> {{ item.productPrice }} грн</span>
                     </div>
                   </div>
                   <div class="cart_item_values">
-                    <span class="price">{{ item.product.productPrice }} грн</span>
+                    <span class="price">{{ item.productPrice }} грн</span>
                     <div class="quantity_btn">
                       <button @click="counterHandler.decrement(item)">
                         <MinusIcon />
@@ -214,7 +216,10 @@
                         <PlusIcon />
                       </button>
                     </div>
-                    <button class="close_btn" @click="cartStore.removeProduct(item.product.id)">
+                    <button
+                      class="close_btn"
+                      @click="cartStore.removeProduct(item.product.id, item.optionId)"
+                    >
                       <CloseIcon />
                     </button>
                   </div>
@@ -254,15 +259,8 @@ import CloseIcon from "~/assets/icons/close-icon.svg";
 import MinusIcon from "~/assets/icons/minus-icon.svg";
 import PlusIcon from "~/assets/icons/plus-icon.svg";
 import { counterHandler } from "@/composables/counterHandler";
-//
-// import { useCartStore, useAuthStore } from "#imports";
-// import { Swiper, SwiperSlide } from "swiper/vue";
 
-// import { navigateTo } from "nuxt/app";
-// import ToggleBtn from "@/components/shared/ToggleBtn.vue";
 import Tooltips from "@/components/shared/Tooltips.vue";
-// import DeliverySelector from "~/components/DeliverySelector.vue";
-// import { useAuthStore } from "@/store/auth-store";
 import { useUserStore } from "@/store/user-store";
 import { useCartStore } from "@/store/cart-store";
 
@@ -271,13 +269,11 @@ const userStore = useUserStore();
 const loggedInUser = userStore.isLoggedIn;
 
 const cityRef = ref("");
-// const selectedCity = ref(null);
 const fetchedCity = ref([]);
 const cityId = ref("");
 const postAddressId = ref("");
 const postomatId = ref("");
 const categoryOfWarehouse = ref("");
-// const unknownCity = ref(false);
 
 const isMounted = ref(false);
 
@@ -330,17 +326,11 @@ const cartStore = useCartStore();
 // const getFormattedHours = (h) => (h < 10 ? "0" + h : h);
 // const getFormattedMonth = (m) => (m < 10 ? "0" + m : m);
 
-// const config = useRuntimeConfig();
-// const NOVA_POST_KEY = config.public.novaPostKey;
-// const NOVA_POST_URI = config.public.novaPostUri;
-
 const showTooltip = ref(false);
 const tooltipStatus = ref("");
 const tooltipMessage = ref("");
 
 const loaderState = ref(false);
-
-// const numReg = /^[0-9]+$/;
 
 const tooltip = (obj) => {
   const { status, message } = obj;
@@ -353,22 +343,12 @@ const tooltip = (obj) => {
   }, 3000);
 };
 
-// const clearForm = () => {
-//   name.value = "";
-//   surname.value = "";
-//   familyName.value = "";
-//   phone.value = "";
-//   email.value = "";
-//   postAddress.value = "";
-//   postomatNumber.value = "";
-//   currierAddress.value = "";
-//   postomatList.value = [];
-//   postAddressList.value = [];
-//   cityName.value = "";
-//   cityRef.value = "";
-// };
-
 const confirmOrderHandler = async () => {
+  if (!cartStore.cart.length) {
+    tooltip({ status: "warning", message: "Кошик порожній" });
+    return;
+  }
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   let userNumber = "";
@@ -383,11 +363,10 @@ const confirmOrderHandler = async () => {
     return formatted;
   };
 
-  formatPhoneNumber(phone.value);
+  const formattedPhone = formatPhoneNumber(phone.value);
 
   if (!name.value) {
     tooltip({ status: "warning", message: "Перевірте Імʼя" });
-    // alert("The name field is empty");
     return;
   }
   if (!surname.value) {
@@ -397,6 +376,7 @@ const confirmOrderHandler = async () => {
 
   if (userNumber.length < 12) {
     tooltip({ status: "warning", message: "Перевірте номер телефону" });
+    return;
   }
 
   if (!emailRegex.test(email.value)) {
@@ -409,8 +389,13 @@ const confirmOrderHandler = async () => {
     return;
   }
 
-  if (!postAddress.value && !postomatNumber.value) {
-    tooltip({ status: "warning", message: "Оберіть відділення чи поштомат" });
+  if (selectedDelivery.value === "branch" && !postAddress.value) {
+    tooltip({ status: "warning", message: "Оберіть відділення" });
+    return;
+  }
+
+  if (selectedDelivery.value === "postomat" && !postomatNumber.value) {
+    tooltip({ status: "warning", message: "Оберіть поштомат" });
     return;
   }
 
@@ -422,39 +407,35 @@ const confirmOrderHandler = async () => {
   const getOrderItems = cartStore.cart.map((item) => {
     return {
       productId: item.product.id,
-      quantity: item.quantity
+      optionId: item.optionId,
+      quantity: item.quantity,
+      price: item.productPrice,
+      title: item.title
     };
   });
-
-  // const amountInCents = Math.round(totalDeliveryPrice.value * 100);
 
   const getRecipientId = await $fetch("/api/np/create-counterparty", {
     method: "POST",
     body: {
       firstName: name.value,
       lastName: surname.value,
-      phone: formatPhoneNumber(phone.value)
+      phone: formattedPhone
     }
   });
 
   const recipientId = getRecipientId.data[0].Ref;
-
-  console.log(recipientId);
 
   const getRecipientContactId = await $fetch("/api/np/create-contact-person", {
     method: "POST",
     body: {
       firstName: name.value,
       lastName: surname.value,
-      phone: formatPhoneNumber(phone.value),
+      phone: formattedPhone,
       counterPartyId: recipientId
-      // postAddress: postAddress.value
     }
   });
 
   const recipientContactId = getRecipientContactId.data[0].Ref;
-
-  console.log(recipientContactId);
 
   try {
     const getOrderId = await $fetch("/api/orders/newOrder", {
@@ -484,12 +465,10 @@ const confirmOrderHandler = async () => {
       }
     });
 
-    if (!getOrderId.statusCode === 200) {
+    if (getOrderId.statusCode !== 200) {
       alert("Щось пішло не так спробуйте ще раз");
       return;
     }
-
-    // implement server function to comparing ammount from order and front
 
     const createPayment = await $fetch("/api/monobank/create", {
       method: "POST",
@@ -619,165 +598,6 @@ watch(deliveryMethod, () => {
     : (courierDeliveryState.value = false);
 });
 
-// const processCheckout = async () => {
-//   if (cartStore.totalPrice === 0) {
-//     tooltip({
-//       status: "error",
-//       message: "Ваш кошик порожній"
-//     });
-//     return;
-//   }
-
-//   if (!authStore.user || contactInfoState.value) {
-//     if (!name.value || !surname.value || !familyName.value || !email.value || !phone.value) {
-//       tooltip({
-//         status: "error",
-//         message: "Всі поля повинні бути заповнені"
-//       });
-//       return;
-//     }
-
-//     if (!authStore.user) {
-//       if (!email.value.includes("@")) {
-//         tooltip({
-//           status: "error",
-//           message: "Введіть коректну електронну адресу"
-//         });
-//         return;
-//       }
-
-//       const phoneRegex = /^\d{2}\s*\d{3}\s*\d{2}\s*\d{2}$/;
-
-//       if (!phoneRegex.test(phone.value)) {
-//         tooltip({
-//           status: "error",
-//           message: "Введіть коректний номер телефону"
-//         });
-//         return;
-//       }
-//     }
-//   }
-
-//   // delivery validation
-
-//   if (deliveryMethod.value === "nova-post") {
-//     if (cityName.value.trim().length === 0) {
-//       tooltip({
-//         status: "info",
-//         message: "Введіть місто"
-//       });
-//       return;
-//     }
-
-//     if (
-//       postAddress.value.trim().length === 0 &&
-//       postomatNumber.value.trim().length === 0 &&
-//       currierAddress.value.trim().length === 0
-//     ) {
-//       tooltip({
-//         status: "info",
-//         message: "Оберіть метод та введіть адресу доставки"
-//       });
-//       return;
-//     }
-
-//     // if (
-//     //   postAddress.value.trim().length === 0 ||
-//     //   (postomatNumber.value.trim().length === 0 && currierAddress.value.trim().length === 0)
-//     // ) {
-//     //   tooltip({
-//     //     status: "info",
-//     //     message: "Оберіть метод та введіть адресу доставки",
-//     //   });
-//     //   return;
-//     // }
-//   } else if (deliveryMethod.value === "ukrpost") {
-//     console.log("ukrpost");
-//   } else if (deliveryMethod.value === "courier-delivery") {
-//     console.log("courier-delivery");
-//   }
-
-//   try {
-//     const cartData = cartStore.cart.map((item) => {
-//       return {
-//         productId: item.id,
-//         quantity: item.quantityProducts
-//       };
-//     });
-
-//     const orderData = new FormData();
-
-//     const orderBody = {
-//       email: email.value,
-//       orders: [
-//         {
-//           totalPrice: cartStore.totalPrice,
-//           paymentMethod: paymentMethod.value,
-//           shippingInfo: {
-//             recipient: name.value + " " + surname.value + " " + familyName.value,
-//             postCompany: deliveryMethod.value,
-//             phoneNumber: phone.value,
-//             postOffice: postAddress.value,
-//             postomat: postomatNumber.value,
-//             address: currierAddress.value,
-//             city: cityName.value,
-//             country: "Ukraine"
-//           },
-//           orderItems: [...cartData]
-//         }
-//       ]
-//     };
-
-//     orderData.append("data", JSON.stringify(orderBody));
-
-//     const createNewOrder = await $fetch("api/orders", {
-//       method: "POST",
-//       body: orderData
-//     });
-
-//     console.log(createNewOrder, "createNewOrder");
-//     if (createNewOrder.status === "error") {
-//       console.log(createNewOrder.message);
-//       return;
-//     }
-
-//     tooltip({
-//       status: "success",
-//       message: "Ваше замовлення було успішно створено"
-//     });
-
-//     const tgMessageBody = {
-//       orderId: createNewOrder.data,
-//       user: name.value + " " + surname.value + " " + familyName.value,
-//       paymentMethod: paymentMethod.value,
-//       amount: cartStore.totalPrice,
-//       phone: phone.value,
-//       email: email.value,
-//       date: new Date().toLocaleString("uk-UA", { timeZone: "Europe/Kiev" })
-//     };
-
-//     const tgData = new FormData();
-
-//     tgData.append("data", JSON.stringify(tgMessageBody));
-
-//     const notificationTg = await $fetch("/api/telegram?notification=newOrder", {
-//       method: "POST",
-//       body: tgData
-//     });
-
-//     console.log(notificationTg, "notificationTg");
-
-//     clearForm();
-//     setTimeout(() => {
-//       navigateTo("/");
-//     }, 3000);
-
-//     cartStore.clearCart();
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
 const debounce = (string, fn) => {
   return () => {
     clearTimeout(timerId);
@@ -793,7 +613,6 @@ const debounce = (string, fn) => {
 // refresh input fields
 
 watch(selectedDelivery, () => {
-  console.log(selectedDelivery.value, "selectedDelivery");
   if (selectedDelivery.value === "branch") {
     postomatNumber.value = "";
     currierAddress.value = "";
@@ -836,14 +655,7 @@ const getPostomatsNp = debounce(postomatNumber.value, async () => {
     postomatNumber.value = "";
     return;
   }
-  // if (state === "reload") {
-  // const getPostomatsByNumber = await novaPost.fetchPostomatsByNumber(
-  //   cityName.value,
-  //   postomatNumber.value
-  // );
-  // console.log(getPostomatsByNumber, "getPostomatsByNumber");
-  // postomatList.value = getPostomatsByNumber.data;
-  // return;
+
   const getPostomatsByNumber = await $fetch("/api/np/postomatNumber", {
     method: "POST",
     body: {
@@ -851,28 +663,8 @@ const getPostomatsNp = debounce(postomatNumber.value, async () => {
       postomatNumber: postomatNumber.value
     }
   });
-  console.log(getPostomatsByNumber, "getPostomatsByNumber");
   postomatList.value = getPostomatsByNumber.data;
   return;
-  // }
-
-  // if (preventReloadBox.value) {
-  //   return;
-  // }
-
-  // if (!cityRef.value) {
-  //   // tooltip({
-  //   //   status: "info",
-  //   //   message: "Виберіть місто"
-  //   // });
-  //   alert("Виберіть місто");
-  //   event.preventDefault();
-
-  //   return;
-  // }
-
-  // const postomatsNp = await novaPost.fetchPostomats(cityName.value);
-  // postomatList.value = postomatsNp.data;
 });
 
 const getPostOfficeNp = debounce(postAddress.value, async () => {
@@ -882,8 +674,6 @@ const getPostOfficeNp = debounce(postAddress.value, async () => {
     return;
   }
   if (!postAddress.value.length) return;
-  // if (state === "reload") {
-  // const getOfficeByNumber = await novaPost.fetchOfficeByNumber(cityName.value, postAddress.value);
   const getOfficeByNumber = await $fetch("/api/np/postOffice", {
     method: "POST",
     body: {
@@ -896,26 +686,7 @@ const getPostOfficeNp = debounce(postAddress.value, async () => {
     (item) => item.CategoryOfWarehouse === "Branch"
   );
 
-  console.log(filteredOffice, "filtered office");
   postAddressList.value = filteredOffice;
-  //   return;
-  // }
-  // if (preventReloadBox.value) {
-  //   return;
-  // }
-  // if (!cityName.value) {
-  //   // tooltip({
-  //   //   status: "info",
-  //   //   message: "Виберіть місто"
-  //   // });
-  //   alert("Виберіть місто");
-  //   event.preventDefault();
-  //   return;
-  // }
-  // const postOfficeNp = await novaPost.fetchPostAddresses(cityName.value);
-  // // console.log(postOfficeNp, 'postOfficeNp');
-  // const filteredOffice = postOfficeNp.data.filter((item) => item.CategoryOfWarehouse === "Branch");
-  // postAddressList.value = filteredOffice;
 });
 
 useHead({

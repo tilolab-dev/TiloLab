@@ -134,7 +134,7 @@
             >
               <div class="product_main">
                 <img :src="item.product.img[0].path" alt="product" width="50" height="50" />
-                <p>{{ item.product.translations[0].title }}</p>
+                <p>{{ item.name }}</p>
               </div>
 
               <div class="product_summ">
@@ -150,6 +150,17 @@
               </div>
             </li>
           </ul>
+        </div>
+
+        <div class="change_recipient">
+          <div class="change_recipient_head">
+            <div class="change_recipient_title">Змінити отримувача</div>
+            <button
+              class="select_btn"
+              :class="changeRecipientState ? 'select_btn_active' : ''"
+              @click="changeRecipientState = !changeRecipientState"
+            ></button>
+          </div>
         </div>
 
         <div class="change_status">
@@ -180,6 +191,34 @@
             <option disabled selected value>Оберіть відправника</option>
             <option v-for="item in senderList" :key="item.id" :value="item.id">
               {{ `${item.name}, ${item.family}, ${item.postOffice}` }}
+            </option>
+          </select>
+        </div>
+        <div class="cargo_type">
+          <div class="cargo_type_title">Тип посилки:</div>
+          <div class="cargo_type_wrapper">
+            <div
+              v-for="item in boxTypes"
+              :key="item.id"
+              class="cargo_type_item"
+              :class="
+                selectedCargo !== null && item.optionType === selectedCargo
+                  ? 'cargo_type_item_active'
+                  : ''
+              "
+              @click="selectedCargo = item.optionType"
+            >
+              <div class="icon">{{ item.icon }}</div>
+              <p>{{ item.typName }}</p>
+            </div>
+          </div>
+        </div>
+        <div v-if="selectedCargo !== null" class="select_box">
+          <div>{{ boxTypes.find((item) => item.optionType === selectedCargo).typName }}</div>
+          <select v-model="selectedBox">
+            <option disabled value="">Оберіть опцію</option>
+            <option v-for="box in filteredBoxOptions" :key="box.label" :value="box">
+              {{ box.label }} ({{ box.size.join("×") }} см)
             </option>
           </select>
         </div>
@@ -240,7 +279,6 @@
                     (fetchedCityRef = el.Ref))
                   "
                 >
-                  <!-- {{ console.log(el) }} -->
                   {{ el.Present }}
                 </li>
               </ul>
@@ -304,6 +342,7 @@ const activeTab = ref("order-info");
 
 const senderList = ref([]);
 const selectedSenderId = ref("");
+const selectedBox = ref(null);
 
 //SENDER
 
@@ -322,6 +361,58 @@ const postAddressRef = ref("");
 const postAddressList = ref([]);
 
 let timerId = null;
+
+const selectedCargo = ref(null);
+const changeRecipientState = ref(false);
+
+// const boxOptions = [
+//   { label: "Коробка до 1 кг", weight: 1, length: 20, width: 20, height: 20 },
+//   { label: "Коробка до 2 кг", weight: 2, length: 30, width: 20, height: 20 },
+//   { label: "Коробка до 5 кг", weight: 5, length: 40, width: 30, height: 30 },
+//   { label: "Коробка до 10 кг", weight: 10, length: 50, width: 40, height: 40 }
+// ];
+
+const boxTypes = [
+  {
+    id: 1,
+    icon: "📦",
+    typName: "Коробка",
+    optionType: "box"
+  },
+  {
+    id: 2,
+    icon: "🛍️",
+    typName: "Пакет",
+    optionType: "bag"
+  },
+  {
+    id: 3,
+    icon: "✉️",
+    typName: "Конверт",
+    optionType: "documents"
+  }
+];
+
+const boxOptions = [
+  { type: "box", label: "Коробка 0.5 кг", weight: 0.5, size: [20, 20, 20] },
+  { type: "box", label: "Коробка 1 кг", weight: 1, size: [25, 25, 25] },
+  { type: "box", label: "Коробка 2 кг", weight: 2, size: [30, 30, 30] },
+  { type: "box", label: "Коробка 3 кг", weight: 3, size: [35, 35, 35] },
+  { type: "box", label: "Коробка 5 кг", weight: 5, size: [40, 40, 40] },
+  { type: "box", label: "Коробка 10 кг", weight: 10, size: [50, 50, 50] },
+
+  { type: "bag", label: "Пакет 0.5 кг", weight: 0.5, size: [30, 20, 5] },
+  { type: "bag", label: "Пакет 1 кг", weight: 1, size: [35, 25, 5] },
+  { type: "bag", label: "Пакет 2 кг", weight: 2, size: [40, 30, 5] },
+  { type: "bag", label: "Пакет 4 кг", weight: 4, size: [50, 40, 5] },
+
+  { type: "documents", label: "Конверт (документи)", weight: 0.2, size: [30, 20, 1] }
+];
+
+const filteredBoxOptions = computed(() => {
+  if (!selectedCargo.value) return [];
+  return boxOptions.filter((box) => box.type === selectedCargo.value);
+});
 
 const modalProps = defineProps({
   order: {
@@ -620,7 +711,6 @@ const createNewSender = async () => {
         postAddressId: postAddressRef.value
       }
     });
-    console.log(createSenderRes, "createSenderRes");
     if (createSenderRes.statusCode === 200) {
       // senderName.value = "";
       // senderSurname.value = "";
@@ -640,7 +730,10 @@ const createNewSender = async () => {
 };
 
 const createTtnHandler = async () => {
-  // console.log(order);
+  if (!selectedBox.value) {
+    alert("Оберіть коробку");
+    return;
+  }
 
   const sender = senderList.value.find((el) => el.id === selectedSenderId.value);
 
@@ -650,13 +743,8 @@ const createTtnHandler = async () => {
   }
 
   const order = modalProps.order;
-  console.log(sender, "sender");
-  console.log(modalProps.order, "order");
 
   const [recipientFirstName, recipientLastName] = order.shippingInfo.recipient.split(" ");
-
-  console.log(recipientFirstName, "recipientFirstName");
-  console.log(recipientLastName, "recipientLastName");
 
   const formattedRecipientPhone = order.shippingInfo.phoneNumber
     .replaceAll(" ", "")
@@ -664,11 +752,20 @@ const createTtnHandler = async () => {
     .replaceAll(")", "")
     .replaceAll("-", "");
 
+  const [boxLength, boxWidth, boxHeight] = selectedBox.value.size;
+
   try {
     const getTtnRes = await $fetch("/api/np/create-ttn", {
       method: "POST",
       body: {
         orderId: order.orderNumber,
+        selectedCargoType: selectedBox.value.type === "documents" ? "Documents" : "Parcel",
+
+        // BOX
+        weight: selectedBox.value.weight,
+        length: boxLength,
+        width: boxWidth,
+        height: boxHeight,
 
         // SENDER
 
@@ -691,6 +788,8 @@ const createTtnHandler = async () => {
         orderPrice: modalProps.order.totalPrice < 300 ? 300 : modalProps.order.totalPrice
       }
     });
+
+    await orderStore.updateOrderStatus(modalProps.order.id, "SHIPPED");
 
     console.log(getTtnRes);
   } catch (err) {
@@ -716,7 +815,6 @@ const changeStatus = async () => {
 
 onMounted(() => {
   selectValue.value = modalProps.order.status;
-  console.log(modalProps.order);
 });
 </script>
 
@@ -732,13 +830,9 @@ onMounted(() => {
   min-width: 50vw;
   max-height: 65vh;
   border-radius: 10px;
-  // height: fit-content;
   position: relative;
   overflow: hidden;
-  // overflow-y: scroll;
   .loader_content {
-    // width: 100%;
-    // height: 100%;
     inset: 0;
     position: fixed;
     top: 0;
@@ -763,7 +857,6 @@ onMounted(() => {
 }
 
 .order_detail_wrapper {
-  // padding-block: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -950,8 +1043,87 @@ onMounted(() => {
     min-height: 500px;
   }
 
+  .change_recipient {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--accent-grey);
+
+    &_head {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .select_btn {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all ease 0.3s;
+    }
+    .select_btn_active {
+      border: 5px solid var(--accent-color);
+      transition: all ease 0.3s;
+    }
+  }
+
+  .cargo_type {
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    height: auto;
+    width: 100%;
+    gap: 15px;
+
+    &_wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      width: 100%;
+      height: auto;
+      gap: 16px;
+    }
+
+    &_item {
+      background: black;
+      width: 100%;
+      height: auto;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 15px;
+      gap: 20px;
+      flex: 1;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all ease 0.3s;
+
+      @media screen and (min-width: 1024px) {
+        &:hover {
+          border: 1px solid var(--border-color);
+          transition: all ease 0.3s;
+        }
+      }
+    }
+    &_item_active {
+      border: 1px solid var(--btn-color-active) !important;
+      transition: all ease 0.3s;
+    }
+  }
+
   .order_detail_ttn_info {
-    .select_sender {
+    .select_sender,
+    .select_box {
       padding: 10px 20px;
       display: flex;
       flex-direction: column;
