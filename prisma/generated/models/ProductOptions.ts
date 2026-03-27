@@ -30,12 +30,16 @@ export type ProductOptionsAvgAggregateOutputType = {
   id: number | null
   optionId: number | null
   optionPrice: number | null
+  optionStock: number | null
+  optionReserved: number | null
 }
 
 export type ProductOptionsSumAggregateOutputType = {
   id: number | null
   optionId: number | null
   optionPrice: number | null
+  optionStock: number | null
+  optionReserved: number | null
 }
 
 export type ProductOptionsMinAggregateOutputType = {
@@ -43,6 +47,8 @@ export type ProductOptionsMinAggregateOutputType = {
   optionId: number | null
   optionImg: string | null
   optionPrice: number | null
+  optionStock: number | null
+  optionReserved: number | null
 }
 
 export type ProductOptionsMaxAggregateOutputType = {
@@ -50,6 +56,8 @@ export type ProductOptionsMaxAggregateOutputType = {
   optionId: number | null
   optionImg: string | null
   optionPrice: number | null
+  optionStock: number | null
+  optionReserved: number | null
 }
 
 export type ProductOptionsCountAggregateOutputType = {
@@ -57,6 +65,8 @@ export type ProductOptionsCountAggregateOutputType = {
   optionId: number
   optionImg: number
   optionPrice: number
+  optionStock: number
+  optionReserved: number
   _all: number
 }
 
@@ -65,12 +75,16 @@ export type ProductOptionsAvgAggregateInputType = {
   id?: true
   optionId?: true
   optionPrice?: true
+  optionStock?: true
+  optionReserved?: true
 }
 
 export type ProductOptionsSumAggregateInputType = {
   id?: true
   optionId?: true
   optionPrice?: true
+  optionStock?: true
+  optionReserved?: true
 }
 
 export type ProductOptionsMinAggregateInputType = {
@@ -78,6 +92,8 @@ export type ProductOptionsMinAggregateInputType = {
   optionId?: true
   optionImg?: true
   optionPrice?: true
+  optionStock?: true
+  optionReserved?: true
 }
 
 export type ProductOptionsMaxAggregateInputType = {
@@ -85,6 +101,8 @@ export type ProductOptionsMaxAggregateInputType = {
   optionId?: true
   optionImg?: true
   optionPrice?: true
+  optionStock?: true
+  optionReserved?: true
 }
 
 export type ProductOptionsCountAggregateInputType = {
@@ -92,6 +110,8 @@ export type ProductOptionsCountAggregateInputType = {
   optionId?: true
   optionImg?: true
   optionPrice?: true
+  optionStock?: true
+  optionReserved?: true
   _all?: true
 }
 
@@ -184,8 +204,10 @@ export type ProductOptionsGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 export type ProductOptionsGroupByOutputType = {
   id: number
   optionId: number
-  optionImg: string
+  optionImg: string | null
   optionPrice: number | null
+  optionStock: number | null
+  optionReserved: number | null
   _count: ProductOptionsCountAggregateOutputType | null
   _avg: ProductOptionsAvgAggregateOutputType | null
   _sum: ProductOptionsSumAggregateOutputType | null
@@ -214,8 +236,10 @@ export type ProductOptionsWhereInput = {
   NOT?: Prisma.ProductOptionsWhereInput | Prisma.ProductOptionsWhereInput[]
   id?: Prisma.IntFilter<"ProductOptions"> | number
   optionId?: Prisma.IntFilter<"ProductOptions"> | number
-  optionImg?: Prisma.StringFilter<"ProductOptions"> | string
+  optionImg?: Prisma.StringNullableFilter<"ProductOptions"> | string | null
   optionPrice?: Prisma.FloatNullableFilter<"ProductOptions"> | number | null
+  optionStock?: Prisma.IntNullableFilter<"ProductOptions"> | number | null
+  optionReserved?: Prisma.IntNullableFilter<"ProductOptions"> | number | null
   Product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
   translations?: Prisma.ProductOptionsTranslationListRelationFilter
 }
@@ -223,8 +247,10 @@ export type ProductOptionsWhereInput = {
 export type ProductOptionsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   optionId?: Prisma.SortOrder
-  optionImg?: Prisma.SortOrder
+  optionImg?: Prisma.SortOrderInput | Prisma.SortOrder
   optionPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  optionStock?: Prisma.SortOrderInput | Prisma.SortOrder
+  optionReserved?: Prisma.SortOrderInput | Prisma.SortOrder
   Product?: Prisma.ProductOrderByWithRelationInput
   translations?: Prisma.ProductOptionsTranslationOrderByRelationAggregateInput
 }
@@ -235,8 +261,10 @@ export type ProductOptionsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ProductOptionsWhereInput[]
   NOT?: Prisma.ProductOptionsWhereInput | Prisma.ProductOptionsWhereInput[]
   optionId?: Prisma.IntFilter<"ProductOptions"> | number
-  optionImg?: Prisma.StringFilter<"ProductOptions"> | string
+  optionImg?: Prisma.StringNullableFilter<"ProductOptions"> | string | null
   optionPrice?: Prisma.FloatNullableFilter<"ProductOptions"> | number | null
+  optionStock?: Prisma.IntNullableFilter<"ProductOptions"> | number | null
+  optionReserved?: Prisma.IntNullableFilter<"ProductOptions"> | number | null
   Product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
   translations?: Prisma.ProductOptionsTranslationListRelationFilter
 }, "id">
@@ -244,8 +272,10 @@ export type ProductOptionsWhereUniqueInput = Prisma.AtLeast<{
 export type ProductOptionsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   optionId?: Prisma.SortOrder
-  optionImg?: Prisma.SortOrder
+  optionImg?: Prisma.SortOrderInput | Prisma.SortOrder
   optionPrice?: Prisma.SortOrderInput | Prisma.SortOrder
+  optionStock?: Prisma.SortOrderInput | Prisma.SortOrder
+  optionReserved?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ProductOptionsCountOrderByAggregateInput
   _avg?: Prisma.ProductOptionsAvgOrderByAggregateInput
   _max?: Prisma.ProductOptionsMaxOrderByAggregateInput
@@ -259,13 +289,17 @@ export type ProductOptionsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ProductOptionsScalarWhereWithAggregatesInput | Prisma.ProductOptionsScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"ProductOptions"> | number
   optionId?: Prisma.IntWithAggregatesFilter<"ProductOptions"> | number
-  optionImg?: Prisma.StringWithAggregatesFilter<"ProductOptions"> | string
+  optionImg?: Prisma.StringNullableWithAggregatesFilter<"ProductOptions"> | string | null
   optionPrice?: Prisma.FloatNullableWithAggregatesFilter<"ProductOptions"> | number | null
+  optionStock?: Prisma.IntNullableWithAggregatesFilter<"ProductOptions"> | number | null
+  optionReserved?: Prisma.IntNullableWithAggregatesFilter<"ProductOptions"> | number | null
 }
 
 export type ProductOptionsCreateInput = {
-  optionImg: string
+  optionImg?: string | null
   optionPrice?: number | null
+  optionStock?: number | null
+  optionReserved?: number | null
   Product: Prisma.ProductCreateNestedOneWithoutOptionsInput
   translations?: Prisma.ProductOptionsTranslationCreateNestedManyWithoutOptionInput
 }
@@ -273,14 +307,18 @@ export type ProductOptionsCreateInput = {
 export type ProductOptionsUncheckedCreateInput = {
   id?: number
   optionId: number
-  optionImg: string
+  optionImg?: string | null
   optionPrice?: number | null
+  optionStock?: number | null
+  optionReserved?: number | null
   translations?: Prisma.ProductOptionsTranslationUncheckedCreateNestedManyWithoutOptionInput
 }
 
 export type ProductOptionsUpdateInput = {
-  optionImg?: Prisma.StringFieldUpdateOperationsInput | string
+  optionImg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   optionPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  optionStock?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  optionReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   Product?: Prisma.ProductUpdateOneRequiredWithoutOptionsNestedInput
   translations?: Prisma.ProductOptionsTranslationUpdateManyWithoutOptionNestedInput
 }
@@ -288,28 +326,36 @@ export type ProductOptionsUpdateInput = {
 export type ProductOptionsUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   optionId?: Prisma.IntFieldUpdateOperationsInput | number
-  optionImg?: Prisma.StringFieldUpdateOperationsInput | string
+  optionImg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   optionPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  optionStock?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  optionReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   translations?: Prisma.ProductOptionsTranslationUncheckedUpdateManyWithoutOptionNestedInput
 }
 
 export type ProductOptionsCreateManyInput = {
   id?: number
   optionId: number
-  optionImg: string
+  optionImg?: string | null
   optionPrice?: number | null
+  optionStock?: number | null
+  optionReserved?: number | null
 }
 
 export type ProductOptionsUpdateManyMutationInput = {
-  optionImg?: Prisma.StringFieldUpdateOperationsInput | string
+  optionImg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   optionPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  optionStock?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  optionReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type ProductOptionsUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   optionId?: Prisma.IntFieldUpdateOperationsInput | number
-  optionImg?: Prisma.StringFieldUpdateOperationsInput | string
+  optionImg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   optionPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  optionStock?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  optionReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type ProductOptionsListRelationFilter = {
@@ -327,12 +373,16 @@ export type ProductOptionsCountOrderByAggregateInput = {
   optionId?: Prisma.SortOrder
   optionImg?: Prisma.SortOrder
   optionPrice?: Prisma.SortOrder
+  optionStock?: Prisma.SortOrder
+  optionReserved?: Prisma.SortOrder
 }
 
 export type ProductOptionsAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   optionId?: Prisma.SortOrder
   optionPrice?: Prisma.SortOrder
+  optionStock?: Prisma.SortOrder
+  optionReserved?: Prisma.SortOrder
 }
 
 export type ProductOptionsMaxOrderByAggregateInput = {
@@ -340,6 +390,8 @@ export type ProductOptionsMaxOrderByAggregateInput = {
   optionId?: Prisma.SortOrder
   optionImg?: Prisma.SortOrder
   optionPrice?: Prisma.SortOrder
+  optionStock?: Prisma.SortOrder
+  optionReserved?: Prisma.SortOrder
 }
 
 export type ProductOptionsMinOrderByAggregateInput = {
@@ -347,12 +399,16 @@ export type ProductOptionsMinOrderByAggregateInput = {
   optionId?: Prisma.SortOrder
   optionImg?: Prisma.SortOrder
   optionPrice?: Prisma.SortOrder
+  optionStock?: Prisma.SortOrder
+  optionReserved?: Prisma.SortOrder
 }
 
 export type ProductOptionsSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   optionId?: Prisma.SortOrder
   optionPrice?: Prisma.SortOrder
+  optionStock?: Prisma.SortOrder
+  optionReserved?: Prisma.SortOrder
 }
 
 export type ProductOptionsScalarRelationFilter = {
@@ -425,15 +481,19 @@ export type ProductOptionsUpdateOneRequiredWithoutTranslationsNestedInput = {
 }
 
 export type ProductOptionsCreateWithoutProductInput = {
-  optionImg: string
+  optionImg?: string | null
   optionPrice?: number | null
+  optionStock?: number | null
+  optionReserved?: number | null
   translations?: Prisma.ProductOptionsTranslationCreateNestedManyWithoutOptionInput
 }
 
 export type ProductOptionsUncheckedCreateWithoutProductInput = {
   id?: number
-  optionImg: string
+  optionImg?: string | null
   optionPrice?: number | null
+  optionStock?: number | null
+  optionReserved?: number | null
   translations?: Prisma.ProductOptionsTranslationUncheckedCreateNestedManyWithoutOptionInput
 }
 
@@ -469,21 +529,27 @@ export type ProductOptionsScalarWhereInput = {
   NOT?: Prisma.ProductOptionsScalarWhereInput | Prisma.ProductOptionsScalarWhereInput[]
   id?: Prisma.IntFilter<"ProductOptions"> | number
   optionId?: Prisma.IntFilter<"ProductOptions"> | number
-  optionImg?: Prisma.StringFilter<"ProductOptions"> | string
+  optionImg?: Prisma.StringNullableFilter<"ProductOptions"> | string | null
   optionPrice?: Prisma.FloatNullableFilter<"ProductOptions"> | number | null
+  optionStock?: Prisma.IntNullableFilter<"ProductOptions"> | number | null
+  optionReserved?: Prisma.IntNullableFilter<"ProductOptions"> | number | null
 }
 
 export type ProductOptionsCreateWithoutTranslationsInput = {
-  optionImg: string
+  optionImg?: string | null
   optionPrice?: number | null
+  optionStock?: number | null
+  optionReserved?: number | null
   Product: Prisma.ProductCreateNestedOneWithoutOptionsInput
 }
 
 export type ProductOptionsUncheckedCreateWithoutTranslationsInput = {
   id?: number
   optionId: number
-  optionImg: string
+  optionImg?: string | null
   optionPrice?: number | null
+  optionStock?: number | null
+  optionReserved?: number | null
 }
 
 export type ProductOptionsCreateOrConnectWithoutTranslationsInput = {
@@ -503,41 +569,53 @@ export type ProductOptionsUpdateToOneWithWhereWithoutTranslationsInput = {
 }
 
 export type ProductOptionsUpdateWithoutTranslationsInput = {
-  optionImg?: Prisma.StringFieldUpdateOperationsInput | string
+  optionImg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   optionPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  optionStock?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  optionReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   Product?: Prisma.ProductUpdateOneRequiredWithoutOptionsNestedInput
 }
 
 export type ProductOptionsUncheckedUpdateWithoutTranslationsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   optionId?: Prisma.IntFieldUpdateOperationsInput | number
-  optionImg?: Prisma.StringFieldUpdateOperationsInput | string
+  optionImg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   optionPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  optionStock?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  optionReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type ProductOptionsCreateManyProductInput = {
   id?: number
-  optionImg: string
+  optionImg?: string | null
   optionPrice?: number | null
+  optionStock?: number | null
+  optionReserved?: number | null
 }
 
 export type ProductOptionsUpdateWithoutProductInput = {
-  optionImg?: Prisma.StringFieldUpdateOperationsInput | string
+  optionImg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   optionPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  optionStock?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  optionReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   translations?: Prisma.ProductOptionsTranslationUpdateManyWithoutOptionNestedInput
 }
 
 export type ProductOptionsUncheckedUpdateWithoutProductInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  optionImg?: Prisma.StringFieldUpdateOperationsInput | string
+  optionImg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   optionPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  optionStock?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  optionReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   translations?: Prisma.ProductOptionsTranslationUncheckedUpdateManyWithoutOptionNestedInput
 }
 
 export type ProductOptionsUncheckedUpdateManyWithoutProductInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  optionImg?: Prisma.StringFieldUpdateOperationsInput | string
+  optionImg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   optionPrice?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  optionStock?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  optionReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 
@@ -576,6 +654,8 @@ export type ProductOptionsSelect<ExtArgs extends runtime.Types.Extensions.Intern
   optionId?: boolean
   optionImg?: boolean
   optionPrice?: boolean
+  optionStock?: boolean
+  optionReserved?: boolean
   Product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
   translations?: boolean | Prisma.ProductOptions$translationsArgs<ExtArgs>
   _count?: boolean | Prisma.ProductOptionsCountOutputTypeDefaultArgs<ExtArgs>
@@ -586,6 +666,8 @@ export type ProductOptionsSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   optionId?: boolean
   optionImg?: boolean
   optionPrice?: boolean
+  optionStock?: boolean
+  optionReserved?: boolean
   Product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["productOptions"]>
 
@@ -594,6 +676,8 @@ export type ProductOptionsSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   optionId?: boolean
   optionImg?: boolean
   optionPrice?: boolean
+  optionStock?: boolean
+  optionReserved?: boolean
   Product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["productOptions"]>
 
@@ -602,9 +686,11 @@ export type ProductOptionsSelectScalar = {
   optionId?: boolean
   optionImg?: boolean
   optionPrice?: boolean
+  optionStock?: boolean
+  optionReserved?: boolean
 }
 
-export type ProductOptionsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "optionId" | "optionImg" | "optionPrice", ExtArgs["result"]["productOptions"]>
+export type ProductOptionsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "optionId" | "optionImg" | "optionPrice" | "optionStock" | "optionReserved", ExtArgs["result"]["productOptions"]>
 export type ProductOptionsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   Product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
   translations?: boolean | Prisma.ProductOptions$translationsArgs<ExtArgs>
@@ -626,8 +712,10 @@ export type $ProductOptionsPayload<ExtArgs extends runtime.Types.Extensions.Inte
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     optionId: number
-    optionImg: string
+    optionImg: string | null
     optionPrice: number | null
+    optionStock: number | null
+    optionReserved: number | null
   }, ExtArgs["result"]["productOptions"]>
   composites: {}
 }
@@ -1057,6 +1145,8 @@ export interface ProductOptionsFieldRefs {
   readonly optionId: Prisma.FieldRef<"ProductOptions", 'Int'>
   readonly optionImg: Prisma.FieldRef<"ProductOptions", 'String'>
   readonly optionPrice: Prisma.FieldRef<"ProductOptions", 'Float'>
+  readonly optionStock: Prisma.FieldRef<"ProductOptions", 'Int'>
+  readonly optionReserved: Prisma.FieldRef<"ProductOptions", 'Int'>
 }
     
 

@@ -54,17 +54,23 @@
             <div v-else class="img_gallery_placeholder">
               <p>No images available</p>
             </div>
-
             <div class="product_id_info">
               <div class="product_id_info_main">
                 <div class="description_head">
                   <h3>
                     {{ productStore.selectedProducts.translations[0].title }}
+                    {{
+                      isOptionSelected ? ` - (${selectedOption.translations[0].optionInfo})` : ""
+                    }}
                   </h3>
                   <div class="product_price">
                     <span v-if="productStore.selectedProducts.discountPercent === 0">
                       {{
-                        (productStore.selectedProducts.productPrice * productQuantity).toFixed(2)
+                        isOptionSelected
+                          ? (selectedOption.optionPrice * productQuantity).toFixed(2)
+                          : (productStore.selectedProducts.productPrice * productQuantity).toFixed(
+                              2
+                            )
                       }}
                       грн
                     </span>
@@ -100,35 +106,54 @@
                   <span v-else> Додати до списку бажань </span>
                 </div>
 
-                <div
-                  v-if="productStore.selectedProducts.availableProduct > 10"
-                  class="availability"
-                >
+                <div v-if="availableQuantity > 10" class="availability">
                   <CheckIcon />
 
-                  <span> {{ productStore.selectedProducts.availableProduct }} в наявності </span>
+                  <span> {{ availableQuantity }} в наявності </span>
                 </div>
 
                 <div
-                  v-else-if="
-                    productStore.selectedProducts.availableProduct < 10 &&
-                    productStore.selectedProducts.availableProduct > 0
-                  "
+                  v-else-if="availableQuantity <= 10 && availableQuantity > 0"
                   class="running_out"
                 >
                   <CheckIcon />
 
-                  <span> {{ productStore.selectedProducts.availableProduct }} в наявності </span
-                  ><br />
+                  <span> {{ availableQuantity }} в наявності </span><br />
                   <span class="accent">Товар закінчується</span>
                 </div>
                 <!-- v-else-if="productStore.selectedProducts.availableProduct === 0" -->
 
-                <div
-                  v-else-if="productStore.selectedProducts.availableProduct <= 0"
-                  class="no_available"
-                >
+                <div v-else-if="availableQuantity <= 0" class="no_available">
                   <span>Товар закінчився</span>
+                </div>
+
+                <div v-if="productStore.selectedProducts.options.length" class="options_wrapper">
+                  <div
+                    class="option_item"
+                    :class="selectedOption === null ? 'selected_option' : ''"
+                    @click="selectedOption = null"
+                  >
+                    <NuxtImg :src="productStore.selectedProducts.img[0].path" alt="option" />
+                    <span>
+                      {{
+                        productStore.selectedProducts.translations[0].productColor.length < 1
+                          ? "Стандарт"
+                          : productStore.selectedProducts.translations[0].productColor
+                      }}
+                    </span>
+                  </div>
+                  <div
+                    v-for="option in productStore.selectedProducts.options"
+                    :key="option.id"
+                    class="option_item"
+                    :class="option.id === selectedOption?.id ? 'selected_option' : ''"
+                    @click="selectedOption = option"
+                  >
+                    <NuxtImg :src="option.optionImg" alt="option" />
+                    <span>
+                      {{ option.translations[0].optionInfo }}
+                    </span>
+                  </div>
                 </div>
 
                 <div class="product_quantity">
@@ -144,32 +169,52 @@
                       min="1"
                       @blur="onBlur"
                     />
-                    <button
-                      :class="
+                    <!-- :class="
                         counter === productStore.selectedProducts.availableProduct
                           ? 'counter_disabled'
                           : ''
-                      "
+                      " -->
+                    <!-- v-if="selectedOption === null" -->
+
+                    <button
+                      :class="counter === availableQuantity ? 'counter_disabled' : ''"
                       @click="increment"
                     >
                       <PlusIcon />
                     </button>
+                    <!-- <button
+                      v-else
+                      :class="counter === availableQuantity ? 'counter_disabled' : ''"
+                      @click="increment('option')"
+                    >
+                      <PlusIcon />
+                    </button> -->
                   </div>
                 </div>
 
                 <div class="cart_btn">
-                  <button
-                    v-if="productStore.selectedProducts.availableProduct > 0"
+                  <button v-if="availableQuantity > 0" @click="addToCart">Додати в кошик</button>
+                  <div v-else class="not_allowed_btn">Додати в кошик</div>
+                  <!-- <button
+                    v-if="
+                      selectedOption === null
+                        ? productStore.selectedProducts.availableProduct > 0
+                        : availableQuantity > 0
+                    "
                     @click="addToCart"
                   >
                     Додати в кошик
-                  </button>
-                  <div
-                    v-if="productStore.selectedProducts.availableProduct <= 0"
+                  </button> -->
+                  <!-- <div
+                    v-if="
+                      selectedOption === null
+                        ? productStore.selectedProducts.availableProduct <= 0
+                        : availableQuantity <= 0
+                    "
                     class="not_allowed_btn"
                   >
                     Додати в кошик
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -292,6 +337,29 @@ const wishlistStore = useWishlistStore();
 const route = useRoute();
 const categoryId = route.params.categoryId;
 const productId = route.params.productId;
+
+// Options
+const selectedOption = ref(null);
+
+const availableQuantity = computed(() => {
+  if (!selectedOption.value) {
+    return productStore.selectedProducts.availableProduct;
+  }
+
+  return selectedOption.value.optionStock - (selectedOption.value.optionReserved || 0);
+});
+
+watch(selectedOption, () => {
+  if (counter.value > availableQuantity.value) {
+    counter.value = availableQuantity.value || 1;
+  }
+});
+
+const isOptionSelected = computed(() => !!selectedOption.value);
+
+// const selectOption = (option) => {
+//   selectedOption.value = option;
+// }
 
 // Product data for template (handle array structure like store)
 const productForTemplate = computed(() => {
@@ -587,30 +655,57 @@ const onBlur = () => {
   if (!counter.value || counter.value < 1) {
     counter.value = 1;
     productQuantity.value = 1;
-  } else if (counter.value > productStore.selectedProducts.availableProduct) {
-    counter.value = productStore.selectedProducts.availableProduct;
-    productQuantity.value = productStore.selectedProducts.availableProduct;
+  } else if (counter.value > availableQuantity.value) {
+    counter.value = availableQuantity.value;
+    productQuantity.value = availableQuantity.value;
   }
 
   productQuantity.value = counter.value;
   // recalc(item);
 };
 
+// const decrement = () => {
+//   if (counter.value > 1) {
+//     productQuantity.value--;
+//     counter.value--;
+//     // recalc(item);
+//   }
+// };
+
 const decrement = () => {
   if (counter.value > 1) {
-    productQuantity.value--;
     counter.value--;
-    // recalc(item);
   }
 };
 
+// const increment = (type) => {
+//   const calcProduct = () => {
+//     if (productStore.selectedProducts.availableProduct > counter.value) {
+//       productQuantity.value++;
+//       counter.value++;
+//     }
+//   };
+
+//   const calcOption = () => {
+//     if (selectedOption.value.optionStock > counter.value) {
+//       productQuantity.value++;
+//       counter.value++;
+//     }
+//   };
+
+//   if (type === "product") {
+//     console.log("product");
+//     calcProduct();
+//   } else if (type === "option") {
+//     console.log("option");
+//     calcOption();
+//   }
+// };
+
 const increment = () => {
-  if (productStore.selectedProducts.availableProduct > counter.value) {
-    productQuantity.value++;
+  if (counter.value < availableQuantity.value) {
     counter.value++;
   }
-
-  // recalc(item);
 };
 
 // const recalc = (item) => {
@@ -715,9 +810,6 @@ const fetchProductById = async () => {
   try {
     const res = await $fetch(`/api/products/${routeId}`);
 
-    // console.log(!res.data, "Products page fetchProductById res.data is empty");
-    // console.log(res, "res");
-
     // Handle API response structure
     const productData = res.data || res;
 
@@ -775,35 +867,67 @@ const fetchProductById = async () => {
   }
 };
 
+// const addToCart = () => {
+//   const checkProductFromStor = cartStore.cart.find(
+//     (el) => el.product.id === productStore.selectedProducts.id
+//   );
+//   if (checkProductFromStor) {
+//     if (
+//       counter.value + checkProductFromStor.quantity >
+//       productStore.selectedProducts.availableProduct
+//     ) {
+//       alert(
+//         `Цей товар вже в кошику, загальна кількість товару не може перевищувати наявність товару на складі`
+//       );
+//       return;
+//     }
+//   }
+
+//   const checkDiscountPrice =
+//     productStore.selectedProducts.discountPercent > 0
+//       ? discountedPrice.value
+//       : productStore.selectedProducts.productPrice;
+
+//   console.log(checkDiscountPrice);
+
+//   // const productTotalPrice = productStore.selectedProducts.productPrice * counter.value;
+//   const productTotalPrice = checkDiscountPrice * counter.value;
+
+//   cartStore.addProduct(productStore.selectedProducts, counter.value, productTotalPrice);
+//   alert("Товар успішно додано до кошика");
+//   productQuantity.value = 1;
+//   counter.value = 1;
+// };
+
 const addToCart = () => {
-  const checkProductFromStor = cartStore.cart.find(
-    (el) => el.product.id === productStore.selectedProducts.id
+  const option = selectedOption.value;
+
+  const existingItem = cartStore.cart.find(
+    (el) =>
+      el.product.id === productStore.selectedProducts.id && el.optionId === (option?.id || null)
   );
-  if (checkProductFromStor) {
-    if (
-      counter.value + checkProductFromStor.quantity >
-      productStore.selectedProducts.availableProduct
-    ) {
-      alert(
-        `Цей товар вже в кошику, загальна кількість товару не може перевищувати наявність товару на складі`
-      );
+
+  const available = availableQuantity.value;
+
+  if (existingItem) {
+    if (counter.value + existingItem.quantity > available) {
+      alert("Перевищено доступну кількість");
       return;
     }
   }
 
-  const checkDiscountPrice =
-    productStore.selectedProducts.discountPercent > 0
+  const price =
+    option?.optionPrice ||
+    (productStore.selectedProducts.discountPercent > 0
       ? discountedPrice.value
-      : productStore.selectedProducts.productPrice;
+      : productStore.selectedProducts.productPrice);
 
-  console.log(checkDiscountPrice);
+  const total = price * counter.value;
 
-  // const productTotalPrice = productStore.selectedProducts.productPrice * counter.value;
-  const productTotalPrice = checkDiscountPrice * counter.value;
+  cartStore.addProduct(productStore.selectedProducts, counter.value, total, option);
 
-  cartStore.addProduct(productStore.selectedProducts, counter.value, productTotalPrice);
-  alert("Товар успішно додано до кошика");
-  productQuantity.value = 1;
+  alert("Товар додано в кошик");
+
   counter.value = 1;
 };
 
@@ -986,6 +1110,42 @@ onUnmounted(() => {
       @media screen and (max-width: 375px) {
         gap: 4px;
       }
+    }
+
+    .options_wrapper {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      gap: 5px;
+    }
+
+    .option_item {
+      width: 100px;
+      height: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 5px;
+      filter: grayscale(0.75) brightness(0.75);
+      cursor: pointer;
+      gap: 5px;
+      img {
+        width: 100px;
+        height: 100px;
+        aspect-ratio: 1 / 1;
+      }
+    }
+
+    .selected_option {
+      filter: grayscale(0) brightness(1);
+
+      border: 1px solid var(--accent-color);
     }
 
     h3 {
@@ -1373,6 +1533,7 @@ onUnmounted(() => {
       font-size: 1.125rem;
       height: auto;
       transition: height 0.3s ease;
+      white-space: pre-line;
 
       &.description_collapsed {
         height: 0;

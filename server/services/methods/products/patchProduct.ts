@@ -57,6 +57,7 @@ async function patchProduct(id: number, event: any) {
             body.options?.map((option: any) => ({
               optionImg: option.optionImg,
               optionPrice: Number(option.optionPrice) || 0,
+              optionStock: Number(option.optionStock) || 0,
               translations: {
                 create:
                   option.translations?.map((tr: any) => ({

@@ -15,9 +15,10 @@
             <div v-else>
               <div
                 v-for="item in cartStore.cart"
-                :key="item.product.id"
+                :key="item.product.id + '-' + item.optionId"
                 ref="items"
                 :data-id="item.product.id"
+                :data-option-id="item.optionId ?? 0"
                 class="cart_item"
               >
                 <div class="cart_item_main">
@@ -25,24 +26,25 @@
                     <img :src="item.product.img?.[0]?.path" alt="item-img" />
                     <div class="cart_item_description">
                       <p>
-                        {{ item.product.translations[0].title ?? "" }}
+                        {{ item.title ?? "" }}
                       </p>
                       <span v-if="item.quantity === 1">
                         {{ item.productPrice.toFixed(2) }}
                         грн.
                       </span>
                       <span v-else>
-                        {{
-                          // `${item.quantity}x ${item.productPrice} = ${item.productTotalPrice.toFixed(2)}`
-                          item.productTotalPrice.toFixed(2)
-                        }}
+                        {{ item.productTotalPrice.toFixed(2) }}
                         грн
                       </span>
                     </div>
                   </div>
 
-                  <!-- <button class="remove_product" @click="cartStore.removeProduct(item)">x</button> -->
-                  <button class="remove_product" @click="removeItem(item.product.id)">x</button>
+                  <button
+                    class="remove_product"
+                    @click="removeItem(item.product.id, item.optionId)"
+                  >
+                    x
+                  </button>
                 </div>
                 <div class="cart_item_counter">
                   <div class="cart_item_counter_content">
@@ -51,11 +53,8 @@
                       class="counter_btn"
                       @click="counterHandler.decrement(item)"
                     >
-                      <!-- @click="decrement(item)" -->
-
                       -
                     </button>
-                    <!-- v-model.number="item.quantity" -->
 
                     <input
                       v-model="item.quantity"
@@ -65,14 +64,15 @@
                       @blur="counterHandler.onBlur(item)"
                     />
 
-                    <!-- <label :for="`counter-input-${item.product.id}`" class="counter_value">{{
-                    item.quantity
-                  }}</label> -->
-
-                    <!-- <span class="counter_value"> {{ item.quantity }} </span> -->
-                    <button class="counter_btn" @click="counterHandler.increment(item)">
-                      <!-- @click="cartStore.updateProduct(item.product.id, 'increment')" -->
-
+                    <button
+                      class="counter_btn"
+                      :class="
+                        item.quantity === counterHandler.getAvailable(item)
+                          ? 'counter_btn_disabled'
+                          : ''
+                      "
+                      @click="counterHandler.increment(item)"
+                    >
                       +
                     </button>
                   </div>
@@ -137,11 +137,13 @@ onMounted(() => {
   });
 });
 
-const removeItem = (id) => {
-  const el = items.value.find((e) => +e.dataset.id === id);
+const removeItem = (productId, optionId) => {
+  const el = items.value.find(
+    (e) => +e.dataset.id === productId && +e.dataset.optionId === (optionId ?? 0)
+  );
 
   if (!el) {
-    console.log("id not found");
+    console.log("item not found");
     return;
   }
 
@@ -160,7 +162,7 @@ const removeItem = (id) => {
         duration: 0.25,
         ease: "power2.in",
         onComplete() {
-          cartStore.removeProduct(id);
+          cartStore.removeProduct(productId, optionId);
         }
       });
     }
@@ -267,10 +269,6 @@ const goToCheckout = () => {
 }
 
 .cart_content {
-  // display: flex;
-  // flex-direction: column;
-  // align-items: flex-start;
-  // justify-content: flex-start;
   display: block;
   width: 100%;
   height: fit-content;
@@ -362,15 +360,13 @@ const goToCheckout = () => {
       gap: 0.8rem;
     }
 
-    // .counter_input {
-    //   display: none;
-    // }
-
     .counter_value {
       font-size: 0.8rem;
       font-weight: 600;
-      width: 30px;
       text-align: center;
+      width: 70px;
+      padding-right: 0;
+      padding-left: 0;
     }
   }
 
