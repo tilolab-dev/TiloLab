@@ -379,6 +379,8 @@
                       {{ option.optionPrice }}
                       UAH
                     </span>
+
+                    {{ console.log(option, "option") }}
                     <!-- <div v-if="option.optionPrice !== 0" class="separator"></div> -->
 
                     <span> Залишок: {{ option.optionStock }} </span>
@@ -566,10 +568,8 @@ const addNewOption = () => {
     addOptionsRef.value.push({
       file: toRaw(optionFileState.optionFiles.value),
       fileImg: optionFileState.optionFilesPreview.value,
-
       optionPrice: optionPrice.value,
       optionStock: optionStockValue.value,
-
       translations: [
         {
           language: "uk",
@@ -589,8 +589,6 @@ const addNewOption = () => {
     optionFileState.optionFiles.value = [];
     optionFileState.optionFilesPreview.value = [];
     addOptionTextUk.value = "";
-    // addOptionTextEn.value = "";
-    // addOptionTextRu.value = "";
     optionFileInput.value.value = "";
     addOptionPrice.value = false;
     optionPrice.value = 0;
@@ -599,6 +597,7 @@ const addNewOption = () => {
       file: [],
       fileImg: "",
       optionPrice: optionPrice.value,
+      optionStock: optionStockValue.value,
       translations: [
         {
           language: "uk",

@@ -3,8 +3,9 @@
     <div class="tooltip_content_wrapper">
       <div class="status_wrapper">
         <component :is="tooltipIcon" v-if="tooltipIcon" />
-        <p class="">{{ tooltipName }}</p>
+        <p>{{ tooltipName }}</p>
       </div>
+
       <div class="text_wrapper">
         <slot />
       </div>
@@ -75,145 +76,124 @@ const tooltipStyle = computed(() => {
 
 <style lang="scss">
 .tooltip {
-  height: auto;
-  width: 60%;
-  height: 150px;
-  text-align: center;
   position: fixed;
   top: 20px;
   left: 50%;
-  transform: translateX(-50%);
-  animation: tooltipAnimation 4s ease-in-out forwards;
-  backdrop-filter: blur(10px);
-  border-radius: 2vw;
-  padding-block: 40px;
-  padding-right: 40px;
-  margin: 0 auto;
-  z-index: 1010;
+  transform: translateX(-50%) translateY(-20px);
+  opacity: 0;
+
+  display: flex;
+  align-items: center;
+
+  width: fit-content;
+  max-width: 90%;
+  padding: 14px 18px;
   overflow: hidden;
+
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  background: rgba(20, 20, 20, 0.75);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  z-index: 1010;
+
+  animation: tooltipAnimation 3s ease forwards;
 
   &_content_wrapper {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
-    position: relative;
-    height: 100%;
-    width: 90%;
-    margin: 0 auto;
-    gap: 50px;
-
-    @media screen and (max-width: 768px) {
-      gap: 30px;
-    }
-    @media screen and (max-width: 480px) {
-      gap: 20px;
-    }
-    @media screen and (max-width: 375px) {
-      gap: 15px;
-    }
+    gap: 12px;
   }
 
   .status_wrapper {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
     gap: 10px;
 
     svg {
-      width: 50px;
-      height: 50px;
-      aspect-ratio: 1 / 1;
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
 
-      @media screen and (max-width: 768px) {
-        width: 40px;
-        height: 40px;
-      }
-      @media screen and (max-width: 480px) {
-        width: 30px;
-        height: 30px;
-      }
+    p {
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      margin: 0;
     }
   }
 
   .text_wrapper {
-    background: rgba(0, 0, 0, 0.45);
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    border-radius: 0px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    padding: 10px 50px 10px 10px;
-    min-width: clamp(120px, 55vw, 300px);
-    height: 100%;
-  }
-
-  @media screen and (max-width: 768px) {
-    padding-block: 30px;
-    padding-right: 30px;
-    min-width: 200px;
-
-    height: 110px;
-    width: 90%;
-  }
-  @media screen and (max-width: 480px) {
-    padding-block: 20px;
-    padding-right: 20px;
-    min-width: 90px;
-    height: 100px;
-    width: 95%;
+    font-size: 14px;
+    color: #cfcfcf;
   }
 }
 
+.tooltip::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 5px;
+  border-radius: 4px 0 0 4px;
+}
+
+.tooltip_success::before {
+  background: var(--success-border);
+}
 .tooltip_success {
-  border: 2px solid var(--success-border);
   background: rgba(7, 18, 18, 0.8);
-  .text_wrapper {
-    border-left: 2px solid var(--success-border);
-  }
+  border: 1px solid var(--success-border);
 }
 
-.tooltip_info {
-  border: 1px solid var(--text-grey);
+.tooltip_warning::before {
+  background: var(--warning-border);
 }
-
 .tooltip_warning {
-  border: 1px solid var(--warning-border);
   background: rgb(36, 22, 14, 0.8);
-  .text_wrapper {
-    border-left: 2px solid var(--warning-border);
-  }
+  border: 1px solid var(--warning-border);
 }
 
+.tooltip_error::before {
+  background: var(--error-border);
+}
 .tooltip_error {
-  border: 1px solid var(--error-border);
   background: rgba(36, 14, 24, 0.8);
-  .text_wrapper {
-    border-left: 2px solid var(--error-border);
-  }
+
+  border: 1px solid var(--error-border);
 }
 
-.tooltip_default {
-  border: 1px solid var(--btn-color);
+.tooltip_info::before {
+  background: #3b82f6;
+}
+.tooltip_info {
+  border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 @keyframes tooltipAnimation {
   0% {
-    top: -100%;
     opacity: 0;
+    transform: translateX(-50%) translateY(-20px) scale(0.95);
   }
+
   10% {
-    top: 5%;
     opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
   }
-  90% {
-    top: 5%;
+
+  85% {
     opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
   }
+
   100% {
-    top: -100%;
     opacity: 0;
+    transform: translateX(-50%) translateY(-8px) scale(0.98);
   }
 }
 </style>

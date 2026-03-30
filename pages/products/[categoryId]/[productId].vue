@@ -195,26 +195,6 @@
                 <div class="cart_btn">
                   <button v-if="availableQuantity > 0" @click="addToCart">Додати в кошик</button>
                   <div v-else class="not_allowed_btn">Додати в кошик</div>
-                  <!-- <button
-                    v-if="
-                      selectedOption === null
-                        ? productStore.selectedProducts.availableProduct > 0
-                        : availableQuantity > 0
-                    "
-                    @click="addToCart"
-                  >
-                    Додати в кошик
-                  </button> -->
-                  <!-- <div
-                    v-if="
-                      selectedOption === null
-                        ? productStore.selectedProducts.availableProduct <= 0
-                        : availableQuantity <= 0
-                    "
-                    class="not_allowed_btn"
-                  >
-                    Додати в кошик
-                  </div> -->
                 </div>
               </div>
 
@@ -303,6 +283,9 @@
         <ProductPagePopular />
       </div>
     </div>
+    <Tooltips v-if="showTooltip" :tooltip-status="tooltipStatus">
+      {{ tooltipMessage }}
+    </Tooltips>
   </div>
 </template>
 
@@ -324,6 +307,7 @@ import AngleDown from "~/assets/icons/angle-down.svg";
 import CheckIcon from "~/assets/icons/check.svg";
 import PlusIcon from "~/assets/icons/plus-icon.svg";
 import MinusIcon from "~/assets/icons/minus-icon.svg";
+import Tooltips from "@/components/shared/Tooltips.vue";
 
 // stores
 import { storeToRefs } from "pinia";
@@ -641,6 +625,10 @@ const isDescriptionCollapsed = ref(false);
 const counter = ref(1);
 const productQuantity = ref(1);
 
+const showTooltip = ref(false);
+const tooltipStatus = ref("");
+const tooltipMessage = ref("");
+
 const onBlur = () => {
   if (!counter.value || counter.value < 1) {
     counter.value = 1;
@@ -857,37 +845,16 @@ const fetchProductById = async () => {
   }
 };
 
-// const addToCart = () => {
-//   const checkProductFromStor = cartStore.cart.find(
-//     (el) => el.product.id === productStore.selectedProducts.id
-//   );
-//   if (checkProductFromStor) {
-//     if (
-//       counter.value + checkProductFromStor.quantity >
-//       productStore.selectedProducts.availableProduct
-//     ) {
-//       alert(
-//         `Цей товар вже в кошику, загальна кількість товару не може перевищувати наявність товару на складі`
-//       );
-//       return;
-//     }
-//   }
+const tooltip = (obj) => {
+  const { status, message } = obj;
 
-//   const checkDiscountPrice =
-//     productStore.selectedProducts.discountPercent > 0
-//       ? discountedPrice.value
-//       : productStore.selectedProducts.productPrice;
-
-//   console.log(checkDiscountPrice);
-
-//   // const productTotalPrice = productStore.selectedProducts.productPrice * counter.value;
-//   const productTotalPrice = checkDiscountPrice * counter.value;
-
-//   cartStore.addProduct(productStore.selectedProducts, counter.value, productTotalPrice);
-//   alert("Товар успішно додано до кошика");
-//   productQuantity.value = 1;
-//   counter.value = 1;
-// };
+  tooltipStatus.value = status;
+  tooltipMessage.value = message;
+  showTooltip.value = true;
+  setTimeout(() => {
+    showTooltip.value = false;
+  }, 3000);
+};
 
 const addToCart = () => {
   const option = selectedOption.value;
@@ -901,7 +868,9 @@ const addToCart = () => {
 
   if (existingItem) {
     if (counter.value + existingItem.quantity > available) {
-      alert("Перевищено доступну кількість");
+      // alert("Перевищено доступну кількість");
+      tooltip({ status: "error", message: "Перевищено доступну кількість" });
+
       return;
     }
   }
@@ -916,7 +885,8 @@ const addToCart = () => {
 
   cartStore.addProduct(productStore.selectedProducts, counter.value, total, option);
 
-  alert("Товар додано в кошик");
+  // alert("Товар додано в кошик");
+  tooltip({ status: "success", message: "Товар додано в кошик" });
 
   counter.value = 1;
 };
