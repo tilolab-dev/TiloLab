@@ -732,6 +732,19 @@ const addNewOption = () => {
     optionFileInput.value.value = "";
     addOptionPrice.value = false;
     optionPrice.value = 0;
+  } else {
+    addOptionsRef.value.push({
+      file: [],
+      fileImg: "",
+      optionPrice: optionPrice.value,
+      optionStock: optionStockValue.value,
+      translations: [
+        {
+          language: "uk",
+          optionInfo: addOptionTextUk.value
+        }
+      ]
+    });
   }
 };
 

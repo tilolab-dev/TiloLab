@@ -102,7 +102,7 @@ async function addProduct(event: any) {
           create: body.options.map((option: any) => ({
             optionImg: option.fileImg[0] || null,
             optionPrice: Number(option.optionPrice),
-
+            optionStock: Number(option.optionStock) || 0,
             translations: {
               create: option.translations.map((tr: any) => ({
                 language: tr.language,
