@@ -281,14 +281,12 @@ input {
   width: 100%;
   padding: 8px 10px;
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #181818;
   color: #fff;
   font-size: 0.8rem;
 
   &:focus {
     outline: none;
-    border-color: #4ade80;
+    border-color: transparent;
   }
 }
 
