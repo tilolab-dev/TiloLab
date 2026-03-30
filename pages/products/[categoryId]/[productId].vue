@@ -340,21 +340,6 @@ watch(selectedOption, () => {
 
 const isOptionSelected = computed(() => !!selectedOption.value);
 
-// const selectOption = (option) => {
-//   selectedOption.value = option;
-// }
-
-// Product data for template (handle array structure like store)
-const productForTemplate = computed(() => {
-  const products = productStore.selectedProducts;
-  const product = Array.isArray(products) ? products[0] : products;
-  if (process.dev) {
-    console.log("productForTemplate computed - selectedProducts:", products);
-    console.log("productForTemplate computed - extracted product:", product);
-  }
-  return product;
-});
-
 // Dynamic SEO Meta Tags based on product
 const { selectedProducts } = storeToRefs(productStore);
 const currentProduct = computed(() => {
@@ -364,45 +349,6 @@ const currentProduct = computed(() => {
 
 const currentCategory = computed(() => {
   return indexStore.fetchedCategories.find((cat) => cat.group.toLowerCase() === categoryId);
-});
-
-// Reactive SEO meta tags
-const seoMeta = computed(() => {
-  const product = currentProduct.value;
-  const category = currentCategory.value;
-
-  if (!product || !product.translations?.[0]) {
-    return {
-      title: "Завантаження продукту... - Tilo Lab",
-      description: "Завантаження продукту... Анонімна доставка по Україні.",
-      ogTitle: "Завантаження продукту... - Tilo Lab",
-      ogDescription: "Завантаження продукту...",
-      ogImage: "https://tilolab.com.ua/images/about-main.webp",
-      ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
-      twitterCard: "summary_large_image"
-    };
-  }
-
-  const description =
-    product.translations[0].productDescription || product.translations[0].description || "";
-  const shortDesc = description.length > 150 ? description.substring(0, 150) + "..." : description;
-  const shortDescOg =
-    description.length > 100 ? description.substring(0, 100) + "..." : description;
-
-  return {
-    title: `${product.translations[0].title} - Tilo Lab | ${category?.translations?.[0]?.title || "Інтимні товари"}`,
-    description: `${shortDesc} Купити з доставкою по Україні. Анонімна упаковка.`,
-    ogTitle: product.translations[0].title,
-    ogDescription: shortDescOg,
-    ogImage:
-      product.img && product.img.length > 0
-        ? typeof product.img[0] === "string"
-          ? product.img[0]
-          : product.img[0]?.path || "https://tilolab.com.ua/images/about-main.webp"
-        : "https://tilolab.com.ua/images/about-main.webp",
-    ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
-    twitterCard: "summary_large_image"
-  };
 });
 
 // Fetch product data during SSR for proper SEO
