@@ -11,8 +11,8 @@
             <div class="user_info_main">
               <div class="checkout_subtitle">Дані отримувача</div>
               <div class="main_input">
-                <input v-model="name" type="text" placeholder="Ім’я" />
-                <input v-model="surname" type="text" placeholder="Прізвище" />
+                <input v-model="name" type="text" placeholder="Ім’я (Українською)" />
+                <input v-model="surname" type="text" placeholder="Прізвище (Українською)" />
                 <input :value="phone" type="tel" @input="onPhoneInput" @keydown="onPhoneKeydown" />
                 <input v-model="email" type="text" placeholder="Електронна пошта" />
                 <input v-model="cityRef" type="text" placeholder="Місто" @input="getCitiesNp" />
@@ -350,6 +350,7 @@ const confirmOrderHandler = async () => {
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  const nameRegex = /^[а-яіїєґёА-ЯІЇЄҐЁ\s'-]+$/;
 
   let userNumber = "";
 
@@ -369,8 +370,16 @@ const confirmOrderHandler = async () => {
     tooltip({ status: "warning", message: "Перевірте Імʼя" });
     return;
   }
+  if (!nameRegex.test(name.value)) {
+    tooltip({ status: "warning", message: "Введіть імʼя Українською" });
+    return;
+  }
   if (!surname.value) {
     tooltip({ status: "warning", message: "Перевірте Фамілію" });
+    return;
+  }
+  if (!nameRegex.test(surname.value)) {
+    tooltip({ status: "warning", message: "Введіть фамілію Українською" });
     return;
   }
 
