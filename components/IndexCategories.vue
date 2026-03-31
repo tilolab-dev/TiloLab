@@ -28,12 +28,13 @@
                 lazy
               />
 
-              <img
+              <!-- <img
                 v-else
                 alt="No Image"
                 src="https://placehold.co/384x488/000000/ff86bb?font=montserrat&text=No+Image"
                 class="card_img"
-              />
+              /> -->
+              <FallbackIcon v-else class="card_img fallback_img" />
 
               <span class="card_title">
                 {{ slide.translations[0].title }}
@@ -49,6 +50,8 @@
 <script setup>
 import { computed } from "vue";
 import { useIndexStore } from "@/store/index-store";
+
+import FallbackIcon from "~/assets/icons/fallback_img.svg";
 
 const indexStore = useIndexStore();
 
@@ -198,6 +201,14 @@ const fetchCategories = computed(() => indexStore?.fetchedCategories);
     height: 100%;
     object-fit: cover;
     object-position: center;
+  }
+
+  .fallback_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    fill: var(--accent-grey);
   }
 
   .card_title {
