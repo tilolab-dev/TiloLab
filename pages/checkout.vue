@@ -408,11 +408,6 @@ const confirmOrderHandler = async () => {
     return;
   }
 
-  // if (!postAddress.value || !postomatNumber.value) {
-  //   console.log("ok");
-  //   return;
-  // }
-
   const getOrderItems = cartStore.cart.map((item) => {
     return {
       productId: item.product.id,
@@ -475,7 +470,7 @@ const confirmOrderHandler = async () => {
     });
 
     if (getOrderId.statusCode !== 200) {
-      alert("Щось пішло не так спробуйте ще раз");
+      tooltip({ status: "error", message: "Щось пішло не так спробуйте ще раз" });
       return;
     }
 
@@ -487,6 +482,11 @@ const confirmOrderHandler = async () => {
         amount: totalDeliveryPrice.value
       }
     });
+
+    if (createPayment.statusCode !== 200) {
+      alert(`Щось пішло не так ${createPayment.statusMessage}`);
+      return;
+    }
 
     cartStore.clearCart();
 
@@ -660,7 +660,7 @@ const getCitiesNp = debounce(cityRef.value, async () => {
 
 const getPostomatsNp = debounce(postomatNumber.value, async () => {
   if (!cityRef.value) {
-    alert("Введіть місто");
+    tooltip({ status: "warning", message: "Введіть місто" });
     postomatNumber.value = "";
     return;
   }
@@ -678,7 +678,7 @@ const getPostomatsNp = debounce(postomatNumber.value, async () => {
 
 const getPostOfficeNp = debounce(postAddress.value, async () => {
   if (!cityRef.value) {
-    alert("Введіть місто");
+    tooltip({ status: "warning", message: "Введіть місто" });
     postAddress.value = "";
     return;
   }

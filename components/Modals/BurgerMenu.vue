@@ -14,7 +14,6 @@
           <li @click="closeBurgerMenu('/wishlist')">Список бажань</li>
         </ul>
       </div>
-      <!-- <div class="burger_menu_user" @click="closeBurgerMenu('/auth/login')"> -->
 
       <div
         class="burger_menu_user"
@@ -84,7 +83,6 @@ const closeBurgerMenu = (link) => {
 
 .burger_modal_content {
   width: clamp(300px, 20vw, 400px);
-  //   border: 1px solid #302029;
   background: var(--bg-color);
   padding: 20px;
   height: 100dvh;
@@ -137,8 +135,10 @@ const closeBurgerMenu = (link) => {
           width: 24px;
           height: 24px;
           svg {
-            padding: 5px;
             stroke: var(--text-color);
+            padding: 5px;
+            width: 100%;
+            height: 100%;
           }
         }
       }

@@ -133,7 +133,13 @@
                     :class="selectedOption === null ? 'selected_option' : ''"
                     @click="selectedOption = null"
                   >
-                    <NuxtImg :src="productStore.selectedProducts.img[0].path" alt="option" />
+                    <NuxtImg
+                      v-if="productStore.selectedProducts.img[0].path.length !== 0"
+                      :src="productStore.selectedProducts.img[0].path"
+                      alt="option"
+                    />
+                    <NuxtImg v-else src="./images/fallback-img.webp" alt="default" />
+                    <!-- <FallbackIcon v-else /> -->
                     <span>
                       {{
                         productStore.selectedProducts.translations[0].productColor.length < 1
@@ -149,7 +155,9 @@
                     :class="option.id === selectedOption?.id ? 'selected_option' : ''"
                     @click="selectedOption = option"
                   >
-                    <NuxtImg :src="option.optionImg" alt="option" />
+                    <NuxtImg v-if="option.optionImg" :src="option.optionImg" alt="option" />
+                    <NuxtImg v-else src="./images/fallback-img.webp" alt="default" />
+                    <!-- <FallbackIcon v-else /> -->
                     <span>
                       {{ option.translations[0].optionInfo }}
                     </span>
@@ -307,6 +315,7 @@ import AngleDown from "~/assets/icons/angle-down.svg";
 import CheckIcon from "~/assets/icons/check.svg";
 import PlusIcon from "~/assets/icons/plus-icon.svg";
 import MinusIcon from "~/assets/icons/minus-icon.svg";
+import FallbackIcon from "~/assets/icons/fallback_img.svg";
 import Tooltips from "@/components/shared/Tooltips.vue";
 
 // stores
@@ -1041,6 +1050,9 @@ onMounted(async () => {
         width: 100px;
         height: 100px;
         aspect-ratio: 1 / 1;
+      }
+      svg {
+        fill: var(--transparent-fill);
       }
     }
 

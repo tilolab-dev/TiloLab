@@ -78,13 +78,6 @@ export default defineEventHandler(async (event: any) => {
       }
     });
 
-    // await prisma.order.update({
-    //   where: { id: order.id },
-    //   data: {
-    //     status: "PAID"
-    //   }
-    // });
-
     return {
       invoiceId: invoice.invoiceId,
       pageUrl: invoice.pageUrl

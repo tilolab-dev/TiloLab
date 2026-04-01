@@ -5,7 +5,7 @@
         <div class="cart_top">
           <div class="cart_head">
             <h1>Кошик</h1>
-            <button @click="closeCart">X</button>
+            <button @click="closeCart"><CloseIcon /></button>
           </div>
 
           <div class="cart_content">
@@ -43,7 +43,7 @@
                     class="remove_product"
                     @click="removeItem(item.product.id, item.optionId)"
                   >
-                    x
+                    <CloseIcon />
                   </button>
                 </div>
                 <div class="cart_item_counter">
@@ -106,6 +106,8 @@ import { counterHandler } from "@/composables/counterHandler";
 import { useModalStore } from "@/store/modal-store";
 import { useCartStore } from "@/store/cart-store";
 import gsap from "gsap";
+
+import CloseIcon from "~/assets/icons/close-icon.svg";
 
 const modalStore = useModalStore();
 const cartStore = useCartStore();
@@ -203,7 +205,6 @@ const goToCheckout = () => {
   width: clamp(300px, 20vw, 400px);
   border: 1px solid #302029;
   background: var(--bg-color);
-  padding: 20px;
 
   min-height: 500px;
   max-height: 80vh;
@@ -247,11 +248,30 @@ const goToCheckout = () => {
   width: 100%;
   height: fit-content;
   z-index: 1;
+  padding: 20px 20px 10px;
+  border-bottom: 1px solid var(--accent-grey);
 
   h1 {
     font-size: 1rem;
     font-weight: 500;
     text-transform: uppercase;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    stroke: var(--text-grey);
+    transition: all ease 0.3s;
+    padding: 1px;
+    transform: translateY(-30%) translateX(30%);
+
+    @media screen and (min-width: 1024px) {
+      &:hover {
+        stroke: var(--text-color);
+        transition: all ease 0.3s;
+      }
+    }
   }
 
   button {
@@ -275,6 +295,7 @@ const goToCheckout = () => {
   max-height: 55dvh;
   padding-bottom: 2rem;
   overflow-y: auto;
+  padding-inline: 20px;
 }
 
 .empty_cart {
@@ -285,7 +306,8 @@ const goToCheckout = () => {
   height: 100%;
   color: var(--accent-color);
   position: absolute;
-  transform: translateY(-10%);
+  top: 0;
+  left: 0;
 }
 
 .cart_item {
@@ -311,6 +333,21 @@ const goToCheckout = () => {
       width: 20px;
       height: 20px;
       aspect-ratio: 1 / 1;
+
+      svg {
+        transition: all ease 0.3s;
+
+        stroke: var(--text-grey);
+
+        padding: 2px;
+
+        @media screen and (min-width: 1024px) {
+          &:hover {
+            stroke: var(--text-color);
+            transition: all ease 0.3s;
+          }
+        }
+      }
     }
   }
 
@@ -388,10 +425,10 @@ const goToCheckout = () => {
   align-items: flex-start;
   justify-content: flex-start;
   border-top: 1px solid var(--accent-grey);
-  padding-top: 10px;
   width: 100%;
   height: fit-content;
   gap: 1.5rem;
+  padding: 10px 20px 20px;
 }
 
 .cart_summary {

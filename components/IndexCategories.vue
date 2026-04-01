@@ -27,12 +27,12 @@
                 class="card_img"
                 lazy
               />
-
-              <img
+              <NuxtImg
                 v-else
+                src="./images/fallback-img.webp"
                 alt="No Image"
-                src="https://placehold.co/384x488/000000/ff86bb?font=montserrat&text=No+Image"
                 class="card_img"
+                lazy
               />
 
               <span class="card_title">
@@ -218,7 +218,7 @@ const fetchCategories = computed(() =>
     font-family: "Montserrat", sans-serif;
     font-size: 1.875rem;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 150%;
     letter-spacing: 0.6px;
     text-transform: uppercase;
@@ -247,16 +247,12 @@ const fetchCategories = computed(() =>
     grid-template-rows: 260px;
 
     .card_title {
-      font-size: 24px;
+      font-size: clamp(13px, 4vw, 24px);
     }
   }
 
   @media screen and (max-width: 360px) {
     grid-template-rows: 184px;
-
-    .card_title {
-      font-size: 18px;
-    }
   }
 }
 </style>
