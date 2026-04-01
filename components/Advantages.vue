@@ -2,7 +2,7 @@
   <section class="advantages">
     <div class="container">
       <div ref="titleRef" class="advantages_title">
-        <h3>Наші переваги</h3>
+        <h5>Наші переваги</h5>
       </div>
       <div ref="wrapperRef" class="advantages_wrapper">
         <div
@@ -226,20 +226,12 @@ onMounted(async () => {
     will-change: transform, opacity;
     transform: translateZ(0);
     align-items: center;
-    // border: 1px solid rgba(255, 169, 214, 0.3);
-    // border-radius: 15px;
-    // background: #161616;
     padding: 20px;
     position: relative;
-    // overflow: hidden;
-
-    // position: relative;
     background: #161616;
     border-radius: 15px;
     border: 1px solid rgba(255, 169, 214, 0.3);
     z-index: 1;
-
-    // overflow: hidden;
     gap: 25px;
 
     .item_bg {
@@ -252,34 +244,6 @@ onMounted(async () => {
       border-radius: 15px;
     }
     &::before {
-      // content: "";
-      // position: absolute;
-      // inset: 0;
-      // background: radial-gradient(circle, rgba(255, 169, 214, 0.35), transparent 55%);
-      // filter: blur(20px);
-      // opacity: 0.5;
-      // z-index: -1;
-
-      // @media screen and (max-width: 768px) {
-      //   & {
-      //     inset: -5px;
-      //     filter: blur(5px);
-      //   }
-      // }
-      // content: "";
-      // position: absolute;
-      // inset: -10px;
-      // background: radial-gradient(
-      //   circle at center,
-      //   rgba(255, 169, 214, 0.35),
-      //   rgba(255, 169, 214, 0.15),
-      //   transparent 70%
-      // );
-      // opacity: 0.6;
-      // transform: scale(1);
-      // pointer-events: none;
-      // z-index: -1;
-
       content: "";
       position: absolute;
       inset: -20px;

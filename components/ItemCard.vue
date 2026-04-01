@@ -18,18 +18,14 @@
       >
         Товар закінчується
       </div>
-      <img
+      <NuxtImg
         v-if="props.product.img && props.product.img[0] && props.product.img[0].path"
         :src="props.product.img[0].path"
         alt="product"
+        lazy
       />
 
-      <img
-        v-else
-        alt="No Image"
-        src="https://placehold.co/384x488/000000/ff86bb?font=montserrat&text=No+Image"
-        class="card_img"
-      />
+      <NuxtImg v-else alt="No Image" src="./images/fallback-img.webp" class="card_img" lazy />
     </NuxtLink>
 
     <div class="description_content">

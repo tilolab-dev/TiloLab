@@ -138,7 +138,8 @@
                       :src="productStore.selectedProducts.img[0].path"
                       alt="option"
                     />
-                    <FallbackIcon v-else />
+                    <NuxtImg v-else src="./images/fallback-img.webp" alt="default" />
+                    <!-- <FallbackIcon v-else /> -->
                     <span>
                       {{
                         productStore.selectedProducts.translations[0].productColor.length < 1
@@ -155,7 +156,8 @@
                     @click="selectedOption = option"
                   >
                     <NuxtImg v-if="option.optionImg" :src="option.optionImg" alt="option" />
-                    <FallbackIcon v-else />
+                    <NuxtImg v-else src="./images/fallback-img.webp" alt="default" />
+                    <!-- <FallbackIcon v-else /> -->
                     <span>
                       {{ option.translations[0].optionInfo }}
                     </span>

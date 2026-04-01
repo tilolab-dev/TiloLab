@@ -27,14 +27,13 @@
                 class="card_img"
                 lazy
               />
-
-              <!-- <img
+              <NuxtImg
                 v-else
+                src="./images/fallback-img.webp"
                 alt="No Image"
-                src="https://placehold.co/384x488/000000/ff86bb?font=montserrat&text=No+Image"
                 class="card_img"
-              /> -->
-              <FallbackIcon v-else class="card_img fallback_img" />
+                lazy
+              />
 
               <span class="card_title">
                 {{ slide.translations[0].title }}
@@ -50,8 +49,6 @@
 <script setup>
 import { computed } from "vue";
 import { useIndexStore } from "@/store/index-store";
-
-import FallbackIcon from "~/assets/icons/fallback_img.svg";
 
 const indexStore = useIndexStore();
 
@@ -203,14 +200,6 @@ const fetchCategories = computed(() => indexStore?.fetchedCategories);
     object-position: center;
   }
 
-  .fallback_img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    fill: var(--accent-grey);
-  }
-
   .card_title {
     position: absolute;
     display: flex;
@@ -227,7 +216,7 @@ const fetchCategories = computed(() => indexStore?.fetchedCategories);
     font-family: "Montserrat", sans-serif;
     font-size: 1.875rem;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 150%;
     letter-spacing: 0.6px;
     text-transform: uppercase;
@@ -256,16 +245,12 @@ const fetchCategories = computed(() => indexStore?.fetchedCategories);
     grid-template-rows: 260px;
 
     .card_title {
-      font-size: 24px;
+      font-size: clamp(13px, 4vw, 24px);
     }
   }
 
   @media screen and (max-width: 360px) {
     grid-template-rows: 184px;
-
-    .card_title {
-      font-size: 18px;
-    }
   }
 }
 </style>
