@@ -300,12 +300,11 @@
 <script setup>
 import ProductPagePopular from "@/components/ProductPagePopular.vue";
 
-import { ref, computed, onMounted, nextTick, watchEffect } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useProductStore } from "@/store/product-store";
 import { useCartStore } from "@/store/cart-store";
 import { useIndexStore } from "@/store/index-store";
 import { useWishlistStore } from "@/store/wishlist-store";
-import { useSeoMeta } from "#imports";
 
 import { useRoute } from "vue-router";
 // components
@@ -350,72 +349,15 @@ watch(selectedOption, () => {
 
 const isOptionSelected = computed(() => !!selectedOption.value);
 
-// const selectOption = (option) => {
-//   selectedOption.value = option;
-// }
-
-// Product data for template (handle array structure like store)
-const productForTemplate = computed(() => {
-  const products = productStore.selectedProducts;
-  const product = Array.isArray(products) ? products[0] : products;
-  if (process.dev) {
-    console.log("productForTemplate computed - selectedProducts:", products);
-    console.log("productForTemplate computed - extracted product:", product);
-  }
-  return product;
-});
-
 // Dynamic SEO Meta Tags based on product
 const { selectedProducts } = storeToRefs(productStore);
 const currentProduct = computed(() => {
   const product = selectedProducts.value;
-  if (process.dev) {
-    console.log("currentProduct computed - selectedProducts:", product);
-  }
   return Array.isArray(product) ? product[0] : product;
 });
 
 const currentCategory = computed(() => {
   return indexStore.fetchedCategories.find((cat) => cat.group.toLowerCase() === categoryId);
-});
-
-// Reactive SEO meta tags
-const seoMeta = computed(() => {
-  const product = currentProduct.value;
-  const category = currentCategory.value;
-
-  if (!product || !product.translations?.[0]) {
-    return {
-      title: "Завантаження продукту... - Tilo Lab",
-      description: "Завантаження продукту... Анонімна доставка по Україні.",
-      ogTitle: "Завантаження продукту... - Tilo Lab",
-      ogDescription: "Завантаження продукту...",
-      ogImage: "https://tilolab.com.ua/images/about-main.webp",
-      ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
-      twitterCard: "summary_large_image"
-    };
-  }
-
-  const description =
-    product.translations[0].productDescription || product.translations[0].description || "";
-  const shortDesc = description.length > 150 ? description.substring(0, 150) + "..." : description;
-  const shortDescOg =
-    description.length > 100 ? description.substring(0, 100) + "..." : description;
-
-  return {
-    title: `${product.translations[0].title} - Tilo Lab | ${category?.translations?.[0]?.title || "Інтимні товари"}`,
-    description: `${shortDesc} Купити з доставкою по Україні. Анонімна упаковка.`,
-    ogTitle: product.translations[0].title,
-    ogDescription: shortDescOg,
-    ogImage:
-      product.img && product.img.length > 0
-        ? typeof product.img[0] === "string"
-          ? product.img[0]
-          : product.img[0]?.path || "https://tilolab.com.ua/images/about-main.webp"
-        : "https://tilolab.com.ua/images/about-main.webp",
-    ogUrl: `https://tilolab.com.ua/products/${categoryId}/${productId}`,
-    twitterCard: "summary_large_image"
-  };
 });
 
 // Fetch product data during SSR for proper SEO
@@ -426,12 +368,6 @@ const { data: productData, pending } = await useAsyncData(`product-${productId}`
 
 // SEO using productData from useAsyncData
 const seoMetaFromAsyncData = computed(() => {
-  // Debug logging
-  if (process.dev) {
-    console.log("SEO Debug - pending:", pending.value);
-    console.log("SEO Debug - productData:", productData.value);
-  }
-
   // Show loading state while pending
   if (pending.value) {
     return {
@@ -915,10 +851,6 @@ onMounted(async () => {
   // Force re-initialization of swipers when route changes
   swiperKey.value += 1;
 });
-
-onUnmounted(() => {
-  // Clean up will be handled automatically by key change
-});
 </script>
 
 <style lang="scss">
@@ -1320,6 +1252,7 @@ onUnmounted(() => {
         width: 100%;
         height: 100%;
         fill: var(--text-color);
+        stroke: var(--text-color);
       }
       .counter_disabled {
         background: transparent;
