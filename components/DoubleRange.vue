@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, watch, computed, onBeforeUnmount } from "vue";
 
 import MultiRangeSlider from "multi-range-slider-vue";
 
