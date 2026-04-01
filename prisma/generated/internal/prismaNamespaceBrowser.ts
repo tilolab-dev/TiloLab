@@ -183,13 +183,16 @@ export type ProductScalarFieldEnum =
   (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum];
 
 export const ProductOptionsScalarFieldEnum = {
-  id: "id",
-  optionId: "optionId",
-  optionImg: "optionImg",
-  optionPrice: "optionPrice",
-  optionStock: "optionStock",
-  optionReserved: "optionReserved"
-} as const;
+  id: 'id',
+  optionId: 'optionId',
+  optionImg: 'optionImg',
+  optionPrice: 'optionPrice',
+  optionStock: 'optionStock',
+  optionReserved: 'optionReserved',
+  discountPercent: 'discountPercent'
+} as const
+
+export type ProductOptionsScalarFieldEnum = (typeof ProductOptionsScalarFieldEnum)[keyof typeof ProductOptionsScalarFieldEnum]
 
 export type ProductOptionsScalarFieldEnum =
   (typeof ProductOptionsScalarFieldEnum)[keyof typeof ProductOptionsScalarFieldEnum];

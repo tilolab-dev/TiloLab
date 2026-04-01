@@ -78,7 +78,6 @@ export default defineEventHandler(async (event) => {
         });
       }
     }
-    console.log(order, order.id, "order");
     await tx.order.update({
       where: { id: order.id },
       data: { status: "PAID" }
@@ -124,9 +123,9 @@ export default defineEventHandler(async (event) => {
   }
 
   // console.log(runningOutItems?.translations?.[0]?.title || null, "runningOutItems");
-  console.log(runningOutItems?.[0]?.translations?.[0]?.title || null, "runningOutItems");
+  // console.log(runningOutItems?.[0]?.translations?.[0]?.title || null, "runningOutItems");
 
-  console.log("Payment was success");
+  // console.log("Payment was success");
 
   return { statusCode: 200, message: "Платіж успішно оброблений" };
 });
