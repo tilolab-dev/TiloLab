@@ -30,6 +30,8 @@ export default defineEventHandler(async (event) => {
   const data = JSON.parse(rawBody!.toString());
 
   if (data.status !== "success") {
+    console.log(data, "fallback data");
+    console.log(data.status, "data.status");
     console.log("Платіж не пройшов");
     return { ok: true, message: "Платіж не пройшов " };
   }
