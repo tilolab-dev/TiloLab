@@ -140,7 +140,7 @@
                   width="50"
                   height="50"
                 />
-                <img v-else src="./images/fallback-img.webp" alt="product" width="50" height="50" />
+                <img v-else :src="FallbackImg" alt="product" width="50" height="50" />
                 <p>{{ item.name }}</p>
               </div>
 
@@ -337,6 +337,7 @@ import CloseIcon from "~/assets/icons/close-icon.svg";
 import { ref, onMounted, computed, watch } from "vue";
 import { useModalStore } from "@/store/modal-store";
 import { useOrdersStore } from "@/store/orders-store";
+import FallbackImg from "@/public/images/fallback-img.webp";
 
 const modalStore = useModalStore();
 const orderStore = useOrdersStore();
