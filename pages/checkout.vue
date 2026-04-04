@@ -11,8 +11,18 @@
             <div class="user_info_main">
               <div class="checkout_subtitle">Дані отримувача</div>
               <div class="main_input">
-                <input v-model="name" type="text" placeholder="Ім’я (Українською)" />
-                <input v-model="surname" type="text" placeholder="Прізвище (Українською)" />
+                <input
+                  v-model="name"
+                  type="text"
+                  placeholder="Ім’я (Українською)"
+                  @blur="checkCyrillicSymbols($event.target.value, 'Введіть імʼя Українською')"
+                />
+                <input
+                  v-model="surname"
+                  type="text"
+                  placeholder="Прізвище (Українською)"
+                  @blur="checkCyrillicSymbols($event.target.value, 'Введіть прізвище Українською')"
+                />
                 <input :value="phone" type="tel" @input="onPhoneInput" @keydown="onPhoneKeydown" />
                 <input v-model="email" type="text" placeholder="Електронна пошта" />
                 <input v-model="cityRef" type="text" placeholder="Місто" @input="getCitiesNp" />
@@ -135,8 +145,12 @@
                 </label>
 
                 <div class="input_wrapper">
-                  <input type="text" placeholder="В мене є промокод" />
-                  <input type="text" placeholder="Коментар до замовлення (необов’язково)" />
+                  <input v-model="orderPromoCode" type="text" placeholder="В мене є промокод" />
+                  <input
+                    v-model="orderComment"
+                    type="text"
+                    placeholder="Коментар до замовлення (необов’язково)"
+                  />
                 </div>
               </div>
             </div>
@@ -320,6 +334,9 @@ const postAddressList = ref([]);
 const preventReloadBox = ref(false);
 const isDeleting = ref(false);
 
+const orderComment = ref("");
+const orderPromoCode = ref("");
+
 const cartStore = useCartStore();
 // const authStore = useAuthStore();
 
@@ -343,6 +360,18 @@ const tooltip = (obj) => {
   }, 3000);
 };
 
+const checkCyrillicSymbols = (value, message) => {
+  const nameRegex = /^[а-яіїєґёА-ЯІЇЄҐЁ\s'-]+$/;
+
+  // console.log(value, nameRegex.test(value), "test value");
+
+  if (!nameRegex.test(value)) {
+    tooltip({ status: "warning", message: message });
+  }
+
+  return nameRegex.test(value);
+};
+
 const confirmOrderHandler = async () => {
   if (!cartStore.cart.length) {
     tooltip({ status: "warning", message: "Кошик порожній" });
@@ -350,7 +379,6 @@ const confirmOrderHandler = async () => {
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  const nameRegex = /^[а-яіїєґёА-ЯІЇЄҐЁ\s'-]+$/;
 
   let userNumber = "";
 
@@ -366,24 +394,24 @@ const confirmOrderHandler = async () => {
 
   const formattedPhone = formatPhoneNumber(phone.value);
 
+  const checkPnoneNumberUa = userNumber.slice(0, 4) === "+380";
+
   if (!name.value) {
-    tooltip({ status: "warning", message: "Перевірте Імʼя" });
+    tooltip({ status: "warning", message: "Введіть Імʼя" });
     return;
   }
-  if (!nameRegex.test(name.value)) {
-    tooltip({ status: "warning", message: "Введіть імʼя Українською" });
+  if (!checkCyrillicSymbols(name.value, "Введіть імʼя Українською")) {
     return;
   }
   if (!surname.value) {
-    tooltip({ status: "warning", message: "Перевірте Фамілію" });
+    tooltip({ status: "warning", message: "Введіть Фамілію" });
     return;
   }
-  if (!nameRegex.test(surname.value)) {
-    tooltip({ status: "warning", message: "Введіть фамілію Українською" });
+  if (!checkCyrillicSymbols(surname.value, "Введіть прізвище Українською")) {
     return;
   }
 
-  if (userNumber.length < 12) {
+  if (userNumber.length < 13 || !checkPnoneNumberUa) {
     tooltip({ status: "warning", message: "Перевірте номер телефону" });
     return;
   }
@@ -407,6 +435,8 @@ const confirmOrderHandler = async () => {
     tooltip({ status: "warning", message: "Оберіть поштомат" });
     return;
   }
+
+  loaderState.value = true;
 
   const getOrderItems = cartStore.cart.map((item) => {
     return {
@@ -446,11 +476,13 @@ const confirmOrderHandler = async () => {
       method: "POST",
       body: {
         // userId: "", left after auth implementation
-        totalPrice: totalDeliveryPrice.value,
+        // totalPrice: totalDeliveryPrice.value,
         paymentMethod: "monobank",
         orderItems: getOrderItems,
         email: email.value,
         phoneNumber: userNumber,
+        promoCode: orderPromoCode.value,
+        orderComment: orderComment.value,
         shippingInfo: {
           recipient: name.value + " " + surname.value,
           phoneNumber: phone.value,
@@ -471,6 +503,7 @@ const confirmOrderHandler = async () => {
 
     if (getOrderId.statusCode !== 200) {
       tooltip({ status: "error", message: "Щось пішло не так спробуйте ще раз" });
+      loaderState.value = false;
       return;
     }
 
@@ -479,20 +512,30 @@ const confirmOrderHandler = async () => {
       body: {
         // !!!!!!! implement ammount from getOrderId
         orderId: getOrderId.data.id,
-        amount: totalDeliveryPrice.value
+        amount: getOrderId.data.totalPrice
       }
     });
 
     if (createPayment.statusCode !== 200) {
       alert(`Щось пішло не так ${createPayment.statusMessage}`);
+      loaderState.value = false;
+
       return;
     }
 
     cartStore.clearCart();
 
+    loaderState.value = false;
+
+    setTimeout(() => {
+      tooltip({ status: "success", message: "Замовлення створене! Оплатіть будь ласка товар! " });
+    }, 5000);
+
     window.location.href = createPayment.pageUrl;
   } catch (err) {
     console.log(err);
+  } finally {
+    loaderState.value = false;
   }
 };
 
