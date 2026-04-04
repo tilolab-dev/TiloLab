@@ -133,7 +133,14 @@
               class="items_info_product"
             >
               <div class="product_main">
-                <img :src="item.product.img[0].path" alt="product" width="50" height="50" />
+                <img
+                  v-if="item.product?.img?.[0]?.path"
+                  :src="item.product.img[0].path"
+                  alt="product"
+                  width="50"
+                  height="50"
+                />
+                <img v-else src="./images/fallback-img.webp" alt="product" width="50" height="50" />
                 <p>{{ item.name }}</p>
               </div>
 

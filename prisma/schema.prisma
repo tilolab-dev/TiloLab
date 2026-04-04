@@ -232,6 +232,8 @@ model Order {
   paymentMethod String?
   totalPrice    Float
   orderNumber   String        @unique(map: "Order_orderNumber_key")
+  orderComment  String?
+  promoCode     String?
   expiresAt     DateTime?
   orderItems    OrderItem[]
   payments      Payment?

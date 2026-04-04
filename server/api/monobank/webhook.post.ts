@@ -6,6 +6,8 @@ export default defineEventHandler(async (event) => {
   const rawBody = await readRawBody(event);
   const rawBodyBuffer = Buffer.isBuffer(rawBody) ? rawBody : Buffer.from(rawBody!);
 
+  let isPaymentSuccess = false;
+
   const sign = getHeader(event, "x-sign");
   if (!sign) throw createError({ statusCode: 400, message: "No signature" });
 
@@ -30,9 +32,6 @@ export default defineEventHandler(async (event) => {
   const data = JSON.parse(rawBody!.toString());
 
   if (data.status !== "success") {
-    console.log("Платіж не пройшов: ", data.status);
-    console.log(data, "data");
-    console.log("Платіж не пройшов");
     return { ok: true, message: "Платіж не пройшов " };
   }
 
@@ -62,6 +61,35 @@ export default defineEventHandler(async (event) => {
 
   await prisma.$transaction(async (tx) => {
     for (const item of order.orderItems) {
+      if (item.optionId) {
+        const updatedOption = await tx.productOptions.update({
+          where: { id: item.optionId },
+          data: {
+            optionStock: { decrement: item.quantity },
+            optionReserved: { decrement: item.quantity }
+          },
+          include: {
+            Product: {
+              include: {
+                translations: true
+              }
+            }
+          }
+        });
+
+        const remaining = updatedOption.optionStock ?? 0;
+
+        if (remaining < 10) {
+          runningOutItems.push({
+            ...updatedOption,
+            title: updatedOption.Product?.translations?.[0]?.title,
+            actualStock: remaining
+          });
+        }
+
+        continue;
+      }
+
       const updatedProduct = await tx.product.update({
         where: { id: item.productId },
         data: {
@@ -73,13 +101,16 @@ export default defineEventHandler(async (event) => {
         }
       });
 
-      if ((updatedProduct.stockValue || 0) < 10) {
+      const remaining = updatedProduct.stockValue ?? 0;
+
+      if (remaining < 10) {
         runningOutItems.push({
           ...updatedProduct,
-          actualStock: (updatedProduct.stockValue ?? 0) - item.quantity
+          actualStock: remaining
         });
       }
     }
+
     await tx.order.update({
       where: { id: order.id },
       data: { status: "PAID" }
@@ -97,8 +128,12 @@ export default defineEventHandler(async (event) => {
       }
     });
 
-    // IMPLEMENT NOTIFICATION FEATURE
+    isPaymentSuccess = true;
   });
+
+  if (!isPaymentSuccess) {
+    return;
+  }
 
   await sendTelegramMessage(`
       🛒 Нове замовлення!  
@@ -108,7 +143,7 @@ export default defineEventHandler(async (event) => {
       👤 **Отримувач:** ${orderDetails?.shippingInfo?.recipient}
       📞 **Телефон:** ${orderDetails?.shippingInfo?.phoneNumber}
 
-      💰 **Сума:** ${orderDetails?.totalPrice}
+      💰 **Сума:** ${orderDetails?.totalPrice} грн.
 
       🚚 **Доставка**
       🏙️ Місто — ${orderDetails?.shippingInfo?.city}

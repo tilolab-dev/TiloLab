@@ -22,7 +22,8 @@
                     thumbs-swiper=".swiper-gallery"
                   >
                     <swiper-slide v-for="slide in slides" :key="slide.id">
-                      <NuxtImg :src="slide.src" :alt="slide.title" />
+                      <NuxtImg v-if="slide.src.length !== 0" :src="slide.src" :alt="slide.title" />
+                      <NuxtImg v-else src="./images/fallback-img.webp" alt="no-img" />
                     </swiper-slide>
                   </swiper-container>
                 </ClientOnly>
@@ -54,6 +55,7 @@
             <div v-else class="img_gallery_placeholder">
               <p>No images available</p>
             </div>
+
             <div class="product_id_info">
               <div class="product_id_info_main">
                 <div class="description_head">
@@ -134,7 +136,7 @@
                     @click="selectedOption = null"
                   >
                     <NuxtImg
-                      v-if="productStore.selectedProducts.img[0].path.length !== 0"
+                      v-if="productStore.selectedProducts?.img?.[0]?.path"
                       :src="productStore.selectedProducts.img[0].path"
                       alt="option"
                     />
@@ -315,7 +317,7 @@ import AngleDown from "~/assets/icons/angle-down.svg";
 import CheckIcon from "~/assets/icons/check.svg";
 import PlusIcon from "~/assets/icons/plus-icon.svg";
 import MinusIcon from "~/assets/icons/minus-icon.svg";
-import FallbackIcon from "~/assets/icons/fallback_img.svg";
+//import FallbackIcon from "~/assets/icons/fallback_img.svg";
 import Tooltips from "@/components/shared/Tooltips.vue";
 
 // stores
@@ -1281,22 +1283,6 @@ onMounted(async () => {
       button {
         @include mixins.accentBtn;
         width: 100%;
-        // width: 100%;
-        // height: 100%;
-        // background: var(--btn-color);
-        // border: 2px solid var(--border-color);
-        // transition: all ease 0.3s;
-        // cursor: pointer;
-        // border-radius: 8px;
-        // padding-block: 1rem;
-        // font-size: 1.5rem;
-
-        // @media screen and (min-width: 1024px) {
-        //   &:hover {
-        //     background: var(--btn-color-hover);
-        //     transition: all ease 0.3s;
-        //   }
-        // }
       }
       .not_allowed_btn {
         @include mixins.transparentBtn;
@@ -1490,18 +1476,6 @@ onMounted(async () => {
   width: 100%;
   height: 621px;
   overflow: hidden;
-
-  // @media screen and (max-width: 1024px) {
-  //   height: 465px;
-  // }
-
-  // @media screen and (max-width: 768px) {
-  //   height: 365px;
-  // }
-
-  // @media screen and (max-width: 480px) {
-  //   height: 265px;
-  // }
 
   swiper-slide {
     img {
