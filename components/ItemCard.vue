@@ -66,8 +66,6 @@ const props = defineProps({
   }
 });
 
-console.log(props, "props in ItemCard");
-
 const hasDiscount = computed(() => {
   const percentNumber = Number(props.product.discountPercent);
   return percentNumber && !isNaN(percentNumber) && percentNumber > 0;
@@ -94,7 +92,7 @@ const discountedPrice = computed(() => {
 // };
 
 onMounted(() => {
-  console.log(props, "props in ItemCard onMounted");
+  // console.log(props, "props in ItemCard onMounted");
 });
 </script>
 
