@@ -212,14 +212,25 @@
                   class="cart_item"
                 >
                   <div class="cart_item_main">
-                    <NuxtImg
-                      :src="item?.product?.img[0]?.path"
-                      alt="preview"
-                      placeholder="/images/fallback-img.webp"
-                    />
+                    <NuxtLink
+                      :to="`/products/${item.product.categoryId}/${item.product.id}`"
+                      class="details"
+                    >
+                      <NuxtImg
+                        :src="item?.product?.img[0]?.path"
+                        alt="preview"
+                        placeholder="/images/fallback-img.webp"
+                        error="/images/fallback-img.webp"
+                      />
+                    </NuxtLink>
 
                     <div class="main_wrapper">
-                      <p>{{ item.title }}</p>
+                      <NuxtLink
+                        :to="`/products/${item.product.categoryId}/${item.product.id}`"
+                        class="details"
+                      >
+                        {{ item.title }}
+                      </NuxtLink>
                       <span class="mobile_price"> {{ item.productPrice }} грн</span>
                     </div>
                   </div>
@@ -738,7 +749,7 @@ const getPostOfficeNp = debounce(postAddress.value, async () => {
     }
   });
 
-  const filteredOffice = getOfficeByNumber.data.filter(
+  const filteredOffice = getOfficeByNumber?.data?.filter(
     (item) => item.CategoryOfWarehouse === "Branch"
   );
 

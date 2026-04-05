@@ -23,18 +23,25 @@
               >
                 <div class="cart_item_main">
                   <div class="details">
-                    <img
-                      v-if="item.product.img?.[0]?.path.length"
-                      :src="item.product.img?.[0]?.path"
-                      alt="item-img"
-                    />
-
-                    <img v-else src="/public/images/fallback-img.webp" alt="item-img" />
+                    <NuxtLink
+                      :to="`/products/${item.product.categoryId}/${item.product.id}`"
+                      class="details"
+                    >
+                      <NuxtImg
+                        :src="item?.product?.img[0]?.path"
+                        alt="preview"
+                        placeholder="/images/fallback-img.webp"
+                        error="/images/fallback-img.webp"
+                      />
+                    </NuxtLink>
 
                     <div class="cart_item_description">
-                      <p>
-                        {{ item.title ?? "" }}
-                      </p>
+                      <NuxtLink
+                        :to="`/products/${item.product.categoryId}/${item.product.id}`"
+                        class="details"
+                      >
+                        {{ item.title }}
+                      </NuxtLink>
                       <span v-if="item.quantity === 1">
                         {{ item.productPrice.toFixed(2) }}
                         грн.
