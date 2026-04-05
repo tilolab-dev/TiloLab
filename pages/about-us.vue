@@ -29,24 +29,30 @@
           <NuxtImg
             class="main_img"
             src="./images/about-main.webp"
+            placeholder="/images/fallback-img.webp"
+            error="/images/fallback-img.webp"
             alt="preview"
             width="500"
             height="500"
             quality="80"
             priority
             sizes="500px"
+            lazy
           />
         </div>
         <div class="about_us_content_secondary">
           <NuxtImg
             class="secondary_img"
             src="./images/about-main.webp"
+            placeholder="/images/fallback-img.webp"
+            error="/images/fallback-img.webp"
             quality="80"
             alt="preview"
             width="500"
             height="350"
             priority
             sizes="500px"
+            lazy
           />
           <div class="secondary_text">
             <p>

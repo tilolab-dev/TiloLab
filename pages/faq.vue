@@ -123,15 +123,19 @@
               </li>
             </ul>
           </div>
+
           <NuxtImg
             class="sectionImg"
             src="./images/faq-main.webp"
+            placeholder="/images/fallback-img.webp"
+            error="/images/fallback-img.webp"
             quality="80"
             alt="preview"
             width="600"
             height="460"
             sizes="600px"
             priority
+            lazy
           />
         </div>
       </div>

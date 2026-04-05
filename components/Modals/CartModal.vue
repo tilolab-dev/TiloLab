@@ -23,7 +23,14 @@
               >
                 <div class="cart_item_main">
                   <div class="details">
-                    <img :src="item.product.img?.[0]?.path" alt="item-img" />
+                    <img
+                      v-if="item.product.img?.[0]?.path.length"
+                      :src="item.product.img?.[0]?.path"
+                      alt="item-img"
+                    />
+
+                    <img v-else src="/public/images/fallback-img.webp" alt="item-img" />
+
                     <div class="cart_item_description">
                       <p>
                         {{ item.title ?? "" }}

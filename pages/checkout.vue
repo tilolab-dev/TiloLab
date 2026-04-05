@@ -212,7 +212,11 @@
                   class="cart_item"
                 >
                   <div class="cart_item_main">
-                    <img :src="item?.product?.img[0]?.path" alt="preview" />
+                    <NuxtImg
+                      :src="item?.product?.img[0]?.path"
+                      alt="preview"
+                      placeholder="/images/fallback-img.webp"
+                    />
 
                     <div class="main_wrapper">
                       <p>{{ item.title }}</p>

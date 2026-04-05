@@ -2,6 +2,8 @@
   <section class="index_banner">
     <!-- <NuxtImg
       src="/images/index-img/banner.webp"
+      placeholder="/images/fallback-img.webp"
+      error="/images/fallback-img.webp"
       class="banner_img"
       quality="80"
       width="1200"
@@ -172,7 +174,6 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
   position: relative;
-  // gap: 5px;
   z-index: 3;
 }
 

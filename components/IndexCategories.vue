@@ -21,16 +21,10 @@
           <swiper-slide v-for="(slide, idx) in fetchCategories" :key="idx" class="card">
             <NuxtLink :to="`/products/${slide.group.toLowerCase()}`" class="card">
               <NuxtImg
-                v-if="slide.categoryImg"
                 :src="slide.categoryImg"
+                placeholder="/images/fallback-img.webp"
+                error="/images/fallback-img.webp"
                 :alt="`card ${idx}`"
-                class="card_img"
-                lazy
-              />
-              <NuxtImg
-                v-else
-                src="./images/fallback-img.webp"
-                alt="No Image"
                 class="card_img"
                 lazy
               />
