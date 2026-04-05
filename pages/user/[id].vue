@@ -45,8 +45,12 @@
                       </div>
 
                       <div class="product_price">
+                        <span>{{ item.quantity }} одиниць</span>
+
                         <template v-if="item.product.discountPercent">
-                          <span class="old_price"> {{ item.product.productPrice }} грн </span>
+                          <span class="old_price">
+                            {{ item.product.productPrice }} грн. / од.
+                          </span>
                           <span class="action_price">
                             {{
                               calculateDiscount(
@@ -54,10 +58,10 @@
                                 item.product.discountPercent
                               )
                             }}
-                            грн
+                            грн. / од.
                           </span>
                         </template>
-                        <span v-else> {{ item.product.productPrice }} грн </span>
+                        <span v-else>{{ item.product.productPrice }} грн. / од. </span>
                       </div>
                     </li>
                   </ul>
@@ -89,7 +93,7 @@
                     >
                       <li>
                         <span> Сума: </span>
-                        <span> {{ order.totalPrice / 100 }} грн </span>
+                        <span> {{ order.totalPrice }} грн </span>
                       </li>
                       <li>
                         <span> Спосіб оплати: </span>
@@ -129,7 +133,10 @@
                     {{ userStore.user.email }}
                   </span>
                 </div>
-                <button class="edit_profile">
+                <button
+                  class="edit_profile"
+                  @click="modalStore.showModal('EditUserInfo', { user: userStore.user })"
+                >
                   <span> Редагувати дані </span>
                   <div class="icon_wrap">
                     <AngleRight />

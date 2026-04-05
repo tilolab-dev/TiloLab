@@ -252,6 +252,7 @@ export type PromotedProductScalarFieldEnum = (typeof PromotedProductScalarFieldE
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  fullName: 'fullName',
   username: 'username',
   userSurname: 'userSurname',
   userAvatar: 'userAvatar',
@@ -260,6 +261,7 @@ export const UserScalarFieldEnum = {
   phoneNumber: 'phoneNumber',
   password: 'password',
   createdAt: 'createdAt',
+  dateOfBirth: 'dateOfBirth',
   role: 'role',
   telegramId: 'telegramId',
   telegramChatId: 'telegramChatId',

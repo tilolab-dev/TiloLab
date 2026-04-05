@@ -177,14 +177,16 @@ model PromotedProduct {
 
 model User {
   id             Int            @id @default(autoincrement())
-  username       String?        @unique
+  fullName       String?        @unique
+  username       String?        
   userSurname    String?
   userAvatar     String?
   userFamily     String?
   email          String?        @unique
-  phoneNumber    String?
+  phoneNumber    String?        @unique
   password       String?
   createdAt      DateTime       @default(now())
+  dateOfBirth    String?        @default("-")
   role           String         @default("guest")
   telegramId     String?        @unique
   telegramChatId String?        @unique
@@ -280,6 +282,7 @@ model ShippingInfo {
   NPrecipientId           String?
   NPrecipientContactId    String?
   NPtypeOfWarehouse       String?
+  trackNumber             String?
   order          Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([city])
