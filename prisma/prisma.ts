@@ -44,17 +44,46 @@
 import { PrismaClient } from "@/prisma/generated/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-const prismaClientSingleton = () => {
-  const pool = new PrismaPg({ connectionString: process.env.API_SECRET_PATH! });
-  return new PrismaClient({ adapter: pool });
-};
+// const prismaClientSingleton = () => {
+//   const pool = new PrismaPg({ connectionString: process.env.API_SECRET_PATH! });
+//   return new PrismaClient({ adapter: pool });
+// };
 
-type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
+// type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
+
+// const globalForPrisma = globalThis as unknown as {
+//   prisma: PrismaClientSingleton | undefined;
+// };
+
+// export const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
+
+// if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClientSingleton | undefined;
+  prisma: PrismaClient | undefined;
+  pg: PrismaPg | undefined;
 };
 
-export const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
+export const prisma =
+  globalForPrisma.prisma ??
+  (() => {
+    const pool =
+      globalForPrisma.pg ??
+      new PrismaPg({
+        connectionString: process.env.API_SECRET_PATH!
+      });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+    if (process.env.NODE_ENV !== "production") {
+      globalForPrisma.pg = pool;
+    }
+
+    const client = new PrismaClient({
+      adapter: pool
+    });
+
+    return client;
+  })();
+
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
+}

@@ -1038,7 +1038,6 @@ onMounted(async () => {
 
     .option_item {
       width: 100px;
-      height: stretch;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;

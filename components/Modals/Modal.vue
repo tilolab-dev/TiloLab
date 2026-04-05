@@ -28,6 +28,7 @@ import LogOut from "./LogOut.vue";
 import VerifyAgeModal from "./VerifyAgeModal.vue";
 import PromoModal from "./PromoModal.vue";
 import QuestionnaireModal from "./QuesrionnaireModal.vue";
+import EditUserInfo from "./EditUserInfo.vue";
 
 // ADMIN
 
@@ -68,7 +69,8 @@ const modalComponents = {
   PromoModal,
   QuestionnaireModal,
   ProductPromoModal,
-  RemovePromo
+  RemovePromo,
+  EditUserInfo
   //   ChangeUserData
 };
 
