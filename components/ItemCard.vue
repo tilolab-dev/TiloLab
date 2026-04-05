@@ -19,13 +19,12 @@
         Товар закінчується
       </div>
       <NuxtImg
-        v-if="props.product.img && props.product.img[0] && props.product.img[0].path"
-        :src="props.product.img[0].path"
+        :src="props?.product?.img[0]?.path"
+        placeholder="/images/fallback-img.webp"
+        error="/images/fallback-img.webp"
         alt="product"
         lazy
       />
-
-      <NuxtImg v-else alt="No Image" src="./images/fallback-img.webp" class="card_img" lazy />
     </NuxtLink>
 
     <div class="description_content">
@@ -158,7 +157,6 @@ onMounted(() => {
   }
   h3 {
     color: var(--text-color);
-    // font-size: clamp(0.8rem, 2vw, 1.4rem);
     font-size: clamp(0.8rem, 2vw, 1.25rem);
     transition: all ease 0.3s;
     font-weight: 500;
@@ -182,7 +180,6 @@ onMounted(() => {
   .description_content {
     display: flex;
     flex-direction: column;
-    // justify-content: space-between;
     justify-content: flex-start;
     align-items: flex-start;
     transition: all ease 0.3s;

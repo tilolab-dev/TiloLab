@@ -22,8 +22,14 @@
                     thumbs-swiper=".swiper-gallery"
                   >
                     <swiper-slide v-for="slide in slides" :key="slide.id">
-                      <NuxtImg v-if="slide.src.length !== 0" :src="slide.src" :alt="slide.title" />
-                      <NuxtImg v-else src="./images/fallback-img.webp" alt="no-img" />
+                      <NuxtImg
+                        :src="slide.src"
+                        :alt="slide.title"
+                        placeholder="/images/fallback-img.webp"
+                        error="/images/fallback-img.webp"
+                        quality="80"
+                        lazy
+                      />
                     </swiper-slide>
                   </swiper-container>
                 </ClientOnly>
@@ -46,7 +52,14 @@
                     }"
                   >
                     <swiper-slide v-for="slide in slides" :key="slide.id">
-                      <NuxtImg :src="slide.src" :alt="slide.title" />
+                      <NuxtImg
+                        placeholder="/images/fallback-img.webp"
+                        error="/images/fallback-img.webp"
+                        :src="slide.src"
+                        :alt="slide.title"
+                        quality="80"
+                        lazy
+                      />
                     </swiper-slide>
                   </swiper-container>
                 </ClientOnly>
@@ -136,12 +149,13 @@
                     @click="selectedOption = null"
                   >
                     <NuxtImg
-                      v-if="productStore.selectedProducts?.img?.[0]?.path"
+                      placeholder="/images/fallback-img.webp"
+                      error="/images/fallback-img.webp"
                       :src="productStore.selectedProducts.img[0].path"
                       alt="option"
+                      quality="80"
+                      lazy
                     />
-                    <NuxtImg v-else src="./images/fallback-img.webp" alt="default" />
-                    <!-- <FallbackIcon v-else /> -->
                     <span>
                       {{
                         productStore.selectedProducts.translations[0].productColor.length < 1
@@ -157,9 +171,14 @@
                     :class="option.id === selectedOption?.id ? 'selected_option' : ''"
                     @click="selectedOption = option"
                   >
-                    <NuxtImg v-if="option.optionImg" :src="option.optionImg" alt="option" />
-                    <NuxtImg v-else src="./images/fallback-img.webp" alt="default" />
-                    <!-- <FallbackIcon v-else /> -->
+                    <NuxtImg
+                      :src="option.optionImg"
+                      placeholder="/images/fallback-img.webp"
+                      error="/images/fallback-img.webp"
+                      alt="option"
+                      quality="80"
+                      lazy
+                    />
                     <span>
                       {{ option.translations[0].optionInfo }}
                     </span>
@@ -337,7 +356,7 @@ const selectedOption = ref(null);
 
 const availableQuantity = computed(() => {
   if (!selectedOption.value) {
-    return productStore.selectedProducts.availableProduct;
+    return productStore.selectedProducts.stockValue;
   }
 
   return selectedOption.value.optionStock - (selectedOption.value.optionReserved || 0);
@@ -1269,6 +1288,7 @@ onMounted(async () => {
         @include mixins.subtitleText;
         min-width: 2ch;
         text-align: center;
+        border: 1px solid var(--border-color);
       }
       @media screen and (max-width: 480px) {
         padding-block: 6px;

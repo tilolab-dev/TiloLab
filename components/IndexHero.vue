@@ -3,6 +3,8 @@
     <!-- <NuxtImg
       ref="imgRef"
       src="/images/index-img/hero.webp"
+      placeholder="/images/fallback-img.webp"
+      error="/images/fallback-img.webp"
       class="hero_img"
       quality="80"
       width="1200"
@@ -11,6 +13,7 @@
       style="transform: scale(1.15); opacity: 0.7"
       priority
       sizes="(max-width: 480px) 480px, (max-width: 1024px) 1024px, 1200px"
+      lazy
     /> -->
 
     <video
@@ -241,54 +244,13 @@ onMounted(async () => {
     align-items: center;
     border: 1px solid var(--border-color);
     z-index: 5;
-    // padding: 10px;
     cursor: pointer;
     svg {
       width: 25px;
       height: 25px;
     }
   }
-
-  // .link_wrapper {
-  //   justify-content: flex-end;
-  // }
 }
-
-// .toggle_sound_wrapper {
-//   width: 100%;
-//   height: -webkit-fill-available;
-//   position: absolute;
-//   display: flex;
-//   justify-content: flex-end;
-//   align-items: flex-end;
-//   padding-right: 3vw;
-//   padding-bottom: 5vw;
-//   top: 0;
-//   left: 0;
-
-//   button {
-//     width: 50px;
-//     height: 50px;
-//     border-radius: 50%;
-//     background: rgb(36, 14, 24);
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     border: 1px solid var(--border-color);
-//     z-index: 5;
-//     // padding: 10px;
-//     cursor: pointer;
-//     svg {
-//       width: 25px;
-//       height: 25px;
-//     }
-//   }
-
-//   // @media screen and (max-width: 480px) {
-//   //   padding-top: 5vw;
-//   //   align-items: flex-start;
-//   // }
-// }
 
 .main_text {
   color: var(--text-color);
