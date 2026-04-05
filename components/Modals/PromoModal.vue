@@ -19,13 +19,13 @@
               >
                 <swiper-slide v-for="slide in slides" :key="slide.id">
                   <a :href="slide.link" target="_blank">
-                    <NuxtImg v-if="slide.src" :src="slide.src" :alt="slide.title" />
-
-                    <img
-                      v-else
-                      alt="No Image"
-                      src="https://placehold.co/384x488/000000/ff86bb?font=montserrat&text=No+Image"
+                    <NuxtImg
+                      :src="slide.src"
                       class="card_img"
+                      placeholder="/images/fallback-img.webp"
+                      error="/images/fallback-img.webp"
+                      :alt="slide.title"
+                      lazy
                     />
                   </a>
                 </swiper-slide>

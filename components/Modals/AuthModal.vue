@@ -158,11 +158,13 @@
         <div ref="background" class="background">
           <NuxtImg
             :src="loginWindow ? '/images/TiloLab1.webp' : '/images/TiloLab2.webp'"
+            placeholder="/images/fallback-img.webp"
+            error="/images/fallback-img.webp"
             alt="preview"
             width="700"
             height="450"
-            loading="lazy"
             class="preview-image"
+            lazy
           />
           <h2>Якийсь текст</h2>
           <button
