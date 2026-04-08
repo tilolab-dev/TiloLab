@@ -13,6 +13,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1026.0",
     "@nuxt/image": "^2.0.0",
     "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/sitemap": "^7.6.0",
@@ -33,6 +34,7 @@
     "pg": "^8.16.3",
     "pinia": "^3.0.4",
     "save-dev": "^0.0.1-security",
+    "sharp": "^0.34.5",
     "swiper": "^12.0.3",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",

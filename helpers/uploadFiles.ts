@@ -3,7 +3,7 @@ import { toRaw } from "vue";
 export const useFileUpload = (emit: any) => {
   console.log(emit);
   const handleFileUpload = (event: any, type: any, state: any, length?: any) => {
-    const accessedFormat = ["svg", "png", "webp"];
+    const accessedFormat = ["svg", "png", "webp", "jpg", "jpeg"];
     const files = Array.from(event.target.files) as any;
 
     if (files.length + length > 5) {
