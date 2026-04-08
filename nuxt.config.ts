@@ -52,6 +52,12 @@ export default defineNuxtConfig({
     jwt_secret: process.env.JWT_SECRET,
     telegram_token: process.env.TELEGRAM_TOKEN,
     telegram_chat_id: process.env.TELEGRAM_CHAT_ID,
+    cf_account_id: process.env.CF_ACCOUNT_ID,
+    cf_access_key: process.env.CF_ACCESS_KEY,
+    cf_secret_key: process.env.CF_SECRET_KEY,
+    r2_bucket_name: process.env.R2_BUCKET_NAME,
+    r2_public_url: process.env.R2_PUBLIC_URL,
+
     public: {
       api_base_url: process.env.API_BASE_URL,
       nova_post_uri: process.env.NOVA_POST_URI,
