@@ -47,8 +47,8 @@ export default defineEventHandler(async (event: any) => {
     const invoice: any = await $fetch("https://api.monobank.ua/api/merchant/invoice/create", {
       method: "POST",
       headers: {
-        // "X-Token": process.env.BANK_API_KEY!
-        "X-Token": process.env.TEST_BANK_API_KEY!
+        "X-Token": process.env.BANK_API_KEY!
+        // "X-Token": process.env.TEST_BANK_API_KEY!
         // TESTING ENVIRONMENT VARIABLE
       },
       body: {
