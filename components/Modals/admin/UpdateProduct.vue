@@ -529,7 +529,7 @@ const productDescriptionUk = ref("");
 const productStockState = ref(false);
 const productStockValue = ref(0);
 const price = ref(0); // Стандартная цена
-const productAvailability = ref(false);
+const productAvailability = ref(true);
 const productDiscountPersent = ref(0); // процент скидки
 const productPrice = ref(null);
 const productMaterialUk = ref("");
@@ -697,7 +697,7 @@ const clearModal = () => {
   optionFileState.optionFilesPreview.value = [];
   optionFileState.optionReady.value = false;
   discountState.value = false;
-  productAvailability.value = false;
+  productAvailability.value = true;
   productMaterialUk.value = "";
   price.value = 0;
   productColorUk.value = "";
@@ -936,13 +936,13 @@ onMounted(async () => {
 
   // console.log(categoryStore.categoryList);
 
-  // console.log(modalProps.product, "modalProps");
+  console.log(modalProps.product, "modalProps");
 
   fetchedCategories.value = categoryStore.categoryList;
   currentProductFiles.value = modalProps.product.img;
   currentOptionFiles.value = modalProps.product.options;
   productNameUk.value = modalProps.product.translations[0].title;
-  productAvailability.value = modalProps.product.stockState;
+  // productAvailability.value = modalProps.product.stockState;
   productDescriptionUk.value = modalProps.product.translations[0].productDescription;
   productStockState.value = modalProps.product.stockState;
   productStockValue.value = modalProps.product.stockValue;

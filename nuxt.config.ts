@@ -115,7 +115,7 @@ export default defineNuxtConfig({
   },
   vite: {
     server: {
-      allowedHosts: ["fd41-37-73-27-252.ngrok-free.app"],
+      allowedHosts: ["1b15-88-154-11-51.ngrok-free.app"],
       strictPort: false
     },
     plugins: [

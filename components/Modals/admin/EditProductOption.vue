@@ -123,7 +123,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .edit_option_layout {
   position: fixed;
   inset: 0;

@@ -225,7 +225,7 @@ const remainingLinks = computed(() => linksData.value.slice(4));
 const showTooltip = ref(false);
 const tooltipStatus = ref("");
 const tooltipMessage = ref("");
-const isSidebarOpen = ref(true);
+const isSidebarOpen = ref(false);
 // const isUnreadedNotifications = ref(false);
 
 const modalStore = useModalStore();
