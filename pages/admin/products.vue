@@ -119,7 +119,13 @@
                         <tr v-for="category in fetchedCategories" :key="category.id">
                           <td class="table_row">
                             <div class="table_main">
-                              <img :src="category.categoryImg" />
+                              <!-- {{ console.log(category.categoryImg, "catImg") }} -->
+                              <img
+                                v-if="!category.categoryImg"
+                                src="/public/images/fallback-img.webp"
+                                alt="category"
+                              />
+                              <img v-else :src="category.categoryImg" alt="category" />
                               <div class="table_main_wrapper">
                                 <h6>{{ category.translations[0].title }}</h6>
                               </div>
@@ -173,7 +179,12 @@
                             <td class="table_row">
                               <div class="table_main">
                                 <div class="drag-handle">☰</div>
-                                <img :src="category.categoryImg" />
+                                <img
+                                  v-if="!category.categoryImg"
+                                  src="/public/images/fallback-img.webp"
+                                  alt="category"
+                                />
+                                <img v-else :src="category.categoryImg" alt="category" />
                                 <div class="table_main_wrapper">
                                   <h6>{{ category.translations[0].title }}</h6>
                                 </div>
@@ -284,7 +295,7 @@
                                 :src="product.img[0].path"
                                 alt="item"
                               />
-                              <div v-else class="fallback_img"></div>
+                              <img v-else src="/public/images/fallback-img.webp" alt="item" />
                               <h6>
                                 {{ product.translations?.[0]?.title ?? "" }}
                               </h6>
@@ -365,7 +376,7 @@
                                 :src="product.img[0].path"
                                 alt="item"
                               />
-                              <div v-else class="fallback_img"></div>
+                              <img v-else src="/public/images/fallback-img.webp" alt="item" />
                               <h6>
                                 {{ product.translations?.[0]?.title ?? "" }}
                               </h6>
@@ -456,7 +467,8 @@
                                   :src="product.img[0].path"
                                   alt="item"
                                 />
-                                <div v-else class="fallback_img"></div>
+                                <img v-else src="/public/images/fallback-img.webp" alt="item" />
+
                                 <div class="table_main_wrapper">
                                   {{ product.translations?.[0]?.title ?? "" }}
                                 </div>

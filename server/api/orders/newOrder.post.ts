@@ -60,6 +60,8 @@ export default eventHandler(async (event: any) => {
         where: { id: { in: optionIds } }
       });
 
+      // console.log("PRODUCTS", products);
+
       const productMap = new Map(products.map((p) => [p.id, p]));
       const optionMap = new Map(options.map((o) => [o.id, o]));
 
@@ -219,7 +221,9 @@ export default eventHandler(async (event: any) => {
           });
         }
 
-        realTotalPrice += Math.floor(price * item.quantity);
+        // console.log(price, item.quantity, "PRODUCT PARAMETERS");
+
+        realTotalPrice += price * item.quantity;
       }
 
       // RESERVE ITEMS
@@ -284,6 +288,8 @@ export default eventHandler(async (event: any) => {
           }
         }
       });
+
+      // console.log(newOrder, "NEW_ORDER");
       return newOrder;
     });
 
@@ -296,7 +302,7 @@ export default eventHandler(async (event: any) => {
     console.error(err);
     return {
       statusCode: 500,
-      message: "Помилка при створенні замовлення"
+      message: `Помилка при створенні замовлення ${err}`
     };
   }
 });

@@ -224,6 +224,14 @@ const addNewCategory = () => {
   const uploadCategoryFile = async () => {
     const formData = new FormData();
 
+    // const checkFileValue = file.value ? true : false;
+
+    // console.log(checkFileValue, "FILE VALUE");
+
+    if (!file.value) {
+      return "";
+    }
+
     try {
       formData.append(`category-icon/${categoryName}`, file.value);
 
@@ -279,6 +287,8 @@ const addNewCategory = () => {
       //     message: "Категорія успішно додана",
 
       //   });
+
+      console.log("UPLOAD NEW CAT", uploadNewCategory);
 
       if (uploadNewCategory.statusCode === 200) {
         alert("Категорія успішно додана");

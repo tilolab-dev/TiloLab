@@ -516,8 +516,10 @@ const confirmOrderHandler = async () => {
       }
     });
 
+    // console.log(getOrderId, "GET_ORDER_ID");
+
     if (getOrderId.statusCode !== 200) {
-      tooltip({ status: "error", message: "Щось пішло не так спробуйте ще раз" });
+      tooltip({ status: "error", message: `${getOrderId.message}` });
       loaderState.value = false;
       return;
     }
@@ -525,7 +527,6 @@ const confirmOrderHandler = async () => {
     const createPayment = await $fetch("/api/monobank/create", {
       method: "POST",
       body: {
-        // !!!!!!! implement ammount from getOrderId
         orderId: getOrderId.data.id,
         amount: getOrderId.data.totalPrice
       }

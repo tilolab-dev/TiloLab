@@ -20,7 +20,7 @@ async function addCategory(event: any) {
 
   const { group, visible, translations, categoryImg } = body;
 
-  if (!group || !visible || !translations || !categoryImg) {
+  if (!group || !visible || !translations) {
     return {
       statusCode: 400,
       message: "All fields are required!"
@@ -47,7 +47,7 @@ async function addCategory(event: any) {
             description: translation.description
           }))
         },
-        categoryImg: categoryImg
+        categoryImg: categoryImg || ""
       }
     });
 
