@@ -62,7 +62,7 @@ export const useCategoryStore = defineStore("category", {
         listPosition: index
       }));
 
-      console.log(payload, "payload from save category order");
+      // console.log(payload, "payload from save category order");
 
       const res = await $fetch("/api/category/reorder-list", {
         method: "PATCH",
@@ -74,14 +74,18 @@ export const useCategoryStore = defineStore("category", {
     async deleteCategory(category: ICategory) {
       const id = category.id;
 
-      await $fetch("/api/upload", {
-        method: "DELETE",
-        body: {
-          itemId: category.id,
-          itemUrl: category.categoryImg,
-          methodType: "categoryImg"
-        }
-      });
+      console.log(category.categoryImg, "CATEGORY IMG");
+
+      if (category.categoryImg !== null) {
+        await $fetch("/api/upload", {
+          method: "DELETE",
+          body: {
+            itemId: category.id,
+            itemUrl: category.categoryImg,
+            methodType: "categoryImg"
+          }
+        });
+      }
 
       const deleteCategoryRes = await $fetch<ICategoryResult>(`/api/category/${id}`, {
         method: "DELETE"
@@ -104,7 +108,7 @@ export const useCategoryStore = defineStore("category", {
 
           this.getCategories();
 
-          console.log(!updateCategory, "Category store updateCategory updateCategory is empty");
+          // console.log(!updateCategory, "Category store updateCategory updateCategory is empty");
         }
 
         return updateCategory;
