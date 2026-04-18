@@ -47,8 +47,8 @@ export default defineEventHandler(async (event: any) => {
     const invoice: any = await $fetch("https://api.monobank.ua/api/merchant/invoice/create", {
       method: "POST",
       headers: {
-        "X-Token": process.env.BANK_API_KEY!
-        // "X-Token": process.env.TEST_BANK_API_KEY!
+        // "X-Token": process.env.BANK_API_KEY!
+        "X-Token": process.env.TEST_BANK_API_KEY!
         // TESTING ENVIRONMENT VARIABLE
       },
       body: {
@@ -57,8 +57,8 @@ export default defineEventHandler(async (event: any) => {
         redirectUrl: `https://www.tilolab.com.ua/summary/${orderId}`,
         webHookUrl: "https://www.tilolab.com.ua/api/monobank/webhook",
         // TEST ENVIRONMENT
-        // redirectUrl: `https://1b15-88-154-11-51.ngrok-free.app/summary/${orderId}`,
-        // webHookUrl: "https://1b15-88-154-11-51.ngrok-free.app/api/monobank/webhook",
+        // redirectUrl: `https://41e6-37-73-34-18.ngrok-free.app/summary/${orderId}`,
+        // webHookUrl: "https://41e6-37-73-34-18.ngrok-free.app/api/monobank/webhook",
 
         validity: 3600,
         merchantPaymInfo: {
