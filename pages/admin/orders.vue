@@ -157,8 +157,6 @@
                             <!-- <div v-else class="fallback_img"></div> -->
                             <!-- src="../public/images/icons.credit-card.webp" -->
 
-                            {{ console.log(order) }}
-
                             <div class="recipient">
                               <div>
                                 {{ order.userId === null ? "Гість" : "Користувач" }}
