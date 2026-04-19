@@ -42,13 +42,13 @@
 <script setup>
 import { useSeoMeta } from "#imports";
 useSeoMeta({
-  title: "Пошук",
+  title: "Пошук товарів - Tilo Lab",
   description:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogTitle: "Пошук",
-  ogDescription:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogImage: "https://tilolab.com.ua/images/about-main.webp"
+    "Пошук інтимних товарів та аксесуарів в Tilo Lab. Знайдіть вібратори, лубриканти, BDSM-атрибутику та інші товари для дорослих з швидкою доставкою по Україні.",
+  ogTitle: "Пошук товарів - Tilo Lab",
+  ogDescription: "Швидкий пошук інтимних товарів в каталозі Tilo Lab.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  robots: "noindex, follow"
 });
 
 import { onMounted, ref, watch } from "vue";

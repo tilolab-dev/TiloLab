@@ -26,6 +26,8 @@
                 error="/images/fallback-img.webp"
                 :alt="`card ${idx}`"
                 class="card_img"
+                width="300"
+                height="400"
                 lazy
               />
 

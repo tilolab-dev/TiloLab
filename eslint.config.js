@@ -15,7 +15,8 @@ export default [
       "dist/**",
       "build/**",
       "*.d.ts",
-      "coverage/**"
+      "coverage/**",
+      "prisma/generated/**"
     ]
   },
   js.configs.recommended,

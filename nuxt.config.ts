@@ -2,13 +2,15 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
+  ssr: true,
   app: {
     baseURL: "/",
     head: {
       htmlAttrs: {
         lang: "uk"
       },
-      title: "Tilolab",
+      titleTemplate: "%s | Tilo Lab",
+      title: "Інтимне здоров'я та тілесна гармонія",
       meta: [
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
@@ -17,7 +19,9 @@ export default defineNuxtConfig({
             "Tilo Lab — це сучасний простір дослідження інтимного здоров'я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс."
         },
         { property: "og:type", content: "website" },
-        { property: "og:site_name", content: "Tilolab" }
+        { property: "og:site_name", content: "Tilo Lab" },
+        { property: "og:image", content: "https://tilolab.com.ua/images/about-main.webp" },
+        { property: "og:locale", content: "uk_UA" }
       ],
       link: [{ rel: "icon", type: "image/webp", href: "/favicon.ico" }]
     }
@@ -84,11 +88,28 @@ export default defineNuxtConfig({
       "@nuxtjs/sitemap",
       {
         hostname: "https://tilolab.com.ua",
-        exclude: ["/admin/**", "/auth/**", "/summary/**"],
-        routes: async () => {
-          // You can add dynamic routes here if needed
-          return [];
-        }
+        exclude: [
+          "/admin/**",
+          "/auth/**",
+          "/summary/**",
+          "/user/**",
+          "/cart",
+          "/checkout",
+          "/wishlist"
+        ]
+      }
+    ],
+    [
+      "@nuxtjs/robots",
+      {
+        sitemap: "https://tilolab.com.ua/sitemap.xml",
+        robots: [
+          {
+            userAgent: "*",
+            allow: "/",
+            disallow: ["/admin", "/auth", "/summary", "/user", "/cart", "/checkout", "/wishlist"]
+          }
+        ]
       }
     ],
     [

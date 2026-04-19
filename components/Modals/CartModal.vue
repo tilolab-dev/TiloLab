@@ -32,6 +32,8 @@
                         alt="preview"
                         placeholder="/images/fallback-img.webp"
                         error="/images/fallback-img.webp"
+                        width="80"
+                        height="80"
                       />
                     </NuxtLink>
 

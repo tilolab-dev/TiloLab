@@ -28,6 +28,8 @@
                         placeholder="/images/fallback-img.webp"
                         error="/images/fallback-img.webp"
                         quality="80"
+                        width="600"
+                        height="600"
                         lazy
                       />
                     </swiper-slide>
@@ -58,6 +60,8 @@
                         :src="slide.src"
                         :alt="slide.title"
                         quality="80"
+                        width="150"
+                        height="150"
                         lazy
                       />
                     </swiper-slide>
@@ -66,7 +70,16 @@
               </div>
             </div>
             <div v-else class="img_gallery_placeholder">
-              <p>No images available</p>
+              <NuxtImg
+                src="/images/fallback-img.webp"
+                alt="Product image"
+                placeholder="/images/fallback-img.webp"
+                error="/images/fallback-img.webp"
+                quality="80"
+                width="600"
+                height="600"
+                lazy
+              />
             </div>
 
             <div class="product_id_info">
@@ -936,18 +949,6 @@ onMounted(async () => {
     height: 100%;
     object-fit: cover;
   }
-}
-
-.img_gallery_placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 80px;
-  background: #f5f5f5;
-  border-radius: 8px;
-  color: #666;
-  font-size: 14px;
 }
 
 .product_id_main {

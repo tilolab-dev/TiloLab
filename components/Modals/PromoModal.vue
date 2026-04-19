@@ -25,6 +25,8 @@
                       placeholder="/images/fallback-img.webp"
                       error="/images/fallback-img.webp"
                       :alt="slide.title"
+                      width="400"
+                      height="300"
                       lazy
                     />
                   </a>

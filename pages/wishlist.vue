@@ -25,13 +25,13 @@
 <script setup>
 import { useSeoMeta } from "#imports";
 useSeoMeta({
-  title: "Список бажань",
+  title: "Список бажань - Tilo Lab",
   description:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogTitle: "Список бажань",
-  ogDescription:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogImage: "https://tilolab.com.ua/images/about-main.webp"
+    "Ваш список бажань в Tilo Lab. Зберігайте улюблені товари, щоб повернутися до них пізніше. Інтимні товари з анонімною доставкою по Україні.",
+  ogTitle: "Список бажань - Tilo Lab",
+  ogDescription: "Зберігайте улюблені товари для повернення до них пізніше.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  robots: "noindex, nofollow"
 });
 
 import { useProductStore } from "@/store/product-store";

@@ -10,17 +10,13 @@
       <div v-if="hasDiscount" class="action_label">Акція</div>
 
       <NuxtLink :to="props.link" class="img_container">
-        <img
-          v-if="props.product.img && props.product.img[0] && props.product.img[0].path"
-          :src="props.product.img[0].path"
+        <NuxtImg
+          :src="props.product?.img[0]?.path"
+          placeholder="/images/fallback-img.webp"
+          error="/images/fallback-img.webp"
           alt="product"
-        />
-
-        <img
-          v-else
-          alt="No Image"
-          src="https://placehold.co/384x488/000000/ff86bb?font=montserrat&text=No+Image"
-          class="card_img"
+          width="300"
+          height="300"
         />
       </NuxtLink>
       <div class="description_content">
