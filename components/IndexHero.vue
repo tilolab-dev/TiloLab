@@ -26,6 +26,7 @@
       playsinline
       width="1200"
       height="600"
+      fetchpriority="high"
       style="transform: scale(1.15); opacity: 0.7"
       @loadeddata="onVideoLoaded"
     />
