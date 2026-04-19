@@ -53,8 +53,12 @@
                 class="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full py-2"
               >
                 <ul class="flex flex-col pl-0 mb-0">
-                  <li class="mt-0.5 w-full" @click="(closeSidebar(), (activePage = 'index'))">
-                    <NuxtLink :to="`/user/:${authStore.user.id}`">
+                  <li
+                    v-if="authStore.user?.id"
+                    class="mt-0.5 w-full"
+                    @click="(closeSidebar(), (activePage = 'index'))"
+                  >
+                    <NuxtLink :to="`/user/${authStore.user.id}`">
                       <div
                         class="py-[0.675rem] bg-blue-500/13 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 dark:text-[var(--dark-bright-grey)] transition-colors"
                         :class="{
@@ -75,10 +79,11 @@
                   </li>
 
                   <li
+                    v-if="authStore.user?.id"
                     class="mt-0.5 w-full"
                     @click="(closeSidebar(), (activePage = 'notifications'))"
                   >
-                    <NuxtLink :to="`/user/:${authStore.user.id}/notifications`">
+                    <NuxtLink :to="`/user/${authStore.user.id}/notifications`">
                       <div
                         class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700 dark:text-[var(--dark-bright-grey)]"
                         :class="{
@@ -101,8 +106,12 @@
                     </NuxtLink>
                   </li>
 
-                  <li class="mt-0.5 w-full" @click="(closeSidebar(), (activePage = 'orders'))">
-                    <NuxtLink :to="`/user/:${authStore.user.id}/orders`">
+                  <li
+                    v-if="authStore.user?.id"
+                    class="mt-0.5 w-full"
+                    @click="(closeSidebar(), (activePage = 'orders'))"
+                  >
+                    <NuxtLink :to="`/user/${authStore.user.id}/orders`">
                       <div
                         class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700 dark:text-[var(--dark-bright-grey)]"
                         :class="{
@@ -122,8 +131,12 @@
                     </NuxtLink>
                   </li>
 
-                  <li class="mt-0.5 w-full" @click="(closeSidebar(), (activePage = 'settings'))">
-                    <NuxtLink :to="`/user/:${authStore.user.id}/settings`">
+                  <li
+                    v-if="authStore.user?.id"
+                    class="mt-0.5 w-full"
+                    @click="(closeSidebar(), (activePage = 'settings'))"
+                  >
+                    <NuxtLink :to="`/user/${authStore.user.id}/settings`">
                       <div
                         class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700 dark:text-[var(--dark-bright-grey)]"
                         :class="{

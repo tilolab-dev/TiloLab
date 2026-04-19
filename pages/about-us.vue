@@ -28,7 +28,7 @@
           </div>
           <NuxtImg
             class="main_img"
-            src="./images/about-main.webp"
+            src="/images/about-main.webp"
             placeholder="/images/fallback-img.webp"
             error="/images/fallback-img.webp"
             alt="preview"
@@ -36,14 +36,13 @@
             height="500"
             quality="80"
             priority
-            sizes="(max-width: 500px) 100vw, 500px"
-            lazy
+            sizes="500px"
           />
         </div>
         <div class="about_us_content_secondary">
           <NuxtImg
             class="secondary_img"
-            src="./images/about-main.webp"
+            src="/images/about-main.webp"
             placeholder="/images/fallback-img.webp"
             error="/images/fallback-img.webp"
             quality="80"
@@ -51,8 +50,7 @@
             width="500"
             height="350"
             priority
-            sizes="(max-width: 500px) 100vw, 500px"
-            lazy
+            sizes="500px"
           />
           <div class="secondary_text">
             <p>

@@ -6,10 +6,12 @@
 
     <template v-if="wishlistProducts?.length">
       <ul class="product_wrapper">
-        <li v-for="product in wishlistProducts" :key="product.id">
+        <li v-for="product in wishlistStore.wishlist" :key="product.id">
           <WishlistItemCard
             :product="product"
-            :link="`/products/${categoryName}/${product.id}`"
+            :link="
+              product.category?.group ? `/products/${product.category.group}/${product.id}` : '#'
+            "
             @set-product="productStore.setSelectedProducts(product)"
           />
         </li>

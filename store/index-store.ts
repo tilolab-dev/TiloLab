@@ -10,7 +10,7 @@ export const useIndexStore = defineStore("index", {
       this.adminBurgerBtn = !this.adminBurgerBtn;
     },
     setFetchedCategories(categories: any) {
-      this.fetchedCategories = categories.data;
+      this.fetchedCategories = categories?.data || [];
     }
   }
 });

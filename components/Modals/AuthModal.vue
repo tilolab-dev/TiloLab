@@ -163,6 +163,7 @@
             alt="preview"
             width="700"
             height="450"
+            sizes="700px"
             class="preview-image"
             lazy
           />

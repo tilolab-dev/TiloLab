@@ -8,7 +8,7 @@
   >
     <div v-if="hasDiscount" class="action_label">Акція</div>
 
-    <NuxtLink :to="props.link" class="img_container">
+    <NuxtLink v-if="props.link" :to="props.link" class="img_container">
       <div v-if="props.product.availableStock <= 0" class="no_available_label">
         Немає в наявності
       </div>
@@ -19,22 +19,26 @@
         Товар закінчується
       </div>
       <NuxtImg
-        :src="props?.product?.img[0]?.path"
+        :src="props?.product?.img[0]?.path || '/images/fallback-img.webp'"
         placeholder="/images/fallback-img.webp"
         error="/images/fallback-img.webp"
         alt="product"
         width="300"
         height="300"
+        sizes="300px"
         lazy
       />
     </NuxtLink>
 
     <div class="description_content">
-      <NuxtLink :to="props.link">
+      <NuxtLink v-if="props.link" :to="props.link">
         <h3>
           {{ props.product.translations[0].title }}
         </h3>
       </NuxtLink>
+      <h3 v-else>
+        {{ props.product.translations[0].title }}
+      </h3>
       <div class="price_content">
         <div class="price" :style="hasDiscount ? { 'text-decoration': 'line-through' } : {}">
           {{ props.product.productPrice }} грн

@@ -15,6 +15,7 @@
         <SharedSwiperSlider :overflow-visible="true">
           <swiper-slide v-for="(product, i) in popularCards" :key="i">
             <ItemCard
+              v-if="product.category?.group"
               :product="product"
               :link="`/products/${product.category.group.toLowerCase()}/${product.id}`"
               class="card"

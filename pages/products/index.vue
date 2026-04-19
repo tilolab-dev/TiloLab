@@ -21,9 +21,12 @@
               <NuxtLink to="/products?page=1&category"> Всі товари </NuxtLink>
             </li>
             <li v-for="(item, index) in activeCategories" :key="index">
-              <NuxtLink :to="`/products/${item.group.toLowerCase()}`">
+              <NuxtLink v-if="item.group" :to="`/products/${item.group.toLowerCase()}`">
                 {{ item.translations[0].title }}
               </NuxtLink>
+              <span v-else>
+                {{ item.translations[0].title }}
+              </span>
             </li>
           </ul>
         </div>
@@ -43,14 +46,15 @@
             {{ group[0].category.translations?.[0]?.title || group[0].category.group }} &nbsp;:
           </h2>
           <div class="category-grid">
-            <ItemCard
-              v-for="product in group"
-              :key="product.id"
-              :product="product"
-              :link="`/products/${product.category.group.toLowerCase()}/${product.id}`"
-              class="card"
-              @click="productStore.setSelectedProducts(product)"
-            />
+            <template v-for="product in group" :key="product.id">
+              <ItemCard
+                v-if="product.category"
+                :product="product"
+                :link="`/products/${product.category?.group?.toLowerCase() || 'unknown'}/${product.id}`"
+                class="card"
+                @click="productStore.setSelectedProducts(product)"
+              />
+            </template>
           </div>
         </template>
       </div>

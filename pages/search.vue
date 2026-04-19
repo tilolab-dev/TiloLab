@@ -25,10 +25,10 @@
         <div class="items_section">
           <div class="category-grid">
             <ItemCard
-              v-for="product in searchResults"
+              v-for="product in validSearchResults"
               :key="product.id"
               :product="product"
-              :link="`/products/${product.category.group.toLowerCase()}/${product.id}`"
+              :link="`/products/${product.category?.group?.toLowerCase() || 'unknown'}/${product.id}`"
               class="card"
               @click="productStore.setSelectedProducts(product)"
             />
@@ -51,7 +51,7 @@ useSeoMeta({
   robots: "noindex, follow"
 });
 
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useProductStore } from "@/store/product-store";
 
 const route = useRoute();
@@ -78,6 +78,10 @@ const performSearch = async (query) => {
   }
   loading.value = false;
 };
+
+const validSearchResults = computed(() => {
+  return searchResults.value.filter((product) => product.category);
+});
 
 onMounted(async () => {
   searchTerm.value = route.query.q || "";
