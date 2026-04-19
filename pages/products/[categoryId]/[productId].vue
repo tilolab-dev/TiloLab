@@ -30,6 +30,7 @@
                         quality="80"
                         width="600"
                         height="600"
+                        sizes="600px"
                         lazy
                       />
                     </swiper-slide>
@@ -62,6 +63,7 @@
                         quality="80"
                         width="150"
                         height="150"
+                        sizes="150px"
                         lazy
                       />
                     </swiper-slide>
@@ -78,6 +80,7 @@
                 quality="80"
                 width="600"
                 height="600"
+                sizes="600px"
                 lazy
               />
             </div>
@@ -155,7 +158,7 @@
                   <span>Товар закінчився</span>
                 </div>
 
-                <div v-if="productStore.selectedProducts.options.length" class="options_wrapper">
+                <div v-if="productStore?.selectedProducts?.options?.length" class="options_wrapper">
                   <div
                     class="option_item"
                     :class="selectedOption === null ? 'selected_option' : ''"
@@ -167,6 +170,9 @@
                       :src="productStore.selectedProducts.img[0].path"
                       alt="option"
                       quality="80"
+                      width="100"
+                      height="100"
+                      sizes="100px"
                       lazy
                     />
                     <span>
@@ -190,6 +196,9 @@
                       error="/images/fallback-img.webp"
                       alt="option"
                       quality="80"
+                      width="100"
+                      height="100"
+                      sizes="100px"
                       lazy
                     />
                     <span>

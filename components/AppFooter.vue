@@ -95,16 +95,16 @@
         <div class="footer_subscribe">
           <h3>Залишайся з TiloLab</h3>
 
-          <SharedAccentBtn>
-            <NuxtLink to="/auth/register" class="join_btn">
+          <NuxtLink to="/auth/register" class="join_btn">
+            <SharedAccentBtn>
               <span> Зареєструватися </span>
-            </NuxtLink>
-          </SharedAccentBtn>
+            </SharedAccentBtn>
+          </NuxtLink>
 
           <!-- <input type="text" placeholder="Твоя електронна пошта" /> -->
           <p>
             Я погоджуюсь з Політикою конфіденційності та даю згоду на обробку моїх персональних
-            даних та погоджуюся отримувати комерційні повідомлення електронною поштою.
+            даних.
           </p>
         </div>
       </div>

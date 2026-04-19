@@ -27,6 +27,7 @@
                       :alt="slide.title"
                       width="400"
                       height="300"
+                      sizes="400px"
                       lazy
                     />
                   </a>

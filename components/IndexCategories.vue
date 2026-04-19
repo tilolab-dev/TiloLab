@@ -19,7 +19,11 @@
       <div class="categories_cards">
         <SharedSwiperSlider :overflow-visible="true">
           <swiper-slide v-for="(slide, idx) in fetchCategories" :key="idx" class="card">
-            <NuxtLink :to="`/products/${slide.group.toLowerCase()}`" class="card">
+            <NuxtLink
+              v-if="slide.group"
+              :to="`/products/${slide.group.toLowerCase()}`"
+              class="card"
+            >
               <NuxtImg
                 :src="slide.categoryImg"
                 placeholder="/images/fallback-img.webp"

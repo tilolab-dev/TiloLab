@@ -34,6 +34,7 @@
                         error="/images/fallback-img.webp"
                         width="80"
                         height="80"
+                        sizes="80px"
                       />
                     </NuxtLink>
 

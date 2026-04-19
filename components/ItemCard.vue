@@ -25,6 +25,7 @@
         alt="product"
         width="300"
         height="300"
+        sizes="300px"
         lazy
       />
     </NuxtLink>

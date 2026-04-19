@@ -18,7 +18,7 @@
       <div
         class="burger_menu_user"
         @click="
-          closeBurgerMenu(!useUserStore.isLoggedIn ? `/user/${userStore.user.id}` : '/auth/login')
+          closeBurgerMenu(userStore.isLoggedIn && userStore.user?.id ? `/user/${userStore.user.id}` : '/auth/login')
         "
       >
         <div v-if="userStore.isLoggedIn">Особистий кабінет</div>

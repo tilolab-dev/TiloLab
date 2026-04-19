@@ -17,6 +17,7 @@
           alt="product"
           width="300"
           height="300"
+          sizes="300px"
         />
       </NuxtLink>
       <div class="description_content">

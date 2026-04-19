@@ -126,16 +126,15 @@
 
           <NuxtImg
             class="sectionImg"
-            src="./images/faq-main.webp"
+            src="/images/faq-main.webp"
             placeholder="/images/fallback-img.webp"
             error="/images/fallback-img.webp"
             quality="80"
             alt="preview"
             width="600"
             height="460"
-            sizes="(max-width: 600px) 100vw, 600px"
+            sizes="600px"
             priority
-            lazy
           />
         </div>
       </div>
