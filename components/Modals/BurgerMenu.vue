@@ -18,7 +18,11 @@
       <div
         class="burger_menu_user"
         @click="
-          closeBurgerMenu(userStore.isLoggedIn && userStore.user?.id ? `/user/${userStore.user.id}` : '/auth/login')
+          closeBurgerMenu(
+            userStore.isLoggedIn && userStore.user?.id
+              ? `/user/${userStore.user.id}`
+              : '/auth/login'
+          )
         "
       >
         <div v-if="userStore.isLoggedIn">Особистий кабінет</div>
@@ -28,7 +32,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import CloseIcon from "~/assets/icons/close-icon.svg";
 
 import { ref, onMounted } from "vue";
@@ -56,7 +60,7 @@ onMounted(() => {
   );
 });
 
-const closeBurgerMenu = (link) => {
+const closeBurgerMenu = (link: string) => {
   if (link.length) {
     navigateTo(link);
   }

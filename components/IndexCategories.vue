@@ -25,7 +25,7 @@
               class="card"
             >
               <NuxtImg
-                :src="slide.categoryImg"
+                :src="slide.categoryImg || '/images/fallback-img.webp'"
                 placeholder="/images/fallback-img.webp"
                 error="/images/fallback-img.webp"
                 :alt="`card ${idx}`"

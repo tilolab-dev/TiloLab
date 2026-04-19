@@ -171,7 +171,7 @@ const lastScrollPosition = ref(0);
 const viewportHeight = ref(0);
 
 const userLoginComputedLink = computed(() => {
-  return userStore.isLoggedIn ? `/user/${userStore.user.id}` : "/auth/login";
+  return userStore.isLoggedIn && userStore.user?.id ? `/user/${userStore.user.id}` : "/auth/login";
 });
 
 watch(burger, () => {

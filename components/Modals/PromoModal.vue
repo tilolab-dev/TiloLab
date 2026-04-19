@@ -20,7 +20,7 @@
                 <swiper-slide v-for="slide in slides" :key="slide.id">
                   <a :href="slide.link" target="_blank">
                     <NuxtImg
-                      :src="slide.src"
+                      :src="slide.src || '/images/fallback-img.webp'"
                       class="card_img"
                       placeholder="/images/fallback-img.webp"
                       error="/images/fallback-img.webp"

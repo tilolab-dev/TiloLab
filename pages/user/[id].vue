@@ -38,10 +38,14 @@
                           class="product_preview"
                         />
                         <NuxtLink
+                          v-if="item.product?.category?.group && item.product?.id"
                           :to="`/products/${item.product.category.group}/${item.product.id}`"
                         >
                           {{ item?.product?.translations?.[0]?.title }}
                         </NuxtLink>
+                        <span v-else>
+                          {{ item?.product?.translations?.[0]?.title }}
+                        </span>
                       </div>
 
                       <div class="product_price">
@@ -155,7 +159,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import AngleDown from "~/assets/icons/angle-down.svg";
 import AngleRight from "~/assets/icons/angle-right.svg";
 import { useSeoMeta } from "#imports";
@@ -177,9 +181,6 @@ import { useUserStore } from "@/store/user-store";
 
 const modalStore = useModalStore();
 const userStore = useUserStore();
-// const loaderState = computed(() => {
-//   return userStore.user.orders.length > 0 ? true : false;
-// });
 
 const calculateDiscount = (price, salePercent) => {
   return price - (price * salePercent) / 100;
@@ -191,10 +192,6 @@ const openOrderHandler = (index) => {
   const i = openOrders.value.indexOf(index);
   i === -1 ? openOrders.value.push(index) : openOrders.value.splice(i, 1);
 };
-
-onMounted(() => {
-  console.log(userStore.isLoggedIn, userStore.user, "log user");
-});
 </script>
 
 <style lang="scss">

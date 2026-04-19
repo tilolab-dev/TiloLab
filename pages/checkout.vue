@@ -240,6 +240,7 @@
                 >
                   <div class="cart_item_main">
                     <NuxtLink
+                      v-if="item.product?.categoryId && item.product?.id"
                       :to="`/products/${item.product.categoryId}/${item.product.id}`"
                       class="details"
                     >
@@ -252,14 +253,28 @@
                         height="80"
                       />
                     </NuxtLink>
+                    <div v-else class="details">
+                      <NuxtImg
+                        :src="item?.product?.img[0]?.path"
+                        alt="preview"
+                        placeholder="/images/fallback-img.webp"
+                        error="/images/fallback-img.webp"
+                        width="80"
+                        height="80"
+                      />
+                    </div>
 
                     <div class="main_wrapper">
                       <NuxtLink
+                        v-if="item.product?.categoryId && item.product?.id"
                         :to="`/products/${item.product.categoryId}/${item.product.id}`"
                         class="details"
                       >
                         {{ item.title }}
                       </NuxtLink>
+                      <span v-else class="details">
+                        {{ item.title }}
+                      </span>
                       <span class="mobile_price"> {{ item.productPrice }} грн</span>
                     </div>
                   </div>

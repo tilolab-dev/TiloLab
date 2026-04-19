@@ -23,7 +23,7 @@
                   >
                     <swiper-slide v-for="slide in slides" :key="slide.id">
                       <NuxtImg
-                        :src="slide.src"
+                        :src="slide.src || '/images/fallback-img.webp'"
                         :alt="slide.title"
                         placeholder="/images/fallback-img.webp"
                         error="/images/fallback-img.webp"
@@ -58,7 +58,7 @@
                       <NuxtImg
                         placeholder="/images/fallback-img.webp"
                         error="/images/fallback-img.webp"
-                        :src="slide.src"
+                        :src="slide.src || '/images/fallback-img.webp'"
                         :alt="slide.title"
                         quality="80"
                         width="150"
@@ -405,6 +405,7 @@ const currentCategory = computed(() => {
 
 // Fetch product data during SSR for proper SEO
 const { data: productData, pending } = await useAsyncData(`product-${productId}`, async () => {
+  if (!productId) return null;
   const res = await $fetch(`/api/products/${productId}`);
   return res.data || res;
 });
@@ -783,6 +784,7 @@ const slides = computed(() => {
 const routeId = route.params.productId;
 
 const fetchProductById = async () => {
+  if (!routeId) return;
   try {
     const res = await $fetch(`/api/products/${routeId}`);
 

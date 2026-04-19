@@ -21,9 +21,12 @@
               <NuxtLink to="/products?page=1&category"> Всі товари </NuxtLink>
             </li>
             <li v-for="(item, index) in activeCategories" :key="index">
-              <NuxtLink :to="`/products/${item.group.toLowerCase()}`">
+              <NuxtLink v-if="item.group" :to="`/products/${item.group.toLowerCase()}`">
                 {{ item.translations[0].title }}
               </NuxtLink>
+              <span v-else>
+                {{ item.translations[0].title }}
+              </span>
             </li>
           </ul>
         </div>
