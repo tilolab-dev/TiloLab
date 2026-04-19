@@ -24,6 +24,7 @@
                 <div class="cart_item_main">
                   <div class="details">
                     <NuxtLink
+                      v-if="item.product?.id && item.product?.categoryId"
                       :to="`/products/${item.product.categoryId}/${item.product.id}`"
                       class="details"
                     >
@@ -40,6 +41,7 @@
 
                     <div class="cart_item_description">
                       <NuxtLink
+                        v-if="item.product?.id && item.product?.categoryId"
                         :to="`/products/${item.product.categoryId}/${item.product.id}`"
                         class="details"
                       >

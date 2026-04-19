@@ -9,7 +9,7 @@
     <div class="wishlist_item_card">
       <div v-if="hasDiscount" class="action_label">Акція</div>
 
-      <NuxtLink :to="props.link" class="img_container">
+      <NuxtLink v-if="props.link" :to="props.link" class="img_container">
         <NuxtImg
           :src="props.product?.img[0]?.path || '/images/fallback-img.webp'"
           placeholder="/images/fallback-img.webp"
@@ -21,11 +21,14 @@
         />
       </NuxtLink>
       <div class="description_content">
-        <NuxtLink :to="props.link">
+        <NuxtLink v-if="props.link" :to="props.link">
           <h3>
             {{ props.product.translations[0].title }}
           </h3>
         </NuxtLink>
+        <h3 v-else>
+          {{ props.product.translations[0].title }}
+        </h3>
         <div class="price_content">
           <div class="price" :style="hasDiscount ? { 'text-decoration': 'line-through' } : {}">
             {{ props.product.productPrice }} грн
