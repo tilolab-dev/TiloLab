@@ -39,6 +39,9 @@
       </div>
 
       <div v-if="activeTab === 'order-info'" class="order_detail_main_info">
+        <div v-if="modalProps.order.paymentMethod === 'cod'" class="cod_order">
+          Замовлення з післяоплатою!
+        </div>
         <div class="order_detail_main">
           <div class="info">
             <h3 class="order_number">№ Замовлення: {{ modalProps.order.orderNumber }}</h3>
@@ -122,6 +125,11 @@
               </li>
             </ul>
           </div>
+        </div>
+
+        <div v-if="modalProps.order.orderComment" class="user_comment">
+          <div class="user_comment_description">Коментар користувача:</div>
+          <div class="user_comment_item">comment</div>
         </div>
 
         <div class="items_info">
@@ -762,39 +770,47 @@ const createTtnHandler = async () => {
 
   const [boxLength, boxWidth, boxHeight] = selectedBox.value.size;
 
+  const ttnBody = {
+    // TTN - SETTINGS
+
+    // codDelivery: order.paymentMethod === "cod" ? true : false,
+
+    // ORDER
+    orderId: order.orderNumber,
+    payerType: order.totalPrice >= 2000 ? "Sender" : "Recipient",
+    selectedCargoType: selectedBox.value.type === "documents" ? "Documents" : "Parcel",
+
+    // BOX
+    weight: selectedBox.value.weight,
+    length: boxLength,
+    width: boxWidth,
+    height: boxHeight,
+
+    // SENDER
+
+    senderCityId: sender.NPcityId,
+    senderContactId: sender.NPcontactSenderId,
+    senderAddressId: sender.NPsenderAddressId,
+    senderId: sender.NPsenderId,
+    senderPhoneNumber: sender.phoneNumber,
+
+    // RECIPIENT
+
+    recipientCityId: order.shippingInfo.NPcityId,
+    recipientWarehouseId: order.shippingInfo.NPwarehouseId,
+    recipientName: recipientFirstName,
+    recipientLastName: recipientLastName,
+    recipientPhone: formattedRecipientPhone,
+    recipientId: order.shippingInfo.NPrecipientId,
+    recipientContactId: order.shippingInfo.NPrecipientContactId,
+
+    orderPrice: modalProps.order.totalPrice < 300 ? 300 : modalProps.order.totalPrice
+  };
+
   try {
     const getTtnRes = await $fetch("/api/np/create-ttn", {
       method: "POST",
-      body: {
-        orderId: order.orderNumber,
-        selectedCargoType: selectedBox.value.type === "documents" ? "Documents" : "Parcel",
-
-        // BOX
-        weight: selectedBox.value.weight,
-        length: boxLength,
-        width: boxWidth,
-        height: boxHeight,
-
-        // SENDER
-
-        senderCityId: sender.NPcityId,
-        senderContactId: sender.NPcontactSenderId,
-        senderAddressId: sender.NPsenderAddressId,
-        senderId: sender.NPsenderId,
-        senderPhoneNumber: sender.phoneNumber,
-
-        // RECIPIENT
-
-        recipientCityId: order.shippingInfo.NPcityId,
-        recipientWarehouseId: order.shippingInfo.NPwarehouseId,
-        recipientName: recipientFirstName,
-        recipientLastName: recipientLastName,
-        recipientPhone: formattedRecipientPhone,
-        recipientId: order.shippingInfo.NPrecipientId,
-        recipientContactId: order.shippingInfo.NPrecipientContactId,
-
-        orderPrice: modalProps.order.totalPrice < 300 ? 300 : modalProps.order.totalPrice
-      }
+      body: ttnBody
     });
 
     await orderStore.updateOrderStatus(modalProps.order.id, "SHIPPED");
@@ -823,6 +839,8 @@ const changeStatus = async () => {
 
 onMounted(() => {
   selectValue.value = modalProps.order.status;
+
+  console.log(modalProps.order);
 });
 </script>
 
@@ -869,7 +887,6 @@ onMounted(() => {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 10px;
   width: 100%;
   height: 100%;
   overflow-y: scroll;
@@ -959,7 +976,16 @@ onMounted(() => {
     }
   }
 
-  .order_status {
+  .cod_order {
+    background: var(--error-bg);
+    text-transform: uppercase;
+    font-weight: 700;
+    @include mixins.subtitleText;
+  }
+
+  .order_status,
+  .cod_order,
+  .user_comment {
     width: 100%;
     height: auto;
     display: flex;
@@ -971,6 +997,13 @@ onMounted(() => {
     h3 {
       @include mixins.subtitleText;
       font-size: 1.1rem;
+    }
+  }
+
+  .user_comment {
+    background: var(--success-bg);
+    &_descriptipon {
+      @include mixins.subtitleText;
     }
   }
 

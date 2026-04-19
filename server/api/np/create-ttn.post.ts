@@ -3,6 +3,7 @@ import NovaPoshtaApi from "@/server/services/novaPostApi";
 
 interface IBodyType {
   orderId: string;
+  payerType: string;
   selectedCargoType: string;
   weight: number;
   length: number;
@@ -23,6 +24,45 @@ interface IBodyType {
   orderPrice: string | number;
 }
 
+interface IPayloadTtn {
+  PayerType: string;
+  PaymentMethod: "Cash" | "NonCash";
+  CargoType: "Parcel" | "Documents" | string;
+
+  Weight: string | number;
+  Length: string | number;
+  Width: string | number;
+  Height: string | number;
+  VolumeGeneral: string | number;
+
+  ServiceType: "WarehouseWarehouse" | "WarehouseDoors" | "DoorsWarehouse" | "DoorsDoors";
+  SeatsAmount: string | number;
+  Description: string;
+
+  Cost: string | number;
+
+  CitySender: string;
+  Sender: string;
+  SenderAddress: string;
+  ContactSender: string;
+  SendersPhone: string;
+
+  FirstName: string;
+  LastName: string;
+  RecipientsPhone: string;
+
+  Recipient: string;
+  ContactRecipient: string;
+  CityRecipient: string;
+  RecipientAddress: string;
+
+  BackwardDeliveryData?: {
+    PayerType: "Sender" | "Recipient";
+    CargoType: "Money";
+    RedeliveryString: string;
+  }[];
+}
+
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const np = new NovaPoshtaApi(config.public.nova_post_uri, config.new_post_api);
@@ -33,6 +73,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const {
     orderId,
+    payerType,
     selectedCargoType,
     weight,
     length,
@@ -51,6 +92,7 @@ export default defineEventHandler(async (event) => {
     recipientId,
     recipientContactId,
     orderPrice
+    // backwardDeliveryData
   } = body as IBodyType;
 
   console.log(orderId, "orderId");
@@ -64,6 +106,11 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, message: "Order not found" });
   }
 
+  const isCOD = order.paymentMethod === "cod";
+  const prepayment = 200;
+
+  console.log(isCOD, "IS COD");
+
   // if (order.deliveryTtn) {
   //   throw createError({ statusCode: 400, message: "TTN already exist" });
   // }
@@ -76,8 +123,8 @@ export default defineEventHandler(async (event) => {
     };
   }
 
-  const payload = {
-    PayerType: "Recipient",
+  const payload: IPayloadTtn = {
+    PayerType: payerType,
     PaymentMethod: "Cash",
     CargoType: selectedCargoType,
     //box value
@@ -110,8 +157,21 @@ export default defineEventHandler(async (event) => {
     CityRecipient: recipientCityId,
     RecipientAddress: recipientWarehouseId
   };
+
+  if (isCOD) {
+    const amountToPay = Math.max(order.totalPrice - prepayment, 0);
+
+    payload.BackwardDeliveryData = [
+      {
+        PayerType: "Recipient",
+        CargoType: "Money",
+        RedeliveryString: amountToPay.toString()
+      }
+    ];
+  }
+
   try {
-    console.log("start request");
+    console.log("ok", payload);
     const ttnData = await np.createTtn(payload);
 
     console.log(ttnData, "ttnData");
@@ -130,6 +190,7 @@ export default defineEventHandler(async (event) => {
       message: "TTN Recieved",
       data: ttnData
     };
+    // return true;
   } catch (err) {
     console.error(err);
     return {
