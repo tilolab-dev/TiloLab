@@ -19,7 +19,7 @@
         Товар закінчується
       </div>
       <NuxtImg
-        :src="props?.product?.img[0]?.path"
+        :src="props?.product?.img[0]?.path || '/images/fallback-img.webp'"
         placeholder="/images/fallback-img.webp"
         error="/images/fallback-img.webp"
         alt="product"

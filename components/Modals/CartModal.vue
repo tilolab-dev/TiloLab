@@ -28,7 +28,7 @@
                       class="details"
                     >
                       <NuxtImg
-                        :src="item?.product?.img[0]?.path"
+                        :src="item?.product?.img[0]?.path || '/images/fallback-img.webp'"
                         alt="preview"
                         placeholder="/images/fallback-img.webp"
                         error="/images/fallback-img.webp"
