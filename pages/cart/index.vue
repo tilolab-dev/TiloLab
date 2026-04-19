@@ -108,6 +108,20 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useSeoMeta } from "#imports";
+
+useSeoMeta({
+  title: "Кошик - Tilo Lab",
+  description:
+    "Ваш кошик з обраними товарами в Tilo Lab. Перегляньте, редагуйте та оформіть замовлення інтимних товарів з анонімною доставкою по Україні.",
+  ogTitle: "Кошик - Tilo Lab",
+  ogDescription:
+    "Ваш кошик з обраними товарами. Оформіть замовлення з анонімною доставкою по Україні.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  ogUrl: "https://tilolab.com.ua/cart",
+  twitterCard: "summary_large_image"
+});
+
 //   import Tooltips from "~/components/shared/Tooltips.vue";
 //   import Swiper from "swiper";
 

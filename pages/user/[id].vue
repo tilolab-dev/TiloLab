@@ -158,6 +158,19 @@
 import { ref, onMounted } from "vue";
 import AngleDown from "~/assets/icons/angle-down.svg";
 import AngleRight from "~/assets/icons/angle-right.svg";
+import { useSeoMeta } from "#imports";
+
+useSeoMeta({
+  title: "Мій кабінет - Tilo Lab",
+  description:
+    "Особистий кабінет користувача Tilo Lab. Переглядайте історію замовлень, керуйте особистими даними та відстежуйте статус доставки.",
+  ogTitle: "Мій кабінет - Tilo Lab",
+  ogDescription:
+    "Особистий кабінет користувача Tilo Lab. Історія замовлень та управління профілем.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  twitterCard: "summary_large_image",
+  robots: "noindex, nofollow"
+});
 
 import { useModalStore } from "@/store/modal-store";
 import { useUserStore } from "@/store/user-store";

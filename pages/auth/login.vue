@@ -52,13 +52,21 @@
 </template>
 
 <script setup>
+import { useSeoMeta } from "#imports";
+
+useSeoMeta({
+  title: "Вхід в акаунт - Tilo Lab",
+  description: "Увійдіть в свій акаунт Tilo Lab для перегляду замовлень та управління профілем.",
+  ogTitle: "Вхід в акаунт - Tilo Lab",
+  robots: "noindex, nofollow"
+});
+
 // icons
 import AngleRightIcon from "~/assets/icons/angle-right.svg";
 import GoogleIcon from "~/assets/icons/google.svg";
 import Check from "~/assets/icons/check.svg";
 
 // imports
-
 import { ref } from "vue";
 import { useAuth } from "@/composables/useAuth";
 // import { useUserStore } from "@/store/user-store";

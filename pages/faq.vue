@@ -133,7 +133,7 @@
             alt="preview"
             width="600"
             height="460"
-            sizes="600px"
+            sizes="(max-width: 600px) 100vw, 600px"
             priority
             lazy
           />
@@ -152,6 +152,16 @@ useSeoMeta({
   ogTitle: "FAQ - Tilo Lab",
   ogDescription: "Часті запитання про доставку, оплату та обслуговування в Tilo Lab.",
   ogUrl: "https://tilolab.com.ua/faq"
+});
+
+// Canonical URL
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: "https://tilolab.com.ua/faq"
+    }
+  ]
 });
 </script>
 

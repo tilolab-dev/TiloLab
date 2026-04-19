@@ -58,6 +58,16 @@
 </template>
 
 <script setup>
+import { useSeoMeta } from "#imports";
+
+useSeoMeta({
+  title: "Реєстрація - Tilo Lab",
+  description:
+    "Створіть акаунт в Tilo Lab для зручного оформлення замовлень та відстеження доставки.",
+  ogTitle: "Реєстрація - Tilo Lab",
+  robots: "noindex, nofollow"
+});
+
 import AngleRightIcon from "~/assets/icons/angle-right.svg";
 import GoogleIcon from "~/assets/icons/google.svg";
 import { useAuth } from "@/composables/useAuth";

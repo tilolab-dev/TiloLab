@@ -23,6 +23,8 @@
         placeholder="/images/fallback-img.webp"
         error="/images/fallback-img.webp"
         alt="product"
+        width="300"
+        height="300"
         lazy
       />
     </NuxtLink>

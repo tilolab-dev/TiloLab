@@ -15,7 +15,16 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useSeoMeta } from "#imports";
+
+useSeoMeta({
+  title: "Відновлення паролю - Tilo Lab",
+  description: "Відновлення паролю для акаунту Tilo Lab.",
+  ogTitle: "Відновлення паролю - Tilo Lab",
+  robots: "noindex, nofollow"
+});
+</script>
 
 <style lang="scss">
 @use "@/style/mixins.scss" as mixins;

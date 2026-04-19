@@ -248,6 +248,8 @@
                         alt="preview"
                         placeholder="/images/fallback-img.webp"
                         error="/images/fallback-img.webp"
+                        width="80"
+                        height="80"
                       />
                     </NuxtLink>
 
@@ -301,13 +303,13 @@
 <script setup>
 import { useSeoMeta } from "#imports";
 useSeoMeta({
-  title: "Оплата",
+  title: "Оформлення замовлення - Tilo Lab",
   description:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogTitle: "Оплата",
-  ogDescription:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogImage: "https://tilolab.com.ua/images/about-main.webp"
+    "Оформіть замовлення інтимних товарів в Tilo Lab. Безпечна оплата, анонімна доставка Новою Поштою по всій Україні. Швидке оформлення та гарантія конфіденційності.",
+  ogTitle: "Оформлення замовлення - Tilo Lab",
+  ogDescription: "Безпечна оплата та анонімна доставка інтимних товарів по Україні.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  robots: "noindex, nofollow"
 });
 import { ref, watch, onMounted, computed } from "vue";
 //

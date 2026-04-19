@@ -35,6 +35,16 @@ useSeoMeta({
   twitterImage: "https://tilolab.com.ua/images/about-main.webp"
 });
 
+// Canonical URL for homepage
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: "https://tilolab.com.ua/"
+    }
+  ]
+});
+
 // Structured Data for SEO
 const structuredData = {
   "@context": "https://schema.org",

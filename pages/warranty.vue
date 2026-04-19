@@ -11,15 +11,25 @@
 </template>
 
 <script setup>
-import { useSeoMeta } from "#imports";
+import { useSeoMeta, useHead } from "#imports";
 useSeoMeta({
-  title: "Гарантія",
+  title: "Гарантія та повернення - Tilo Lab",
   description:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogTitle: "Гарантія",
-  ogDescription:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogImage: "https://tilolab.com.ua/images/about-main.webp"
+    "Гарантійні зобов'язання та умови повернення товару в Tilo Lab. Детальна інформація про гарантійний термін, процедуру повернення та обміну товарів.",
+  ogTitle: "Гарантія та повернення - Tilo Lab",
+  ogDescription: "Гарантійні зобов'язання та умови повернення товару в Tilo Lab.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  ogUrl: "https://tilolab.com.ua/warranty"
+});
+
+// Canonical URL
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: "https://tilolab.com.ua/warranty"
+    }
+  ]
 });
 </script>
 
