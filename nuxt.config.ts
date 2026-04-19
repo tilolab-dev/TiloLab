@@ -23,14 +23,24 @@ export default defineNuxtConfig({
         { property: "og:image", content: "https://tilolab.com.ua/images/about-main.webp" },
         { property: "og:locale", content: "uk_UA" }
       ],
-      link: [{ rel: "icon", type: "image/webp", href: "/favicon.ico" }]
+      link: [
+        { rel: "icon", type: "image/webp", href: "/favicon.ico" },
+        { rel: "preconnect", href: "https://pub-0a8d6c93bd2743669515202d259de491.r2.dev" },
+        { rel: "dns-prefetch", href: "https://pub-0a8d6c93bd2743669515202d259de491.r2.dev" }
+      ]
     }
   },
   // experimental: {
   //   inlineSSRStyles: true
   // },
   nitro: {
-    compressPublicAssets: true
+    compressPublicAssets: true,
+    routeRules: {
+      "/": { prerender: true },
+      "/products/**": { isr: 60 },
+      "/_nuxt/**": { headers: { "cache-control": "public, max-age=31536000, immutable" } },
+      "/images/**": { headers: { "cache-control": "public, max-age=31536000, immutable" } }
+    }
   },
   build: {
     transpile: ["@supabase/supabase-js", "gsap"]

@@ -28,6 +28,7 @@
                 class="card_img"
                 width="300"
                 height="400"
+                sizes="300px"
                 lazy
               />
 
