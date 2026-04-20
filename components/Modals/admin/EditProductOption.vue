@@ -80,7 +80,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, defineEmits, defineProps } from "vue";
+import { onMounted, ref } from "vue";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
 import EditIcon from "~/assets/icons/edit-btn.svg";
 
