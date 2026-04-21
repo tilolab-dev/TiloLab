@@ -20,6 +20,24 @@
 import { useModalStore } from "./store/modal-store";
 import { ref, onMounted, nextTick } from "vue";
 
+useHead({
+  script: [
+    {
+      async: true,
+      src: "https://www.googletagmanager.com/gtag/js?id=G-TXWRV1WQH9"
+    },
+    {
+      innerHTML: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-TXWRV1WQH9');
+      `,
+      type: "text/javascript"
+    }
+  ]
+});
+
 const loaderRef = ref(null);
 const isLoading = ref(true);
 
