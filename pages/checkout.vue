@@ -133,15 +133,31 @@
             <div class="user_info_payment">
               <div class="checkout_subtitle"><strong>Оплата</strong></div>
               <div class="radio_wrapper">
-                <input id="payment1" type="radio" name="payment" checked />
+                <input
+                  id="payment1"
+                  v-model="paymentMethod"
+                  type="radio"
+                  name="payment"
+                  value="monobank"
+                />
                 <label for="payment1" class="radio-elem">
                   <div class="radio-btn"></div>
                   <span>Онлайн на сайті</span>
                 </label>
-                <input id="payment2" type="radio" name="payment" />
+                <input
+                  id="payment2"
+                  v-model="paymentMethod"
+                  type="radio"
+                  name="payment"
+                  value="cod"
+                />
                 <label for="payment2" class="radio-elem">
                   <div class="radio-btn"></div>
-                  <span>Оплата при отриманні</span>
+                  <span
+                    >Оплата при отриманні (200 грн. передплата)
+                    <br />
+                    сума товарів від 200грн
+                  </span>
                 </label>
 
                 <div class="input_wrapper">
@@ -154,6 +170,18 @@
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="summary_notification">
+            <strong>Зверніть увагу!</strong>
+
+            <p class="delivery_description">
+              — Замовлення з оплатою при отриманні відправляються за умови передплати 200 грн.<br />
+              — У разі неотримання замовлення передплата не повертається.<br />
+              — Сума передплати враховується у загальній вартості замовлення. При отриманні ви
+              сплачуєте лише залишок суми.<br />
+              — Для замовлень на суму понад 2000 грн діє безкоштовна доставка.<br />
+            </p>
           </div>
 
           <div class="summary_info">
@@ -169,13 +197,12 @@
               <li>
                 <div class="list_option">Доставка:</div>
                 <div class="list_value">
-                  за тарифами перевізника (оплачується окремо) <br />
-                  <span v-if="isMounted">
-                    {{ deliveryPrice }}
-                  </span>
-                  <span v-else> 0 грн </span>
+                  Вартість доставки за тарифами перевізника (оплачується окремо) <br />
                 </div>
               </li>
+              <!-- <li>
+                <p>Безкоштовна доставка на суму товарів від 2000 грн.</p>
+              </li> -->
             </ul>
           </div>
           <ClientOnly>
@@ -213,6 +240,7 @@
                 >
                   <div class="cart_item_main">
                     <NuxtLink
+                      v-if="item.product?.categoryId && item.product?.id"
                       :to="`/products/${item.product.categoryId}/${item.product.id}`"
                       class="details"
                     >
@@ -221,16 +249,32 @@
                         alt="preview"
                         placeholder="/images/fallback-img.webp"
                         error="/images/fallback-img.webp"
+                        width="80"
+                        height="80"
                       />
                     </NuxtLink>
+                    <div v-else class="details">
+                      <NuxtImg
+                        :src="item?.product?.img[0]?.path"
+                        alt="preview"
+                        placeholder="/images/fallback-img.webp"
+                        error="/images/fallback-img.webp"
+                        width="80"
+                        height="80"
+                      />
+                    </div>
 
                     <div class="main_wrapper">
                       <NuxtLink
+                        v-if="item.product?.categoryId && item.product?.id"
                         :to="`/products/${item.product.categoryId}/${item.product.id}`"
                         class="details"
                       >
                         {{ item.title }}
                       </NuxtLink>
+                      <span v-else class="details">
+                        {{ item.title }}
+                      </span>
                       <span class="mobile_price"> {{ item.productPrice }} грн</span>
                     </div>
                   </div>
@@ -274,13 +318,13 @@
 <script setup>
 import { useSeoMeta } from "#imports";
 useSeoMeta({
-  title: "Оплата",
+  title: "Оформлення замовлення - Tilo Lab",
   description:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogTitle: "Оплата",
-  ogDescription:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogImage: "https://tilolab.com.ua/images/about-main.webp"
+    "Оформіть замовлення інтимних товарів в Tilo Lab. Безпечна оплата, анонімна доставка Новою Поштою по всій Україні. Швидке оформлення та гарантія конфіденційності.",
+  ogTitle: "Оформлення замовлення - Tilo Lab",
+  ogDescription: "Безпечна оплата та анонімна доставка інтимних товарів по Україні.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  robots: "noindex, nofollow"
 });
 import { ref, watch, onMounted, computed } from "vue";
 //
@@ -319,6 +363,7 @@ const deliveryAddressState = ref(false);
 const courierDeliveryState = ref(false);
 
 const deliveryPrice = ref(0);
+const paymentMethod = ref("monobank");
 // const saveDeliveryAddress = ref(false);
 
 // const checkoutProducts = ref([]);
@@ -451,6 +496,14 @@ const confirmOrderHandler = async () => {
     return;
   }
 
+  if (paymentMethod.value === "cod" && totalDeliveryPrice.value < 200) {
+    tooltip({
+      status: "warning",
+      message: "При замовленні оплати при отриманні сумма товарів повинна бути не менше 200 грн"
+    });
+    return;
+  }
+
   loaderState.value = true;
 
   const getOrderItems = cartStore.cart.map((item) => {
@@ -466,9 +519,9 @@ const confirmOrderHandler = async () => {
   const getRecipientId = await $fetch("/api/np/create-counterparty", {
     method: "POST",
     body: {
-      firstName: name.value,
-      lastName: surname.value,
-      phone: formattedPhone
+      firstName: name.value.trim(),
+      lastName: surname.value.trim(),
+      phone: formattedPhone.trim()
     }
   });
 
@@ -477,9 +530,9 @@ const confirmOrderHandler = async () => {
   const getRecipientContactId = await $fetch("/api/np/create-contact-person", {
     method: "POST",
     body: {
-      firstName: name.value,
-      lastName: surname.value,
-      phone: formattedPhone,
+      firstName: name.value.trim(),
+      lastName: surname.value.trim(),
+      phone: formattedPhone.trim(),
       counterPartyId: recipientId
     }
   });
@@ -492,21 +545,21 @@ const confirmOrderHandler = async () => {
       body: {
         // userId: "", left after auth implementation
         // totalPrice: totalDeliveryPrice.value,
-        paymentMethod: "monobank",
+        paymentMethod: paymentMethod.value,
         orderItems: getOrderItems,
-        email: email.value,
-        phoneNumber: userNumber,
-        promoCode: orderPromoCode.value,
-        orderComment: orderComment.value,
+        email: email.value.trim(),
+        phoneNumber: userNumber.trim(),
+        promoCode: orderPromoCode.value.trim(),
+        orderComment: orderComment.value.trim(),
         shippingInfo: {
-          recipient: name.value + " " + surname.value,
-          phoneNumber: phone.value,
+          recipient: name.value.trim() + " " + surname.value.trim(),
+          phoneNumber: phone.value.trim(),
           deliveryMethod: "nova poshta",
-          postOffice: postAddress.value,
-          postomat: postomatNumber.value,
-          city: cityRef.value,
+          postOffice: postAddress.value.trim(),
+          postomat: postomatNumber.value.trim(),
+          city: cityRef.value.trim(),
           country: "Ukraine",
-          cityId: cityId.value,
+          cityId: cityId.value.trim(),
           warehouseType: categoryOfWarehouse.value,
           postAddressId: postAddressId.value,
           postomatId: postomatId.value,
@@ -515,8 +568,6 @@ const confirmOrderHandler = async () => {
         }
       }
     });
-
-    // console.log(getOrderId, "GET_ORDER_ID");
 
     if (getOrderId.statusCode !== 200) {
       tooltip({ status: "error", message: `${getOrderId.message}` });
@@ -528,7 +579,8 @@ const confirmOrderHandler = async () => {
       method: "POST",
       body: {
         orderId: getOrderId.data.id,
-        amount: getOrderId.data.totalPrice
+        // amount: getOrderId.data.totalPrice
+        amount: paymentMethod.value === "monobank" ? getOrderId.data.totalPrice : 200
       }
     });
 
@@ -879,7 +931,7 @@ useHead({
   .radio-elem {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     height: auto;
     gap: 8px;
@@ -930,6 +982,7 @@ useHead({
     height: 18px;
     border: 2px solid var(--accent-color);
     border-radius: 50%;
+    transform: translateY(3px);
   }
 
   .user_info {
@@ -1038,7 +1091,8 @@ useHead({
       }
     }
     .list_option,
-    .list_value {
+    .list_value,
+    p {
       @include mixins.mainText;
       color: var(--text-grey);
     }
@@ -1055,6 +1109,49 @@ useHead({
     }
     @media screen and (max-width: 375px) {
       margin-top: 28px;
+    }
+  }
+
+  .summary_notification {
+    @include mixins.mainText;
+    font-weight: 400;
+    font-size: 1rem;
+    margin-top: 52px;
+
+    .delivery_description {
+      padding-top: 20px;
+    }
+
+    strong {
+      @include mixins.subtitleText;
+      padding-bottom: 24px;
+      @media screen and (max-width: 1024px) {
+        padding-bottom: 20px;
+        font-size: 1.0625rem;
+      }
+      @media screen and (max-width: 768px) {
+        padding-bottom: 18px;
+      }
+      @media screen and (max-width: 480px) {
+        padding-bottom: 16px;
+        font-size: 0.875rem;
+      }
+      @media screen and (max-width: 375px) {
+        padding-bottom: 12px;
+        font-size: 0.8125rem;
+      }
+    }
+
+    @media screen and (max-width: 1024px) {
+      margin-top: 44px;
+    }
+    @media screen and (max-width: 480px) {
+      margin-top: 32px;
+      font-size: 0.875rem;
+    }
+    @media screen and (max-width: 375px) {
+      margin-top: 28px;
+      font-size: 0.75rem;
     }
   }
 

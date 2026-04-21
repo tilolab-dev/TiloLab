@@ -9,26 +9,26 @@
     <div class="wishlist_item_card">
       <div v-if="hasDiscount" class="action_label">Акція</div>
 
-      <NuxtLink :to="props.link" class="img_container">
-        <img
-          v-if="props.product.img && props.product.img[0] && props.product.img[0].path"
-          :src="props.product.img[0].path"
+      <NuxtLink v-if="props.link" :to="props.link" class="img_container">
+        <NuxtImg
+          :src="props.product?.img[0]?.path || '/images/fallback-img.webp'"
+          placeholder="/images/fallback-img.webp"
+          error="/images/fallback-img.webp"
           alt="product"
-        />
-
-        <img
-          v-else
-          alt="No Image"
-          src="https://placehold.co/384x488/000000/ff86bb?font=montserrat&text=No+Image"
-          class="card_img"
+          width="300"
+          height="300"
+          sizes="300px"
         />
       </NuxtLink>
       <div class="description_content">
-        <NuxtLink :to="props.link">
+        <NuxtLink v-if="props.link" :to="props.link">
           <h3>
             {{ props.product.translations[0].title }}
           </h3>
         </NuxtLink>
+        <h3 v-else>
+          {{ props.product.translations[0].title }}
+        </h3>
         <div class="price_content">
           <div class="price" :style="hasDiscount ? { 'text-decoration': 'line-through' } : {}">
             {{ props.product.productPrice }} грн

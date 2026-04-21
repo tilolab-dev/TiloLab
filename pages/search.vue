@@ -25,10 +25,10 @@
         <div class="items_section">
           <div class="category-grid">
             <ItemCard
-              v-for="product in searchResults"
+              v-for="product in validSearchResults"
               :key="product.id"
               :product="product"
-              :link="`/products/${product.category.group.toLowerCase()}/${product.id}`"
+              :link="`/products/${product.category?.group?.toLowerCase() || 'unknown'}/${product.id}`"
               class="card"
               @click="productStore.setSelectedProducts(product)"
             />
@@ -42,16 +42,16 @@
 <script setup>
 import { useSeoMeta } from "#imports";
 useSeoMeta({
-  title: "Пошук",
+  title: "Пошук товарів - Tilo Lab",
   description:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogTitle: "Пошук",
-  ogDescription:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogImage: "https://tilolab.com.ua/images/about-main.webp"
+    "Пошук інтимних товарів та аксесуарів в Tilo Lab. Знайдіть вібратори, лубриканти, BDSM-атрибутику та інші товари для дорослих з швидкою доставкою по Україні.",
+  ogTitle: "Пошук товарів - Tilo Lab",
+  ogDescription: "Швидкий пошук інтимних товарів в каталозі Tilo Lab.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  robots: "noindex, follow"
 });
 
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useProductStore } from "@/store/product-store";
 
 const route = useRoute();
@@ -78,6 +78,10 @@ const performSearch = async (query) => {
   }
   loading.value = false;
 };
+
+const validSearchResults = computed(() => {
+  return searchResults.value.filter((product) => product.category);
+});
 
 onMounted(async () => {
   searchTerm.value = route.query.q || "";

@@ -200,13 +200,24 @@
 <script setup>
 import { useSeoMeta } from "#imports";
 useSeoMeta({
-  title: "Публічна оферта",
+  title: "Публічна оферта - Tilo Lab",
   description:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogTitle: "Публічна оферта",
+    "Публічна оферта Tilo Lab. Умови купівлі-продажу товарів, права та обов'язки сторін, доставка та оплата. Ознайомтеся з договором перед замовленням.",
+  ogTitle: "Публічна оферта - Tilo Lab",
   ogDescription:
-    "Tilo Lab — це сучасний простір дослідження інтимного здоров’я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс.",
-  ogImage: "https://tilolab.com.ua/images/about-main.webp"
+    "Умови купівлі-продажу, доставки та оплати в Tilo Lab. Права та обов'язки покупця і продавця.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  ogUrl: "https://tilolab.com.ua/public-offer"
+});
+
+// Canonical URL
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: "https://tilolab.com.ua/public-offer"
+    }
+  ]
 });
 </script>
 

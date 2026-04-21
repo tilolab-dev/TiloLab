@@ -1,13 +1,10 @@
 User-Agent: *
 Allow: /
-Crawl-delay: 1
 
 # Disallow admin and private areas
 Disallow: /admin/
 Disallow: /auth/
 Disallow: /summary/
-Disallow: /api/
-Disallow: /_nuxt/
 Disallow: /.well-known/
 
 # Allow specific resources

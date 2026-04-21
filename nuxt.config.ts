@@ -2,13 +2,15 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
+  ssr: true,
   app: {
     baseURL: "/",
     head: {
       htmlAttrs: {
         lang: "uk"
       },
-      title: "Tilolab",
+      titleTemplate: "%s | Tilo Lab",
+      title: "Інтимне здоров'я та тілесна гармонія",
       meta: [
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
@@ -17,16 +19,27 @@ export default defineNuxtConfig({
             "Tilo Lab — це сучасний простір дослідження інтимного здоров'я, задоволення та тілесної гармонії. Ми створили лабораторію, де інновації, наука та турбота про тіло поєднуються у відповідальний та делікатний сервіс."
         },
         { property: "og:type", content: "website" },
-        { property: "og:site_name", content: "Tilolab" }
+        { property: "og:site_name", content: "Tilo Lab" },
+        { property: "og:image", content: "https://tilolab.com.ua/images/about-main.webp" },
+        { property: "og:locale", content: "uk_UA" }
       ],
-      link: [{ rel: "icon", type: "image/webp", href: "/favicon.ico" }]
+      link: [
+        { rel: "icon", type: "image/webp", href: "/favicon.ico" },
+        { rel: "preconnect", href: "https://pub-0a8d6c93bd2743669515202d259de491.r2.dev" },
+        { rel: "dns-prefetch", href: "https://pub-0a8d6c93bd2743669515202d259de491.r2.dev" }
+      ]
     }
   },
   // experimental: {
   //   inlineSSRStyles: true
   // },
   nitro: {
-    compressPublicAssets: true
+    compressPublicAssets: true,
+    routeRules: {
+      "/": { prerender: true },
+      "/_nuxt/**": { headers: { "cache-control": "public, max-age=31536000, immutable" } },
+      "/images/**": { headers: { "cache-control": "public, max-age=31536000, immutable" } }
+    }
   },
   build: {
     transpile: ["@supabase/supabase-js", "gsap"]
@@ -84,11 +97,28 @@ export default defineNuxtConfig({
       "@nuxtjs/sitemap",
       {
         hostname: "https://tilolab.com.ua",
-        exclude: ["/admin/**", "/auth/**", "/summary/**"],
-        routes: async () => {
-          // You can add dynamic routes here if needed
-          return [];
-        }
+        exclude: [
+          "/admin/**",
+          "/auth/**",
+          "/summary/**",
+          "/user/**",
+          "/cart",
+          "/checkout",
+          "/wishlist"
+        ]
+      }
+    ],
+    [
+      "@nuxtjs/robots",
+      {
+        sitemap: "https://tilolab.com.ua/sitemap.xml",
+        robots: [
+          {
+            userAgent: "*",
+            allow: "/",
+            disallow: ["/admin", "/auth", "/summary", "/user", "/cart", "/checkout", "/wishlist"]
+          }
+        ]
       }
     ],
     [
@@ -115,7 +145,7 @@ export default defineNuxtConfig({
   },
   vite: {
     server: {
-      allowedHosts: ["1b15-88-154-11-51.ngrok-free.app"],
+      allowedHosts: ["41e6-37-73-34-18.ngrok-free.app"],
       strictPort: false
     },
     plugins: [

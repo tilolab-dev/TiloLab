@@ -205,9 +205,17 @@ useSeoMeta({
   description:
     "Доставка по всій Україні Новою Поштою. Анонімна упаковка, швидка обробка замовлень. Детальна інформація про умови доставки та способи оплати.",
   ogTitle: "Доставка та оплата - Tilo Lab",
-  ogDescription:
-    "Доставка по всій Україні Новою Поштою. Анонімна упаковка та зручні способи оплати.",
+  ogDescription: "Умови доставки та способи оплати в Tilo Lab.",
   ogUrl: "https://tilolab.com.ua/delivery"
+});
+
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: "https://tilolab.com.ua/delivery"
+    }
+  ]
 });
 </script>
 

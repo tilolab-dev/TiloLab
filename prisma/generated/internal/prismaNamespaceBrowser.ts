@@ -344,7 +344,8 @@ export const ShippingInfoScalarFieldEnum = {
   NPwarehouseId: 'NPwarehouseId',
   NPrecipientId: 'NPrecipientId',
   NPrecipientContactId: 'NPrecipientContactId',
-  NPtypeOfWarehouse: 'NPtypeOfWarehouse'
+  NPtypeOfWarehouse: 'NPtypeOfWarehouse',
+  trackNumber: 'trackNumber'
 } as const
 
 export type ShippingInfoScalarFieldEnum = (typeof ShippingInfoScalarFieldEnum)[keyof typeof ShippingInfoScalarFieldEnum]

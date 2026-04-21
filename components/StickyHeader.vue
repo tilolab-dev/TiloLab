@@ -117,13 +117,11 @@
 
       <nav v-else>
         <NuxtLink to="/products?page=1&category"> Всі товари </NuxtLink>
-        <NuxtLink
-          v-for="(item, index) in activeCategories"
-          :key="index"
-          :to="`/products/${item.group.toLowerCase()}`"
-        >
-          {{ item.translations[0].title }}
-        </NuxtLink>
+        <template v-for="(item, index) in activeCategories" :key="index">
+          <NuxtLink v-if="item.group" :to="`/products/${item.group.toLowerCase()}`">
+            {{ item.translations[0].title }}
+          </NuxtLink>
+        </template>
       </nav>
     </div>
 
@@ -173,7 +171,7 @@ const lastScrollPosition = ref(0);
 const viewportHeight = ref(0);
 
 const userLoginComputedLink = computed(() => {
-  return userStore.isLoggedIn ? `/user/${userStore.user.id}` : "/auth/login";
+  return userStore.isLoggedIn && userStore.user?.id ? `/user/${userStore.user.id}` : "/auth/login";
 });
 
 watch(burger, () => {

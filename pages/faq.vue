@@ -126,7 +126,7 @@
 
           <NuxtImg
             class="sectionImg"
-            src="./images/faq-main.webp"
+            src="/images/faq-main.webp"
             placeholder="/images/fallback-img.webp"
             error="/images/fallback-img.webp"
             quality="80"
@@ -135,7 +135,6 @@
             height="460"
             sizes="600px"
             priority
-            lazy
           />
         </div>
       </div>
@@ -152,6 +151,16 @@ useSeoMeta({
   ogTitle: "FAQ - Tilo Lab",
   ogDescription: "Часті запитання про доставку, оплату та обслуговування в Tilo Lab.",
   ogUrl: "https://tilolab.com.ua/faq"
+});
+
+// Canonical URL
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: "https://tilolab.com.ua/faq"
+    }
+  ]
 });
 </script>
 

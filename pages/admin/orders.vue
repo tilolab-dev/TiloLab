@@ -86,7 +86,7 @@
                         <th class="t_head_cell client_cell" style="text-align: left">Клієнт</th>
                         <th class="t_head_cell">Сумма замовлення</th>
                         <th class="t_head_cell">Статус платежу</th>
-                        <th class="t_head_cell">Банк</th>
+                        <th class="t_head_cell">Оплата</th>
                         <th class="t_head_cell">Дата</th>
                         <th class="t_head_cell"></th>
                       </tr>
@@ -157,8 +157,6 @@
                             <!-- <div v-else class="fallback_img"></div> -->
                             <!-- src="../public/images/icons.credit-card.webp" -->
 
-                            {{ console.log(order) }}
-
                             <div class="recipient">
                               <div>
                                 {{ order.userId === null ? "Гість" : "Користувач" }}
@@ -193,7 +191,15 @@
                         <td>
                           <div class="product_option">
                             <!-- {{ product.category?.group ?? "" }} -->
-                            {{ order.paymentMethod }}
+                            <!-- {{ order.paymentMethod }} -->
+                            <div v-if="order.paymentMethod === 'monobank'" class="option online">
+                              Оплата <br />
+                              онлайн
+                            </div>
+                            <div v-else-if="order.paymentMethod === 'cod'" class="option cod">
+                              Накладний <br />
+                              платіж
+                            </div>
                           </div>
                         </td>
                         <td>
@@ -255,6 +261,10 @@ watch(orderByStatus, (newVal) => {
   orderListByStatus.value = ordersStore.ordersList.filter(
     (order) => order.status === orderByStatus.value
   );
+
+  if (orderByStatus.value === "ALL") {
+    orderListByStatus.value = ordersStore.ordersList;
+  }
   return newVal;
 });
 
@@ -323,6 +333,13 @@ const getIconPath = (status) => {
   }
 };
 
+// const orderOption = (option) => {
+//   switch (option) {
+//     case "monobank":
+//       return
+//   }
+// }
+
 const applyStyle = (status) => {
   switch (status) {
     case "NEW":
@@ -339,7 +356,7 @@ const applyStyle = (status) => {
       };
     case "SHIPPED":
       return {
-        background: "var(--warning-bg)"
+        background: "var(--success-bg)"
       };
     case "DELIVERED":
       return {
@@ -347,7 +364,7 @@ const applyStyle = (status) => {
       };
     case "RETURNED":
       return {
-        background: "var(--error-bg)"
+        background: "var(--warning-bg)"
       };
     case "CANCELED":
       return {
@@ -674,6 +691,22 @@ definePageMeta({
                     align-items: center;
                     @include mixins.mainText;
                     font-size: 0.8rem;
+
+                    .option {
+                      padding: 3px 7px;
+                      border-radius: 5px;
+                      text-align: center;
+                    }
+
+                    .online {
+                      background: var(--success-bg);
+                      border: 1px solid var(--success-btn);
+                    }
+
+                    .cod {
+                      background: var(--warning-bg);
+                      border: 1px solid var(--warning-btn);
+                    }
                   }
                   button {
                     display: inline-block;

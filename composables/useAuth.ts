@@ -173,7 +173,9 @@ export const useAuth = () => {
 
     await fetchOrCreateUser();
 
-    router.push(`/user/${store.user.id}`);
+    if (store.user?.id && typeof store.user.id === "string") {
+      router.push(`/user/${store.user.id}`);
+    }
 
     return res;
   };

@@ -28,7 +28,7 @@
           </div>
           <NuxtImg
             class="main_img"
-            src="./images/about-main.webp"
+            src="/images/about-main.webp"
             placeholder="/images/fallback-img.webp"
             error="/images/fallback-img.webp"
             alt="preview"
@@ -37,13 +37,12 @@
             quality="80"
             priority
             sizes="500px"
-            lazy
           />
         </div>
         <div class="about_us_content_secondary">
           <NuxtImg
             class="secondary_img"
-            src="./images/about-main.webp"
+            src="/images/about-main.webp"
             placeholder="/images/fallback-img.webp"
             error="/images/fallback-img.webp"
             quality="80"
@@ -52,7 +51,6 @@
             height="350"
             priority
             sizes="500px"
-            lazy
           />
           <div class="secondary_text">
             <p>
@@ -82,17 +80,28 @@
 
 <script setup>
 import { useSeoMeta } from "#imports";
+import { useHead } from "#imports";
 
 useSeoMeta({
-  title: "Про нас - Tilo Lab | Наша філософія та місія",
+  title: "Про нас - Tilo Lab | Інтимне здоров'я та тілесна гармонія",
   description:
-    "Дізнайтеся більше про Tilo Lab - нашу філософію інтимного здоров'я, підхід до вибору продуктів та місію створення безпечного простору для дослідження тілесної гармонії.",
+    "Дізнайтесь більше про Tilo Lab — сучасний простір для дослідження інтимного здоров'я та задоволення. Наша місія, цінності та підхід до делікатного сервісу.",
   ogTitle: "Про нас - Tilo Lab",
   ogDescription:
-    "Наша філософія базується на ідеї, що чуттєвість — це природна частина людини. Ретельно досліджуємо кожен продукт.",
+    "Сучасний простір для дослідження інтимного здоров'я та тілесної гармонії. Дізнайтесь більше про нашу місію та цінності.",
   ogImage: "https://tilolab.com.ua/images/about-main.webp",
-  ogType: "website",
-  ogUrl: "https://tilolab.com.ua/about-us"
+  ogUrl: "https://tilolab.com.ua/about-us",
+  twitterCard: "summary_large_image"
+});
+
+// Canonical URL
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: "https://tilolab.com.ua/about-us"
+    }
+  ]
 });
 </script>
 

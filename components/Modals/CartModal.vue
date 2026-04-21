@@ -24,19 +24,24 @@
                 <div class="cart_item_main">
                   <div class="details">
                     <NuxtLink
+                      v-if="item.product?.id && item.product?.categoryId"
                       :to="`/products/${item.product.categoryId}/${item.product.id}`"
                       class="details"
                     >
                       <NuxtImg
-                        :src="item?.product?.img[0]?.path"
+                        :src="item?.product?.img[0]?.path || '/images/fallback-img.webp'"
                         alt="preview"
                         placeholder="/images/fallback-img.webp"
                         error="/images/fallback-img.webp"
+                        width="80"
+                        height="80"
+                        sizes="80px"
                       />
                     </NuxtLink>
 
                     <div class="cart_item_description">
                       <NuxtLink
+                        v-if="item.product?.id && item.product?.categoryId"
                         :to="`/products/${item.product.categoryId}/${item.product.id}`"
                         class="details"
                       >

@@ -10,7 +10,11 @@
           Створи власний кабінет — зберігай обране, отримуй тонкі рекомендації й рухайся у своєму
           темпі. Тут народжується твій стиль близькості — особистий, вільний, без зайвого.
         </p>
-        <SharedAccentBtn> Приєднатися до нас </SharedAccentBtn>
+        <NuxtLink to="/auth/register" class="join_btn">
+          <SharedAccentBtn>
+            <span> Приєднатися до нас </span>
+          </SharedAccentBtn>
+        </NuxtLink>
       </div>
     </div>
   </section>

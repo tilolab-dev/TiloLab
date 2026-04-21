@@ -12,13 +12,19 @@
 
     <template v-for="link in props.links" :key="link.name">
       <NuxtLink
-        v-if="link.name !== props.links[props.links.length - 1].name"
+        v-if="link.name !== props.links[props.links.length - 1].name && link.url"
         :to="link.url"
         class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-normal text-base leading-relaxed"
       >
         {{ link.name }}
         <span>/</span>
       </NuxtLink>
+      <span
+        v-else-if="link.name !== props.links[props.links.length - 1].name"
+        class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-normal text-base leading-relaxed"
+      >
+        {{ link.name }}
+      </span>
       <span
         v-else
         class="text-[var(--dark-color)] dark:text-[var(--dark-font-color)] font-normal text-base leading-relaxed"

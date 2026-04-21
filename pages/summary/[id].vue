@@ -79,6 +79,18 @@
 
 <script setup>
 import { onMounted, ref, nextTick } from "vue";
+import { useSeoMeta } from "#imports";
+
+useSeoMeta({
+  title: "Замовлення прийнято - Tilo Lab",
+  description:
+    "Ваше замовлення успішно прийнято. Дякуємо за покупку в Tilo Lab. Ви отримаєте SMS з підтвердженням та деталями доставки.",
+  ogTitle: "Замовлення прийнято - Tilo Lab",
+  ogDescription: "Ваше замовлення успішно прийнято. Дякуємо за покупку в Tilo Lab.",
+  ogImage: "https://tilolab.com.ua/images/about-main.webp",
+  twitterCard: "summary_large_image"
+});
+
 const route = useRoute();
 const orderId = route.params.id;
 

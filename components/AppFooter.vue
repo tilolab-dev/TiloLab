@@ -41,19 +41,19 @@
               </svg>
             </NuxtLink>
 
-            <a href="tel:+380000000000">+380 00 000 00 00</a>
+            <a href="tel:+380933270740">+380 93 327 07 40</a>
 
             <div class="socials">
               <NuxtLink
-                to="https://www.instagram.com/tilolab?igsh=enhsaHlmZno1b2pw"
+                to="https://www.instagram.com/tilolab/?utm_source=ig_web_button_share_sheet"
                 target="_blank"
                 aria-label="Instagram"
               >
                 <InstagramIcon />
               </NuxtLink>
-              <button aria-label="Telegram">
+              <!-- <button aria-label="Telegram">
                 <TelegramIcon />
-              </button>
+              </button> -->
             </div>
           </div>
           <div class="footer_content_links">
@@ -94,10 +94,17 @@
         </div>
         <div class="footer_subscribe">
           <h3>Залишайся з TiloLab</h3>
-          <input type="text" placeholder="Твоя електронна пошта" />
+
+          <NuxtLink to="/auth/register" class="join_btn">
+            <SharedAccentBtn>
+              <span> Зареєструватися </span>
+            </SharedAccentBtn>
+          </NuxtLink>
+
+          <!-- <input type="text" placeholder="Твоя електронна пошта" /> -->
           <p>
-            Я погоджуюсь з Політикою конфіденційності та даю згоду на обробку моїх персональних
-            даних та погоджуюся отримувати комерційні повідомлення електронною поштою.
+            Я погоджуюсь з Політикою конфіденційності та даю згоду на обробку моїх персональних
+            даних.
           </p>
         </div>
       </div>
@@ -137,7 +144,7 @@
 
 <script setup>
 import InstagramIcon from "~/assets/icons/instagram.svg";
-import TelegramIcon from "~/assets/icons/telegram.svg";
+// import TelegramIcon from "~/assets/icons/telegram.svg";
 </script>
 
 <style lang="scss">

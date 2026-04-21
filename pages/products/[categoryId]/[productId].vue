@@ -23,11 +23,14 @@
                   >
                     <swiper-slide v-for="slide in slides" :key="slide.id">
                       <NuxtImg
-                        :src="slide.src"
+                        :src="slide.src || '/images/fallback-img.webp'"
                         :alt="slide.title"
                         placeholder="/images/fallback-img.webp"
                         error="/images/fallback-img.webp"
                         quality="80"
+                        width="600"
+                        height="600"
+                        sizes="600px"
                         lazy
                       />
                     </swiper-slide>
@@ -55,9 +58,12 @@
                       <NuxtImg
                         placeholder="/images/fallback-img.webp"
                         error="/images/fallback-img.webp"
-                        :src="slide.src"
+                        :src="slide.src || '/images/fallback-img.webp'"
                         :alt="slide.title"
                         quality="80"
+                        width="150"
+                        height="150"
+                        sizes="150px"
                         lazy
                       />
                     </swiper-slide>
@@ -66,7 +72,17 @@
               </div>
             </div>
             <div v-else class="img_gallery_placeholder">
-              <p>No images available</p>
+              <NuxtImg
+                src="/images/fallback-img.webp"
+                alt="Product image"
+                placeholder="/images/fallback-img.webp"
+                error="/images/fallback-img.webp"
+                quality="80"
+                width="600"
+                height="600"
+                sizes="600px"
+                lazy
+              />
             </div>
 
             <div class="product_id_info">
@@ -142,7 +158,7 @@
                   <span>Товар закінчився</span>
                 </div>
 
-                <div v-if="productStore.selectedProducts.options.length" class="options_wrapper">
+                <div v-if="productStore?.selectedProducts?.options?.length" class="options_wrapper">
                   <div
                     class="option_item"
                     :class="selectedOption === null ? 'selected_option' : ''"
@@ -154,6 +170,9 @@
                       :src="productStore.selectedProducts.img[0].path"
                       alt="option"
                       quality="80"
+                      width="100"
+                      height="100"
+                      sizes="100px"
                       lazy
                     />
                     <span>
@@ -177,6 +196,9 @@
                       error="/images/fallback-img.webp"
                       alt="option"
                       quality="80"
+                      width="100"
+                      height="100"
+                      sizes="100px"
                       lazy
                     />
                     <span>
@@ -383,6 +405,7 @@ const currentCategory = computed(() => {
 
 // Fetch product data during SSR for proper SEO
 const { data: productData, pending } = await useAsyncData(`product-${productId}`, async () => {
+  if (!productId) return null;
   const res = await $fetch(`/api/products/${productId}`);
   return res.data || res;
 });
@@ -761,6 +784,7 @@ const slides = computed(() => {
 const routeId = route.params.productId;
 
 const fetchProductById = async () => {
+  if (!routeId) return;
   try {
     const res = await $fetch(`/api/products/${routeId}`);
 
@@ -936,18 +960,6 @@ onMounted(async () => {
     height: 100%;
     object-fit: cover;
   }
-}
-
-.img_gallery_placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 80px;
-  background: #f5f5f5;
-  border-radius: 8px;
-  color: #666;
-  font-size: 14px;
 }
 
 .product_id_main {
@@ -1495,6 +1507,10 @@ onMounted(async () => {
   width: 100%;
   height: 621px;
   overflow: hidden;
+
+  @media screen and (max-width: 768px) {
+    height: 400px;
+  }
 
   swiper-slide {
     img {
