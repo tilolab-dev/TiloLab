@@ -37,7 +37,6 @@ export default defineNuxtConfig({
     compressPublicAssets: true,
     routeRules: {
       "/": { prerender: true },
-      "/products/**": { isr: 60 },
       "/_nuxt/**": { headers: { "cache-control": "public, max-age=31536000, immutable" } },
       "/images/**": { headers: { "cache-control": "public, max-age=31536000, immutable" } }
     }

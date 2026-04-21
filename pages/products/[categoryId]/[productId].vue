@@ -1508,6 +1508,10 @@ onMounted(async () => {
   height: 621px;
   overflow: hidden;
 
+  @media screen and (max-width: 768px) {
+    height: 400px;
+  }
+
   swiper-slide {
     img {
       width: 100%;

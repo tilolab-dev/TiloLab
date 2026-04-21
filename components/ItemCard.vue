@@ -108,13 +108,12 @@ onMounted(() => {
   position: relative;
   display: flex;
   display: grid;
-  grid-template-rows: 1fr 116px;
+  grid-template-rows: auto 1fr;
   overflow: visible;
   border: 1px solid transparent;
   transition: all ease 0.3s;
   cursor: pointer;
   width: 100%;
-  height: 100%;
   gap: 5px;
 
   @media screen and (min-width: 1024px) {
@@ -125,7 +124,6 @@ onMounted(() => {
   }
 
   @media screen and (max-width: 768px) {
-    grid-template-rows: 1fr 80px;
     gap: 10px;
   }
 
