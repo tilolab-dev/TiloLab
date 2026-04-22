@@ -3,6 +3,8 @@ import { prisma } from "@/prisma/prisma";
 export default defineEventHandler(async (event) => {
   const auth = getHeader(event, "authorization");
 
+  console.log("valera");
+
   if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
     throw createError({
       statusCode: 401,
