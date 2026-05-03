@@ -96,7 +96,7 @@ export default defineNuxtConfig({
     [
       "@nuxtjs/sitemap",
       {
-        hostname: "https://tilolab.com.ua",
+        hostname: "https://www.tilolab.com.ua",
         exclude: [
           "/admin/**",
           "/auth/**",
@@ -111,12 +111,22 @@ export default defineNuxtConfig({
     [
       "@nuxtjs/robots",
       {
-        sitemap: "https://tilolab.com.ua/sitemap.xml",
+        sitemap: "https://www.tilolab.com.ua/sitemap.xml",
         robots: [
           {
             userAgent: "*",
             allow: "/",
-            disallow: ["/admin", "/auth", "/summary", "/user", "/cart", "/checkout", "/wishlist"]
+            disallow: [
+              "/admin",
+              "/auth",
+              "/summary",
+              "/user",
+              "/cart",
+              "/checkout",
+              "/wishlist",
+              "/_nuxt/",
+              "/.output/"
+            ]
           }
         ]
       }
