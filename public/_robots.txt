@@ -4,7 +4,6 @@ Allow: /
 # Disallow admin and private areas
 Disallow: /admin/
 Disallow: /auth/
-Disallow: /summary/
 Disallow: /.well-known/
 
 # Allow specific resources

@@ -122,7 +122,7 @@
                               <!-- {{ console.log(category.categoryImg, "catImg") }} -->
                               <img
                                 v-if="!category.categoryImg"
-                                src="/public/images/fallback-img.webp"
+                                src="/images/fallback-img.webp"
                                 alt="category"
                               />
                               <img v-else :src="category.categoryImg" alt="category" />
@@ -181,7 +181,7 @@
                                 <div class="drag-handle">☰</div>
                                 <img
                                   v-if="!category.categoryImg"
-                                  src="/public/images/fallback-img.webp"
+                                  src="/images/fallback-img.webp"
                                   alt="category"
                                 />
                                 <img v-else :src="category.categoryImg" alt="category" />
@@ -295,7 +295,7 @@
                                 :src="product.img[0].path"
                                 alt="item"
                               />
-                              <img v-else src="/public/images/fallback-img.webp" alt="item" />
+                              <img v-else src="/images/fallback-img.webp" alt="item" />
                               <h6>
                                 {{ product.translations?.[0]?.title ?? "" }}
                               </h6>
@@ -376,7 +376,7 @@
                                 :src="product.img[0].path"
                                 alt="item"
                               />
-                              <img v-else src="/public/images/fallback-img.webp" alt="item" />
+                              <img v-else src="/images/fallback-img.webp" alt="item" />
                               <h6>
                                 {{ product.translations?.[0]?.title ?? "" }}
                               </h6>
@@ -467,7 +467,7 @@
                                   :src="product.img[0].path"
                                   alt="item"
                                 />
-                                <img v-else src="/public/images/fallback-img.webp" alt="item" />
+                                <img v-else src="/images/fallback-img.webp" alt="item" />
 
                                 <div class="table_main_wrapper">
                                   {{ product.translations?.[0]?.title ?? "" }}
