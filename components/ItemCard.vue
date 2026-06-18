@@ -19,13 +19,15 @@
         Товар закінчується
       </div>
       <NuxtImg
-        :src="props?.product?.img[0]?.path || '/images/fallback-img.webp'"
+        :src="getValidImageSrc(props?.product?.img[0]?.path)"
         placeholder="/images/fallback-img.webp"
         error="/images/fallback-img.webp"
         alt="product"
         width="300"
         height="300"
         sizes="300px"
+        format="webp"
+        densities="1x 2x"
         lazy
       />
     </NuxtLink>
@@ -81,6 +83,32 @@ const discountedPrice = computed(() => {
   const d = props.product.discountPercent;
   return Math.round(p - (p * d) / 100);
 });
+
+function getValidImageSrc(imagePath) {
+  if (!imagePath) {
+    return "/images/fallback-img.webp";
+  }
+
+  // Check for invalid URL patterns that might cause srcset parsing errors
+  if (typeof imagePath !== "string") {
+    return "/images/fallback-img.webp";
+  }
+
+  // Remove any invalid characters or patterns that could break srcset
+  const cleanPath = imagePath.trim();
+
+  // Basic URL validation
+  if (cleanPath.includes(" ") || cleanPath.includes("\n") || cleanPath.includes("\t")) {
+    return "/images/fallback-img.webp";
+  }
+
+  // Ensure it starts with / or http(s)
+  if (!cleanPath.startsWith("/") && !cleanPath.startsWith("http")) {
+    return "/images/fallback-img.webp";
+  }
+
+  return cleanPath;
+}
 
 // const counterControl = (event, operator, quantity) => {
 //   event.preventDefault();

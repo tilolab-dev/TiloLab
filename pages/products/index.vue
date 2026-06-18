@@ -161,8 +161,10 @@ const fetchPriceRange = async () => {
 const groupedProducts = computed(() => {
   const map = {};
   productStore.productList.forEach((product) => {
-    if (!map[product.categoryId]) map[product.categoryId] = [];
-    map[product.categoryId].push(product);
+    if (product.category && product.category.visible) {
+      if (!map[product.categoryId]) map[product.categoryId] = [];
+      map[product.categoryId].push(product);
+    }
   });
   return map;
 });
