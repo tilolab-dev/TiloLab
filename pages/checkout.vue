@@ -440,6 +440,12 @@ const confirmOrderHandler = async () => {
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+  const validOperators = /^\+380(39|67|68|96|97|98|50|66|95|99|63|73|93)\d{7}$/;
+
+  // KYIVSTAR 039, 067, 068, 096, 097, 098
+  // VODAFONE 050, 066, 095, 099
+  // LIFECELL 063, 073, 093
+
   let userNumber = "";
 
   const formatPhoneNumber = (phoneNumber) => {
@@ -473,6 +479,11 @@ const confirmOrderHandler = async () => {
 
   if (userNumber.length < 13 || !checkPnoneNumberUa) {
     tooltip({ status: "warning", message: "Перевірте номер телефону" });
+    return;
+  }
+
+  if (!validOperators.test(userNumber)) {
+    tooltip({ status: "warning", message: "Перевірте правильність номеру" });
     return;
   }
 

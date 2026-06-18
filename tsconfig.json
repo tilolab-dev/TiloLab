@@ -1,9 +1,22 @@
+// {
+//   "extends": "./.nuxt/tsconfig.json",
+//   "compilerOptions": {
+//     "types": ["@types/node", "vite/client"],
+//     "moduleResolution": "Node",
+//     "baseUrl": "./",
+//     "paths": {
+//       "@utils/*": ["./utils/*"],
+//       "@/*": ["./*"],
+//       "~/*": ["./*"]
+//     }
+//   }
+// }
+
 {
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "types": ["@types/node", "vite/client"],
-    "moduleResolution": "Node",
-    "baseUrl": "./",
+    "moduleResolution": "Bundler",
     "paths": {
       "@utils/*": ["./utils/*"],
       "@/*": ["./*"],

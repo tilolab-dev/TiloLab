@@ -298,9 +298,8 @@
                 </li>
               </ul>
             </div>
-            <div class="item">
+            <!--<div class="item">
               <div class="item_name">Відділення Нової пошти:</div>
-              <!-- <input type="text" placeholder="Виберіть номер відділення" /> -->
 
               <input
                 v-model="postAddress"
@@ -322,15 +321,99 @@
                   {{ el.Description }}
                 </li>
               </ul>
+            </div> -->
+
+            <div class="item">
+              <div class="radio_wrapper">
+                <input
+                  id="menu1"
+                  v-model="selectedDelivery"
+                  type="radio"
+                  name="accordeon"
+                  value="branch"
+                  checked
+                  @click="getPostOfficeNp(e, 'reload')"
+                />
+                <label for="menu1" class="radio-elem">
+                  <div class="radio-btn"></div>
+                  <span>Відділення Нової пошти</span>
+                </label>
+                <div class="delivery_wrapper">
+                  <input
+                    v-model="postAddress"
+                    type="text"
+                    placeholder="Введіть номер відділення"
+                    @input="getPostOfficeNp"
+                  />
+                  <ul
+                    v-if="postAddressList.length > 0 && postAddress.length > 0"
+                    class="fetched_list"
+                  >
+                    <li
+                      v-for="(el, i) in postAddressList"
+                      :key="i"
+                      @click="
+                        (((postAddress = el.Description), (postAddressList = [])),
+                        (postAddressId = el.Ref),
+                        (categoryOfWarehouse = el.CategoryOfWarehouse))
+                      "
+                    >
+                      {{ el.Description }}
+                    </li>
+                  </ul>
+                </div>
+
+                <input
+                  id="menu2"
+                  v-model="selectedDelivery"
+                  value="postomat"
+                  type="radio"
+                  name="accordeon"
+                />
+                <label for="menu2" class="radio-elem">
+                  <div class="radio-btn"></div>
+                  <span>Поштомат Нової пошти</span>
+                </label>
+                <div class="delivery_wrapper">
+                  <input
+                    v-model="postomatNumber"
+                    type="text"
+                    placeholder="Введіть номер поштомату"
+                    @input="(e) => getPostomatsNp(e, 'reload')"
+                  />
+
+                  <ul
+                    v-if="postomatList.length > 0 && postomatNumber.length > 0"
+                    class="fetched_list"
+                  >
+                    <li
+                      v-for="(el, i) in postomatList"
+                      :key="i"
+                      @click="
+                        ((postomatNumber = el.ShortAddress),
+                        (postomatList = []),
+                        (postomatId = el.Ref),
+                        (categoryOfWarehouse = el.CategoryOfWarehouse))
+                      "
+                    >
+                      {{ el.Description }}
+                    </li>
+                  </ul>
+                </div>
+
+                <!-- <input id="menu3" type="radio" name="accordeon" />
+              <label v-if="cityRef === 'Київ'" for="menu3" class="radio-elem">
+                <div class="radio-btn"></div>
+                <span>Кур'єрська доставка (м. Київ)</span>
+              </label>
+              <div class="delivery_wrapper">
+                <input type="text" placeholder="Введіть адресу" />
+                <span>За тарифами перевізника</span>
+              </div> -->
+              </div>
             </div>
-            <!-- <div class="item">
-            <div class="item_name">Поштомат (не обовязково):</div>
-            <input type="text" placeholder="Виберіть номер поштомату" />
-          </div> -->
           </div>
-          <!-- <span class="bottom_note">
-          Обовʼязково потрібно вибрати номер відділення чи номер поштомату
-        </span> -->
+
           <button class="create_btn" @click="createNewSender">Створити</button>
         </div>
       </div>
@@ -360,6 +443,8 @@ const senderList = ref([]);
 const selectedSenderId = ref("");
 const selectedBox = ref(null);
 
+const selectedDelivery = ref("branch");
+
 //SENDER
 
 // const senderName = ref("");
@@ -375,6 +460,9 @@ const fetchedCityRef = ref("");
 const postAddress = ref("");
 const postAddressRef = ref("");
 const postAddressList = ref([]);
+const postomatNumber = ref("");
+const postomatList = ref([]);
+const postAddressId = ref("");
 
 let timerId = null;
 
@@ -478,6 +566,7 @@ watch(activeTab, (newVal) => {
 // };
 
 const debounce = (string, fn) => {
+  // console.log(fetchedCity.value);
   return () => {
     clearTimeout(timerId);
     if (string === "") {
@@ -502,6 +591,25 @@ const getCitiesNp = debounce(senderCity.value, async () => {
   } else {
     fetchedCity.value = npCities.data[0].Addresses;
   }
+});
+
+const getPostomatsNp = debounce(postomatNumber.value, async () => {
+  console.log("fefwev");
+  // if (!senderCity.value) {
+  //   // tooltip({ status: "warning", message: "Введіть місто" });
+  //   postomatNumber.value = "";
+  //   return;
+  // }
+
+  const getPostomatsByNumber = await $fetch("/api/np/postomatNumber", {
+    method: "POST",
+    body: {
+      cityName: senderCity.value,
+      postomatNumber: postomatNumber.value
+    }
+  });
+  postomatList.value = getPostomatsByNumber.data;
+  return;
 });
 
 const getPostOfficeNp = debounce(postAddress.value, async () => {
@@ -1389,10 +1497,89 @@ onMounted(() => {
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
+      padding-top: 30px;
       padding-bottom: 70px;
       width: 80%;
       height: auto;
       gap: 10px;
+
+      input[type="radio"] {
+        display: none;
+      }
+
+      .radio-elem {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 100%;
+        height: auto;
+        gap: 8px;
+      }
+
+      .radio-elem span {
+        @include mixins.mainText;
+        font-size: 1rem;
+        @media screen and (max-width: 768px) {
+          font-size: 0.9375rem;
+        }
+        @media screen and (max-width: 480px) {
+          font-size: 0.8125rem;
+        }
+        @media screen and (max-width: 375px) {
+          font-size: 0.6875rem;
+        }
+      }
+
+      .delivery_wrapper {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        position: relative;
+        display: none;
+        width: 100%;
+        height: auto;
+        gap: 16px;
+        @include mixins.defaultInput;
+
+        span {
+          @include mixins.mainText;
+          font-size: 1rem;
+          @media screen and (max-width: 1024px) {
+            font-size: 0.9375rem;
+          }
+          @media screen and (max-width: 480px) {
+            font-size: 0.8125rem;
+          }
+          @media screen and (max-width: 375px) {
+            font-size: 0.6875rem;
+          }
+        }
+      }
+
+      .radio-btn {
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--accent-color);
+        border-radius: 50%;
+        transform: translateY(3px);
+      }
+
+      .radio_wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-top: 30px;
+        width: 100%;
+        gap: 18px;
+
+        input[type="radio"]:checked + label + .delivery_wrapper {
+          display: flex;
+        }
+        input[type="radio"]:checked + label .radio-btn {
+          border: 5px solid var(--accent-color);
+        }
+      }
     }
 
     .item {
