@@ -8,7 +8,16 @@
         <div v-else>
           <div class="user_content">
             <div class="user_content_orders">
-              <h1>Мої замовлення</h1>
+              <h1>Мої замовлення :</h1>
+
+              <div
+                v-if="!userStore.user.orders || userStore.user.orders.length === 0"
+                class="no_orders"
+              >
+                <h3>У вас поки що немає замовлень.</h3>
+
+                <NuxtLink to="/products">Перейти в каталог</NuxtLink>
+              </div>
 
               <ul class="order_items">
                 <li
@@ -159,7 +168,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import AngleDown from "~/assets/icons/angle-down.svg";
 import AngleRight from "~/assets/icons/angle-right.svg";
 import { useSeoMeta } from "#imports";
@@ -192,6 +201,10 @@ const openOrderHandler = (index) => {
   const i = openOrders.value.indexOf(index);
   i === -1 ? openOrders.value.push(index) : openOrders.value.splice(i, 1);
 };
+
+onMounted(() => {
+  console.log(userStore.user, "user log");
+});
 </script>
 
 <style lang="scss">
@@ -228,6 +241,23 @@ const openOrderHandler = (index) => {
 
     @media screen and (max-width: 480px) {
       width: 100%;
+    }
+  }
+
+  .no_orders {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+
+    h3 {
+      @include mixins.subtitleText;
+    }
+
+    a {
+      @include mixins.accentBtn;
+      padding: 10px 8px;
     }
   }
 

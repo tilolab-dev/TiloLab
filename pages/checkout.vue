@@ -460,7 +460,7 @@ const confirmOrderHandler = async () => {
 
   const formattedPhone = formatPhoneNumber(phone.value);
 
-  const checkPnoneNumberUa = userNumber.slice(0, 4) === "+380";
+  const checkPhoneNumberUa = userNumber.slice(0, 4) === "+380";
 
   if (!name.value) {
     tooltip({ status: "warning", message: "Введіть Імʼя" });
@@ -477,7 +477,7 @@ const confirmOrderHandler = async () => {
     return;
   }
 
-  if (userNumber.length < 13 || !checkPnoneNumberUa) {
+  if (userNumber.length < 13 || !checkPhoneNumberUa) {
     tooltip({ status: "warning", message: "Перевірте номер телефону" });
     return;
   }

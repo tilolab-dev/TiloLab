@@ -15,24 +15,42 @@
           <div class="register_content_inputs">
             <input v-model="lastName" type="text" placeholder="Прізвище" />
             <input v-model="name" type="text" placeholder="Ім’я" />
-            <input v-model="phoneNumber" type="text" placeholder="Телефон" />
+            <input
+              :value="phoneNumber"
+              type="tel"
+              @input="onPhoneInput"
+              @keydown="onPhoneKeydown"
+            />
             <input v-model="email" type="text" placeholder="Електронна пошта" />
           </div>
 
           <div class="register_content_inputs">
-            <input v-model="password" type="text" placeholder="Пароль" />
-            <input v-model="confirmPassword" type="text" placeholder="Повторити пароль" />
+            <div class="password_input">
+              <input
+                v-model="password"
+                :type="passwordHide ? 'password' : 'text'"
+                placeholder="Пароль"
+              />
+              <button class="toggle_hide" @click="passwordHide = !passwordHide">
+                <HidePassword v-if="!passwordHide" />
+                <ShowPassword v-else />
+              </button>
+            </div>
+            <div class="password_input">
+              <input
+                v-model="confirmPassword"
+                :type="confirmPasswordHide ? 'password' : 'text'"
+                placeholder="Повторити пароль"
+              />
+              <button class="toggle_hide" @click="confirmPasswordHide = !confirmPasswordHide">
+                <HidePassword v-if="!confirmPasswordHide" />
+                <ShowPassword v-else />
+              </button>
+            </div>
           </div>
 
           <button class="register_content_btn" @click="registerHandler">Зареєструватися</button>
         </div>
-
-        <!-- <div v-if="sendedEmail" class="email_sended">
-          <p></p>
-          Емейл з подальшими інструкціями відправлено на: <br />
-          <strong>{{ sendedEmailValue }}</strong> <br />
-          Перевірте свою пошту
-        </div> -->
 
         <div class="has_account">
           <span> Маєте акаунт? </span>
@@ -48,17 +66,24 @@
           <span> Або увійти за допомогою </span>
           <GoogleIcon />
         </button>
-
-        <!-- <div class="test_user_btn">
-          <NuxtLink to="/user" class="test_user"> Тестова кнопка сторінки користувача </NuxtLink>
-        </div> -->
       </div>
     </div>
+    <Tooltips v-if="showTooltip" :tooltip-status="tooltipStatus">
+      {{ tooltipMessage }}
+    </Tooltips>
   </div>
 </template>
 
 <script setup>
 import { useSeoMeta } from "#imports";
+
+// COMPONENTS -----------
+import Tooltips from "@/components/shared/Tooltips.vue";
+
+// ICONS-----------
+
+import HidePassword from "~/assets/icons/eyebrow.svg";
+import ShowPassword from "~/assets/icons/eye.svg";
 
 useSeoMeta({
   title: "Реєстрація - Tilo Lab",
@@ -79,10 +104,84 @@ const lastName = ref("");
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
-const phoneNumber = ref("");
+const phoneNumber = ref("+38 (0");
 const loaderState = ref(false);
-// const sendedEmail = ref(false);
-// const sendedEmailValue = ref("");
+
+const passwordHide = ref(false);
+const confirmPasswordHide = ref(false);
+
+const showTooltip = ref(false);
+const tooltipStatus = ref("");
+const tooltipMessage = ref("");
+const isDeleting = ref(false);
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const validOperators = /^\+380(39|67|68|96|97|98|50|66|95|99|63|73|93)\d{7}$/;
+
+const formatFromDigits = (digits) => {
+  digits = digits.slice(0, 12);
+
+  let result = "+38";
+
+  if (digits.length > 2) {
+    result += " (" + digits.slice(2, 5);
+  }
+
+  if (digits.length >= 5) {
+    result += ") " + digits.slice(5, 8);
+  }
+
+  if (digits.length >= 8) {
+    result += "-" + digits.slice(8, 10);
+  }
+
+  if (digits.length >= 10) {
+    result += "-" + digits.slice(10, 12);
+  }
+
+  if (result.length === 17 && isDeleting.value) {
+    result = result.slice(0, -1);
+  }
+  if (result.length === 14 && isDeleting.value) {
+    result = result.slice(0, -1);
+  }
+  if (result.length === 10 && isDeleting.value) {
+    result = result.slice(0, -1);
+  }
+  if (result.length === 9 && isDeleting.value) {
+    result = result.replace(")", "");
+  }
+
+  return result;
+};
+
+const onPhoneKeydown = (e) => {
+  isDeleting.value = e.key === "Backspace" || e.key === "Delete";
+};
+const onPhoneInput = (e) => {
+  let value = e.target.value;
+  let digits = value.replace(/\D/g, "");
+
+  if (isDeleting.value && digits.length <= 3) {
+    phoneNumber.value = "+38 (0";
+    e.target.value = phoneNumber.value;
+    return;
+  }
+  const formatted = formatFromDigits(digits);
+  phoneNumber.value = formatted;
+  e.target.value = formatted;
+};
+
+const tooltip = (obj) => {
+  const { status, message } = obj;
+
+  tooltipStatus.value = status;
+  tooltipMessage.value = message;
+  showTooltip.value = true;
+  setTimeout(() => {
+    showTooltip.value = false;
+  }, 3000);
+};
 
 const clearForm = () => {
   name.value = "";
@@ -94,13 +193,52 @@ const clearForm = () => {
 };
 
 const registerHandler = async () => {
+  let userNumber = "";
+
+  const formatPhoneNumber = (phoneNumber) => {
+    const formatted = phoneNumber
+      .replaceAll("-", "")
+      .replaceAll(" ", "")
+      .replace("(", "")
+      .replace(")", "");
+    userNumber = formatted;
+    return formatted;
+  };
+  const formattedPhone = formatPhoneNumber(phoneNumber.value);
+  const checkPhoneNumberUa = userNumber.slice(0, 4) === "+380";
   const validPassword = password.value.trim() === confirmPassword.value.trim();
+
+  if (!lastName.value || lastName.value.trim() === "" || lastName.value.length < 2) {
+    tooltip({ status: "warning", message: "Перевірте прізвище" });
+    return;
+  }
+
+  if (!name.value || name.value.trim() === "" || name.value.length < 2) {
+    tooltip({ status: "warning", message: "Перевірте ім'я" });
+    return;
+  }
+
+  if (userNumber.length < 13 || !checkPhoneNumberUa) {
+    tooltip({ status: "warning", message: "Перевірте номер телефону" });
+    return;
+  }
+
+  if (!validOperators.test(formattedPhone)) {
+    tooltip({ status: "warning", message: "Перевірте правильність номеру" });
+    return;
+  }
+
+  if (!emailRegex.test(email.value)) {
+    tooltip({ status: "warning", message: "Перевірте емейл" });
+    return;
+  }
 
   if (!validPassword) {
     alert("Перевірте пароль,");
     return;
   } else if (password.value.length <= 7) {
     alert("Пароль повинен бути не менше 7 символів");
+    return;
   }
 
   loaderState.value = true;
@@ -114,14 +252,9 @@ const registerHandler = async () => {
     phoneNumber.value
   );
 
-  // console.log(registerRes, "register Res");
-
-  // console.log(registerRes.error);
-
   if (registerRes.error === null) {
     loaderState.value = false;
     document.body.style.overflow = "";
-    // sendedEmailValue.value = registerRes.data.user.email;
     clearForm();
     alert(
       `Дякуемо за реєстрацію. Емейл з подальшими інструкціями відправлено на ${registerRes.data.user.email}`
@@ -193,6 +326,12 @@ const registerHandler = async () => {
   height: auto;
   gap: 44px;
 
+  svg {
+    width: 25px;
+    height: 25px;
+    fill: #fff;
+  }
+
   &_inputs {
     @include mixins.defaultInput;
     display: flex;
@@ -204,6 +343,30 @@ const registerHandler = async () => {
     gap: 20px;
     @media screen and (max-width: 480px) {
       gap: 16px;
+    }
+  }
+
+  .password_input {
+    width: 100%;
+    height: auto;
+    position: relative;
+
+    .toggle_hide {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: all ease 0.3s;
+      cursor: pointer;
+
+      @media screen and (min-width: 1024px) {
+        &:hover {
+          svg {
+            fill: var(--accent-color);
+            transition: all ease 0.3s;
+          }
+        }
+      }
     }
   }
 
