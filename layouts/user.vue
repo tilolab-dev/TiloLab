@@ -58,7 +58,7 @@
                     class="mt-0.5 w-full"
                     @click="(closeSidebar(), (activePage = 'index'))"
                   >
-                    <NuxtLink :to="`/user/${authStore.user.id}`">
+                    <NuxtLink :to="`/user/user-profile`">
                       <div
                         class="py-[0.675rem] bg-blue-500/13 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap rounded-lg px-4 font-semibold text-slate-700 dark:text-[var(--dark-bright-grey)] transition-colors"
                         :class="{
@@ -83,7 +83,7 @@
                     class="mt-0.5 w-full"
                     @click="(closeSidebar(), (activePage = 'notifications'))"
                   >
-                    <NuxtLink :to="`/user/${authStore.user.id}/notifications`">
+                    <NuxtLink :to="`/user/user-profile/notifications`">
                       <div
                         class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700 dark:text-[var(--dark-bright-grey)]"
                         :class="{
@@ -111,7 +111,7 @@
                     class="mt-0.5 w-full"
                     @click="(closeSidebar(), (activePage = 'orders'))"
                   >
-                    <NuxtLink :to="`/user/${authStore.user.id}/orders`">
+                    <NuxtLink :to="`/user/user-profile/orders`">
                       <div
                         class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700 dark:text-[var(--dark-bright-grey)]"
                         :class="{
@@ -136,7 +136,7 @@
                     class="mt-0.5 w-full"
                     @click="(closeSidebar(), (activePage = 'settings'))"
                   >
-                    <NuxtLink :to="`/user/${authStore.user.id}/settings`">
+                    <NuxtLink :to="`/user/user-profile/settings`">
                       <div
                         class="py-[0.675rem] text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors rounded-lg font-semibold text-slate-700 dark:text-[var(--dark-bright-grey)]"
                         :class="{
