@@ -1,10 +1,11 @@
 import { prisma } from "@/prisma/prisma";
 import { serverSupabaseUser } from "#supabase/server";
 import { waitForDbConnection } from "~/server/utils/dbHealthCheck";
+// import { Prisma } from "@/prisma/generated/client";
 
 export default defineEventHandler(async (event) => {
-  // Check database connection first
   const isDbConnected = await waitForDbConnection(3000);
+
   if (!isDbConnected) {
     throw createError({
       statusCode: 503,
@@ -13,62 +14,93 @@ export default defineEventHandler(async (event) => {
   }
 
   const maxRetries = 3;
-  const retryDelay = 1000; // 1 second
+  const retryDelay = 1000;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const supabaseUser = await serverSupabaseUser(event);
-      if (!supabaseUser) return { error: "Not authenticated" };
 
-      let user = await prisma.user.findUnique({
-        where: { email: supabaseUser.email! },
-        include: {
-          orders: {
-            include: {
-              orderItems: {
-                include: {
-                  product: {
-                    include: {
-                      img: true,
-                      translations: true,
-                      category: true
-                    }
+      if (!supabaseUser) {
+        return {
+          error: "Not authenticated"
+        };
+      }
+
+      const metadata = supabaseUser.user_metadata ?? {};
+
+      const include = {
+        orders: {
+          include: {
+            orderItems: {
+              include: {
+                product: {
+                  include: {
+                    img: true,
+                    translations: true,
+                    category: true
                   }
                 }
-              },
-              shippingInfo: true
-            }
-          },
-          adresses: true
-        }
+              }
+            },
+            shippingInfo: true
+          }
+        },
+        adresses: true
+      };
+
+      let user = await prisma.user.findUnique({
+        where: {
+          email: supabaseUser.email!
+        },
+        include
       });
 
       if (!user) {
         user = await prisma.user.create({
           data: {
-            username: supabaseUser.user_metadata?.full_name || supabaseUser.email!,
+            username: metadata.full_name || supabaseUser.email!,
+            userSurname: metadata.last_name || null,
+            phoneNumber: metadata.phone_number || null,
+            fullName: `${metadata.full_name} ${metadata.last_name}`,
             email: supabaseUser.email!,
             role: "user"
           },
-          include: {
-            orders: {
-              include: {
-                orderItems: {
-                  include: {
-                    product: {
-                      include: {
-                        img: true,
-                        translations: true,
-                        category: true
-                      }
-                    }
-                  }
-                },
-                shippingInfo: true
-              }
-            },
-            adresses: true
-          }
+          include
+        });
+
+        return { user };
+      }
+
+      const updateData: {
+        username?: string;
+        userSurname?: string;
+        phoneNumber?: string;
+        fullName?: string;
+      } = {};
+
+      if (!user.username && metadata.full_name) {
+        updateData.username = metadata.full_name;
+      }
+
+      if (!user.userSurname && metadata.last_name) {
+        updateData.userSurname = metadata.last_name;
+      }
+
+      if (!user.phoneNumber && metadata.phone_number) {
+        updateData.phoneNumber = metadata.phone_number;
+      }
+
+      if (!user.fullName && metadata.full_name && metadata.last_name) {
+        updateData.fullName = `${metadata.full_name} ${metadata.last_name}`;
+      }
+
+      if (Object.keys(updateData).length > 0) {
+        user = await prisma.user.update({
+          where: {
+            id: user.id
+          },
+          data: updateData,
+          include
         });
       }
 
@@ -83,7 +115,6 @@ export default defineEventHandler(async (event) => {
         });
       }
 
-      // Wait before retrying
       await new Promise((resolve) => setTimeout(resolve, retryDelay * attempt));
     }
   }

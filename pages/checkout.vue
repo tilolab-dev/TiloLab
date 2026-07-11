@@ -554,7 +554,9 @@ const confirmOrderHandler = async () => {
     const getOrderId = await $fetch("/api/orders/newOrder", {
       method: "POST",
       body: {
-        // userId: "", left after auth implementation
+        userId: userStore.user?.id ?? null,
+        name: name.value.trim(),
+        surname: surname.value.trim(),
         // totalPrice: totalDeliveryPrice.value,
         paymentMethod: paymentMethod.value,
         orderItems: getOrderItems,

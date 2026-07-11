@@ -9,28 +9,49 @@ export default eventHandler(async (event: any) => {
   }
 
   // const { orderItems, shippingInfo, totalPrice, paymentMethod, email, phoneNumber } = body;
-  const { orderItems, shippingInfo, paymentMethod, email, phoneNumber, promoCode, orderComment } =
-    body;
+  const {
+    userId: clientUserId,
+    name,
+    surname,
+    orderItems,
+    shippingInfo,
+    paymentMethod,
+    email,
+    phoneNumber,
+    promoCode,
+    orderComment
+  } = body;
 
   const authUserId: number | null = event.context.auth?.user?.id ?? null;
 
   try {
     const order = await prisma.$transaction(async (tx) => {
       // FIND USER
-      let userId: number | null = authUserId;
+      let userId = clientUserId ?? authUserId ?? null;
+      let user = null;
 
-      if (!userId) {
-        let user = null;
+      if (userId) {
+        user = await tx.user.findUnique({
+          where: {
+            id: userId
+          }
+        });
+      }
 
+      if (!user) {
         if (email) {
           user = await tx.user.findUnique({
-            where: { email }
+            where: {
+              email
+            }
           });
         }
 
         if (!user && phoneNumber) {
           user = await tx.user.findFirst({
-            where: { phoneNumber }
+            where: {
+              phoneNumber
+            }
           });
         }
 
@@ -39,12 +60,47 @@ export default eventHandler(async (event: any) => {
             data: {
               email: email ?? null,
               phoneNumber: phoneNumber ?? null,
+              username: name ?? null,
+              userSurname: surname ?? null,
+              fullName: `${name} ${surname}`.trim(),
               role: "guest"
             }
           });
         }
 
         userId = user.id;
+      }
+
+      const updateData: {
+        username?: string;
+        userSurname?: string;
+        fullName?: string;
+        phoneNumber?: string;
+      } = {};
+
+      if (phoneNumber && user.phoneNumber !== phoneNumber) {
+        updateData.phoneNumber = phoneNumber;
+      }
+
+      if (!user.username && name) {
+        updateData.username = name;
+      }
+
+      if (!user.userSurname && surname) {
+        updateData.userSurname = surname;
+      }
+
+      if (!user.fullName && name && surname) {
+        updateData.fullName = `${name} ${surname}`;
+      }
+
+      if (Object.keys(updateData).length > 0) {
+        user = await tx.user.update({
+          where: {
+            id: user.id
+          },
+          data: updateData
+        });
       }
 
       // CHECK AVAILABILITY & RESERVE PRODUCTS
@@ -147,8 +203,6 @@ export default eventHandler(async (event: any) => {
           });
         }
 
-        // console.log(price, item.quantity, "PRODUCT PARAMETERS");
-
         realTotalPrice += price * item.quantity;
       }
 
@@ -186,15 +240,6 @@ export default eventHandler(async (event: any) => {
           totalPrice: realTotalPrice,
           orderNumber: `ORD-${Date.now()}-${Math.floor(Math.random() * 10000)}`,
           expiresAt: new Date(Date.now() + 15 * 60_000),
-          // orderItems: {
-          //   create: orderItems.map((item: any) => ({
-          //     productId: item.productId,
-          //     optionId: item.optionId ?? null,
-          //     quantity: item.quantity ?? 1,
-          //     price: item.price ?? null,
-          //     name: item.title
-          //   }))
-          // },
           orderItems: {
             create: enrichedOrderItems
           },

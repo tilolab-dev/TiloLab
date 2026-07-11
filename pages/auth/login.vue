@@ -141,7 +141,6 @@ const onEmailLogin = async () => {
     await navigateTo(`/user/user-profile`);
   }
 
-  // console.log(loginResult, "loginResult");
   loaderState.value = false;
 };
 

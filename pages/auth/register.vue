@@ -249,7 +249,7 @@ const registerHandler = async () => {
     password.value,
     name.value,
     lastName.value,
-    phoneNumber.value
+    userNumber
   );
 
   if (registerRes.error === null) {
