@@ -90,8 +90,8 @@
         </div>
 
         <div class="bottom">
-          <button class="cancel-btn" @click="modalStore.closeModal">Скасувати</button>
-          <button class="agree-btn" @click="saveUser">Зберегти</button>
+          <button class="cancel_btn" @click="modalStore.closeModal">Скасувати</button>
+          <button class="agree_btn" @click="saveUser">Зберегти</button>
         </div>
       </div>
     </div>
@@ -237,6 +237,10 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 18px;
+
+  @media screen and (max-width: 480px) {
+    height: stretch;
+  }
 }
 
 .option_block {
@@ -251,10 +255,22 @@ onMounted(() => {
 .option_wrapper {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    // border: 1px solid var(--accent-color);
+    // border-radius: 5px;
+    fill: var(--accent-color);
+    padding: 6px;
+  }
 
   button {
-    padding: 6px;
+    width: 30px;
+    height: 30px;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
   }
 }
 
@@ -287,13 +303,34 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   gap: 10px;
   padding: 14px 16px;
 
+  .cancel_btn {
+    @include mixins.transparentBtn;
+    padding: 5px 25px;
+    font-size: 1rem;
+    flex: 0;
+  }
+
+  .agree_btn {
+    @include mixins.accentBtn;
+    padding: 5px 25px;
+    font-size: 1rem;
+    flex: 0;
+  }
+
   @media screen and (max-width: 480px) {
     & {
+      flex-direction: column-reverse;
       justify-content: center;
       align-items: center;
+      padding-bottom: 30px;
     }
-    button {
+    .agree_btn,
+    .cancel_btn {
       flex: 1;
+      width: 100%;
+    }
+    .cancel_btn {
+      border-color: var(--accent-color);
     }
   }
 }

@@ -47,7 +47,7 @@ const userStore = useUserStore();
 const currentModal = computed(() => modalStore.currentModal);
 const modalProps = computed(() => modalStore.modalProps);
 
-const { fetchOrCreateUser } = useAuth();
+const { syncUser } = useAuth();
 
 const showTooltip = ref(false);
 const tooltipStatus = ref("");
@@ -74,7 +74,7 @@ onMounted(async () => {
   // }
   // await supabase.auth.signOut();
 
-  await fetchOrCreateUser();
+  await syncUser();
 
   console.log(userStore.isLoggedIn, userStore.user, "log user");
 

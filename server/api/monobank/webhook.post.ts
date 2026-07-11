@@ -41,14 +41,14 @@ export default defineEventHandler(async (event) => {
   });
 
   if (!payment || !payment.order) {
-    console.log("Платіж чи замовлення не знайдено");
+    // console.log("Платіж чи замовлення не знайдено");
     throw createError({ statusCode: 404, statusMessage: "Платіж чи замовлення не знайдено" });
   }
 
   const order = payment.order;
-  console.log(order, "order");
+  // console.log(order, "order");
   if (order.status !== "NEW") {
-    console.log("Замовлення вже оплачено: ", order.status);
+    // console.log("Замовлення вже оплачено: ", order.status);
     return { ok: true, message: `Замовлення вже оплачено: ${order.status}` };
   }
 
