@@ -5,7 +5,7 @@
 <script setup>
 import { useSeoMeta, navigateTo } from "nuxt/app";
 import { onMounted } from "vue";
-import { syncUser } from "@/composables/useAuth";
+import { useAuth } from "@/composables/useAuth";
 
 useSeoMeta({
   title: "Авторизація - Tilo Lab",
@@ -13,7 +13,7 @@ useSeoMeta({
 });
 
 onMounted(async () => {
-  await syncUser();
+  await useAuth().syncUser();
   await navigateTo("/");
 });
 </script>
