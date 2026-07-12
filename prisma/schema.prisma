@@ -300,15 +300,17 @@ model News {
 }
 
 model Payment {
-  id          String        @id @default(uuid())
-  orderId     String        @unique
-  monoInvoice String        @unique
-  status      PaymentStatus @default(PENDING)
-  amount      Float
-  provider    String        @default("monobank")
-  payload     Json?
-  createdAt   DateTime      @default(now())
-  order       Order         @relation(fields: [orderId], references: [id])
+  id              String        @id @default(uuid())
+  orderId         String        @unique
+  monoInvoice     String        @unique
+  status          PaymentStatus @default(PENDING)
+  amount          Float
+  provider        String        @default("monobank")
+  payload         Json?
+  createdAt       DateTime      @default(now())
+  refundedAmount Int?      @default(0)
+  refundedAt     DateTime?
+  order           Order         @relation(fields: [orderId], references: [id])
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -347,6 +349,8 @@ enum OrderStatus {
   RETURNED
   CANCELED
   EXPIRED
+  REFUNDED
+  PARTIAL_REFUND
 }
 
 enum PaymentStatus {
