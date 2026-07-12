@@ -62,7 +62,7 @@
           </NuxtLink>
         </div>
 
-        <button class="google_auth">
+        <button class="google_auth" @click="onGoogleLogin">
           <span> Або увійти за допомогою </span>
           <GoogleIcon />
         </button>
@@ -98,7 +98,7 @@ import GoogleIcon from "~/assets/icons/google.svg";
 import { useAuth } from "@/composables/useAuth";
 import { ref } from "vue";
 
-const { signUpWithEmail } = useAuth();
+const { signUpWithEmail, signInWithGoogle } = useAuth();
 const name = ref("");
 const lastName = ref("");
 const email = ref("");
@@ -266,6 +266,12 @@ const registerHandler = async () => {
     document.body.style.overflow = "";
     alert("Щось пішло не так, спробуйте пізніше");
   }
+};
+
+const onGoogleLogin = async () => {
+  loaderState.value = true;
+  await signInWithGoogle();
+  loaderState.value = false;
 };
 </script>
 
