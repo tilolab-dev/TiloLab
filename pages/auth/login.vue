@@ -145,7 +145,9 @@ const onEmailLogin = async () => {
 };
 
 const onGoogleLogin = async () => {
+  loaderState.value = true;
   await signInWithGoogle();
+  loaderState.value = false;
 };
 </script>
 
