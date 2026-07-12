@@ -32,9 +32,6 @@ export default defineEventHandler(async (event) => {
 
       const username = parts[0];
       const userFamily = parts.slice(1).join(" ");
-      const fullName = metadata.full_name;
-
-      console.log(metadata, "metadata");
 
       const include = {
         orders: {
@@ -68,7 +65,7 @@ export default defineEventHandler(async (event) => {
           data: {
             username: username || null,
             userFamily: userFamily || null,
-            fullName: fullName,
+            fullName: `${metadata.full_name}`,
             email: supabaseUser.email!,
             role: "user"
           },
