@@ -35,14 +35,14 @@ import Modal from "~/components/Modals/Modal.vue";
 import StickyHeader from "@/components/StickyHeader.vue";
 import Tooltips from "~/components/shared/Tooltips.vue";
 import { useModalStore } from "@/store/modal-store";
-import { useUserStore } from "@/store/user-store";
+// import { useUserStore } from "@/store/user-store";
 // import { useCookie } from "nuxt/app";
 // import { useAuthStore } from "@/store/auth-store";
 import { onMounted } from "vue";
 import { useAuth } from "@/composables/useAuth";
 
 const modalStore = useModalStore();
-const userStore = useUserStore();
+// const userStore = useUserStore();
 // const authStore = useAuthStore();
 const currentModal = computed(() => modalStore.currentModal);
 const modalProps = computed(() => modalStore.modalProps);
@@ -68,7 +68,7 @@ const tooltip = (obj) => {
 onMounted(async () => {
   await syncUser();
 
-  console.log(userStore.isLoggedIn, userStore.user, "log user");
+  // console.log(userStore.isLoggedIn, userStore.user, "log user");
 });
 </script>
 
