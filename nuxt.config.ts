@@ -70,10 +70,14 @@ export default defineNuxtConfig({
     r2_bucket_name: process.env.R2_BUCKET_NAME,
     r2_public_url: process.env.R2_PUBLIC_URL,
 
+    //sms club token
+    smsclubToken: process.env.SMSCLUB_TOKEN,
+
     public: {
       api_base_url: process.env.API_BASE_URL,
       nova_post_uri: process.env.NOVA_POST_URI,
-      nova_post_test_uri: process.env.NOVA_POST_TEST_URI
+      nova_post_test_uri: process.env.NOVA_POST_TEST_URI,
+      smsclubSender: process.env.SMSCLUB_SENDER
     }
   },
   css: [
@@ -154,7 +158,7 @@ export default defineNuxtConfig({
   },
   vite: {
     server: {
-      allowedHosts: ["41e6-37-73-34-18.ngrok-free.app"],
+      allowedHosts: ["1c5c-178-151-189-47.ngrok-free.app"],
       strictPort: false
     },
     plugins: [

@@ -41,11 +41,25 @@
                       class="product_list_item"
                     >
                       <div class="item_main">
-                        <img
-                          :src="item?.product?.img[0]?.path"
-                          alt="preview"
-                          class="product_preview"
-                        />
+                        <NuxtLink
+                          v-if="item.product?.category?.group && item.product?.id"
+                          :to="`/products/${item.product.category.group}/${item.product.id}`"
+                          class="img_container"
+                        >
+                          <NuxtImg
+                            :src="getValidImageSrc(item?.product?.img[0]?.path)"
+                            class="product_preview"
+                            placeholder="/images/fallback-img.webp"
+                            error="/images/fallback-img.webp"
+                            alt="preview"
+                            width="300"
+                            height="300"
+                            sizes="300px"
+                            format="webp"
+                            densities="1x 2x"
+                            lazy
+                          />
+                        </NuxtLink>
                         <NuxtLink
                           v-if="item.product?.category?.group && item.product?.id"
                           :to="`/products/${item.product.category.group}/${item.product.id}`"
@@ -194,6 +208,32 @@ const userStore = useUserStore();
 const calculateDiscount = (price, salePercent) => {
   return price - (price * salePercent) / 100;
 };
+
+function getValidImageSrc(imagePath) {
+  if (!imagePath) {
+    return "/images/fallback-img.webp";
+  }
+
+  // Check for invalid URL patterns that might cause srcset parsing errors
+  if (typeof imagePath !== "string") {
+    return "/images/fallback-img.webp";
+  }
+
+  // Remove any invalid characters or patterns that could break srcset
+  const cleanPath = imagePath.trim();
+
+  // Basic URL validation
+  if (cleanPath.includes(" ") || cleanPath.includes("\n") || cleanPath.includes("\t")) {
+    return "/images/fallback-img.webp";
+  }
+
+  // Ensure it starts with / or http(s)
+  if (!cleanPath.startsWith("/") && !cleanPath.startsWith("http")) {
+    return "/images/fallback-img.webp";
+  }
+
+  return cleanPath;
+}
 
 const openOrders = ref([]);
 

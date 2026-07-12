@@ -62,7 +62,7 @@
                     @input="getPostOfficeNp"
                   />
                   <ul
-                    v-if="postAddressList.length > 0 && postAddress.length > 0"
+                    v-if="postAddressList?.length > 0 && postAddress?.length > 0"
                     class="fetched_list"
                   >
                     <li
