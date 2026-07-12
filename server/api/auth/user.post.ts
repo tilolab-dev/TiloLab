@@ -58,10 +58,10 @@ export default defineEventHandler(async (event) => {
       if (!user) {
         user = await prisma.user.create({
           data: {
-            username: metadata.full_name || supabaseUser.email!,
-            userSurname: metadata.last_name || null,
+            username: metadata.given_name || supabaseUser.email!,
+            userFamily: metadata.family_name || null,
             phoneNumber: metadata.phone_number || null,
-            fullName: `${metadata.full_name} ${metadata.last_name}`,
+            fullName: `${metadata.full_name}`,
             email: supabaseUser.email!,
             role: "user"
           },
