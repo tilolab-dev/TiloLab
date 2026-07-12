@@ -36,7 +36,9 @@ export const OrderStatus = {
   DELIVERED: 'DELIVERED',
   RETURNED: 'RETURNED',
   CANCELED: 'CANCELED',
-  EXPIRED: 'EXPIRED'
+  EXPIRED: 'EXPIRED',
+  REFUNDED: 'REFUNDED',
+  PARTIAL_REFUND: 'PARTIAL_REFUND'
 } as const
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
