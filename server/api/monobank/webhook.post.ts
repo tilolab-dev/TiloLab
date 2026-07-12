@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { prisma } from "@/prisma/prisma";
 import { sendTelegramMessage } from "@/server/utils/telegram";
+import { sendSms } from "@/composables/smsNotifications";
 
 export default defineEventHandler(async (event) => {
   const rawBody = await readRawBody(event);
@@ -41,14 +42,14 @@ export default defineEventHandler(async (event) => {
   });
 
   if (!payment || !payment.order) {
-    console.log("Платіж чи замовлення не знайдено");
+    // console.log("Платіж чи замовлення не знайдено");
     throw createError({ statusCode: 404, statusMessage: "Платіж чи замовлення не знайдено" });
   }
 
   const order = payment.order;
-  console.log(order, "order");
+  // console.log(order, "order");
   if (order.status !== "NEW") {
-    console.log("Замовлення вже оплачено: ", order.status);
+    // console.log("Замовлення вже оплачено: ", order.status);
     return { ok: true, message: `Замовлення вже оплачено: ${order.status}` };
   }
 
@@ -136,8 +137,8 @@ export default defineEventHandler(async (event) => {
   }
 
   await sendTelegramMessage(`
-      🛒 Нове замовлення!  
-     
+      🛒 Нове замовлення!
+
       📦 **ID:** ${orderDetails?.orderNumber}
 
       👤 **Отримувач:** ${orderDetails?.shippingInfo?.recipient}
@@ -150,6 +151,16 @@ export default defineEventHandler(async (event) => {
       🏤 Відділення — ${orderDetails?.shippingInfo?.postOffice}
       📦 Поштомат — ${orderDetails?.shippingInfo?.postomat}
     `);
+
+  const phoneNumber = orderDetails?.shippingInfo?.phoneNumber;
+
+  if (phoneNumber) {
+    try {
+      await sendSms(phoneNumber, `Ваше замовлення №${orderDetails?.orderNumber} створено.`);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   for (const item of runningOutItems) {
     await prisma.adminNotification.create({

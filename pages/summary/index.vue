@@ -9,6 +9,8 @@
 </template>
 
 <script setup>
+import { useSeoMeta } from "#imports";
+
 useSeoMeta({
   title: "Замовлення - Tilo Lab",
   description: "Сторінка замовлень Tilo Lab",
@@ -27,23 +29,23 @@ useSeoMeta({
   justify-content: center;
   align-items: center;
   color: var(--text-color);
-  
+
   .container {
     text-align: center;
     max-width: 600px;
     padding: 2rem;
-    
+
     h1 {
       font-size: 2rem;
       margin-bottom: 1rem;
     }
-    
+
     p {
       font-size: 1.1rem;
       margin-bottom: 2rem;
       color: var(--text-grey);
     }
-    
+
     .home-link {
       display: inline-block;
       padding: 12px 24px;
@@ -52,7 +54,7 @@ useSeoMeta({
       text-decoration: none;
       border-radius: 8px;
       transition: opacity 0.3s ease;
-      
+
       &:hover {
         opacity: 0.8;
       }

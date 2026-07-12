@@ -9,7 +9,18 @@
 
         <div class="input_wrapper">
           <input v-model="email" type="text" placeholder="Електронна пошта" />
-          <input v-model="password" type="text" placeholder="Пароль" />
+          <div class="password_input">
+            <input
+              v-model="password"
+              :type="passwordHide ? 'password' : 'text'"
+              placeholder="Пароль"
+            />
+
+            <button class="toggle_hide" @click="passwordHide = !passwordHide">
+              <HidePassword v-if="!passwordHide" />
+              <ShowPassword v-else />
+            </button>
+          </div>
         </div>
 
         <div class="checkbox_wrapper">
@@ -42,17 +53,25 @@
 
           <GoogleIcon />
         </button>
-
-        <!-- <div class="test_user_btn">
-          <NuxtLink to="/user" class="test_user"> Тестова кнопка сторінки користувача </NuxtLink>
-        </div> -->
       </div>
     </div>
+    <Tooltips v-if="showTooltip" :tooltip-status="tooltipStatus">
+      {{ tooltipMessage }}
+    </Tooltips>
   </div>
 </template>
 
 <script setup>
 import { useSeoMeta } from "#imports";
+
+// COMPONENTS ----------
+
+import Tooltips from "@/components/shared/Tooltips.vue";
+
+import HidePassword from "~/assets/icons/eyebrow.svg";
+import ShowPassword from "~/assets/icons/eye.svg";
+
+// ICONS ------------
 
 useSeoMeta({
   title: "Вхід в акаунт - Tilo Lab",
@@ -69,43 +88,65 @@ import Check from "~/assets/icons/check.svg";
 // imports
 import { ref } from "vue";
 import { useAuth } from "@/composables/useAuth";
-// import { useUserStore } from "@/store/user-store";
 
-// import supabase from "@utils/supabase";
-
-// const supabase = useSupabaseClient();
-
-// const supabase = useSupabaseClient();
-// const userStore = useUserStore();
 const { signInWithGoogle, signInWithEmail } = useAuth();
 
 const email = ref("");
 const password = ref("");
 const rememberMe = ref(false);
 const loaderState = ref(false);
+const passwordHide = ref(true);
+
+const showTooltip = ref(false);
+const tooltipStatus = ref("");
+const tooltipMessage = ref("");
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+const tooltip = (obj) => {
+  const { status, message } = obj;
+
+  tooltipStatus.value = status;
+  tooltipMessage.value = message;
+  showTooltip.value = true;
+  setTimeout(() => {
+    showTooltip.value = false;
+  }, 3000);
+};
 
 const onEmailLogin = async () => {
+  if (!emailRegex.test(email.value)) {
+    tooltip({ status: "warning", message: "Перевірте емейл" });
+    return;
+  }
+
+  if (!password.value || password.value.trim() === "" || password.value.length < 6) {
+    tooltip({ status: "warning", message: "Перевірте пароль" });
+    return;
+  }
+
   loaderState.value = true;
-  await signInWithEmail(email.value, password.value, rememberMe.value);
+  const { data, error } = await signInWithEmail(email.value, password.value, rememberMe.value);
+
+  if (error) {
+    tooltip({
+      status: "error",
+      message: error.message
+    });
+
+    return;
+  }
+
+  if (data?.session) {
+    await navigateTo(`/user/user-profile`);
+  }
+
   loaderState.value = false;
 };
 
 const onGoogleLogin = async () => {
   await signInWithGoogle();
 };
-
-// const signInWithGoogle = async () => {
-//   const { error } = await supabase.auth.signInWithOAuth({
-//     provider: "google",
-//     options: {
-//       redirectTo: `${window.location.origin}/auth/callback`
-//     }
-//   });
-
-//   if (error) {
-//     console.error("Google sign-in error:", error.message);
-//   }
-// };
 </script>
 
 <style lang="scss">
@@ -141,6 +182,12 @@ const onGoogleLogin = async () => {
       margin-bottom: 32px;
     }
   }
+
+  svg {
+    width: 25px;
+    height: 25px;
+    fill: #fff;
+  }
 }
 
 .login_wrapper {
@@ -170,6 +217,30 @@ const onGoogleLogin = async () => {
 
   @media screen and (max-width: 480px) {
     gap: 16px;
+  }
+
+  .password_input {
+    width: 100%;
+    height: auto;
+    position: relative;
+
+    .toggle_hide {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: all ease 0.3s;
+      cursor: pointer;
+
+      @media screen and (min-width: 1024px) {
+        &:hover {
+          svg {
+            fill: var(--accent-color);
+            transition: all ease 0.3s;
+          }
+        }
+      }
+    }
   }
 }
 

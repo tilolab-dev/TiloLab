@@ -10,62 +10,43 @@ export const useAuth = () => {
   const user = ref<any>(null);
   const router = useRouter();
 
-  const fetchOrCreateUser = async () => {
-    const {
-      data: { session },
-      error
-    } = await supabase.auth.getSession();
-
-    if (error) {
-      console.warn("Supabase session error:", error);
-      return;
-    }
-
-    if (!session?.user) {
-      store.clearUser();
-      return;
-    }
-
-    const supabaseUser = session.user;
-
+  const syncUser = async () => {
     let data;
+
     try {
-      data = await $fetch<any>("/api/auth/user", { method: "POST" });
+      data = await $fetch<any>("/api/auth/user", {
+        method: "POST"
+      });
     } catch (err) {
       console.error("Помилка при отриманні користувача:", err);
       return;
     }
 
+    if (data.error) {
+      store.clearUser();
+      return;
+    }
+
     const guestId = getGuestIdFromCookie();
+
     if (guestId && guestId !== data.user.id) {
       try {
         await $fetch("/api/auth/merge-guest", {
           method: "POST",
-          body: { guestId, userId: data.user.id }
+          body: {
+            guestId,
+            userId: data.user.id
+          }
         });
+
         clearGuestIdCookie();
       } catch (err) {
-        console.warn("Помилка при оновленні користувача:", err);
+        console.warn("Помилка при об'єднанні guest:", err);
       }
-    }
-
-    try {
-      await $fetch("/api/auth/update-user", {
-        method: "POST",
-        body: {
-          userId: data.user.id,
-          full_name: supabaseUser.user_metadata?.full_name,
-          last_name: supabaseUser.user_metadata?.last_name,
-          phone_number: supabaseUser.user_metadata?.phone_number
-        }
-      });
-    } catch (err) {
-      console.warn("Помилка при оновленні данних користувача:", err);
     }
 
     store.setUser(data.user);
   };
-
   const signInWithGoogle = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -75,11 +56,6 @@ export const useAuth = () => {
       //   }
     });
   };
-
-  //   const signInWithEmail = async (email: string, password: string) => {
-  //     await supabase.auth.signInWithPassword({ email, password });
-  //     await fetchOrCreateUser();
-  //   };
 
   const signInWithEmail = async (email: string, password: string, rememberMe: boolean = false) => {
     const res = await supabase.auth.signInWithPassword({
@@ -99,10 +75,10 @@ export const useAuth = () => {
       });
     }
 
-    await fetchOrCreateUser();
+    await syncUser();
 
     if (store.user?.id && typeof store.user.id === "string") {
-      router.push(`/user/${store.user.id}`);
+      router.push(`/user/user-profile`);
     }
 
     return res;
@@ -124,7 +100,7 @@ export const useAuth = () => {
         data: { last_name: lastName, full_name: name, phone_number: phoneNumber }
       }
     });
-    await fetchOrCreateUser();
+    await syncUser();
 
     return resSignUp;
   };
@@ -144,7 +120,7 @@ export const useAuth = () => {
   return {
     supabaseUser,
     user,
-    fetchOrCreateUser,
+    syncUser,
     signInWithGoogle,
     signInWithEmail,
     signUpWithEmail,

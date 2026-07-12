@@ -15,83 +15,98 @@
 
         <div class="middle">
           <div class="option_block">
-            <div class="option_wrapper">
+            <div class="option_block_head">
               <div class="info">
                 <p>Ім'я:</p>
-                <div class="value">{{ user.username }}</div>
               </div>
-
-              <button @click="editNameState = !editNameState">
+              <button @click="openEditor('name')">
                 <EditIcon v-if="!editNameState" class="edit-btn" />
                 <SvgIcon v-else name="close-btn" size="micro" fill="var(--error-border)" />
               </button>
             </div>
-
-            <div v-if="editNameState" class="option_wrapper">
-              <input v-model="newName" type="text" placeholder="Ім'я" />
+            <div class="option_block_content">
+              <div v-if="editNameState" class="input_wrapper">
+                <input ref="nameInput" v-model="newName" type="text" placeholder="Введіть ім'я" />
+              </div>
+              <div v-else class="value">{{ user.username }}</div>
             </div>
           </div>
 
           <div class="option_block">
-            <div class="option_wrapper">
+            <div class="option_block_head">
               <div class="info">
                 <p>Прізвище:</p>
-                <div class="value">{{ user.userSurname }}</div>
               </div>
-
-              <button @click="editSurnameState = !editSurnameState">
+              <button @click="openEditor('surname')">
                 <EditIcon v-if="!editSurnameState" class="edit-btn" />
                 <SvgIcon v-else name="close-btn" size="micro" fill="var(--error-border)" />
               </button>
             </div>
-
-            <div v-if="editSurnameState" class="option_wrapper">
-              <input v-model="newSurname" type="text" placeholder="Прізвище" />
+            <div class="option_block_content">
+              <div v-if="editSurnameState" class="input_wrapper">
+                <input
+                  ref="surnameInput"
+                  v-model="newSurname"
+                  type="text"
+                  placeholder="Введіть прізвище"
+                />
+              </div>
+              <div v-else class="value">{{ user.userSurname }}</div>
             </div>
           </div>
 
           <div class="option_block">
-            <div class="option_wrapper">
+            <div class="option_block_head">
               <div class="info">
                 <p>Дата народження:</p>
-                <div class="value">
-                  {{ user.dateOfBirth || "Не вказано" }}
-                </div>
               </div>
-
-              <button @click="editDateState = !editDateState">
+              <button @click="openEditor('date')">
                 <EditIcon v-if="!editDateState" class="edit-btn" />
                 <SvgIcon v-else name="close-btn" size="micro" fill="var(--error-border)" />
               </button>
             </div>
-
-            <div v-if="editDateState" class="option_wrapper">
-              <input v-model="newDate" type="date" />
+            <div class="option_block_content">
+              <div v-if="editDateState" class="input_wrapper">
+                <input
+                  ref="dateInput"
+                  v-model="newDate"
+                  type="date"
+                  @blur="editDateState = false"
+                />
+              </div>
+              <div v-else class="value">
+                {{ user.dateOfBirth || "Не вказано" }}
+              </div>
             </div>
           </div>
 
-          <!-- <div class="option_block">
-            <div class="option_wrapper">
+          <div class="option_block">
+            <div class="option_block_head">
               <div class="info">
                 <p>Номер телефону:</p>
-                <div class="value">{{ `user.name` }}</div>
               </div>
-
-              <button @click="editNameState = !editNameState">
-                <EditIcon v-if="!editNameState" class="edit-btn" />
+              <button @click="openEditor('phone')">
+                <EditIcon v-if="!editPhoneState" class="edit-btn" />
                 <SvgIcon v-else name="close-btn" size="micro" fill="var(--error-border)" />
               </button>
             </div>
-
-            <div v-if="editNameState" class="option_wrapper">
-              <input v-model="newName" type="text" placeholder="Ім'я" />
+            <div class="option_block_content">
+              <div v-if="editPhoneState" class="input_wrapper">
+                <input
+                  ref="phoneInput"
+                  v-model="newPhoneNumber"
+                  type="text"
+                  placeholder="Введіть номер"
+                />
+              </div>
+              <div v-else class="value">{{ `${user.phoneNumber || "-"}` }}</div>
             </div>
-          </div> -->
+          </div>
         </div>
 
         <div class="bottom">
-          <button class="cancel-btn" @click="modalStore.closeModal">Скасувати</button>
-          <button class="agree-btn" @click="saveUser">Зберегти</button>
+          <button class="cancel_btn" @click="modalStore.closeModal">Скасувати</button>
+          <button class="agree_btn" @click="saveUser">Зберегти</button>
         </div>
       </div>
     </div>
@@ -99,7 +114,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import { useModalStore } from "@/store/modal-store";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
 import EditIcon from "~/assets/icons/edit-btn.svg";
@@ -118,38 +133,121 @@ const props = defineProps({
 const editNameState = ref(false);
 const editSurnameState = ref(false);
 const editDateState = ref(false);
+const editPhoneState = ref(false);
 
 const newName = ref(null);
 const newSurname = ref(null);
 const newDate = ref(null);
+const newPhoneNumber = ref(null);
+
+const nameInput = ref(null);
+const surnameInput = ref(null);
+const dateInput = ref(null);
+const phoneInput = ref(null);
 
 const loaderState = ref(false);
 
+// const showTooltip = ref(false);
+// const tooltipStatus = ref("");
+// const tooltipMessage = ref("");
+
+// FUNCTIONS
+
+const closeAllEditors = () => {
+  editNameState.value = false;
+  editSurnameState.value = false;
+  editDateState.value = false;
+  editPhoneState.value = false;
+};
+
+const openEditor = async (type) => {
+  const isOpened =
+    (type === "name" && editNameState.value) ||
+    (type === "surname" && editSurnameState.value) ||
+    (type === "date" && editDateState.value) ||
+    (type === "phone" && editPhoneState.value);
+
+  closeAllEditors();
+
+  if (isOpened) return;
+
+  switch (type) {
+    case "name":
+      editNameState.value = true;
+      break;
+
+    case "surname":
+      editSurnameState.value = true;
+      break;
+
+    case "date":
+      editDateState.value = true;
+      break;
+
+    case "phone":
+      editPhoneState.value = true;
+      break;
+  }
+
+  await nextTick();
+
+  switch (type) {
+    case "name":
+      nameInput.value?.focus();
+      break;
+
+    case "surname":
+      surnameInput.value?.focus();
+      break;
+
+    case "date":
+      dateInput.value?.focus();
+      break;
+
+    case "phone":
+      phoneInput.value?.focus();
+      break;
+  }
+};
+
+// const tooltip = (obj) => {
+//   const { status, message } = obj;
+
+//   tooltipStatus.value = status;
+//   tooltipMessage.value = message;
+//   showTooltip.value = true;
+//   setTimeout(() => {
+//     showTooltip.value = false;
+//   }, 3000);
+// };
+
 const saveUser = async () => {
+  // console.log(newName.value, "newName");
+  // if (newName.value === null || newName.value.trim() === "" || newName.value.trim().length < 2) {
+  //   tooltip({ status: "warning", message: "Перевірте ім'я" });
+  //   return;
+  // }
   const userNameData = newName.value === null ? props.user.username : newName.value;
   const userSurnameDate = newSurname.value === null ? props.user.userSurname : newSurname.value;
   const userDateOfBirthData = newDate.value === null ? props.user.dateOfBirth : newDate.value;
-
-  //   console.log(userNameData, userSurnameDate, userDateOfBirthData);
-
+  const userPhoneNumber =
+    newPhoneNumber.value === null ? props.user.phoneNumber : newPhoneNumber.value;
   try {
     loaderState.value = true;
-
     const saveInformation = await $fetch("/api/users/update-user", {
       method: "PATCH",
       body: {
         userId: props.user.id,
         userName: userNameData,
         userSurname: userSurnameDate,
-        dateOfBirth: userDateOfBirthData
+        dateOfBirth: userDateOfBirthData,
+        phoneNumber: userPhoneNumber
       }
     });
-
     if (saveInformation.statusCode !== 200) {
       console.log("Error during update user information");
       return;
     }
-
     alert("Інформацію успішно оновлено");
   } catch (err) {
     console.log("Помилка при редагуванні інформації користувача", err);
@@ -237,24 +335,84 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 18px;
+
+  .input_wrapper {
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin-bottom: 0;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    background: rgb(40, 40, 40);
+    color: white;
+    border: 1px solid transparent;
+  }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 480px) {
+    height: stretch;
+    padding: 15px 8px;
+    gap: 10px;
+  }
 }
 
 .option_block {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   gap: 8px;
-  padding: 10px 12px;
   border-radius: 8px;
   background: #1a1a1a;
-}
 
-.option_wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  &_head {
+    flex: 1;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 12px 5px;
+    gap: 50px;
 
-  button {
-    padding: 6px;
+    svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--accent-color);
+      padding: 6px;
+    }
+
+    button {
+      width: 30px;
+      height: 30px;
+      aspect-ratio: 1 / 1;
+      cursor: pointer;
+    }
+  }
+
+  &_content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 10px;
+    padding: 10px 12px;
+
+    .value {
+      background: rgb(40, 40, 40);
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      padding: 5px 10px;
+    }
   }
 }
 
@@ -268,32 +426,40 @@ onMounted(() => {
   color: white;
 }
 
-input {
-  width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  background: #1f1f1f;
-  color: white;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-  cursor: pointer;
-}
-
 .bottom {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
   padding: 14px 16px;
 
+  .cancel_btn {
+    @include mixins.transparentBtn;
+    padding: 5px 25px;
+    font-size: 1rem;
+    flex: 0;
+  }
+
+  .agree_btn {
+    @include mixins.accentBtn;
+    padding: 5px 25px;
+    font-size: 1rem;
+    flex: 0;
+  }
+
   @media screen and (max-width: 480px) {
     & {
+      flex-direction: column-reverse;
       justify-content: center;
       align-items: center;
+      padding-bottom: 30px;
     }
-    button {
+    .agree_btn,
+    .cancel_btn {
       flex: 1;
+      width: 100%;
+    }
+    .cancel_btn {
+      border-color: var(--accent-color);
     }
   }
 }

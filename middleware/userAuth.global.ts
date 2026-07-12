@@ -17,7 +17,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   }
 
   if (!userStore.user && session) {
-    await auth.fetchOrCreateUser();
+    await auth.syncUser();
   }
 
   if (!userStore.isLoggedIn && process.client) {

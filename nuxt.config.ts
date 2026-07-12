@@ -52,7 +52,6 @@ export default defineNuxtConfig({
     api_secret_key: process.env.API_SECRET_KEY,
     api_service_role_key: process.env.API_SERVICE_ROLE_KEY,
     test_bank_api_key: process.env.TEST_BANK_API_KEY,
-    // bank_test_public_key: process.env.BANK_TEST_PUBLIC_KEY,
     bank_api_key: process.env.BANK_API_KEY,
     bank_webhook_url: process.env.BANK_WEBHOOK_URL,
     bank_public_key: process.env.BANK_PUBLIC_KEY,
@@ -71,10 +70,14 @@ export default defineNuxtConfig({
     r2_bucket_name: process.env.R2_BUCKET_NAME,
     r2_public_url: process.env.R2_PUBLIC_URL,
 
+    //sms club token
+    smsclubToken: process.env.SMSCLUB_TOKEN,
+
     public: {
       api_base_url: process.env.API_BASE_URL,
       nova_post_uri: process.env.NOVA_POST_URI,
-      nova_post_test_uri: process.env.NOVA_POST_TEST_URI
+      nova_post_test_uri: process.env.NOVA_POST_TEST_URI,
+      smsclubSender: process.env.SMSCLUB_SENDER
     }
   },
   css: [
@@ -155,7 +158,7 @@ export default defineNuxtConfig({
   },
   vite: {
     server: {
-      allowedHosts: ["41e6-37-73-34-18.ngrok-free.app"],
+      allowedHosts: ["1c5c-178-151-189-47.ngrok-free.app"],
       strictPort: false
     },
     plugins: [

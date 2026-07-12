@@ -62,7 +62,7 @@
                     @input="getPostOfficeNp"
                   />
                   <ul
-                    v-if="postAddressList.length > 0 && postAddress.length > 0"
+                    v-if="postAddressList?.length > 0 && postAddress?.length > 0"
                     class="fetched_list"
                   >
                     <li
@@ -460,7 +460,7 @@ const confirmOrderHandler = async () => {
 
   const formattedPhone = formatPhoneNumber(phone.value);
 
-  const checkPnoneNumberUa = userNumber.slice(0, 4) === "+380";
+  const checkPhoneNumberUa = userNumber.slice(0, 4) === "+380";
 
   if (!name.value) {
     tooltip({ status: "warning", message: "Введіть Імʼя" });
@@ -477,7 +477,7 @@ const confirmOrderHandler = async () => {
     return;
   }
 
-  if (userNumber.length < 13 || !checkPnoneNumberUa) {
+  if (userNumber.length < 13 || !checkPhoneNumberUa) {
     tooltip({ status: "warning", message: "Перевірте номер телефону" });
     return;
   }
@@ -554,7 +554,9 @@ const confirmOrderHandler = async () => {
     const getOrderId = await $fetch("/api/orders/newOrder", {
       method: "POST",
       body: {
-        // userId: "", left after auth implementation
+        userId: userStore.user?.id ?? null,
+        name: name.value.trim(),
+        surname: surname.value.trim(),
         // totalPrice: totalDeliveryPrice.value,
         paymentMethod: paymentMethod.value,
         orderItems: getOrderItems,
