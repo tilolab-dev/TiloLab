@@ -28,6 +28,12 @@ export default defineEventHandler(async (event) => {
 
       const metadata = supabaseUser.user_metadata ?? {};
 
+      const parts = metadata.full_name.trim().split(/\s+/);
+
+      const username = parts[0];
+      const userFamily = parts.slice(1).join(" ");
+      const fullName = metadata.full_name;
+
       console.log(metadata, "metadata");
 
       const include = {
@@ -60,10 +66,9 @@ export default defineEventHandler(async (event) => {
       if (!user) {
         user = await prisma.user.create({
           data: {
-            username: metadata.given_name || supabaseUser.email!,
-            userFamily: metadata.family_name || null,
-            phoneNumber: metadata.phone_number || null,
-            fullName: `${metadata.full_name}`,
+            username: username || null,
+            userFamily: userFamily || null,
+            fullName: fullName,
             email: supabaseUser.email!,
             role: "user"
           },
