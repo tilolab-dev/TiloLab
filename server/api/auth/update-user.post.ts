@@ -29,10 +29,10 @@ export default defineEventHandler(async (event) => {
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
-        username: userName ?? existingUser.username,
-        userFamily: userFamily ?? existingUser.userFamily,
-        dateOfBirth: dateOfBirth ?? existingUser.dateOfBirth,
-        phoneNumber: phoneNumber ?? existingUser.phoneNumber
+        username: userName,
+        userFamily: userFamily,
+        dateOfBirth: dateOfBirth,
+        phoneNumber: phoneNumber
       }
     });
     // console.log(updatedUser, "updateUser");

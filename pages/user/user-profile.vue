@@ -150,7 +150,7 @@
             <div class="user_content_info">
               <div class="user_content_info_wrapper">
                 <div class="user_name">
-                  {{ userStore.user.username }} {{ userStore.user.userSurname }}
+                  {{ userStore.user.username }} {{ userStore.user.userFamily }}
                 </div>
                 <div class="user_contact">
                   <span>
