@@ -28,6 +28,8 @@ export default defineEventHandler(async (event) => {
 
       const metadata = supabaseUser.user_metadata ?? {};
 
+      console.log(metadata, "metadata");
+
       const include = {
         orders: {
           include: {
