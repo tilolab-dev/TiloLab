@@ -66,21 +66,9 @@ const tooltip = (obj) => {
 // const supabase = useSupabaseClient();
 
 onMounted(async () => {
-  // Check if user has already verified their age
-
-  // const ageVerified = useCookie("age_verified");
-  // if (!ageVerified.value) {
-  // modalStore.showModal("VerifyAgeModal");
-  // }
-  // await supabase.auth.signOut();
-
   await syncUser();
 
   console.log(userStore.isLoggedIn, userStore.user, "log user");
-
-  // if (window.history.replaceState) {
-  //   window.history.replaceState({}, document.title, window.location.pathname);
-  // }
 });
 </script>
 

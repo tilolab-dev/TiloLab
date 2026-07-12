@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <div class="loader_wrapper">
+    <div v-if="loaderState" class="loader_wrapper">
       <SharedLoader />
     </div>
     <div class="container">

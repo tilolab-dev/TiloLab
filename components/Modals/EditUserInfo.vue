@@ -38,15 +38,15 @@
                 <p>Прізвище:</p>
               </div>
               <button @click="openEditor('surname')">
-                <EditIcon v-if="!editSurnameState" class="edit-btn" />
+                <EditIcon v-if="!editFamilyState" class="edit-btn" />
                 <SvgIcon v-else name="close-btn" size="micro" fill="var(--error-border)" />
               </button>
             </div>
             <div class="option_block_content">
-              <div v-if="editSurnameState" class="input_wrapper">
+              <div v-if="editFamilyState" class="input_wrapper">
                 <input
-                  ref="surnameInput"
-                  v-model="newSurname"
+                  ref="familyInput"
+                  v-model="newFamily"
                   type="text"
                   placeholder="Введіть прізвище"
                 />
@@ -131,17 +131,17 @@ const props = defineProps({
 });
 
 const editNameState = ref(false);
-const editSurnameState = ref(false);
+const editFamilyState = ref(false);
 const editDateState = ref(false);
 const editPhoneState = ref(false);
 
 const newName = ref(null);
-const newSurname = ref(null);
+const newFamily = ref(null);
 const newDate = ref(null);
 const newPhoneNumber = ref(null);
 
 const nameInput = ref(null);
-const surnameInput = ref(null);
+const familyInput = ref(null);
 const dateInput = ref(null);
 const phoneInput = ref(null);
 
@@ -155,7 +155,7 @@ const loaderState = ref(false);
 
 const closeAllEditors = () => {
   editNameState.value = false;
-  editSurnameState.value = false;
+  editFamilyState.value = false;
   editDateState.value = false;
   editPhoneState.value = false;
 };
@@ -163,7 +163,7 @@ const closeAllEditors = () => {
 const openEditor = async (type) => {
   const isOpened =
     (type === "name" && editNameState.value) ||
-    (type === "surname" && editSurnameState.value) ||
+    (type === "surname" && editFamilyState.value) ||
     (type === "date" && editDateState.value) ||
     (type === "phone" && editPhoneState.value);
 
@@ -177,7 +177,7 @@ const openEditor = async (type) => {
       break;
 
     case "surname":
-      editSurnameState.value = true;
+      editFamilyState.value = true;
       break;
 
     case "date":
@@ -197,7 +197,7 @@ const openEditor = async (type) => {
       break;
 
     case "surname":
-      surnameInput.value?.focus();
+      familyInput.value?.focus();
       break;
 
     case "date":
@@ -228,7 +228,8 @@ const saveUser = async () => {
   //   return;
   // }
   const userNameData = newName.value === null ? props.user.username : newName.value;
-  const userSurnameDate = newSurname.value === null ? props.user.userSurname : newSurname.value;
+  // const userSurnameDate = newFamily.value === null ? props.user.userSurname : newFamily.value;
+  const userFamily = newFamily.value === null ? props.user.userFamily : newFamily.value;
   const userDateOfBirthData = newDate.value === null ? props.user.dateOfBirth : newDate.value;
   const userPhoneNumber =
     newPhoneNumber.value === null ? props.user.phoneNumber : newPhoneNumber.value;
@@ -239,7 +240,7 @@ const saveUser = async () => {
       body: {
         userId: props.user.id,
         userName: userNameData,
-        userSurname: userSurnameDate,
+        userFamily: userFamily,
         dateOfBirth: userDateOfBirthData,
         phoneNumber: userPhoneNumber
       }
