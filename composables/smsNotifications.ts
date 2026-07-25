@@ -5,8 +5,7 @@ export async function sendSms(phone: string, message: string) {
     const payload = {
       phone: [phone.replace(/\D/g, "")],
       message,
-      // src_addr: config.smsclubSender,
-      src_addr: "Zamovlennia"
+      src_addr: "Tilo Lab"
     };
 
     console.log("SMS payload:", payload);
