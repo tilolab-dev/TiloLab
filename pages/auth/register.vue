@@ -116,7 +116,7 @@ const tooltipMessage = ref("");
 const isDeleting = ref(false);
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const validOperators = /^\+380(39|67|68|96|97|98|50|66|95|99|63|73|93)\d{7}$/;
+const validOperators = /^\+380(39|67|68|96|97|98|50|66|95|75|99|63|73|93)\d{7}$/;
 
 const formatFromDigits = (digits) => {
   digits = digits.slice(0, 12);
