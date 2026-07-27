@@ -16,8 +16,8 @@
 
           <div class="questionnaire_modal_bottom">
             <div class="questionnaire_modal_buttons">
-              <button class="accent_btn">Назад</button>
-              <button class="accent_btn">Далі</button>
+              <AccentBtn>Назад</AccentBtn>
+              <AccentBtn>Далі</AccentBtn>
             </div>
           </div>
         </div>
@@ -30,6 +30,7 @@
 import { ref, onMounted } from "vue";
 import { useModalStore } from "@/store/modal-store";
 import gsap from "gsap";
+import AccentBtn from "~/components/shared/AccentBtn.vue";
 
 const modalStore = useModalStore();
 const questionnaireModalRef = ref(null);
@@ -189,17 +190,6 @@ const closePopup = () => {
     justify-content: center;
   }
 
-  .accent_btn {
-    background-color: var(--btn-color);
-    border: 1px solid var(--border-color);
-
-    @media screen and (min-width: 1024px) {
-      &:hover {
-        background-color: var(--btn-color-hover);
-        transition: all ease 0.3s;
-      }
-    }
-  }
   .questionnaire_modal_btn {
     @media screen and (min-width: 1024px) {
       &:hover {

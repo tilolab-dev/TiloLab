@@ -44,9 +44,9 @@
         </div>
 
         <div class="link_wrapper">
-          <NuxtLink to="/products?page=1&category" class="hero_btn">
-            <SharedAccentBtn class="hero_btn"> Обрати девайс </SharedAccentBtn>
-          </NuxtLink>
+          <SharedAccentBtn class="hero_btn" @click="openQuestionnaire">
+            Обрати девайс
+          </SharedAccentBtn>
 
           <button
             class="toggle_sound"
@@ -61,6 +61,11 @@
     </div>
     <!-- </div> -->
   </section>
+
+  <!-- Questionnaire Modal -->
+  <ClientOnly>
+    <Questionnaire :is-open="isQuestionnaireOpen" @close="closeQuestionnaire" />
+  </ClientOnly>
 </template>
 
 <script setup>
@@ -68,6 +73,7 @@
 
 import PlaySoundIcon from "@/assets/icons/play-sound.svg";
 import MuteSoundIcon from "@/assets/icons/mute-sound.svg";
+import Questionnaire from "@/components/Questionnaire.vue";
 
 import { ref, onMounted, nextTick } from "vue";
 
@@ -75,12 +81,21 @@ const videoRef = ref(null);
 const contentRef = ref(null);
 const headerHeightValue = ref(0);
 const muteState = ref(true);
+const isQuestionnaireOpen = ref(false);
 
 const soundMuteHandler = () => {
   if (videoRef.value) {
     videoRef.value.muted = !videoRef.value.muted;
     muteState.value = videoRef.value.muted;
   }
+};
+
+const openQuestionnaire = () => {
+  isQuestionnaireOpen.value = true;
+};
+
+const closeQuestionnaire = () => {
+  isQuestionnaireOpen.value = false;
 };
 
 const onVideoLoaded = () => {
