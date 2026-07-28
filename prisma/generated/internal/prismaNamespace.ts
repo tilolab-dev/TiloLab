@@ -396,6 +396,7 @@ export const ModelName = {
   ProductOptionsTranslation: 'ProductOptionsTranslation',
   PopularProduct: 'PopularProduct',
   PromotedProduct: 'PromotedProduct',
+  GiftCertificate: 'GiftCertificate',
   User: 'User',
   Adress: 'Adress',
   UserSetting: 'UserSetting',
@@ -420,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "adminSender" | "adminMetric" | "category" | "categoryTranslation" | "product" | "productOptions" | "productImg" | "productTranslation" | "productOptionsTranslation" | "popularProduct" | "promotedProduct" | "user" | "adress" | "userSetting" | "order" | "orderItem" | "shippingInfo" | "news" | "payment" | "adminNotification"
+    modelProps: "admin" | "adminSender" | "adminMetric" | "category" | "categoryTranslation" | "product" | "productOptions" | "productImg" | "productTranslation" | "productOptionsTranslation" | "popularProduct" | "promotedProduct" | "giftCertificate" | "user" | "adress" | "userSetting" | "order" | "orderItem" | "shippingInfo" | "news" | "payment" | "adminNotification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1312,6 +1313,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    GiftCertificate: {
+      payload: Prisma.$GiftCertificatePayload<ExtArgs>
+      fields: Prisma.GiftCertificateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.GiftCertificateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GiftCertificatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.GiftCertificateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GiftCertificatePayload>
+        }
+        findFirst: {
+          args: Prisma.GiftCertificateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GiftCertificatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.GiftCertificateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GiftCertificatePayload>
+        }
+        findMany: {
+          args: Prisma.GiftCertificateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GiftCertificatePayload>[]
+        }
+        create: {
+          args: Prisma.GiftCertificateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GiftCertificatePayload>
+        }
+        createMany: {
+          args: Prisma.GiftCertificateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.GiftCertificateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GiftCertificatePayload>[]
+        }
+        delete: {
+          args: Prisma.GiftCertificateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GiftCertificatePayload>
+        }
+        update: {
+          args: Prisma.GiftCertificateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GiftCertificatePayload>
+        }
+        deleteMany: {
+          args: Prisma.GiftCertificateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.GiftCertificateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.GiftCertificateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GiftCertificatePayload>[]
+        }
+        upsert: {
+          args: Prisma.GiftCertificateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$GiftCertificatePayload>
+        }
+        aggregate: {
+          args: Prisma.GiftCertificateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateGiftCertificate>
+        }
+        groupBy: {
+          args: Prisma.GiftCertificateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GiftCertificateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.GiftCertificateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.GiftCertificateCountAggregateOutputType> | number
+        }
+      }
+    }
     User: {
       payload: Prisma.$UserPayload<ExtArgs>
       fields: Prisma.UserFieldRefs
@@ -2107,7 +2182,9 @@ export const ProductScalarFieldEnum = {
   discountPercent: 'discountPercent',
   productSize: 'productSize',
   productPrice: 'productPrice',
-  stockReserved: 'stockReserved'
+  stockReserved: 'stockReserved',
+  isCertificate: 'isCertificate',
+  productType: 'productType'
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
@@ -2175,6 +2252,20 @@ export const PromotedProductScalarFieldEnum = {
 } as const
 
 export type PromotedProductScalarFieldEnum = (typeof PromotedProductScalarFieldEnum)[keyof typeof PromotedProductScalarFieldEnum]
+
+
+export const GiftCertificateScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  amount: 'amount',
+  status: 'status',
+  createdAt: 'createdAt',
+  usedAt: 'usedAt',
+  orderId: 'orderId',
+  usedOrderId: 'usedOrderId'
+} as const
+
+export type GiftCertificateScalarFieldEnum = (typeof GiftCertificateScalarFieldEnum)[keyof typeof GiftCertificateScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
@@ -2427,6 +2518,34 @@ export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMode
 
 
 /**
+ * Reference to a field of type 'ProductType'
+ */
+export type EnumProductTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductType'>
+    
+
+
+/**
+ * Reference to a field of type 'ProductType[]'
+ */
+export type ListEnumProductTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CertificateStatus'
+ */
+export type EnumCertificateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CertificateStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CertificateStatus[]'
+ */
+export type ListEnumCertificateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CertificateStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'TgRoles'
  */
 export type EnumTgRolesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TgRoles'>
@@ -2586,6 +2705,7 @@ export type GlobalOmitConfig = {
   productOptionsTranslation?: Prisma.ProductOptionsTranslationOmit
   popularProduct?: Prisma.PopularProductOmit
   promotedProduct?: Prisma.PromotedProductOmit
+  giftCertificate?: Prisma.GiftCertificateOmit
   user?: Prisma.UserOmit
   adress?: Prisma.AdressOmit
   userSetting?: Prisma.UserSettingOmit

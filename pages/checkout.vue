@@ -432,15 +432,23 @@ const checkCyrillicSymbols = (value, message) => {
   return nameRegex.test(value);
 };
 
+// const validateCertificate = () => {};
+
 const confirmOrderHandler = async () => {
   if (!cartStore.cart.length) {
     tooltip({ status: "warning", message: "Кошик порожній" });
     return;
   }
 
+  // const isCertificateValue = validateCertificate(orderPromoCode.value.trim());
+
+  // const isCertificateInCart = cartStore.cart.some(
+  //   (item) => item.product.certificate === isCertificateValue
+  // );
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-  const validOperators = /^\+380(39|67|68|96|97|98|50|66|95|99|63|73|93)\d{7}$/;
+  const validOperators = /^\+380(39|67|68|96|97|98|50|66|95|75|99|63|73|93)\d{7}$/;
 
   // KYIVSTAR 039, 067, 068, 096, 097, 098
   // VODAFONE 050, 066, 095, 099

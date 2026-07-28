@@ -63,6 +63,7 @@ export const ModelName = {
   ProductOptionsTranslation: 'ProductOptionsTranslation',
   PopularProduct: 'PopularProduct',
   PromotedProduct: 'PromotedProduct',
+  GiftCertificate: 'GiftCertificate',
   User: 'User',
   Adress: 'Adress',
   UserSetting: 'UserSetting',
@@ -180,7 +181,9 @@ export const ProductScalarFieldEnum = {
   discountPercent: 'discountPercent',
   productSize: 'productSize',
   productPrice: 'productPrice',
-  stockReserved: 'stockReserved'
+  stockReserved: 'stockReserved',
+  isCertificate: 'isCertificate',
+  productType: 'productType'
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
@@ -248,6 +251,20 @@ export const PromotedProductScalarFieldEnum = {
 } as const
 
 export type PromotedProductScalarFieldEnum = (typeof PromotedProductScalarFieldEnum)[keyof typeof PromotedProductScalarFieldEnum]
+
+
+export const GiftCertificateScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  amount: 'amount',
+  status: 'status',
+  createdAt: 'createdAt',
+  usedAt: 'usedAt',
+  orderId: 'orderId',
+  usedOrderId: 'usedOrderId'
+} as const
+
+export type GiftCertificateScalarFieldEnum = (typeof GiftCertificateScalarFieldEnum)[keyof typeof GiftCertificateScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {
