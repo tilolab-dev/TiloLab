@@ -51,3 +51,19 @@ export const PaymentStatus = {
 } as const
 
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const ProductType = {
+  PRODUCT: 'PRODUCT',
+  CERTIFICATE: 'CERTIFICATE'
+} as const
+
+export type ProductType = (typeof ProductType)[keyof typeof ProductType]
+
+
+export const CertificateStatus = {
+  ACTIVE: 'ACTIVE',
+  USED: 'USED'
+} as const
+
+export type CertificateStatus = (typeof CertificateStatus)[keyof typeof CertificateStatus]

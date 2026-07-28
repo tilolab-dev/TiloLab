@@ -272,6 +272,8 @@ export type OrderWhereInput = {
   payments?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
   shippingInfo?: Prisma.XOR<Prisma.ShippingInfoNullableScalarRelationFilter, Prisma.ShippingInfoWhereInput> | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  createdCertificates?: Prisma.GiftCertificateListRelationFilter
+  usedCertificates?: Prisma.GiftCertificateListRelationFilter
   adminSenders?: Prisma.AdminSenderListRelationFilter
 }
 
@@ -291,6 +293,8 @@ export type OrderOrderByWithRelationInput = {
   payments?: Prisma.PaymentOrderByWithRelationInput
   shippingInfo?: Prisma.ShippingInfoOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
+  createdCertificates?: Prisma.GiftCertificateOrderByRelationAggregateInput
+  usedCertificates?: Prisma.GiftCertificateOrderByRelationAggregateInput
   adminSenders?: Prisma.AdminSenderOrderByRelationAggregateInput
 }
 
@@ -313,6 +317,8 @@ export type OrderWhereUniqueInput = Prisma.AtLeast<{
   payments?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
   shippingInfo?: Prisma.XOR<Prisma.ShippingInfoNullableScalarRelationFilter, Prisma.ShippingInfoWhereInput> | null
   user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  createdCertificates?: Prisma.GiftCertificateListRelationFilter
+  usedCertificates?: Prisma.GiftCertificateListRelationFilter
   adminSenders?: Prisma.AdminSenderListRelationFilter
 }, "id" | "orderNumber">
 
@@ -367,6 +373,8 @@ export type OrderCreateInput = {
   payments?: Prisma.PaymentCreateNestedOneWithoutOrderInput
   shippingInfo?: Prisma.ShippingInfoCreateNestedOneWithoutOrderInput
   user?: Prisma.UserCreateNestedOneWithoutOrdersInput
+  createdCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutUsedOrderInput
   adminSenders?: Prisma.AdminSenderCreateNestedManyWithoutOrdersInput
 }
 
@@ -385,6 +393,8 @@ export type OrderUncheckedCreateInput = {
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
   shippingInfo?: Prisma.ShippingInfoUncheckedCreateNestedOneWithoutOrderInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutUsedOrderInput
   adminSenders?: Prisma.AdminSenderUncheckedCreateNestedManyWithoutOrdersInput
 }
 
@@ -403,6 +413,8 @@ export type OrderUpdateInput = {
   payments?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
   shippingInfo?: Prisma.ShippingInfoUpdateOneWithoutOrderNestedInput
   user?: Prisma.UserUpdateOneWithoutOrdersNestedInput
+  createdCertificates?: Prisma.GiftCertificateUpdateManyWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUpdateManyWithoutUsedOrderNestedInput
   adminSenders?: Prisma.AdminSenderUpdateManyWithoutOrdersNestedInput
 }
 
@@ -421,6 +433,8 @@ export type OrderUncheckedUpdateInput = {
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
   shippingInfo?: Prisma.ShippingInfoUncheckedUpdateOneWithoutOrderNestedInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutUsedOrderNestedInput
   adminSenders?: Prisma.AdminSenderUncheckedUpdateManyWithoutOrdersNestedInput
 }
 
@@ -475,6 +489,16 @@ export type OrderOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type OrderScalarRelationFilter = {
+  is?: Prisma.OrderWhereInput
+  isNot?: Prisma.OrderWhereInput
+}
+
+export type OrderNullableScalarRelationFilter = {
+  is?: Prisma.OrderWhereInput | null
+  isNot?: Prisma.OrderWhereInput | null
+}
+
 export type OrderCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -527,11 +551,6 @@ export type OrderSumOrderByAggregateInput = {
   totalPrice?: Prisma.SortOrder
 }
 
-export type OrderScalarRelationFilter = {
-  is?: Prisma.OrderWhereInput
-  isNot?: Prisma.OrderWhereInput
-}
-
 export type OrderCreateNestedManyWithoutAdminSendersInput = {
   create?: Prisma.XOR<Prisma.OrderCreateWithoutAdminSendersInput, Prisma.OrderUncheckedCreateWithoutAdminSendersInput> | Prisma.OrderCreateWithoutAdminSendersInput[] | Prisma.OrderUncheckedCreateWithoutAdminSendersInput[]
   connectOrCreate?: Prisma.OrderCreateOrConnectWithoutAdminSendersInput | Prisma.OrderCreateOrConnectWithoutAdminSendersInput[]
@@ -568,6 +587,36 @@ export type OrderUncheckedUpdateManyWithoutAdminSendersNestedInput = {
   update?: Prisma.OrderUpdateWithWhereUniqueWithoutAdminSendersInput | Prisma.OrderUpdateWithWhereUniqueWithoutAdminSendersInput[]
   updateMany?: Prisma.OrderUpdateManyWithWhereWithoutAdminSendersInput | Prisma.OrderUpdateManyWithWhereWithoutAdminSendersInput[]
   deleteMany?: Prisma.OrderScalarWhereInput | Prisma.OrderScalarWhereInput[]
+}
+
+export type OrderCreateNestedOneWithoutCreatedCertificatesInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutCreatedCertificatesInput, Prisma.OrderUncheckedCreateWithoutCreatedCertificatesInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutCreatedCertificatesInput
+  connect?: Prisma.OrderWhereUniqueInput
+}
+
+export type OrderCreateNestedOneWithoutUsedCertificatesInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutUsedCertificatesInput, Prisma.OrderUncheckedCreateWithoutUsedCertificatesInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutUsedCertificatesInput
+  connect?: Prisma.OrderWhereUniqueInput
+}
+
+export type OrderUpdateOneRequiredWithoutCreatedCertificatesNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutCreatedCertificatesInput, Prisma.OrderUncheckedCreateWithoutCreatedCertificatesInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutCreatedCertificatesInput
+  upsert?: Prisma.OrderUpsertWithoutCreatedCertificatesInput
+  connect?: Prisma.OrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutCreatedCertificatesInput, Prisma.OrderUpdateWithoutCreatedCertificatesInput>, Prisma.OrderUncheckedUpdateWithoutCreatedCertificatesInput>
+}
+
+export type OrderUpdateOneWithoutUsedCertificatesNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderCreateWithoutUsedCertificatesInput, Prisma.OrderUncheckedCreateWithoutUsedCertificatesInput>
+  connectOrCreate?: Prisma.OrderCreateOrConnectWithoutUsedCertificatesInput
+  upsert?: Prisma.OrderUpsertWithoutUsedCertificatesInput
+  disconnect?: Prisma.OrderWhereInput | boolean
+  delete?: Prisma.OrderWhereInput | boolean
+  connect?: Prisma.OrderWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderUpdateToOneWithWhereWithoutUsedCertificatesInput, Prisma.OrderUpdateWithoutUsedCertificatesInput>, Prisma.OrderUncheckedUpdateWithoutUsedCertificatesInput>
 }
 
 export type OrderCreateNestedManyWithoutUserInput = {
@@ -614,10 +663,6 @@ export type OrderUncheckedUpdateManyWithoutUserNestedInput = {
 
 export type EnumOrderStatusFieldUpdateOperationsInput = {
   set?: $Enums.OrderStatus
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
 }
 
 export type OrderCreateNestedOneWithoutOrderItemsInput = {
@@ -677,6 +722,8 @@ export type OrderCreateWithoutAdminSendersInput = {
   payments?: Prisma.PaymentCreateNestedOneWithoutOrderInput
   shippingInfo?: Prisma.ShippingInfoCreateNestedOneWithoutOrderInput
   user?: Prisma.UserCreateNestedOneWithoutOrdersInput
+  createdCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutUsedOrderInput
 }
 
 export type OrderUncheckedCreateWithoutAdminSendersInput = {
@@ -694,6 +741,8 @@ export type OrderUncheckedCreateWithoutAdminSendersInput = {
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
   shippingInfo?: Prisma.ShippingInfoUncheckedCreateNestedOneWithoutOrderInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutUsedOrderInput
 }
 
 export type OrderCreateOrConnectWithoutAdminSendersInput = {
@@ -734,6 +783,190 @@ export type OrderScalarWhereInput = {
   deliveryTtn?: Prisma.StringNullableFilter<"Order"> | string | null
 }
 
+export type OrderCreateWithoutCreatedCertificatesInput = {
+  id?: string
+  status?: $Enums.OrderStatus
+  createdAt?: Date | string
+  paymentMethod?: string | null
+  totalPrice: number
+  orderNumber: string
+  orderComment?: string | null
+  promoCode?: string | null
+  expiresAt?: Date | string | null
+  deliveryTtn?: string | null
+  orderItems?: Prisma.OrderItemCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentCreateNestedOneWithoutOrderInput
+  shippingInfo?: Prisma.ShippingInfoCreateNestedOneWithoutOrderInput
+  user?: Prisma.UserCreateNestedOneWithoutOrdersInput
+  usedCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutUsedOrderInput
+  adminSenders?: Prisma.AdminSenderCreateNestedManyWithoutOrdersInput
+}
+
+export type OrderUncheckedCreateWithoutCreatedCertificatesInput = {
+  id?: string
+  userId?: number | null
+  status?: $Enums.OrderStatus
+  createdAt?: Date | string
+  paymentMethod?: string | null
+  totalPrice: number
+  orderNumber: string
+  orderComment?: string | null
+  promoCode?: string | null
+  expiresAt?: Date | string | null
+  deliveryTtn?: string | null
+  orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
+  shippingInfo?: Prisma.ShippingInfoUncheckedCreateNestedOneWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutUsedOrderInput
+  adminSenders?: Prisma.AdminSenderUncheckedCreateNestedManyWithoutOrdersInput
+}
+
+export type OrderCreateOrConnectWithoutCreatedCertificatesInput = {
+  where: Prisma.OrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderCreateWithoutCreatedCertificatesInput, Prisma.OrderUncheckedCreateWithoutCreatedCertificatesInput>
+}
+
+export type OrderCreateWithoutUsedCertificatesInput = {
+  id?: string
+  status?: $Enums.OrderStatus
+  createdAt?: Date | string
+  paymentMethod?: string | null
+  totalPrice: number
+  orderNumber: string
+  orderComment?: string | null
+  promoCode?: string | null
+  expiresAt?: Date | string | null
+  deliveryTtn?: string | null
+  orderItems?: Prisma.OrderItemCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentCreateNestedOneWithoutOrderInput
+  shippingInfo?: Prisma.ShippingInfoCreateNestedOneWithoutOrderInput
+  user?: Prisma.UserCreateNestedOneWithoutOrdersInput
+  createdCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutOrderInput
+  adminSenders?: Prisma.AdminSenderCreateNestedManyWithoutOrdersInput
+}
+
+export type OrderUncheckedCreateWithoutUsedCertificatesInput = {
+  id?: string
+  userId?: number | null
+  status?: $Enums.OrderStatus
+  createdAt?: Date | string
+  paymentMethod?: string | null
+  totalPrice: number
+  orderNumber: string
+  orderComment?: string | null
+  promoCode?: string | null
+  expiresAt?: Date | string | null
+  deliveryTtn?: string | null
+  orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutOrderInput
+  payments?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
+  shippingInfo?: Prisma.ShippingInfoUncheckedCreateNestedOneWithoutOrderInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderInput
+  adminSenders?: Prisma.AdminSenderUncheckedCreateNestedManyWithoutOrdersInput
+}
+
+export type OrderCreateOrConnectWithoutUsedCertificatesInput = {
+  where: Prisma.OrderWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderCreateWithoutUsedCertificatesInput, Prisma.OrderUncheckedCreateWithoutUsedCertificatesInput>
+}
+
+export type OrderUpsertWithoutCreatedCertificatesInput = {
+  update: Prisma.XOR<Prisma.OrderUpdateWithoutCreatedCertificatesInput, Prisma.OrderUncheckedUpdateWithoutCreatedCertificatesInput>
+  create: Prisma.XOR<Prisma.OrderCreateWithoutCreatedCertificatesInput, Prisma.OrderUncheckedCreateWithoutCreatedCertificatesInput>
+  where?: Prisma.OrderWhereInput
+}
+
+export type OrderUpdateToOneWithWhereWithoutCreatedCertificatesInput = {
+  where?: Prisma.OrderWhereInput
+  data: Prisma.XOR<Prisma.OrderUpdateWithoutCreatedCertificatesInput, Prisma.OrderUncheckedUpdateWithoutCreatedCertificatesInput>
+}
+
+export type OrderUpdateWithoutCreatedCertificatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  orderComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promoCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveryTtn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderItems?: Prisma.OrderItemUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
+  shippingInfo?: Prisma.ShippingInfoUpdateOneWithoutOrderNestedInput
+  user?: Prisma.UserUpdateOneWithoutOrdersNestedInput
+  usedCertificates?: Prisma.GiftCertificateUpdateManyWithoutUsedOrderNestedInput
+  adminSenders?: Prisma.AdminSenderUpdateManyWithoutOrdersNestedInput
+}
+
+export type OrderUncheckedUpdateWithoutCreatedCertificatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  orderComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promoCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveryTtn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
+  shippingInfo?: Prisma.ShippingInfoUncheckedUpdateOneWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutUsedOrderNestedInput
+  adminSenders?: Prisma.AdminSenderUncheckedUpdateManyWithoutOrdersNestedInput
+}
+
+export type OrderUpsertWithoutUsedCertificatesInput = {
+  update: Prisma.XOR<Prisma.OrderUpdateWithoutUsedCertificatesInput, Prisma.OrderUncheckedUpdateWithoutUsedCertificatesInput>
+  create: Prisma.XOR<Prisma.OrderCreateWithoutUsedCertificatesInput, Prisma.OrderUncheckedCreateWithoutUsedCertificatesInput>
+  where?: Prisma.OrderWhereInput
+}
+
+export type OrderUpdateToOneWithWhereWithoutUsedCertificatesInput = {
+  where?: Prisma.OrderWhereInput
+  data: Prisma.XOR<Prisma.OrderUpdateWithoutUsedCertificatesInput, Prisma.OrderUncheckedUpdateWithoutUsedCertificatesInput>
+}
+
+export type OrderUpdateWithoutUsedCertificatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  orderComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promoCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveryTtn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderItems?: Prisma.OrderItemUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
+  shippingInfo?: Prisma.ShippingInfoUpdateOneWithoutOrderNestedInput
+  user?: Prisma.UserUpdateOneWithoutOrdersNestedInput
+  createdCertificates?: Prisma.GiftCertificateUpdateManyWithoutOrderNestedInput
+  adminSenders?: Prisma.AdminSenderUpdateManyWithoutOrdersNestedInput
+}
+
+export type OrderUncheckedUpdateWithoutUsedCertificatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  status?: Prisma.EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  totalPrice?: Prisma.FloatFieldUpdateOperationsInput | number
+  orderNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  orderComment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  promoCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveryTtn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
+  shippingInfo?: Prisma.ShippingInfoUncheckedUpdateOneWithoutOrderNestedInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderNestedInput
+  adminSenders?: Prisma.AdminSenderUncheckedUpdateManyWithoutOrdersNestedInput
+}
+
 export type OrderCreateWithoutUserInput = {
   id?: string
   status?: $Enums.OrderStatus
@@ -748,6 +981,8 @@ export type OrderCreateWithoutUserInput = {
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedOneWithoutOrderInput
   shippingInfo?: Prisma.ShippingInfoCreateNestedOneWithoutOrderInput
+  createdCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutUsedOrderInput
   adminSenders?: Prisma.AdminSenderCreateNestedManyWithoutOrdersInput
 }
 
@@ -765,6 +1000,8 @@ export type OrderUncheckedCreateWithoutUserInput = {
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
   shippingInfo?: Prisma.ShippingInfoUncheckedCreateNestedOneWithoutOrderInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutUsedOrderInput
   adminSenders?: Prisma.AdminSenderUncheckedCreateNestedManyWithoutOrdersInput
 }
 
@@ -808,6 +1045,8 @@ export type OrderCreateWithoutOrderItemsInput = {
   payments?: Prisma.PaymentCreateNestedOneWithoutOrderInput
   shippingInfo?: Prisma.ShippingInfoCreateNestedOneWithoutOrderInput
   user?: Prisma.UserCreateNestedOneWithoutOrdersInput
+  createdCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutUsedOrderInput
   adminSenders?: Prisma.AdminSenderCreateNestedManyWithoutOrdersInput
 }
 
@@ -825,6 +1064,8 @@ export type OrderUncheckedCreateWithoutOrderItemsInput = {
   deliveryTtn?: string | null
   payments?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
   shippingInfo?: Prisma.ShippingInfoUncheckedCreateNestedOneWithoutOrderInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutUsedOrderInput
   adminSenders?: Prisma.AdminSenderUncheckedCreateNestedManyWithoutOrdersInput
 }
 
@@ -858,6 +1099,8 @@ export type OrderUpdateWithoutOrderItemsInput = {
   payments?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
   shippingInfo?: Prisma.ShippingInfoUpdateOneWithoutOrderNestedInput
   user?: Prisma.UserUpdateOneWithoutOrdersNestedInput
+  createdCertificates?: Prisma.GiftCertificateUpdateManyWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUpdateManyWithoutUsedOrderNestedInput
   adminSenders?: Prisma.AdminSenderUpdateManyWithoutOrdersNestedInput
 }
 
@@ -875,6 +1118,8 @@ export type OrderUncheckedUpdateWithoutOrderItemsInput = {
   deliveryTtn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payments?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
   shippingInfo?: Prisma.ShippingInfoUncheckedUpdateOneWithoutOrderNestedInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutUsedOrderNestedInput
   adminSenders?: Prisma.AdminSenderUncheckedUpdateManyWithoutOrdersNestedInput
 }
 
@@ -892,6 +1137,8 @@ export type OrderCreateWithoutShippingInfoInput = {
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentCreateNestedOneWithoutOrderInput
   user?: Prisma.UserCreateNestedOneWithoutOrdersInput
+  createdCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutUsedOrderInput
   adminSenders?: Prisma.AdminSenderCreateNestedManyWithoutOrdersInput
 }
 
@@ -909,6 +1156,8 @@ export type OrderUncheckedCreateWithoutShippingInfoInput = {
   deliveryTtn?: string | null
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutOrderInput
   payments?: Prisma.PaymentUncheckedCreateNestedOneWithoutOrderInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutUsedOrderInput
   adminSenders?: Prisma.AdminSenderUncheckedCreateNestedManyWithoutOrdersInput
 }
 
@@ -942,6 +1191,8 @@ export type OrderUpdateWithoutShippingInfoInput = {
   orderItems?: Prisma.OrderItemUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
   user?: Prisma.UserUpdateOneWithoutOrdersNestedInput
+  createdCertificates?: Prisma.GiftCertificateUpdateManyWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUpdateManyWithoutUsedOrderNestedInput
   adminSenders?: Prisma.AdminSenderUpdateManyWithoutOrdersNestedInput
 }
 
@@ -959,6 +1210,8 @@ export type OrderUncheckedUpdateWithoutShippingInfoInput = {
   deliveryTtn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutUsedOrderNestedInput
   adminSenders?: Prisma.AdminSenderUncheckedUpdateManyWithoutOrdersNestedInput
 }
 
@@ -976,6 +1229,8 @@ export type OrderCreateWithoutPaymentsInput = {
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutOrderInput
   shippingInfo?: Prisma.ShippingInfoCreateNestedOneWithoutOrderInput
   user?: Prisma.UserCreateNestedOneWithoutOrdersInput
+  createdCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateCreateNestedManyWithoutUsedOrderInput
   adminSenders?: Prisma.AdminSenderCreateNestedManyWithoutOrdersInput
 }
 
@@ -993,6 +1248,8 @@ export type OrderUncheckedCreateWithoutPaymentsInput = {
   deliveryTtn?: string | null
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutOrderInput
   shippingInfo?: Prisma.ShippingInfoUncheckedCreateNestedOneWithoutOrderInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutUsedOrderInput
   adminSenders?: Prisma.AdminSenderUncheckedCreateNestedManyWithoutOrdersInput
 }
 
@@ -1026,6 +1283,8 @@ export type OrderUpdateWithoutPaymentsInput = {
   orderItems?: Prisma.OrderItemUpdateManyWithoutOrderNestedInput
   shippingInfo?: Prisma.ShippingInfoUpdateOneWithoutOrderNestedInput
   user?: Prisma.UserUpdateOneWithoutOrdersNestedInput
+  createdCertificates?: Prisma.GiftCertificateUpdateManyWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUpdateManyWithoutUsedOrderNestedInput
   adminSenders?: Prisma.AdminSenderUpdateManyWithoutOrdersNestedInput
 }
 
@@ -1043,6 +1302,8 @@ export type OrderUncheckedUpdateWithoutPaymentsInput = {
   deliveryTtn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutOrderNestedInput
   shippingInfo?: Prisma.ShippingInfoUncheckedUpdateOneWithoutOrderNestedInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutUsedOrderNestedInput
   adminSenders?: Prisma.AdminSenderUncheckedUpdateManyWithoutOrdersNestedInput
 }
 
@@ -1061,6 +1322,8 @@ export type OrderUpdateWithoutAdminSendersInput = {
   payments?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
   shippingInfo?: Prisma.ShippingInfoUpdateOneWithoutOrderNestedInput
   user?: Prisma.UserUpdateOneWithoutOrdersNestedInput
+  createdCertificates?: Prisma.GiftCertificateUpdateManyWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUpdateManyWithoutUsedOrderNestedInput
 }
 
 export type OrderUncheckedUpdateWithoutAdminSendersInput = {
@@ -1078,6 +1341,8 @@ export type OrderUncheckedUpdateWithoutAdminSendersInput = {
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
   shippingInfo?: Prisma.ShippingInfoUncheckedUpdateOneWithoutOrderNestedInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutUsedOrderNestedInput
 }
 
 export type OrderUncheckedUpdateManyWithoutAdminSendersInput = {
@@ -1121,6 +1386,8 @@ export type OrderUpdateWithoutUserInput = {
   orderItems?: Prisma.OrderItemUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUpdateOneWithoutOrderNestedInput
   shippingInfo?: Prisma.ShippingInfoUpdateOneWithoutOrderNestedInput
+  createdCertificates?: Prisma.GiftCertificateUpdateManyWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUpdateManyWithoutUsedOrderNestedInput
   adminSenders?: Prisma.AdminSenderUpdateManyWithoutOrdersNestedInput
 }
 
@@ -1138,6 +1405,8 @@ export type OrderUncheckedUpdateWithoutUserInput = {
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutOrderNestedInput
   payments?: Prisma.PaymentUncheckedUpdateOneWithoutOrderNestedInput
   shippingInfo?: Prisma.ShippingInfoUncheckedUpdateOneWithoutOrderNestedInput
+  createdCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderNestedInput
+  usedCertificates?: Prisma.GiftCertificateUncheckedUpdateManyWithoutUsedOrderNestedInput
   adminSenders?: Prisma.AdminSenderUncheckedUpdateManyWithoutOrdersNestedInput
 }
 
@@ -1161,11 +1430,15 @@ export type OrderUncheckedUpdateManyWithoutUserInput = {
 
 export type OrderCountOutputType = {
   orderItems: number
+  createdCertificates: number
+  usedCertificates: number
   adminSenders: number
 }
 
 export type OrderCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orderItems?: boolean | OrderCountOutputTypeCountOrderItemsArgs
+  createdCertificates?: boolean | OrderCountOutputTypeCountCreatedCertificatesArgs
+  usedCertificates?: boolean | OrderCountOutputTypeCountUsedCertificatesArgs
   adminSenders?: boolean | OrderCountOutputTypeCountAdminSendersArgs
 }
 
@@ -1184,6 +1457,20 @@ export type OrderCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
  */
 export type OrderCountOutputTypeCountOrderItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.OrderItemWhereInput
+}
+
+/**
+ * OrderCountOutputType without action
+ */
+export type OrderCountOutputTypeCountCreatedCertificatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GiftCertificateWhereInput
+}
+
+/**
+ * OrderCountOutputType without action
+ */
+export type OrderCountOutputTypeCountUsedCertificatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GiftCertificateWhereInput
 }
 
 /**
@@ -1210,6 +1497,8 @@ export type OrderSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   payments?: boolean | Prisma.Order$paymentsArgs<ExtArgs>
   shippingInfo?: boolean | Prisma.Order$shippingInfoArgs<ExtArgs>
   user?: boolean | Prisma.Order$userArgs<ExtArgs>
+  createdCertificates?: boolean | Prisma.Order$createdCertificatesArgs<ExtArgs>
+  usedCertificates?: boolean | Prisma.Order$usedCertificatesArgs<ExtArgs>
   adminSenders?: boolean | Prisma.Order$adminSendersArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["order"]>
@@ -1264,6 +1553,8 @@ export type OrderInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   payments?: boolean | Prisma.Order$paymentsArgs<ExtArgs>
   shippingInfo?: boolean | Prisma.Order$shippingInfoArgs<ExtArgs>
   user?: boolean | Prisma.Order$userArgs<ExtArgs>
+  createdCertificates?: boolean | Prisma.Order$createdCertificatesArgs<ExtArgs>
+  usedCertificates?: boolean | Prisma.Order$usedCertificatesArgs<ExtArgs>
   adminSenders?: boolean | Prisma.Order$adminSendersArgs<ExtArgs>
   _count?: boolean | Prisma.OrderCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1281,6 +1572,8 @@ export type $OrderPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     payments: Prisma.$PaymentPayload<ExtArgs> | null
     shippingInfo: Prisma.$ShippingInfoPayload<ExtArgs> | null
     user: Prisma.$UserPayload<ExtArgs> | null
+    createdCertificates: Prisma.$GiftCertificatePayload<ExtArgs>[]
+    usedCertificates: Prisma.$GiftCertificatePayload<ExtArgs>[]
     adminSenders: Prisma.$AdminSenderPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1693,6 +1986,8 @@ export interface Prisma__OrderClient<T, Null = never, ExtArgs extends runtime.Ty
   payments<T extends Prisma.Order$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$paymentsArgs<ExtArgs>>): Prisma.Prisma__PaymentClient<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   shippingInfo<T extends Prisma.Order$shippingInfoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$shippingInfoArgs<ExtArgs>>): Prisma.Prisma__ShippingInfoClient<runtime.Types.Result.GetResult<Prisma.$ShippingInfoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   user<T extends Prisma.Order$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  createdCertificates<T extends Prisma.Order$createdCertificatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$createdCertificatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GiftCertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  usedCertificates<T extends Prisma.Order$usedCertificatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$usedCertificatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GiftCertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   adminSenders<T extends Prisma.Order$adminSendersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Order$adminSendersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdminSenderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2208,6 +2503,54 @@ export type Order$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Order.createdCertificates
+ */
+export type Order$createdCertificatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GiftCertificate
+   */
+  select?: Prisma.GiftCertificateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GiftCertificate
+   */
+  omit?: Prisma.GiftCertificateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GiftCertificateInclude<ExtArgs> | null
+  where?: Prisma.GiftCertificateWhereInput
+  orderBy?: Prisma.GiftCertificateOrderByWithRelationInput | Prisma.GiftCertificateOrderByWithRelationInput[]
+  cursor?: Prisma.GiftCertificateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GiftCertificateScalarFieldEnum | Prisma.GiftCertificateScalarFieldEnum[]
+}
+
+/**
+ * Order.usedCertificates
+ */
+export type Order$usedCertificatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GiftCertificate
+   */
+  select?: Prisma.GiftCertificateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GiftCertificate
+   */
+  omit?: Prisma.GiftCertificateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GiftCertificateInclude<ExtArgs> | null
+  where?: Prisma.GiftCertificateWhereInput
+  orderBy?: Prisma.GiftCertificateOrderByWithRelationInput | Prisma.GiftCertificateOrderByWithRelationInput[]
+  cursor?: Prisma.GiftCertificateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GiftCertificateScalarFieldEnum | Prisma.GiftCertificateScalarFieldEnum[]
 }
 
 /**
