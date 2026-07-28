@@ -100,6 +100,11 @@ export type PopularProduct = Prisma.PopularProductModel
  */
 export type PromotedProduct = Prisma.PromotedProductModel
 /**
+ * Model GiftCertificate
+ * 
+ */
+export type GiftCertificate = Prisma.GiftCertificateModel
+/**
  * Model User
  * 
  */

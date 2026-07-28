@@ -100,6 +100,7 @@ model Product {
   productSize      String?
   productPrice     Float
   stockReserved    Int?                 @default(0)
+  isCertificate    Boolean              @default(false)
   orderItems       OrderItem[]
   popularProducts  PopularProduct[]
   category         Category             @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -107,6 +108,7 @@ model Product {
   options          ProductOptions[]
   translations     ProductTranslation[]
   promotedProducts PromotedProduct[]
+  productType      ProductType          @default(PRODUCT)
 
   @@index([categoryId])
   @@index([productSize])
@@ -175,6 +177,26 @@ model PromotedProduct {
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
+model GiftCertificate {
+  id        String @id @default(uuid())
+
+  code      String @unique
+
+  amount    Float
+
+  status    CertificateStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+
+  usedAt    DateTime?
+
+  orderId   String
+  order     Order @relation( "CertificateCreatedOrder", fields: [orderId], references: [id])
+
+  usedOrderId String?
+  usedOrder   Order? @relation( "CertificateUsedOrder", fields: [usedOrderId], references: [id])
+}
+
 model User {
   id             Int            @id @default(autoincrement())
   fullName       String?        @unique
@@ -241,6 +263,8 @@ model Order {
   payments      Payment?
   shippingInfo  ShippingInfo?
   user          User?         @relation(fields: [userId], references: [id], map: "Order_userId_fkey")
+  createdCertificates GiftCertificate[] @relation("CertificateCreatedOrder")
+  usedCertificates    GiftCertificate[] @relation("CertificateUsedOrder")
 
   deliveryTtn   String?
 
@@ -357,4 +381,14 @@ enum PaymentStatus {
   PENDING
   SUCCESS
   FAILED
+}
+
+enum ProductType {
+  PRODUCT
+  CERTIFICATE
+}
+
+enum CertificateStatus {
+  ACTIVE
+  USED
 }

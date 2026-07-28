@@ -57,6 +57,8 @@ export type ProductMinAggregateOutputType = {
   productSize: string | null
   productPrice: number | null
   stockReserved: number | null
+  isCertificate: boolean | null
+  productType: $Enums.ProductType | null
 }
 
 export type ProductMaxAggregateOutputType = {
@@ -70,6 +72,8 @@ export type ProductMaxAggregateOutputType = {
   productSize: string | null
   productPrice: number | null
   stockReserved: number | null
+  isCertificate: boolean | null
+  productType: $Enums.ProductType | null
 }
 
 export type ProductCountAggregateOutputType = {
@@ -83,6 +87,8 @@ export type ProductCountAggregateOutputType = {
   productSize: number
   productPrice: number
   stockReserved: number
+  isCertificate: number
+  productType: number
   _all: number
 }
 
@@ -118,6 +124,8 @@ export type ProductMinAggregateInputType = {
   productSize?: true
   productPrice?: true
   stockReserved?: true
+  isCertificate?: true
+  productType?: true
 }
 
 export type ProductMaxAggregateInputType = {
@@ -131,6 +139,8 @@ export type ProductMaxAggregateInputType = {
   productSize?: true
   productPrice?: true
   stockReserved?: true
+  isCertificate?: true
+  productType?: true
 }
 
 export type ProductCountAggregateInputType = {
@@ -144,6 +154,8 @@ export type ProductCountAggregateInputType = {
   productSize?: true
   productPrice?: true
   stockReserved?: true
+  isCertificate?: true
+  productType?: true
   _all?: true
 }
 
@@ -244,6 +256,8 @@ export type ProductGroupByOutputType = {
   productSize: string | null
   productPrice: number
   stockReserved: number | null
+  isCertificate: boolean
+  productType: $Enums.ProductType
   _count: ProductCountAggregateOutputType | null
   _avg: ProductAvgAggregateOutputType | null
   _sum: ProductSumAggregateOutputType | null
@@ -280,6 +294,8 @@ export type ProductWhereInput = {
   productSize?: Prisma.StringNullableFilter<"Product"> | string | null
   productPrice?: Prisma.FloatFilter<"Product"> | number
   stockReserved?: Prisma.IntNullableFilter<"Product"> | number | null
+  isCertificate?: Prisma.BoolFilter<"Product"> | boolean
+  productType?: Prisma.EnumProductTypeFilter<"Product"> | $Enums.ProductType
   orderItems?: Prisma.OrderItemListRelationFilter
   popularProducts?: Prisma.PopularProductListRelationFilter
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
@@ -300,6 +316,8 @@ export type ProductOrderByWithRelationInput = {
   productSize?: Prisma.SortOrderInput | Prisma.SortOrder
   productPrice?: Prisma.SortOrder
   stockReserved?: Prisma.SortOrderInput | Prisma.SortOrder
+  isCertificate?: Prisma.SortOrder
+  productType?: Prisma.SortOrder
   orderItems?: Prisma.OrderItemOrderByRelationAggregateInput
   popularProducts?: Prisma.PopularProductOrderByRelationAggregateInput
   category?: Prisma.CategoryOrderByWithRelationInput
@@ -323,6 +341,8 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   productSize?: Prisma.StringNullableFilter<"Product"> | string | null
   productPrice?: Prisma.FloatFilter<"Product"> | number
   stockReserved?: Prisma.IntNullableFilter<"Product"> | number | null
+  isCertificate?: Prisma.BoolFilter<"Product"> | boolean
+  productType?: Prisma.EnumProductTypeFilter<"Product"> | $Enums.ProductType
   orderItems?: Prisma.OrderItemListRelationFilter
   popularProducts?: Prisma.PopularProductListRelationFilter
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
@@ -343,6 +363,8 @@ export type ProductOrderByWithAggregationInput = {
   productSize?: Prisma.SortOrderInput | Prisma.SortOrder
   productPrice?: Prisma.SortOrder
   stockReserved?: Prisma.SortOrderInput | Prisma.SortOrder
+  isCertificate?: Prisma.SortOrder
+  productType?: Prisma.SortOrder
   _count?: Prisma.ProductCountOrderByAggregateInput
   _avg?: Prisma.ProductAvgOrderByAggregateInput
   _max?: Prisma.ProductMaxOrderByAggregateInput
@@ -364,6 +386,8 @@ export type ProductScalarWhereWithAggregatesInput = {
   productSize?: Prisma.StringNullableWithAggregatesFilter<"Product"> | string | null
   productPrice?: Prisma.FloatWithAggregatesFilter<"Product"> | number
   stockReserved?: Prisma.IntNullableWithAggregatesFilter<"Product"> | number | null
+  isCertificate?: Prisma.BoolWithAggregatesFilter<"Product"> | boolean
+  productType?: Prisma.EnumProductTypeWithAggregatesFilter<"Product"> | $Enums.ProductType
 }
 
 export type ProductCreateInput = {
@@ -375,6 +399,8 @@ export type ProductCreateInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
@@ -395,6 +421,8 @@ export type ProductUncheckedCreateInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
@@ -412,6 +440,8 @@ export type ProductUpdateInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
@@ -432,6 +462,8 @@ export type ProductUncheckedUpdateInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
@@ -451,6 +483,8 @@ export type ProductCreateManyInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
 }
 
 export type ProductUpdateManyMutationInput = {
@@ -462,6 +496,8 @@ export type ProductUpdateManyMutationInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
 }
 
 export type ProductUncheckedUpdateManyInput = {
@@ -475,6 +511,8 @@ export type ProductUncheckedUpdateManyInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
 }
 
 export type ProductListRelationFilter = {
@@ -498,6 +536,8 @@ export type ProductCountOrderByAggregateInput = {
   productSize?: Prisma.SortOrder
   productPrice?: Prisma.SortOrder
   stockReserved?: Prisma.SortOrder
+  isCertificate?: Prisma.SortOrder
+  productType?: Prisma.SortOrder
 }
 
 export type ProductAvgOrderByAggregateInput = {
@@ -521,6 +561,8 @@ export type ProductMaxOrderByAggregateInput = {
   productSize?: Prisma.SortOrder
   productPrice?: Prisma.SortOrder
   stockReserved?: Prisma.SortOrder
+  isCertificate?: Prisma.SortOrder
+  productType?: Prisma.SortOrder
 }
 
 export type ProductMinOrderByAggregateInput = {
@@ -534,6 +576,8 @@ export type ProductMinOrderByAggregateInput = {
   productSize?: Prisma.SortOrder
   productPrice?: Prisma.SortOrder
   stockReserved?: Prisma.SortOrder
+  isCertificate?: Prisma.SortOrder
+  productType?: Prisma.SortOrder
 }
 
 export type ProductSumOrderByAggregateInput = {
@@ -599,6 +643,10 @@ export type FloatFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type EnumProductTypeFieldUpdateOperationsInput = {
+  set?: $Enums.ProductType
 }
 
 export type ProductCreateNestedOneWithoutOptionsInput = {
@@ -694,6 +742,8 @@ export type ProductCreateWithoutCategoryInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgCreateNestedManyWithoutProductInput
@@ -712,6 +762,8 @@ export type ProductUncheckedCreateWithoutCategoryInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
@@ -760,6 +812,8 @@ export type ProductScalarWhereInput = {
   productSize?: Prisma.StringNullableFilter<"Product"> | string | null
   productPrice?: Prisma.FloatFilter<"Product"> | number
   stockReserved?: Prisma.IntNullableFilter<"Product"> | number | null
+  isCertificate?: Prisma.BoolFilter<"Product"> | boolean
+  productType?: Prisma.EnumProductTypeFilter<"Product"> | $Enums.ProductType
 }
 
 export type ProductCreateWithoutOptionsInput = {
@@ -771,6 +825,8 @@ export type ProductCreateWithoutOptionsInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
@@ -790,6 +846,8 @@ export type ProductUncheckedCreateWithoutOptionsInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
@@ -822,6 +880,8 @@ export type ProductUpdateWithoutOptionsInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
@@ -841,6 +901,8 @@ export type ProductUncheckedUpdateWithoutOptionsInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
@@ -857,6 +919,8 @@ export type ProductCreateWithoutImgInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
@@ -876,6 +940,8 @@ export type ProductUncheckedCreateWithoutImgInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   options?: Prisma.ProductOptionsUncheckedCreateNestedManyWithoutProductInput
@@ -908,6 +974,8 @@ export type ProductUpdateWithoutImgInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
@@ -927,6 +995,8 @@ export type ProductUncheckedUpdateWithoutImgInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   options?: Prisma.ProductOptionsUncheckedUpdateManyWithoutProductNestedInput
@@ -943,6 +1013,8 @@ export type ProductCreateWithoutTranslationsInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
@@ -962,6 +1034,8 @@ export type ProductUncheckedCreateWithoutTranslationsInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
@@ -994,6 +1068,8 @@ export type ProductUpdateWithoutTranslationsInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
@@ -1013,6 +1089,8 @@ export type ProductUncheckedUpdateWithoutTranslationsInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
@@ -1029,6 +1107,8 @@ export type ProductCreateWithoutPopularProductsInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
   img?: Prisma.ProductImgCreateNestedManyWithoutProductInput
@@ -1048,6 +1128,8 @@ export type ProductUncheckedCreateWithoutPopularProductsInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
   options?: Prisma.ProductOptionsUncheckedCreateNestedManyWithoutProductInput
@@ -1080,6 +1162,8 @@ export type ProductUpdateWithoutPopularProductsInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
   img?: Prisma.ProductImgUpdateManyWithoutProductNestedInput
@@ -1099,6 +1183,8 @@ export type ProductUncheckedUpdateWithoutPopularProductsInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
   options?: Prisma.ProductOptionsUncheckedUpdateManyWithoutProductNestedInput
@@ -1115,6 +1201,8 @@ export type ProductCreateWithoutPromotedProductsInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
@@ -1134,6 +1222,8 @@ export type ProductUncheckedCreateWithoutPromotedProductsInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
@@ -1166,6 +1256,8 @@ export type ProductUpdateWithoutPromotedProductsInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
@@ -1185,6 +1277,8 @@ export type ProductUncheckedUpdateWithoutPromotedProductsInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
@@ -1201,6 +1295,8 @@ export type ProductCreateWithoutOrderItemsInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
   img?: Prisma.ProductImgCreateNestedManyWithoutProductInput
@@ -1220,6 +1316,8 @@ export type ProductUncheckedCreateWithoutOrderItemsInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
   options?: Prisma.ProductOptionsUncheckedCreateNestedManyWithoutProductInput
@@ -1252,6 +1350,8 @@ export type ProductUpdateWithoutOrderItemsInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
   img?: Prisma.ProductImgUpdateManyWithoutProductNestedInput
@@ -1271,6 +1371,8 @@ export type ProductUncheckedUpdateWithoutOrderItemsInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
   options?: Prisma.ProductOptionsUncheckedUpdateManyWithoutProductNestedInput
@@ -1288,6 +1390,8 @@ export type ProductCreateManyCategoryInput = {
   productSize?: string | null
   productPrice: number
   stockReserved?: number | null
+  isCertificate?: boolean
+  productType?: $Enums.ProductType
 }
 
 export type ProductUpdateWithoutCategoryInput = {
@@ -1299,6 +1403,8 @@ export type ProductUpdateWithoutCategoryInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUpdateManyWithoutProductNestedInput
@@ -1317,6 +1423,8 @@ export type ProductUncheckedUpdateWithoutCategoryInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
@@ -1335,6 +1443,8 @@ export type ProductUncheckedUpdateManyWithoutCategoryInput = {
   productSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productPrice?: Prisma.FloatFieldUpdateOperationsInput | number
   stockReserved?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
 }
 
 
@@ -1424,6 +1534,8 @@ export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   productSize?: boolean
   productPrice?: boolean
   stockReserved?: boolean
+  isCertificate?: boolean
+  productType?: boolean
   orderItems?: boolean | Prisma.Product$orderItemsArgs<ExtArgs>
   popularProducts?: boolean | Prisma.Product$popularProductsArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -1445,6 +1557,8 @@ export type ProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   productSize?: boolean
   productPrice?: boolean
   stockReserved?: boolean
+  isCertificate?: boolean
+  productType?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["product"]>
 
@@ -1459,6 +1573,8 @@ export type ProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   productSize?: boolean
   productPrice?: boolean
   stockReserved?: boolean
+  isCertificate?: boolean
+  productType?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["product"]>
 
@@ -1473,9 +1589,11 @@ export type ProductSelectScalar = {
   productSize?: boolean
   productPrice?: boolean
   stockReserved?: boolean
+  isCertificate?: boolean
+  productType?: boolean
 }
 
-export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "categoryId" | "visible" | "stockState" | "listPosition" | "stockValue" | "discountPercent" | "productSize" | "productPrice" | "stockReserved", ExtArgs["result"]["product"]>
+export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "categoryId" | "visible" | "stockState" | "listPosition" | "stockValue" | "discountPercent" | "productSize" | "productPrice" | "stockReserved" | "isCertificate" | "productType", ExtArgs["result"]["product"]>
 export type ProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orderItems?: boolean | Prisma.Product$orderItemsArgs<ExtArgs>
   popularProducts?: boolean | Prisma.Product$popularProductsArgs<ExtArgs>
@@ -1515,6 +1633,8 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     productSize: string | null
     productPrice: number
     stockReserved: number | null
+    isCertificate: boolean
+    productType: $Enums.ProductType
   }, ExtArgs["result"]["product"]>
   composites: {}
 }
@@ -1955,6 +2075,8 @@ export interface ProductFieldRefs {
   readonly productSize: Prisma.FieldRef<"Product", 'String'>
   readonly productPrice: Prisma.FieldRef<"Product", 'Float'>
   readonly stockReserved: Prisma.FieldRef<"Product", 'Int'>
+  readonly isCertificate: Prisma.FieldRef<"Product", 'Boolean'>
+  readonly productType: Prisma.FieldRef<"Product", 'ProductType'>
 }
     
 
