@@ -63,6 +63,7 @@ export type ProductType = (typeof ProductType)[keyof typeof ProductType]
 
 export const CertificateStatus = {
   ACTIVE: 'ACTIVE',
+  RESERVED: 'RESERVED',
   USED: 'USED'
 } as const
 
@@ -77,6 +78,14 @@ export const TagGenderType = {
 } as const
 
 export type TagGenderType = (typeof TagGenderType)[keyof typeof TagGenderType]
+
+
+export const PaymentType = {
+  ORDER: 'ORDER',
+  CERTIFICATE_SURCHARGE: 'CERTIFICATE_SURCHARGE'
+} as const
+
+export type PaymentType = (typeof PaymentType)[keyof typeof PaymentType]
 
 
 export const ProductTag = {

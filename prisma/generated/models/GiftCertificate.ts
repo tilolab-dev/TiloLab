@@ -28,10 +28,12 @@ export type AggregateGiftCertificate = {
 
 export type GiftCertificateAvgAggregateOutputType = {
   amount: number | null
+  orderItemId: number | null
 }
 
 export type GiftCertificateSumAggregateOutputType = {
   amount: number | null
+  orderItemId: number | null
 }
 
 export type GiftCertificateMinAggregateOutputType = {
@@ -41,7 +43,10 @@ export type GiftCertificateMinAggregateOutputType = {
   status: $Enums.CertificateStatus | null
   createdAt: Date | null
   usedAt: Date | null
+  reservedAt: Date | null
+  reservedUntil: Date | null
   orderId: string | null
+  orderItemId: number | null
   usedOrderId: string | null
 }
 
@@ -52,7 +57,10 @@ export type GiftCertificateMaxAggregateOutputType = {
   status: $Enums.CertificateStatus | null
   createdAt: Date | null
   usedAt: Date | null
+  reservedAt: Date | null
+  reservedUntil: Date | null
   orderId: string | null
+  orderItemId: number | null
   usedOrderId: string | null
 }
 
@@ -63,7 +71,10 @@ export type GiftCertificateCountAggregateOutputType = {
   status: number
   createdAt: number
   usedAt: number
+  reservedAt: number
+  reservedUntil: number
   orderId: number
+  orderItemId: number
   usedOrderId: number
   _all: number
 }
@@ -71,10 +82,12 @@ export type GiftCertificateCountAggregateOutputType = {
 
 export type GiftCertificateAvgAggregateInputType = {
   amount?: true
+  orderItemId?: true
 }
 
 export type GiftCertificateSumAggregateInputType = {
   amount?: true
+  orderItemId?: true
 }
 
 export type GiftCertificateMinAggregateInputType = {
@@ -84,7 +97,10 @@ export type GiftCertificateMinAggregateInputType = {
   status?: true
   createdAt?: true
   usedAt?: true
+  reservedAt?: true
+  reservedUntil?: true
   orderId?: true
+  orderItemId?: true
   usedOrderId?: true
 }
 
@@ -95,7 +111,10 @@ export type GiftCertificateMaxAggregateInputType = {
   status?: true
   createdAt?: true
   usedAt?: true
+  reservedAt?: true
+  reservedUntil?: true
   orderId?: true
+  orderItemId?: true
   usedOrderId?: true
 }
 
@@ -106,7 +125,10 @@ export type GiftCertificateCountAggregateInputType = {
   status?: true
   createdAt?: true
   usedAt?: true
+  reservedAt?: true
+  reservedUntil?: true
   orderId?: true
+  orderItemId?: true
   usedOrderId?: true
   _all?: true
 }
@@ -204,7 +226,10 @@ export type GiftCertificateGroupByOutputType = {
   status: $Enums.CertificateStatus
   createdAt: Date
   usedAt: Date | null
+  reservedAt: Date | null
+  reservedUntil: Date | null
   orderId: string
+  orderItemId: number
   usedOrderId: string | null
   _count: GiftCertificateCountAggregateOutputType | null
   _avg: GiftCertificateAvgAggregateOutputType | null
@@ -238,10 +263,15 @@ export type GiftCertificateWhereInput = {
   status?: Prisma.EnumCertificateStatusFilter<"GiftCertificate"> | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFilter<"GiftCertificate"> | Date | string
   usedAt?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
+  reservedAt?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
+  reservedUntil?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
   orderId?: Prisma.StringFilter<"GiftCertificate"> | string
+  orderItemId?: Prisma.IntFilter<"GiftCertificate"> | number
   usedOrderId?: Prisma.StringNullableFilter<"GiftCertificate"> | string | null
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
+  orderItem?: Prisma.XOR<Prisma.OrderItemNullableScalarRelationFilter, Prisma.OrderItemWhereInput> | null
   usedOrder?: Prisma.XOR<Prisma.OrderNullableScalarRelationFilter, Prisma.OrderWhereInput> | null
+  payments?: Prisma.PaymentListRelationFilter
 }
 
 export type GiftCertificateOrderByWithRelationInput = {
@@ -251,10 +281,15 @@ export type GiftCertificateOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   usedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reservedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reservedUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   orderId?: Prisma.SortOrder
+  orderItemId?: Prisma.SortOrder
   usedOrderId?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.OrderOrderByWithRelationInput
+  orderItem?: Prisma.OrderItemOrderByWithRelationInput
   usedOrder?: Prisma.OrderOrderByWithRelationInput
+  payments?: Prisma.PaymentOrderByRelationAggregateInput
 }
 
 export type GiftCertificateWhereUniqueInput = Prisma.AtLeast<{
@@ -267,10 +302,15 @@ export type GiftCertificateWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumCertificateStatusFilter<"GiftCertificate"> | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFilter<"GiftCertificate"> | Date | string
   usedAt?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
+  reservedAt?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
+  reservedUntil?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
   orderId?: Prisma.StringFilter<"GiftCertificate"> | string
+  orderItemId?: Prisma.IntFilter<"GiftCertificate"> | number
   usedOrderId?: Prisma.StringNullableFilter<"GiftCertificate"> | string | null
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
+  orderItem?: Prisma.XOR<Prisma.OrderItemNullableScalarRelationFilter, Prisma.OrderItemWhereInput> | null
   usedOrder?: Prisma.XOR<Prisma.OrderNullableScalarRelationFilter, Prisma.OrderWhereInput> | null
+  payments?: Prisma.PaymentListRelationFilter
 }, "id" | "code">
 
 export type GiftCertificateOrderByWithAggregationInput = {
@@ -280,7 +320,10 @@ export type GiftCertificateOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   usedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reservedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reservedUntil?: Prisma.SortOrderInput | Prisma.SortOrder
   orderId?: Prisma.SortOrder
+  orderItemId?: Prisma.SortOrder
   usedOrderId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.GiftCertificateCountOrderByAggregateInput
   _avg?: Prisma.GiftCertificateAvgOrderByAggregateInput
@@ -299,7 +342,10 @@ export type GiftCertificateScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumCertificateStatusWithAggregatesFilter<"GiftCertificate"> | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"GiftCertificate"> | Date | string
   usedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"GiftCertificate"> | Date | string | null
+  reservedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"GiftCertificate"> | Date | string | null
+  reservedUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"GiftCertificate"> | Date | string | null
   orderId?: Prisma.StringWithAggregatesFilter<"GiftCertificate"> | string
+  orderItemId?: Prisma.IntWithAggregatesFilter<"GiftCertificate"> | number
   usedOrderId?: Prisma.StringNullableWithAggregatesFilter<"GiftCertificate"> | string | null
 }
 
@@ -310,8 +356,12 @@ export type GiftCertificateCreateInput = {
   status?: $Enums.CertificateStatus
   createdAt?: Date | string
   usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
   order: Prisma.OrderCreateNestedOneWithoutCreatedCertificatesInput
+  orderItem?: Prisma.OrderItemCreateNestedOneWithoutGiftCertificateInput
   usedOrder?: Prisma.OrderCreateNestedOneWithoutUsedCertificatesInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCertificateInput
 }
 
 export type GiftCertificateUncheckedCreateInput = {
@@ -321,8 +371,12 @@ export type GiftCertificateUncheckedCreateInput = {
   status?: $Enums.CertificateStatus
   createdAt?: Date | string
   usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
   orderId: string
+  orderItemId: number
   usedOrderId?: string | null
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCertificateInput
 }
 
 export type GiftCertificateUpdateInput = {
@@ -332,8 +386,12 @@ export type GiftCertificateUpdateInput = {
   status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   order?: Prisma.OrderUpdateOneRequiredWithoutCreatedCertificatesNestedInput
+  orderItem?: Prisma.OrderItemUpdateOneWithoutGiftCertificateNestedInput
   usedOrder?: Prisma.OrderUpdateOneWithoutUsedCertificatesNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCertificateNestedInput
 }
 
 export type GiftCertificateUncheckedUpdateInput = {
@@ -343,8 +401,12 @@ export type GiftCertificateUncheckedUpdateInput = {
   status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
   usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCertificateNestedInput
 }
 
 export type GiftCertificateCreateManyInput = {
@@ -354,7 +416,10 @@ export type GiftCertificateCreateManyInput = {
   status?: $Enums.CertificateStatus
   createdAt?: Date | string
   usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
   orderId: string
+  orderItemId: number
   usedOrderId?: string | null
 }
 
@@ -365,6 +430,8 @@ export type GiftCertificateUpdateManyMutationInput = {
   status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type GiftCertificateUncheckedUpdateManyInput = {
@@ -374,7 +441,10 @@ export type GiftCertificateUncheckedUpdateManyInput = {
   status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
   usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -385,12 +455,16 @@ export type GiftCertificateCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   usedAt?: Prisma.SortOrder
+  reservedAt?: Prisma.SortOrder
+  reservedUntil?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
+  orderItemId?: Prisma.SortOrder
   usedOrderId?: Prisma.SortOrder
 }
 
 export type GiftCertificateAvgOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+  orderItemId?: Prisma.SortOrder
 }
 
 export type GiftCertificateMaxOrderByAggregateInput = {
@@ -400,7 +474,10 @@ export type GiftCertificateMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   usedAt?: Prisma.SortOrder
+  reservedAt?: Prisma.SortOrder
+  reservedUntil?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
+  orderItemId?: Prisma.SortOrder
   usedOrderId?: Prisma.SortOrder
 }
 
@@ -411,12 +488,16 @@ export type GiftCertificateMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   usedAt?: Prisma.SortOrder
+  reservedAt?: Prisma.SortOrder
+  reservedUntil?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
+  orderItemId?: Prisma.SortOrder
   usedOrderId?: Prisma.SortOrder
 }
 
 export type GiftCertificateSumOrderByAggregateInput = {
   amount?: Prisma.SortOrder
+  orderItemId?: Prisma.SortOrder
 }
 
 export type GiftCertificateListRelationFilter = {
@@ -427,6 +508,11 @@ export type GiftCertificateListRelationFilter = {
 
 export type GiftCertificateOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type GiftCertificateNullableScalarRelationFilter = {
+  is?: Prisma.GiftCertificateWhereInput | null
+  isNot?: Prisma.GiftCertificateWhereInput | null
 }
 
 export type EnumCertificateStatusFieldUpdateOperationsInput = {
@@ -521,6 +607,64 @@ export type GiftCertificateUncheckedUpdateManyWithoutUsedOrderNestedInput = {
   deleteMany?: Prisma.GiftCertificateScalarWhereInput | Prisma.GiftCertificateScalarWhereInput[]
 }
 
+export type GiftCertificateCreateNestedManyWithoutOrderItemInput = {
+  create?: Prisma.XOR<Prisma.GiftCertificateCreateWithoutOrderItemInput, Prisma.GiftCertificateUncheckedCreateWithoutOrderItemInput> | Prisma.GiftCertificateCreateWithoutOrderItemInput[] | Prisma.GiftCertificateUncheckedCreateWithoutOrderItemInput[]
+  connectOrCreate?: Prisma.GiftCertificateCreateOrConnectWithoutOrderItemInput | Prisma.GiftCertificateCreateOrConnectWithoutOrderItemInput[]
+  createMany?: Prisma.GiftCertificateCreateManyOrderItemInputEnvelope
+  connect?: Prisma.GiftCertificateWhereUniqueInput | Prisma.GiftCertificateWhereUniqueInput[]
+}
+
+export type GiftCertificateUncheckedCreateNestedManyWithoutOrderItemInput = {
+  create?: Prisma.XOR<Prisma.GiftCertificateCreateWithoutOrderItemInput, Prisma.GiftCertificateUncheckedCreateWithoutOrderItemInput> | Prisma.GiftCertificateCreateWithoutOrderItemInput[] | Prisma.GiftCertificateUncheckedCreateWithoutOrderItemInput[]
+  connectOrCreate?: Prisma.GiftCertificateCreateOrConnectWithoutOrderItemInput | Prisma.GiftCertificateCreateOrConnectWithoutOrderItemInput[]
+  createMany?: Prisma.GiftCertificateCreateManyOrderItemInputEnvelope
+  connect?: Prisma.GiftCertificateWhereUniqueInput | Prisma.GiftCertificateWhereUniqueInput[]
+}
+
+export type GiftCertificateUpdateManyWithoutOrderItemNestedInput = {
+  create?: Prisma.XOR<Prisma.GiftCertificateCreateWithoutOrderItemInput, Prisma.GiftCertificateUncheckedCreateWithoutOrderItemInput> | Prisma.GiftCertificateCreateWithoutOrderItemInput[] | Prisma.GiftCertificateUncheckedCreateWithoutOrderItemInput[]
+  connectOrCreate?: Prisma.GiftCertificateCreateOrConnectWithoutOrderItemInput | Prisma.GiftCertificateCreateOrConnectWithoutOrderItemInput[]
+  upsert?: Prisma.GiftCertificateUpsertWithWhereUniqueWithoutOrderItemInput | Prisma.GiftCertificateUpsertWithWhereUniqueWithoutOrderItemInput[]
+  createMany?: Prisma.GiftCertificateCreateManyOrderItemInputEnvelope
+  set?: Prisma.GiftCertificateWhereUniqueInput | Prisma.GiftCertificateWhereUniqueInput[]
+  disconnect?: Prisma.GiftCertificateWhereUniqueInput | Prisma.GiftCertificateWhereUniqueInput[]
+  delete?: Prisma.GiftCertificateWhereUniqueInput | Prisma.GiftCertificateWhereUniqueInput[]
+  connect?: Prisma.GiftCertificateWhereUniqueInput | Prisma.GiftCertificateWhereUniqueInput[]
+  update?: Prisma.GiftCertificateUpdateWithWhereUniqueWithoutOrderItemInput | Prisma.GiftCertificateUpdateWithWhereUniqueWithoutOrderItemInput[]
+  updateMany?: Prisma.GiftCertificateUpdateManyWithWhereWithoutOrderItemInput | Prisma.GiftCertificateUpdateManyWithWhereWithoutOrderItemInput[]
+  deleteMany?: Prisma.GiftCertificateScalarWhereInput | Prisma.GiftCertificateScalarWhereInput[]
+}
+
+export type GiftCertificateUncheckedUpdateManyWithoutOrderItemNestedInput = {
+  create?: Prisma.XOR<Prisma.GiftCertificateCreateWithoutOrderItemInput, Prisma.GiftCertificateUncheckedCreateWithoutOrderItemInput> | Prisma.GiftCertificateCreateWithoutOrderItemInput[] | Prisma.GiftCertificateUncheckedCreateWithoutOrderItemInput[]
+  connectOrCreate?: Prisma.GiftCertificateCreateOrConnectWithoutOrderItemInput | Prisma.GiftCertificateCreateOrConnectWithoutOrderItemInput[]
+  upsert?: Prisma.GiftCertificateUpsertWithWhereUniqueWithoutOrderItemInput | Prisma.GiftCertificateUpsertWithWhereUniqueWithoutOrderItemInput[]
+  createMany?: Prisma.GiftCertificateCreateManyOrderItemInputEnvelope
+  set?: Prisma.GiftCertificateWhereUniqueInput | Prisma.GiftCertificateWhereUniqueInput[]
+  disconnect?: Prisma.GiftCertificateWhereUniqueInput | Prisma.GiftCertificateWhereUniqueInput[]
+  delete?: Prisma.GiftCertificateWhereUniqueInput | Prisma.GiftCertificateWhereUniqueInput[]
+  connect?: Prisma.GiftCertificateWhereUniqueInput | Prisma.GiftCertificateWhereUniqueInput[]
+  update?: Prisma.GiftCertificateUpdateWithWhereUniqueWithoutOrderItemInput | Prisma.GiftCertificateUpdateWithWhereUniqueWithoutOrderItemInput[]
+  updateMany?: Prisma.GiftCertificateUpdateManyWithWhereWithoutOrderItemInput | Prisma.GiftCertificateUpdateManyWithWhereWithoutOrderItemInput[]
+  deleteMany?: Prisma.GiftCertificateScalarWhereInput | Prisma.GiftCertificateScalarWhereInput[]
+}
+
+export type GiftCertificateCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.GiftCertificateCreateWithoutPaymentsInput, Prisma.GiftCertificateUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.GiftCertificateCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.GiftCertificateWhereUniqueInput
+}
+
+export type GiftCertificateUpdateOneWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.GiftCertificateCreateWithoutPaymentsInput, Prisma.GiftCertificateUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.GiftCertificateCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.GiftCertificateUpsertWithoutPaymentsInput
+  disconnect?: Prisma.GiftCertificateWhereInput | boolean
+  delete?: Prisma.GiftCertificateWhereInput | boolean
+  connect?: Prisma.GiftCertificateWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.GiftCertificateUpdateToOneWithWhereWithoutPaymentsInput, Prisma.GiftCertificateUpdateWithoutPaymentsInput>, Prisma.GiftCertificateUncheckedUpdateWithoutPaymentsInput>
+}
+
 export type GiftCertificateCreateWithoutOrderInput = {
   id?: string
   code: string
@@ -528,7 +672,11 @@ export type GiftCertificateCreateWithoutOrderInput = {
   status?: $Enums.CertificateStatus
   createdAt?: Date | string
   usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
+  orderItem?: Prisma.OrderItemCreateNestedOneWithoutGiftCertificateInput
   usedOrder?: Prisma.OrderCreateNestedOneWithoutUsedCertificatesInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCertificateInput
 }
 
 export type GiftCertificateUncheckedCreateWithoutOrderInput = {
@@ -538,7 +686,11 @@ export type GiftCertificateUncheckedCreateWithoutOrderInput = {
   status?: $Enums.CertificateStatus
   createdAt?: Date | string
   usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
+  orderItemId: number
   usedOrderId?: string | null
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCertificateInput
 }
 
 export type GiftCertificateCreateOrConnectWithoutOrderInput = {
@@ -558,7 +710,11 @@ export type GiftCertificateCreateWithoutUsedOrderInput = {
   status?: $Enums.CertificateStatus
   createdAt?: Date | string
   usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
   order: Prisma.OrderCreateNestedOneWithoutCreatedCertificatesInput
+  orderItem?: Prisma.OrderItemCreateNestedOneWithoutGiftCertificateInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCertificateInput
 }
 
 export type GiftCertificateUncheckedCreateWithoutUsedOrderInput = {
@@ -568,7 +724,11 @@ export type GiftCertificateUncheckedCreateWithoutUsedOrderInput = {
   status?: $Enums.CertificateStatus
   createdAt?: Date | string
   usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
   orderId: string
+  orderItemId: number
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCertificateInput
 }
 
 export type GiftCertificateCreateOrConnectWithoutUsedOrderInput = {
@@ -607,7 +767,10 @@ export type GiftCertificateScalarWhereInput = {
   status?: Prisma.EnumCertificateStatusFilter<"GiftCertificate"> | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFilter<"GiftCertificate"> | Date | string
   usedAt?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
+  reservedAt?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
+  reservedUntil?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
   orderId?: Prisma.StringFilter<"GiftCertificate"> | string
+  orderItemId?: Prisma.IntFilter<"GiftCertificate"> | number
   usedOrderId?: Prisma.StringNullableFilter<"GiftCertificate"> | string | null
 }
 
@@ -627,6 +790,132 @@ export type GiftCertificateUpdateManyWithWhereWithoutUsedOrderInput = {
   data: Prisma.XOR<Prisma.GiftCertificateUpdateManyMutationInput, Prisma.GiftCertificateUncheckedUpdateManyWithoutUsedOrderInput>
 }
 
+export type GiftCertificateCreateWithoutOrderItemInput = {
+  id?: string
+  code: string
+  amount: number
+  status?: $Enums.CertificateStatus
+  createdAt?: Date | string
+  usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
+  order: Prisma.OrderCreateNestedOneWithoutCreatedCertificatesInput
+  usedOrder?: Prisma.OrderCreateNestedOneWithoutUsedCertificatesInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutCertificateInput
+}
+
+export type GiftCertificateUncheckedCreateWithoutOrderItemInput = {
+  id?: string
+  code: string
+  amount: number
+  status?: $Enums.CertificateStatus
+  createdAt?: Date | string
+  usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
+  orderId: string
+  usedOrderId?: string | null
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCertificateInput
+}
+
+export type GiftCertificateCreateOrConnectWithoutOrderItemInput = {
+  where: Prisma.GiftCertificateWhereUniqueInput
+  create: Prisma.XOR<Prisma.GiftCertificateCreateWithoutOrderItemInput, Prisma.GiftCertificateUncheckedCreateWithoutOrderItemInput>
+}
+
+export type GiftCertificateCreateManyOrderItemInputEnvelope = {
+  data: Prisma.GiftCertificateCreateManyOrderItemInput | Prisma.GiftCertificateCreateManyOrderItemInput[]
+  skipDuplicates?: boolean
+}
+
+export type GiftCertificateUpsertWithWhereUniqueWithoutOrderItemInput = {
+  where: Prisma.GiftCertificateWhereUniqueInput
+  update: Prisma.XOR<Prisma.GiftCertificateUpdateWithoutOrderItemInput, Prisma.GiftCertificateUncheckedUpdateWithoutOrderItemInput>
+  create: Prisma.XOR<Prisma.GiftCertificateCreateWithoutOrderItemInput, Prisma.GiftCertificateUncheckedCreateWithoutOrderItemInput>
+}
+
+export type GiftCertificateUpdateWithWhereUniqueWithoutOrderItemInput = {
+  where: Prisma.GiftCertificateWhereUniqueInput
+  data: Prisma.XOR<Prisma.GiftCertificateUpdateWithoutOrderItemInput, Prisma.GiftCertificateUncheckedUpdateWithoutOrderItemInput>
+}
+
+export type GiftCertificateUpdateManyWithWhereWithoutOrderItemInput = {
+  where: Prisma.GiftCertificateScalarWhereInput
+  data: Prisma.XOR<Prisma.GiftCertificateUpdateManyMutationInput, Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderItemInput>
+}
+
+export type GiftCertificateCreateWithoutPaymentsInput = {
+  id?: string
+  code: string
+  amount: number
+  status?: $Enums.CertificateStatus
+  createdAt?: Date | string
+  usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
+  order: Prisma.OrderCreateNestedOneWithoutCreatedCertificatesInput
+  orderItem?: Prisma.OrderItemCreateNestedOneWithoutGiftCertificateInput
+  usedOrder?: Prisma.OrderCreateNestedOneWithoutUsedCertificatesInput
+}
+
+export type GiftCertificateUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  code: string
+  amount: number
+  status?: $Enums.CertificateStatus
+  createdAt?: Date | string
+  usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
+  orderId: string
+  orderItemId: number
+  usedOrderId?: string | null
+}
+
+export type GiftCertificateCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.GiftCertificateWhereUniqueInput
+  create: Prisma.XOR<Prisma.GiftCertificateCreateWithoutPaymentsInput, Prisma.GiftCertificateUncheckedCreateWithoutPaymentsInput>
+}
+
+export type GiftCertificateUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.GiftCertificateUpdateWithoutPaymentsInput, Prisma.GiftCertificateUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.GiftCertificateCreateWithoutPaymentsInput, Prisma.GiftCertificateUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.GiftCertificateWhereInput
+}
+
+export type GiftCertificateUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.GiftCertificateWhereInput
+  data: Prisma.XOR<Prisma.GiftCertificateUpdateWithoutPaymentsInput, Prisma.GiftCertificateUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type GiftCertificateUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  order?: Prisma.OrderUpdateOneRequiredWithoutCreatedCertificatesNestedInput
+  orderItem?: Prisma.OrderItemUpdateOneWithoutGiftCertificateNestedInput
+  usedOrder?: Prisma.OrderUpdateOneWithoutUsedCertificatesNestedInput
+}
+
+export type GiftCertificateUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
+  usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
 export type GiftCertificateCreateManyOrderInput = {
   id?: string
   code: string
@@ -634,6 +923,9 @@ export type GiftCertificateCreateManyOrderInput = {
   status?: $Enums.CertificateStatus
   createdAt?: Date | string
   usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
+  orderItemId: number
   usedOrderId?: string | null
 }
 
@@ -644,7 +936,10 @@ export type GiftCertificateCreateManyUsedOrderInput = {
   status?: $Enums.CertificateStatus
   createdAt?: Date | string
   usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
   orderId: string
+  orderItemId: number
 }
 
 export type GiftCertificateUpdateWithoutOrderInput = {
@@ -654,7 +949,11 @@ export type GiftCertificateUpdateWithoutOrderInput = {
   status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orderItem?: Prisma.OrderItemUpdateOneWithoutGiftCertificateNestedInput
   usedOrder?: Prisma.OrderUpdateOneWithoutUsedCertificatesNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCertificateNestedInput
 }
 
 export type GiftCertificateUncheckedUpdateWithoutOrderInput = {
@@ -664,7 +963,11 @@ export type GiftCertificateUncheckedUpdateWithoutOrderInput = {
   status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
   usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCertificateNestedInput
 }
 
 export type GiftCertificateUncheckedUpdateManyWithoutOrderInput = {
@@ -674,6 +977,9 @@ export type GiftCertificateUncheckedUpdateManyWithoutOrderInput = {
   status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
   usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
@@ -684,7 +990,11 @@ export type GiftCertificateUpdateWithoutUsedOrderInput = {
   status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   order?: Prisma.OrderUpdateOneRequiredWithoutCreatedCertificatesNestedInput
+  orderItem?: Prisma.OrderItemUpdateOneWithoutGiftCertificateNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCertificateNestedInput
 }
 
 export type GiftCertificateUncheckedUpdateWithoutUsedOrderInput = {
@@ -694,7 +1004,11 @@ export type GiftCertificateUncheckedUpdateWithoutUsedOrderInput = {
   status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCertificateNestedInput
 }
 
 export type GiftCertificateUncheckedUpdateManyWithoutUsedOrderInput = {
@@ -704,9 +1018,95 @@ export type GiftCertificateUncheckedUpdateManyWithoutUsedOrderInput = {
   status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
+export type GiftCertificateCreateManyOrderItemInput = {
+  id?: string
+  code: string
+  amount: number
+  status?: $Enums.CertificateStatus
+  createdAt?: Date | string
+  usedAt?: Date | string | null
+  reservedAt?: Date | string | null
+  reservedUntil?: Date | string | null
+  orderId: string
+  usedOrderId?: string | null
+}
+
+export type GiftCertificateUpdateWithoutOrderItemInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  order?: Prisma.OrderUpdateOneRequiredWithoutCreatedCertificatesNestedInput
+  usedOrder?: Prisma.OrderUpdateOneWithoutUsedCertificatesNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutCertificateNestedInput
+}
+
+export type GiftCertificateUncheckedUpdateWithoutOrderItemInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutCertificateNestedInput
+}
+
+export type GiftCertificateUncheckedUpdateManyWithoutOrderItemInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  amount?: Prisma.FloatFieldUpdateOperationsInput | number
+  status?: Prisma.EnumCertificateStatusFieldUpdateOperationsInput | $Enums.CertificateStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+
+/**
+ * Count Type GiftCertificateCountOutputType
+ */
+
+export type GiftCertificateCountOutputType = {
+  payments: number
+}
+
+export type GiftCertificateCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  payments?: boolean | GiftCertificateCountOutputTypeCountPaymentsArgs
+}
+
+/**
+ * GiftCertificateCountOutputType without action
+ */
+export type GiftCertificateCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GiftCertificateCountOutputType
+   */
+  select?: Prisma.GiftCertificateCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * GiftCertificateCountOutputType without action
+ */
+export type GiftCertificateCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentWhereInput
+}
 
 
 export type GiftCertificateSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -716,10 +1116,16 @@ export type GiftCertificateSelect<ExtArgs extends runtime.Types.Extensions.Inter
   status?: boolean
   createdAt?: boolean
   usedAt?: boolean
+  reservedAt?: boolean
+  reservedUntil?: boolean
   orderId?: boolean
+  orderItemId?: boolean
   usedOrderId?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  orderItem?: boolean | Prisma.GiftCertificate$orderItemArgs<ExtArgs>
   usedOrder?: boolean | Prisma.GiftCertificate$usedOrderArgs<ExtArgs>
+  payments?: boolean | Prisma.GiftCertificate$paymentsArgs<ExtArgs>
+  _count?: boolean | Prisma.GiftCertificateCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["giftCertificate"]>
 
 export type GiftCertificateSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -729,9 +1135,13 @@ export type GiftCertificateSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   status?: boolean
   createdAt?: boolean
   usedAt?: boolean
+  reservedAt?: boolean
+  reservedUntil?: boolean
   orderId?: boolean
+  orderItemId?: boolean
   usedOrderId?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  orderItem?: boolean | Prisma.GiftCertificate$orderItemArgs<ExtArgs>
   usedOrder?: boolean | Prisma.GiftCertificate$usedOrderArgs<ExtArgs>
 }, ExtArgs["result"]["giftCertificate"]>
 
@@ -742,9 +1152,13 @@ export type GiftCertificateSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   status?: boolean
   createdAt?: boolean
   usedAt?: boolean
+  reservedAt?: boolean
+  reservedUntil?: boolean
   orderId?: boolean
+  orderItemId?: boolean
   usedOrderId?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  orderItem?: boolean | Prisma.GiftCertificate$orderItemArgs<ExtArgs>
   usedOrder?: boolean | Prisma.GiftCertificate$usedOrderArgs<ExtArgs>
 }, ExtArgs["result"]["giftCertificate"]>
 
@@ -755,21 +1169,29 @@ export type GiftCertificateSelectScalar = {
   status?: boolean
   createdAt?: boolean
   usedAt?: boolean
+  reservedAt?: boolean
+  reservedUntil?: boolean
   orderId?: boolean
+  orderItemId?: boolean
   usedOrderId?: boolean
 }
 
-export type GiftCertificateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "amount" | "status" | "createdAt" | "usedAt" | "orderId" | "usedOrderId", ExtArgs["result"]["giftCertificate"]>
+export type GiftCertificateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "amount" | "status" | "createdAt" | "usedAt" | "reservedAt" | "reservedUntil" | "orderId" | "orderItemId" | "usedOrderId", ExtArgs["result"]["giftCertificate"]>
 export type GiftCertificateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  orderItem?: boolean | Prisma.GiftCertificate$orderItemArgs<ExtArgs>
   usedOrder?: boolean | Prisma.GiftCertificate$usedOrderArgs<ExtArgs>
+  payments?: boolean | Prisma.GiftCertificate$paymentsArgs<ExtArgs>
+  _count?: boolean | Prisma.GiftCertificateCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type GiftCertificateIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  orderItem?: boolean | Prisma.GiftCertificate$orderItemArgs<ExtArgs>
   usedOrder?: boolean | Prisma.GiftCertificate$usedOrderArgs<ExtArgs>
 }
 export type GiftCertificateIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
+  orderItem?: boolean | Prisma.GiftCertificate$orderItemArgs<ExtArgs>
   usedOrder?: boolean | Prisma.GiftCertificate$usedOrderArgs<ExtArgs>
 }
 
@@ -777,7 +1199,9 @@ export type $GiftCertificatePayload<ExtArgs extends runtime.Types.Extensions.Int
   name: "GiftCertificate"
   objects: {
     order: Prisma.$OrderPayload<ExtArgs>
+    orderItem: Prisma.$OrderItemPayload<ExtArgs> | null
     usedOrder: Prisma.$OrderPayload<ExtArgs> | null
+    payments: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -786,7 +1210,10 @@ export type $GiftCertificatePayload<ExtArgs extends runtime.Types.Extensions.Int
     status: $Enums.CertificateStatus
     createdAt: Date
     usedAt: Date | null
+    reservedAt: Date | null
+    reservedUntil: Date | null
     orderId: string
+    orderItemId: number
     usedOrderId: string | null
   }, ExtArgs["result"]["giftCertificate"]>
   composites: {}
@@ -1183,7 +1610,9 @@ readonly fields: GiftCertificateFieldRefs;
 export interface Prisma__GiftCertificateClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   order<T extends Prisma.OrderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderDefaultArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  orderItem<T extends Prisma.GiftCertificate$orderItemArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GiftCertificate$orderItemArgs<ExtArgs>>): Prisma.Prisma__OrderItemClient<runtime.Types.Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   usedOrder<T extends Prisma.GiftCertificate$usedOrderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GiftCertificate$usedOrderArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  payments<T extends Prisma.GiftCertificate$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GiftCertificate$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1219,7 +1648,10 @@ export interface GiftCertificateFieldRefs {
   readonly status: Prisma.FieldRef<"GiftCertificate", 'CertificateStatus'>
   readonly createdAt: Prisma.FieldRef<"GiftCertificate", 'DateTime'>
   readonly usedAt: Prisma.FieldRef<"GiftCertificate", 'DateTime'>
+  readonly reservedAt: Prisma.FieldRef<"GiftCertificate", 'DateTime'>
+  readonly reservedUntil: Prisma.FieldRef<"GiftCertificate", 'DateTime'>
   readonly orderId: Prisma.FieldRef<"GiftCertificate", 'String'>
+  readonly orderItemId: Prisma.FieldRef<"GiftCertificate", 'Int'>
   readonly usedOrderId: Prisma.FieldRef<"GiftCertificate", 'String'>
 }
     
@@ -1617,6 +2049,25 @@ export type GiftCertificateDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
 }
 
 /**
+ * GiftCertificate.orderItem
+ */
+export type GiftCertificate$orderItemArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrderItem
+   */
+  select?: Prisma.OrderItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the OrderItem
+   */
+  omit?: Prisma.OrderItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderItemInclude<ExtArgs> | null
+  where?: Prisma.OrderItemWhereInput
+}
+
+/**
  * GiftCertificate.usedOrder
  */
 export type GiftCertificate$usedOrderArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1633,6 +2084,30 @@ export type GiftCertificate$usedOrderArgs<ExtArgs extends runtime.Types.Extensio
    */
   include?: Prisma.OrderInclude<ExtArgs> | null
   where?: Prisma.OrderWhereInput
+}
+
+/**
+ * GiftCertificate.payments
+ */
+export type GiftCertificate$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**

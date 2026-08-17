@@ -29,9 +29,15 @@ export const createGiftCertificates = async (orderId: string) => {
     throw new Error("Order not found");
   }
 
+  const certificateItems = order.orderItems.filter((item) => item.product.isCertificate);
+
+  if (!certificateItems.length) {
+    return [];
+  }
+
   const createdCertificates = [];
 
-  for (const item of order.orderItems) {
+  for (const item of certificateItems) {
     if (!item.product.isCertificate) {
       continue;
     }
@@ -53,13 +59,16 @@ export const createGiftCertificates = async (orderId: string) => {
         data: {
           code,
           amount: item.price ?? item.product.productPrice,
-          orderId: order.id
+          orderId: order.id,
+          orderItemId: item.id
         }
       });
 
       createdCertificates.push(certificate);
     }
   }
+
+  console.log(createdCertificates, "createdCertificates");
 
   return createdCertificates;
 };

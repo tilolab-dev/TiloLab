@@ -29,10 +29,12 @@ import VerifyAgeModal from "./VerifyAgeModal.vue";
 import PromoModal from "./PromoModal.vue";
 import QuestionnaireModal from "./QuesrionnaireModal.vue";
 import EditUserInfo from "./EditUserInfo.vue";
+import SurchargeCertificate from "./SurchargeCertificate.vue";
 
 // ADMIN
 
 import AddProduct from "@/components/Modals/admin/AddProduct.vue";
+import AddCertificate from "@/components/Modals/admin/AddCertificate.vue";
 import AddCategory from "@/components/Modals/admin/AddCategory.vue";
 import UpdateProduct from "./admin/UpdateProduct.vue";
 import UpdateCategory from "./admin/UpdateCategory.vue";
@@ -56,6 +58,7 @@ const modalComponents = {
   WishlistModal,
   AddProduct,
   AddCategory,
+  AddCertificate,
   DeleteCategory,
   DeleteProduct,
   UpdateProduct,
@@ -70,7 +73,8 @@ const modalComponents = {
   QuestionnaireModal,
   ProductPromoModal,
   RemovePromo,
-  EditUserInfo
+  EditUserInfo,
+  SurchargeCertificate
   //   ChangeUserData
 };
 
@@ -103,7 +107,8 @@ const openModal = (modalName, props = {}) => {
   align-items: stretch;
   z-index: 1000;
   overflow-y: scroll;
-  padding-top: 300px;
+  /* padding-top: 300px; */
+  padding-top: 30dvh;
 }
 /* .modal-content { */
 

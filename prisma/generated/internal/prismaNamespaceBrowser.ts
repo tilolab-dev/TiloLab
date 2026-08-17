@@ -292,7 +292,10 @@ export const GiftCertificateScalarFieldEnum = {
   status: 'status',
   createdAt: 'createdAt',
   usedAt: 'usedAt',
+  reservedAt: 'reservedAt',
+  reservedUntil: 'reservedUntil',
   orderId: 'orderId',
+  orderItemId: 'orderItemId',
   usedOrderId: 'usedOrderId'
 } as const
 
@@ -421,7 +424,9 @@ export const PaymentScalarFieldEnum = {
   payload: 'payload',
   createdAt: 'createdAt',
   refundedAmount: 'refundedAmount',
-  refundedAt: 'refundedAt'
+  refundedAt: 'refundedAt',
+  type: 'type',
+  certificateId: 'certificateId'
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
