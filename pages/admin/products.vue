@@ -50,6 +50,13 @@
               <button
                 class="text-nowrap"
                 :class="editOrderMode ? 'avoid_click' : ''"
+                @click="modalStore.showModal('AddCertificate')"
+              >
+                Додати сертифікат
+              </button>
+              <button
+                class="text-nowrap"
+                :class="editOrderMode ? 'avoid_click' : ''"
                 @click="modalStore.showModal('AddCategory')"
               >
                 Додати категорію

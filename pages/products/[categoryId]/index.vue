@@ -321,6 +321,7 @@ onMounted(async () => {
     await productStore.fetchProductsByPage({ reset: true });
   }
 
+  console.log(productStore.productList, "product list");
   loaderState.value = false;
 });
 

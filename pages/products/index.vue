@@ -166,6 +166,7 @@ const groupedProducts = computed(() => {
       map[product.categoryId].push(product);
     }
   });
+
   return map;
 });
 
@@ -175,16 +176,13 @@ onMounted(async () => {
   // Fetch price range first
   await fetchPriceRange();
 
-  // productStore.page = Number(route.query.page ?? 1);
-  // productStore.category = route.query.category ?? null;
   const routeCategory = route.query.category ?? null;
   const routePage = Number(route.query.page ?? 1);
 
-  const needReset = productStore.category !== routeCategory || productStore.page !== routePage;
-
-  // if (!productStore.productList.length) {
-  //   await productStore.fetchProductsByPage({ reset: true });
-  // }
+  const needReset =
+    productStore.category !== routeCategory ||
+    productStore.category === null ||
+    productStore.productList.length === 0;
 
   if (needReset) {
     productStore.category = routeCategory;
@@ -192,24 +190,19 @@ onMounted(async () => {
     await productStore.fetchProductsByPage({ reset: true });
   }
 
-  // const scroll = sessionStorage.getItem('catalogScroll')
-  // if (scroll) nextTick(() => window.scrollTo(0, Number(scroll)))
-  // try {
-  //   const getProducts = await $fetch("/api/products");
-
-  //   popularCards.value = getProducts?.data;
-  // } catch (err) {
-  //   console.error("Failed to fetch popular products:", err);
-  // }
   loaderState.value = false;
 });
 
-// onBeforeRouteLeave(() => {
-//   sessionStorage.setItem('catalogScroll', window.scrollY.toString())
-// })
-
 watch([() => productStore.page, () => productStore.category], () => {
-  router.replace({ query: { page: productStore.page, category: productStore.category } });
+  const query = {
+    page: productStore.page
+  };
+
+  if (productStore.category) {
+    query.category = productStore.category;
+  }
+
+  router.replace({ query });
 });
 
 definePageMeta({

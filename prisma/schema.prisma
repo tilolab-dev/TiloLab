@@ -100,6 +100,7 @@ model Product {
   productSize      String?
   productPrice     Float
   stockReserved    Int?                 @default(0)
+  isCertificate    Boolean              @default(false)
   orderItems       OrderItem[]
   popularProducts  PopularProduct[]
   category         Category             @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -107,9 +108,37 @@ model Product {
   options          ProductOptions[]
   translations     ProductTranslation[]
   promotedProducts PromotedProduct[]
+  productType      ProductType          @default(PRODUCT)
+  tagGender        TagGenderType        @default(UNDEFINED)
+  tagAnswers       TagAnswers[] 
 
   @@index([categoryId])
   @@index([productSize])
+}
+
+
+model TagAnswers {
+  id            Int                  @id @default(autoincrement())
+  question      String               @default("-")
+  answer        AnswersArr[]
+  tag           TagArr[]
+  isMultiply    Boolean              @default(false)
+  productId     Int?
+  product       Product?             @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model AnswersArr {
+  id            Int                   @id @default(autoincrement())
+  answer        String                @default("-")
+  tagAnswersId  Int?
+  tagAnswers    TagAnswers?           @relation(fields: [tagAnswersId], references: [id], onDelete: Cascade)
+}
+
+model TagArr {
+  id            Int                   @id @default(autoincrement())
+  tag           ProductTag
+  tagAnswersId  Int?
+  tagAnswers    TagAnswers?           @relation(fields: [tagAnswersId], references: [id], onDelete: Cascade)
 }
 
 model ProductOptions {
@@ -173,6 +202,27 @@ model PromotedProduct {
   productId Int      @unique
   addedAt   DateTime @default(now())
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model GiftCertificate {
+  id            String @id @default(uuid())
+  code          String @unique
+  amount        Float
+  status        CertificateStatus @default(ACTIVE)
+  createdAt     DateTime @default(now())
+
+  usedAt        DateTime?
+  reservedAt    DateTime?
+  reservedUntil DateTime?
+
+  orderId       String
+  order         Order @relation( "CertificateCreatedOrder", fields: [orderId], references: [id])
+  orderItemId   Int
+  orderItem     OrderItem? @relation(fields: [orderItemId], references: [id])
+
+  usedOrderId   String?
+  usedOrder     Order? @relation( "CertificateUsedOrder", fields: [usedOrderId], references: [id])
+  payments      Payment[]
 }
 
 model User {
@@ -241,6 +291,8 @@ model Order {
   payments      Payment?
   shippingInfo  ShippingInfo?
   user          User?         @relation(fields: [userId], references: [id], map: "Order_userId_fkey")
+  createdCertificates GiftCertificate[] @relation("CertificateCreatedOrder")
+  usedCertificates    GiftCertificate[] @relation("CertificateUsedOrder")
 
   deliveryTtn   String?
 
@@ -260,6 +312,8 @@ model OrderItem {
   name      String?
   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  giftCertificate GiftCertificate[]
 
   @@index([orderId])
   @@index([productId])
@@ -308,9 +362,12 @@ model Payment {
   provider        String        @default("monobank")
   payload         Json?
   createdAt       DateTime      @default(now())
-  refundedAmount Int?      @default(0)
-  refundedAt     DateTime?
+  refundedAmount  Int?      @default(0)
+  refundedAt      DateTime?
   order           Order         @relation(fields: [orderId], references: [id])
+  type            PaymentType @default(ORDER)
+  certificateId   String?
+  certificate     GiftCertificate? @relation(fields: [certificateId], references: [id])
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -357,4 +414,83 @@ enum PaymentStatus {
   PENDING
   SUCCESS
   FAILED
+}
+
+enum ProductType {
+  PRODUCT
+  CERTIFICATE
+}
+
+enum CertificateStatus {
+  ACTIVE
+  RESERVED
+  USED
+}
+
+enum TagGenderType {
+  UNDEFINED
+  COUPLE
+  MEN
+  WOMEN
+}
+
+enum PaymentType {
+  ORDER
+  CERTIFICATE_SURCHARGE
+}
+
+enum ProductTag {
+
+  FIRST_TOY_WOMEN
+  INACTIVE_USER_WOMEN
+  PROFI_LEVEL_WOMEN
+  TOY_WOMEN
+  APP_WOMEN
+  REMOTE_CONTROL_WOMEN
+  LIGHT_MODE_WOMEN
+  MEDIUM_POWER_WOMEN
+  HIGH_INTENSITY_WOMEN
+  CLITORS_WOMEN
+  ANAL_WOMEN
+  VAGINA_WOMEN
+  VACUUM_WOMEN
+  VIBRO_WOMEN
+  MOTION_WOMEN
+
+  FIRST_TOY_MEN
+  INACTIVE_USER_MEN
+  PROFI_LEVEL_MEN
+  TOY_MEN
+  APP_MEN
+  REMOTE_CONTROL_MEN
+  LIGHT_MODE_MEN
+  MEDIUM_POWER_MEN
+  HIGH_INTENSITY_MEN
+  DICK_MEN
+  PENIS_HEAD_MEN
+  BALLS_MEN
+  ANAL_MEN
+  MASTURBATOR_MEN
+  CONTINUATION_MEN
+  VIBRO_MEN
+
+  PROFI_LEVEL_COUPLE
+  INACTIVE_USER_COUPLE
+  FIRST_TOY_COUPLE
+  HE_COUPLE
+  SHE_COUPLE
+  THEM_COUPLE
+  LIGHT_MODE_COUPLE
+  MEDIUM_POWER_COUPLE
+  HIGH_INTENSITY_COUPLE
+  TOYS_COUPLE
+  PETTING_COUPLE
+  BDSM_COUPLE
+  HOME_COUPLE
+  DISTANCE_COUPLE
+  WALK_COUPLE
+  VIBRATING_COUPLES
+  REMOTE_COUPLES
+  DUAL_COUPLES
+ 
 }
