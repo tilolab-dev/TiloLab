@@ -205,23 +205,24 @@ model PromotedProduct {
 }
 
 model GiftCertificate {
-  id        String @id @default(uuid())
+  id            String @id @default(uuid())
+  code          String @unique
+  amount        Float
+  status        CertificateStatus @default(ACTIVE)
+  createdAt     DateTime @default(now())
 
-  code      String @unique
+  usedAt        DateTime?
+  reservedAt    DateTime?
+  reservedUntil DateTime?
 
-  amount    Float
+  orderId       String
+  order         Order @relation( "CertificateCreatedOrder", fields: [orderId], references: [id])
+  orderItemId   Int
+  orderItem     OrderItem? @relation(fields: [orderItemId], references: [id])
 
-  status    CertificateStatus @default(ACTIVE)
-
-  createdAt DateTime @default(now())
-
-  usedAt    DateTime?
-
-  orderId   String
-  order     Order @relation( "CertificateCreatedOrder", fields: [orderId], references: [id])
-
-  usedOrderId String?
-  usedOrder   Order? @relation( "CertificateUsedOrder", fields: [usedOrderId], references: [id])
+  usedOrderId   String?
+  usedOrder     Order? @relation( "CertificateUsedOrder", fields: [usedOrderId], references: [id])
+  payments      Payment[]
 }
 
 model User {
@@ -312,6 +313,8 @@ model OrderItem {
   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
+  giftCertificate GiftCertificate[]
+
   @@index([orderId])
   @@index([productId])
 }
@@ -359,9 +362,12 @@ model Payment {
   provider        String        @default("monobank")
   payload         Json?
   createdAt       DateTime      @default(now())
-  refundedAmount Int?      @default(0)
-  refundedAt     DateTime?
+  refundedAmount  Int?      @default(0)
+  refundedAt      DateTime?
   order           Order         @relation(fields: [orderId], references: [id])
+  type            PaymentType @default(ORDER)
+  certificateId   String?
+  certificate     GiftCertificate? @relation(fields: [certificateId], references: [id])
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -417,6 +423,7 @@ enum ProductType {
 
 enum CertificateStatus {
   ACTIVE
+  RESERVED
   USED
 }
 
@@ -425,6 +432,11 @@ enum TagGenderType {
   COUPLE
   MEN
   WOMEN
+}
+
+enum PaymentType {
+  ORDER
+  CERTIFICATE_SURCHARGE
 }
 
 enum ProductTag {

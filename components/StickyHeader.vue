@@ -116,7 +116,9 @@
       <SharedLoader v-if="!loaderState" />
 
       <nav v-else>
-        <NuxtLink to="/products?page=1&category"> Всі товари </NuxtLink>
+        <!-- <NuxtLink to="/products?page=1&category"> Всі товари </NuxtLink> -->
+        <NuxtLink to="/products?page=1"> Всі товари </NuxtLink>
+
         <template v-for="(item, index) in activeCategories" :key="index">
           <NuxtLink v-if="item.group" :to="`/products/${item.group.toLowerCase()}`">
             {{ item.translations[0].title }}

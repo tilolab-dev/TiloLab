@@ -2515,7 +2515,10 @@ export const GiftCertificateScalarFieldEnum = {
   status: 'status',
   createdAt: 'createdAt',
   usedAt: 'usedAt',
+  reservedAt: 'reservedAt',
+  reservedUntil: 'reservedUntil',
   orderId: 'orderId',
+  orderItemId: 'orderItemId',
   usedOrderId: 'usedOrderId'
 } as const
 
@@ -2644,7 +2647,9 @@ export const PaymentScalarFieldEnum = {
   payload: 'payload',
   createdAt: 'createdAt',
   refundedAmount: 'refundedAmount',
-  refundedAt: 'refundedAt'
+  refundedAt: 'refundedAt',
+  type: 'type',
+  certificateId: 'certificateId'
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
@@ -2880,6 +2885,20 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentType'
+ */
+export type EnumPaymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentType'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentType[]'
+ */
+export type ListEnumPaymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentType[]'>
     
 
 
