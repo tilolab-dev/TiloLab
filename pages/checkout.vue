@@ -923,9 +923,9 @@ const formatFromDigits = (digits) => {
 onMounted(() => {
   isMounted.value = true;
 
-  setTimeout(() => {
-    modalStore.showModal("SurchargeCertificate");
-  }, 5000);
+  // setTimeout(() => {
+  //   modalStore.showModal("SurchargeCertificate");
+  // }, 5000);
 
   // if (authStore.user) {
   //   name.value = authStore.user.username;
