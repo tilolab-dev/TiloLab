@@ -16,10 +16,7 @@ export default defineEventHandler(async () => {
             }
           }
         },
-        createdCertificates: true,
-        // usedCertificates: true,
-        shippingInfo: true,
-        payments: true
+        shippingInfo: true
       }
     });
 

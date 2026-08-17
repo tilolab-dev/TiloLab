@@ -146,6 +146,7 @@ export const useProductStore = defineStore("product", () => {
         params
       });
       prefetched.set(next, data || []);
+      console.log(!prefetched.get(next), "Products store prefetchNextPage prefetched is empty");
     } catch (err) {
       console.error("Prefetch error:", err);
     }
