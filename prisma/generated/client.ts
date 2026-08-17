@@ -70,21 +70,6 @@ export type CategoryTranslation = Prisma.CategoryTranslationModel
  */
 export type Product = Prisma.ProductModel
 /**
- * Model TagAnswers
- * 
- */
-export type TagAnswers = Prisma.TagAnswersModel
-/**
- * Model AnswersArr
- * 
- */
-export type AnswersArr = Prisma.AnswersArrModel
-/**
- * Model TagArr
- * 
- */
-export type TagArr = Prisma.TagArrModel
-/**
  * Model ProductOptions
  * 
  */
@@ -114,11 +99,6 @@ export type PopularProduct = Prisma.PopularProductModel
  * 
  */
 export type PromotedProduct = Prisma.PromotedProductModel
-/**
- * Model GiftCertificate
- * 
- */
-export type GiftCertificate = Prisma.GiftCertificateModel
 /**
  * Model User
  * 

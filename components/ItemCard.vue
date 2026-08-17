@@ -3,7 +3,7 @@
     class="item_card"
     :class="{
       no_available_product: props.product.availableStock <= 0,
-      running_out_product: props.product.availableStock <= 10 && props.product.availableStock > 0
+      running_out_product: props.product.availableStock < 10 && props.product.availableStock > 0
     }"
   >
     <div v-if="hasDiscount" class="action_label">Акція</div>
@@ -13,7 +13,7 @@
         Немає в наявності
       </div>
       <div
-        v-if="props.product.availableStock <= 10 && props.product.availableStock > 0"
+        v-if="props.product.availableStock < 10 && props.product.availableStock > 0"
         class="running_out_label"
       >
         Товар закінчується
@@ -75,7 +75,6 @@ const props = defineProps({
 
 const hasDiscount = computed(() => {
   const percentNumber = Number(props.product.discountPercent);
-  // console.log(percentNumber, "percentNumber");
   return percentNumber && !isNaN(percentNumber) && percentNumber > 0;
 });
 

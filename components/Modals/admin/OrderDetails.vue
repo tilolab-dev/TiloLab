@@ -1,10 +1,8 @@
 <template>
   <div class="order_detail_content">
-    <Transition name="fade">
-      <div v-if="loaderState" class="loader_content">
-        <SharedLoader />
-      </div>
-    </Transition>
+    <div v-if="loaderState" class="loader_content">
+      <SharedLoader />
+    </div>
     <div class="order_detail_wrapper">
       <div class="order_detail_top">
         <div class="close_button_wrapper">
@@ -16,22 +14,24 @@
 
       <div class="order_detail_sections">
         <button
+          :style="activeTab === 'order-info' ? 'border-bottom: 1px solid var(--accent-color)' : ''"
           class="section"
-          :class="{ section_active: activeTab === 'order-info' }"
           @click="activeTab = 'order-info'"
         >
           Інформація про замовлення
         </button>
         <button
+          :style="activeTab === 'create-ttn' ? 'border-bottom: 1px solid var(--accent-color)' : ''"
           class="section"
-          :class="{ section_active: activeTab === 'create-ttn' }"
           @click="activeTab = 'create-ttn'"
         >
           Сформувати ТТН
         </button>
         <button
+          :style="
+            activeTab === 'create-sender' ? 'border-bottom: 1px solid var(--accent-color)' : ''
+          "
           class="section"
-          :class="{ section_active: activeTab === 'create-sender' }"
           @click="activeTab = 'create-sender'"
         >
           Створити відправника
@@ -58,7 +58,7 @@
 
         <div class="order_status">
           <h3>Статус замовлення:</h3>
-          <span class="status_badge">{{ modalProps.order.status }}</span>
+          <p>{{ modalProps.order.status }}</p>
         </div>
 
         <div class="order_info_main">
@@ -140,42 +140,28 @@
               :key="item.id"
               class="items_info_product"
             >
-              <div class="product_info_wrapper">
-                <div class="product_main">
-                  <img
-                    v-if="item.product?.img?.[0]?.path"
-                    :src="item.product.img[0].path"
-                    alt="product"
-                    width="50"
-                    height="50"
-                  />
-                  <img v-else :src="FallbackImg" alt="product" width="50" height="50" />
-                  <p>{{ item.name }}</p>
-                </div>
-
-                <div class="product_summ">
-                  <p>{{ item.quantity }}</p>
-                  <p>X</p>
-                  <p>
-                    {{ item.product.productPrice }}
-                  </p>
-                  <p>
-                    <strong> Всього :</strong>
-                    {{ item.quantity * item.product.productPrice }} грн.
-                  </p>
-                </div>
+              <div class="product_main">
+                <img
+                  v-if="item.product?.img?.[0]?.path"
+                  :src="item.product.img[0].path"
+                  alt="product"
+                  width="50"
+                  height="50"
+                />
+                <img v-else :src="FallbackImg" alt="product" width="50" height="50" />
+                <p>{{ item.name }}</p>
               </div>
 
-              <div
-                v-if="modalProps.order.createdCertificates[0]?.code"
-                class="certificate_info_wrapper"
-              >
-                <div class="text_label">
-                  <span> Код сертифіката: </span>
-                  <strong>
-                    {{ modalProps.order.createdCertificates[0]?.code }}
-                  </strong>
-                </div>
+              <div class="product_summ">
+                <p>{{ item.quantity }}</p>
+                <p>X</p>
+                <p>
+                  {{ item.product.productPrice }}
+                </p>
+                <p>
+                  <strong> Всього :</strong>
+                  {{ item.quantity * item.product.productPrice }} грн.
+                </p>
               </div>
             </li>
           </ul>
@@ -713,12 +699,12 @@ const selectData = ref([
   {
     id: 1,
     value: "NEW",
-    name: "Новий"
+    name: "Новий"
   },
   {
     id: 2,
     value: "PAID",
-    name: "Оплачений"
+    name: "Оплачений"
   },
   {
     id: 3,
@@ -728,7 +714,7 @@ const selectData = ref([
   {
     id: 4,
     value: "SHIPPED",
-    name: "Відправлений"
+    name: "Відправлений"
   },
   {
     id: 5,
@@ -738,12 +724,12 @@ const selectData = ref([
   {
     id: 6,
     value: "RETURNED",
-    name: "Повернений"
+    name: "Повернений"
   },
   {
     id: 7,
     value: "CANCELED",
-    name: "Скасований"
+    name: "Скасований"
   }
 ]);
 
@@ -973,28 +959,22 @@ onMounted(() => {
   position: absolute;
   top: 20%;
   transform: translateY(-50%);
-  background:
-    linear-gradient(180deg, rgba(255, 169, 214, 0.05) 0%, rgba(255, 169, 214, 0) 30%),
-    var(--bg-color);
+  background: var(--bg-color);
   border: 1px solid var(--border-color);
   min-width: 50vw;
   max-height: 65vh;
-  border-radius: 16px;
+  border-radius: 10px;
   position: relative;
   overflow: hidden;
-  box-shadow:
-    0 24px 60px -20px rgba(0, 0, 0, 0.65),
-    0 0 40px -12px rgba(255, 169, 214, 0.16);
-
   .loader_content {
     inset: 0;
-    position: absolute;
+    position: fixed;
     top: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10;
-    background: rgba(13, 12, 13, 0.55);
+    background: rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(7px);
   }
 
@@ -1010,15 +990,6 @@ onMounted(() => {
   }
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
 .order_detail_wrapper {
   display: flex;
   flex-direction: column;
@@ -1026,25 +997,15 @@ onMounted(() => {
   align-items: center;
   width: 100%;
   height: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
   flex: 1;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 169, 214, 0.35) transparent;
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: rgba(255, 169, 214, 0.3);
-    border-radius: 10px;
-  }
 
   .order_detail_top {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 14px 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 15px 10px;
+    border-bottom: 1px solid var(--accent-grey);
     width: 100%;
   }
 
@@ -1067,29 +1028,26 @@ onMounted(() => {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    padding-right: 10px;
     button {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
+      width: 15px;
+      height: 15px;
       background: transparent;
-      border: 1px solid transparent;
       position: relative;
       cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: all ease 0.25s;
       svg {
-        width: 15px;
-        height: 15px;
+        width: 100%;
+        height: 100%;
         stroke: var(--text-grey);
-        transition: all ease 0.25s;
+        transition: all ease 0.3s;
       }
       @media screen and (min-width: 1024px) {
         &:hover {
-          background: rgba(255, 64, 128, 0.1);
-          border-color: var(--error-border);
           svg {
+            transition: all ease 0.3s;
             stroke: var(--error-border);
           }
         }
@@ -1108,12 +1066,10 @@ onMounted(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding-inline: 6px;
+    border-bottom: 1px solid var(--accent-grey);
+    padding-block: 10px;
     width: 100%;
     height: auto;
-    gap: 4px;
-
     .section {
       flex: 1;
       width: 100%;
@@ -1122,80 +1078,39 @@ onMounted(() => {
       display: flex;
       justify-content: center;
       align-items: center;
-      text-align: center;
-      border-bottom: 2px solid transparent;
-      padding: 14px 10px;
-      color: var(--dark-text);
-      @include mixins.mainText;
-      font-size: 0.9375rem;
-      transition: all ease 0.25s;
-
-      @media screen and (min-width: 1024px) {
-        &:hover {
-          color: var(--text-color);
-        }
-      }
-    }
-
-    .section_active {
-      color: var(--accent-color);
-      border-bottom: 2px solid var(--accent-color);
-    }
-
-    @media screen and (max-width: 550px) {
-      .section {
-        font-size: 0.75rem;
-        padding: 12px 4px;
-      }
+      border-bottom: 1px solid transparent;
+      padding-bottom: 10px;
+      transition: all ease 0.3s;
     }
   }
 
   .cod_order {
-    background: var(--warning-bg);
-    color: var(--warning-text);
-    border-bottom: 1px solid var(--warning-border);
+    background: var(--error-bg);
     text-transform: uppercase;
     font-weight: 700;
-    letter-spacing: 0.4px;
-    padding: 12px 20px;
     @include mixins.subtitleText;
-    font-size: 0.875rem;
   }
 
   .order_status,
+  .cod_order,
   .user_comment {
     width: 100%;
     height: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--accent-grey);
 
     h3 {
       @include mixins.subtitleText;
-      font-size: 1rem;
-      color: var(--text-grey);
-      font-weight: 500;
+      font-size: 1.1rem;
     }
-  }
-
-  .status_badge {
-    @include mixins.mainText;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    padding: 6px 14px;
-    border-radius: 20px;
-    background: var(--success-bg);
-    border: 1px solid var(--success-border);
-    color: var(--success-text);
   }
 
   .user_comment {
     background: var(--success-bg);
-    &_description {
+    &_descriptipon {
       @include mixins.subtitleText;
     }
   }
@@ -1207,30 +1122,23 @@ onMounted(() => {
     width: 100%;
     height: auto;
     padding-inline: 20px;
-    padding-block: 18px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    gap: 24px;
-
+    padding-block: 10px;
+    border-bottom: 1px solid var(--accent-grey);
+    gap: 20px;
     .block_description {
       @include mixins.subtitleText;
-      font-size: 0.9375rem;
-      color: var(--accent-color);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
+      font-size: 1.1rem;
     }
 
     .client_main,
     .shipping_info_wrapper {
       strong {
         @include mixins.mainText;
-        font-size: 0.9375rem;
-        color: var(--dark-text);
-        font-weight: 500;
+        font-size: 1rem;
       }
       p {
         @include mixins.mainText;
-        font-size: 0.9375rem;
-        text-align: right;
+        font-size: 1rem;
       }
     }
 
@@ -1247,23 +1155,11 @@ onMounted(() => {
 
       .info_wrapper {
         padding-top: 15px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
       }
 
       &_main {
         width: 100%;
         height: auto;
-        display: flex;
-        align-items: flex-start;
-        gap: 14px;
-
-        img {
-          border-radius: 50%;
-          border: 1px solid var(--border-color);
-        }
       }
     }
 
@@ -1272,28 +1168,18 @@ onMounted(() => {
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
-      gap: 12px;
+      gap: 20px;
       flex: 1;
-
-      &_wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-        padding-top: 15px;
-      }
     }
 
     li {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 12px;
     }
 
     @media screen and (max-width: 550px) {
       flex-direction: column;
-      gap: 20px;
     }
   }
 
@@ -1310,8 +1196,8 @@ onMounted(() => {
     width: 100%;
     height: auto;
     position: relative;
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--accent-grey);
 
     &_head {
       display: flex;
@@ -1320,28 +1206,22 @@ onMounted(() => {
       gap: 16px;
     }
 
-    &_title {
-      @include mixins.mainText;
-      font-size: 0.9375rem;
-    }
-
     .select_btn {
       width: 20px;
       height: 20px;
       border: 2px solid var(--border-color);
       border-radius: 50%;
       cursor: pointer;
-      transition: all ease 0.25s;
-      background: transparent;
+      transition: all ease 0.3s;
     }
     .select_btn_active {
       border: 5px solid var(--accent-color);
-      transition: all ease 0.25s;
+      transition: all ease 0.3s;
     }
   }
 
   .cargo_type {
-    padding: 16px 20px;
+    padding: 10px 20px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -1351,24 +1231,17 @@ onMounted(() => {
     width: 100%;
     gap: 15px;
 
-    &_title {
-      width: 100%;
-      @include mixins.mainText;
-      font-size: 0.9375rem;
-      color: var(--dark-text);
-    }
-
     &_wrapper {
       display: flex;
       justify-content: space-between;
       align-items: stretch;
       width: 100%;
       height: auto;
-      gap: 12px;
+      gap: 16px;
     }
 
     &_item {
-      background: rgba(255, 255, 255, 0.03);
+      background: black;
       width: 100%;
       height: auto;
       position: relative;
@@ -1376,68 +1249,46 @@ onMounted(() => {
       flex-direction: column;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 16px;
+      padding: 15px;
       gap: 20px;
       flex: 1;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all ease 0.25s;
-
-      .icon {
-        font-size: 1.5rem;
-      }
-
-      p {
-        @include mixins.mainText;
-        font-size: 0.875rem;
-      }
+      border: 1px solid transparent;
+      transition: all ease 0.3s;
 
       @media screen and (min-width: 1024px) {
         &:hover {
           border: 1px solid var(--border-color);
-          background: rgba(255, 169, 214, 0.05);
+          transition: all ease 0.3s;
         }
       }
     }
     &_item_active {
       border: 1px solid var(--btn-color-active) !important;
-      background: rgba(255, 169, 214, 0.08) !important;
+      transition: all ease 0.3s;
     }
   }
 
   .order_detail_ttn_info {
     .select_sender,
     .select_box {
-      padding: 16px 20px;
+      padding: 10px 20px;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       justify-content: flex-start;
-      gap: 14px;
-
-      > div {
-        @include mixins.mainText;
-        font-size: 0.9375rem;
-        color: var(--dark-text);
-      }
+      gap: 20px;
 
       select {
-        width: 100%;
-        height: 46px;
-        background: rgba(255, 255, 255, 0.04);
-        border-radius: 8px;
-        padding: 5px 14px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        outline: none;
-        color: var(--text-color);
-        @include mixins.mainText;
-        font-size: 0.875rem;
-        transition: border-color ease 0.25s;
-
-        &:focus {
-          border-color: var(--border-color);
-        }
+        width: 90%;
+        height: 50px;
+        background: black;
+        border-radius: 5px;
+        padding: 5px 10px;
+        outline: var(--accent-red);
+        margin: 0 auto;
+        color: white;
       }
     }
   }
@@ -1448,8 +1299,8 @@ onMounted(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 5px 20px 10px;
+    border-bottom: 1px solid var(--accent-grey);
 
     .info,
     .total_price {
@@ -1457,28 +1308,9 @@ onMounted(() => {
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
-      gap: 8px;
-
-      h3 {
-        @include mixins.subtitleText;
-        font-size: 1.0625rem;
-      }
-
-      span {
-        @include mixins.mainText;
-        font-size: 0.8125rem;
-        color: var(--dark-text);
-      }
-    }
-
-    .total_price {
-      align-items: flex-end;
-
-      p {
-        @include mixins.subtitleText;
-        color: var(--accent-color);
-        font-size: 1.25rem;
-      }
+      gap: 10px;
+      @include mixins.subtitleText;
+      font-size: 1.1rem;
     }
   }
 
@@ -1491,16 +1323,13 @@ onMounted(() => {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 14px;
-    padding-block: 18px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    gap: 20px;
+    padding-block: 20px;
+    border-bottom: 1px solid var(--accent-grey);
 
     strong {
       @include mixins.subtitleText;
-      font-size: 0.9375rem;
-      color: var(--accent-color);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
+      font-size: 1.1rem;
     }
 
     &_wrapper {
@@ -1510,49 +1339,24 @@ onMounted(() => {
       align-items: flex-start;
       width: 100%;
       height: auto;
-      gap: 10px;
+      gap: 5px;
     }
 
     &_product {
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 5px 10px;
+      align-items: center;
       width: 100%;
-      height: 100%;
-      overflow: hidden;
-
-      .product_info_wrapper {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 10px 14px;
-        align-items: center;
-        width: 100%;
-        height: auto;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
-
+      height: auto;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       .product_main {
         display: flex;
         justify-content: flex-start;
         align-items: center;
         gap: 15px;
-
-        img {
-          border-radius: 8px;
-          object-fit: cover;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        p {
-          @include mixins.mainText;
-          font-size: 0.875rem;
-        }
       }
 
       .product_summ {
@@ -1560,48 +1364,6 @@ onMounted(() => {
         justify-content: flex-end;
         align-items: center;
         gap: 10px;
-
-        p {
-          @include mixins.mainText;
-          font-size: 0.875rem;
-          color: var(--dark-text);
-
-          strong {
-            color: var(--text-color);
-            text-transform: none;
-            letter-spacing: normal;
-          }
-        }
-      }
-
-      .certificate_info_wrapper {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        padding: 8px 14px;
-        width: 100%;
-        height: auto;
-        gap: 15px;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
-
-        .text_label {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 5px 10px;
-          gap: 7px;
-          background: var(--error-btn);
-          border: 1px solid var(--error-border);
-          color: var(--error-text);
-          font-size: 0.6875rem;
-          border-radius: 7px;
-        }
-
-        strong {
-          font-size: 0.7rem;
-          text-transform: uppercase;
-          color: inherit;
-        }
       }
     }
   }
@@ -1614,26 +1376,25 @@ onMounted(() => {
     width: 100%;
     height: auto;
     padding-inline: 20px;
-    gap: 14px;
-    padding-block: 18px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    gap: 20px;
+    padding-block: 20px;
+    border-bottom: 1px solid var(--accent-grey);
 
     strong {
       @include mixins.subtitleText;
-      font-size: 0.9375rem;
-      color: var(--dark-text);
+      font-size: 1.1rem;
     }
 
     select {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border-color);
+      background: var(--accent-grey);
+      border: none;
       color: white;
-      border-radius: 8px;
-      width: min(280px, 100%);
+      @include mixins.transparentBtn;
+      width: 30%;
       outline: none;
-      font-size: 0.875rem;
+      border: 1px solid var(--border-color);
+      font-size: 0.8rem;
       padding: 10px 15px;
-      @include mixins.mainText;
     }
   }
 
@@ -1641,51 +1402,45 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     padding-inline: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
     margin-top: 15px;
     align-items: center;
     width: 100%;
     height: auto;
-    gap: 12px;
+    gap: 10px;
 
     .accept_btn {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--dark-text);
+      background: var(--accent-grey);
       cursor: not-allowed;
-      padding-block: 12px;
-      border-radius: 8px;
-      border: 1px solid transparent;
-      transition: all ease 0.25s;
+      padding-block: 8px;
+      border-radius: 3px;
     }
 
     .active_btn {
       background: var(--success-btn);
       border: 1px solid var(--success-border);
-      color: var(--success-text);
       cursor: pointer;
-      transition: all ease 0.25s;
+      transition: all ease 0.3s;
 
       @media screen and (min-width: 1024px) {
         &:hover {
           background: var(--success-btn-hover);
           border: 1px solid var(--success-border);
+          transition: all ease 0.3s;
         }
       }
     }
 
     .cancel_btn {
       border: 1px solid var(--dark-text);
-      border-radius: 8px;
-      padding-block: 12px;
-      color: var(--text-grey);
-      transition: all ease 0.25s;
-      background: transparent;
+      border-radius: 3px;
+      padding-block: 8px;
 
       @media screen and (min-width: 1024px) {
         &:hover {
-          background: rgba(255, 169, 214, 0.08);
+          background: var(--btn-color);
           border: 1px solid var(--border-color);
-          color: var(--text-color);
+          transition: all ease 0.3s;
         }
       }
     }
@@ -1693,7 +1448,7 @@ onMounted(() => {
     button {
       flex: 1;
       @include mixins.mainText;
-      font-size: 0.9375rem;
+      font-size: 1rem;
       cursor: pointer;
     }
   }
@@ -1705,20 +1460,13 @@ onMounted(() => {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 30px;
-    padding: 40px 20px 20px;
-
-    p {
-      @include mixins.mainText;
-      color: var(--dark-text);
-      font-size: 0.9375rem;
-      text-align: center;
-    }
+    gap: 50px;
+    padding: 50px 20px 10px;
 
     button {
       @include mixins.accentBtn;
-      padding: 12px 32px;
-      font-size: 0.9375rem;
+      padding: 5px 25px;
+      font-size: 1rem;
     }
   }
 
@@ -1731,7 +1479,7 @@ onMounted(() => {
     align-items: flex-start;
     gap: 20px;
     position: relative;
-    padding: 20px;
+    padding: 15px 20px;
 
     &_wrapper {
       width: 100%;
@@ -1741,11 +1489,7 @@ onMounted(() => {
     }
 
     &_title {
-      @include mixins.subtitleText;
-      color: var(--accent-color);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      font-size: 0.9375rem;
+      @include mixins.mainText;
     }
 
     .items_wrapper {
@@ -1753,9 +1497,9 @@ onMounted(() => {
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
-      padding-top: 24px;
-      padding-bottom: 40px;
-      width: 100%;
+      padding-top: 30px;
+      padding-bottom: 70px;
+      width: 80%;
       height: auto;
       gap: 10px;
 
@@ -1769,21 +1513,20 @@ onMounted(() => {
         align-items: flex-start;
         width: 100%;
         height: auto;
-        gap: 10px;
-        cursor: pointer;
+        gap: 8px;
       }
 
       .radio-elem span {
         @include mixins.mainText;
-        font-size: 0.9375rem;
+        font-size: 1rem;
         @media screen and (max-width: 768px) {
-          font-size: 0.875rem;
+          font-size: 0.9375rem;
         }
         @media screen and (max-width: 480px) {
           font-size: 0.8125rem;
         }
         @media screen and (max-width: 375px) {
-          font-size: 0.75rem;
+          font-size: 0.6875rem;
         }
       }
 
@@ -1796,15 +1539,13 @@ onMounted(() => {
         width: 100%;
         height: auto;
         gap: 16px;
-        margin-top: 12px;
-        // margin-left: 28px;
         @include mixins.defaultInput;
 
         span {
           @include mixins.mainText;
-          font-size: 0.9375rem;
+          font-size: 1rem;
           @media screen and (max-width: 1024px) {
-            font-size: 0.875rem;
+            font-size: 0.9375rem;
           }
           @media screen and (max-width: 480px) {
             font-size: 0.8125rem;
@@ -1820,9 +1561,7 @@ onMounted(() => {
         height: 18px;
         border: 2px solid var(--accent-color);
         border-radius: 50%;
-        transform: translateY(2px);
-        transition: all ease 0.2s;
-        flex-shrink: 0;
+        transform: translateY(3px);
       }
 
       .radio_wrapper {
@@ -1830,7 +1569,7 @@ onMounted(() => {
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        margin-top: 20px;
+        margin-top: 30px;
         width: 100%;
         gap: 18px;
 
@@ -1854,38 +1593,30 @@ onMounted(() => {
       position: relative;
       gap: 8px;
 
-      .item_name {
-        @include mixins.mainText;
-        font-size: 0.875rem;
-        color: var(--dark-text);
-      }
-
       .fetched_list {
         width: 100%;
         height: auto;
         max-height: 30dvh;
-        overflow-y: auto;
-        padding: 6px;
+        overflow-y: scroll;
+        padding-bottom: 20px;
         position: absolute;
         background: var(--bg-color);
-        border: 1px solid var(--border-color);
-        border-radius: 10px;
-        box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6);
-        top: calc(100% + 6px);
+        top: 100%;
         left: 0;
-        z-index: 5;
+        z-index: 1;
         li {
           @include mixins.subtitleText;
-          border-radius: 6px;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
           color: var(--text-grey);
-          transition: all ease 0.2s;
-          font-size: 0.9375rem;
-          font-weight: 500;
-          padding: 8px 10px;
+          transition: all ease 0.3s;
+          font-size: 1rem;
+          padding-block: 5px;
           cursor: pointer;
           @media screen and (min-width: 1024px) {
             &:hover {
-              background: rgba(255, 169, 214, 0.08);
+              background: rgba(255, 255, 255, 0.04);
+              transition: all ease 0.3s;
               color: white;
             }
           }
@@ -1895,14 +1626,9 @@ onMounted(() => {
     input {
       width: 100%;
       height: auto;
-      background: rgba(255, 255, 255, 0.04) !important;
-      border-radius: 8px !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      transition: border-color ease 0.25s;
-
-      &:focus {
-        border-color: var(--border-color) !important;
-      }
+      background: black;
+      border-radius: 5px !important;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .bottom_note {
@@ -1916,7 +1642,7 @@ onMounted(() => {
       @include mixins.accentBtn;
       width: 100%;
       height: auto;
-      padding-block: 14px;
+      padding-block: 5px;
     }
   }
 }

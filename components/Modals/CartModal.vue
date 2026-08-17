@@ -382,7 +382,6 @@ const goToCheckout = () => {
       align-items: flex-start;
       justify-content: space-between;
       gap: 1rem;
-      flex: 1;
     }
 
     img {

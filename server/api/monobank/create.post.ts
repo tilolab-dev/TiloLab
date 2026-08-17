@@ -26,7 +26,6 @@ export default defineEventHandler(async (event: any) => {
     });
   }
 
-  // CHECK OPTION RESERVATION
   if (order.expiresAt && order.expiresAt < new Date()) {
     await prisma.$transaction(async (tx) => {
       for (const item of order.orderItems) {
@@ -48,23 +47,18 @@ export default defineEventHandler(async (event: any) => {
     const invoice: any = await $fetch("https://api.monobank.ua/api/merchant/invoice/create", {
       method: "POST",
       headers: {
-        // PRODUCTION ENVIRONMENT
-        // "X-Token": process.env.BANK_API_KEY!
+        "X-Token": process.env.BANK_API_KEY!
+        // "X-Token": process.env.TEST_BANK_API_KEY!
         // TESTING ENVIRONMENT VARIABLE
-        "X-Token": process.env.TEST_BANK_API_KEY!
       },
       body: {
         amount: amount * 100,
         ccy: 980,
-        // PRODUCTION ENVIRONMENT
-        // redirectUrl: `https://www.tilolab.com.ua/summary/${orderId}`,
-        // webHookUrl: "https://www.tilolab.com.ua/api/monobank/webhook",
-        // DEVELOPMENT ENVIRONMENT
-        redirectUrl: `https://dev.tilolab.com.ua/summary/${orderId}`,
-        webHookUrl: "https://dev.tilolab.com.ua/api/monobank/webhook",
+        redirectUrl: `https://www.tilolab.com.ua/summary/${orderId}`,
+        webHookUrl: "https://www.tilolab.com.ua/api/monobank/webhook",
         // TEST ENVIRONMENT
-        // redirectUrl: `https://6d11-178-151-189-47.ngrok-free.app/summary/${orderId}`,
-        // webHookUrl: "https://6d11-178-151-189-47.ngrok-free.app/api/monobank/webhook",
+        // redirectUrl: `https://1c5c-178-151-189-47.ngrok-free.app/summary/${orderId}`,
+        // webHookUrl: "https://1c5c-178-151-189-47.ngrok-free.app/api/monobank/webhook",
 
         validity: 3600,
         merchantPaymInfo: {
@@ -76,19 +70,11 @@ export default defineEventHandler(async (event: any) => {
 
     await prisma.payment.upsert({
       where: { orderId },
-      update: {
-        monoInvoice: invoice.invoiceId,
-        amount,
-        status: "PENDING",
-        certificateId: null
-      },
+      update: {},
       create: {
         orderId,
         monoInvoice: invoice.invoiceId,
-        amount,
-        status: "PENDING",
-        type: "ORDER",
-        certificateId: null
+        amount
       }
     });
 

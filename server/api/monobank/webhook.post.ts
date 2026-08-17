@@ -1,11 +1,13 @@
 import crypto from "crypto";
 import { prisma } from "@/prisma/prisma";
-import { handleCertificateSurchargePayment } from "@/server/services/payment/handleCertificateSurchargePayment";
-import { handleRegularPayment } from "@/server/services/payment/handleRegularPayment";
+import { sendTelegramMessage } from "@/server/utils/telegram";
+import { sendSms } from "@/composables/smsNotifications";
 
 export default defineEventHandler(async (event) => {
   const rawBody = await readRawBody(event);
   const rawBodyBuffer = Buffer.isBuffer(rawBody) ? rawBody : Buffer.from(rawBody!);
+
+  let isPaymentSuccess = false;
 
   const sign = getHeader(event, "x-sign");
   if (!sign) throw createError({ statusCode: 400, message: "No signature" });
@@ -36,16 +38,142 @@ export default defineEventHandler(async (event) => {
 
   const payment = await prisma.payment.findUnique({
     where: { monoInvoice: data.invoiceId },
-    include: { order: { include: { orderItems: { include: { product: true } } } } }
+    include: { order: { include: { orderItems: true } } }
   });
 
   if (!payment || !payment.order) {
+    // console.log("Платіж чи замовлення не знайдено");
     throw createError({ statusCode: 404, statusMessage: "Платіж чи замовлення не знайдено" });
   }
 
-  if (payment.type === "CERTIFICATE_SURCHARGE") {
-    return await handleCertificateSurchargePayment(payment);
+  const order = payment.order;
+  // console.log(order, "order");
+  if (order.status !== "NEW") {
+    // console.log("Замовлення вже оплачено: ", order.status);
+    return { ok: true, message: `Замовлення вже оплачено: ${order.status}` };
   }
 
-  return await handleRegularPayment(payment);
+  const orderDetails = await prisma.order.findUnique({
+    where: { id: order.id },
+    include: { shippingInfo: true }
+  });
+
+  let runningOutItems = [] as any[];
+
+  await prisma.$transaction(async (tx) => {
+    for (const item of order.orderItems) {
+      if (item.optionId) {
+        const updatedOption = await tx.productOptions.update({
+          where: { id: item.optionId },
+          data: {
+            optionStock: { decrement: item.quantity },
+            optionReserved: { decrement: item.quantity }
+          },
+          include: {
+            Product: {
+              include: {
+                translations: true
+              }
+            }
+          }
+        });
+
+        const remaining = updatedOption.optionStock ?? 0;
+
+        if (remaining < 10) {
+          runningOutItems.push({
+            ...updatedOption,
+            title: updatedOption.Product?.translations?.[0]?.title,
+            actualStock: remaining
+          });
+        }
+
+        continue;
+      }
+
+      const updatedProduct = await tx.product.update({
+        where: { id: item.productId },
+        data: {
+          stockValue: { decrement: item.quantity },
+          stockReserved: { decrement: item.quantity }
+        },
+        include: {
+          translations: true
+        }
+      });
+
+      const remaining = updatedProduct.stockValue ?? 0;
+
+      if (remaining < 10) {
+        runningOutItems.push({
+          ...updatedProduct,
+          actualStock: remaining
+        });
+      }
+    }
+
+    await tx.order.update({
+      where: { id: order.id },
+      data: { status: "PAID" }
+    });
+
+    await tx.payment.update({
+      where: { id: payment.id },
+      data: { status: "SUCCESS" }
+    });
+
+    await tx.adminNotification.create({
+      data: {
+        message: `Нове замовлення на сумму ${order.totalPrice}`,
+        isReaded: false
+      }
+    });
+
+    isPaymentSuccess = true;
+  });
+
+  if (!isPaymentSuccess) {
+    return;
+  }
+
+  await sendTelegramMessage(`
+      🛒 Нове замовлення!
+
+      📦 **ID:** ${orderDetails?.orderNumber}
+
+      👤 **Отримувач:** ${orderDetails?.shippingInfo?.recipient}
+      📞 **Телефон:** ${orderDetails?.shippingInfo?.phoneNumber}
+
+      💰 **Сума:** ${orderDetails?.totalPrice} грн.
+
+      🚚 **Доставка**
+      🏙️ Місто — ${orderDetails?.shippingInfo?.city}
+      🏤 Відділення — ${orderDetails?.shippingInfo?.postOffice}
+      📦 Поштомат — ${orderDetails?.shippingInfo?.postomat}
+    `);
+
+  const phoneNumber = orderDetails?.shippingInfo?.phoneNumber;
+
+  if (phoneNumber) {
+    try {
+      await sendSms(phoneNumber, `Ваше замовлення №${orderDetails?.orderNumber} створено.`);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  for (const item of runningOutItems) {
+    await prisma.adminNotification.create({
+      data: {
+        message: `Товар ${item.translations?.[0]?.title || null} залишилось менше ${runningOutItems?.[0]?.actualStock ?? ""} одиниць`
+      }
+    });
+  }
+
+  // console.log(runningOutItems?.translations?.[0]?.title || null, "runningOutItems");
+  // console.log(runningOutItems?.[0]?.translations?.[0]?.title || null, "runningOutItems");
+
+  // console.log("Payment was success");
+
+  return { statusCode: 200, message: "Платіж успішно оброблений" };
 });
