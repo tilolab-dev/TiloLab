@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { useModalStore } from "@/store/modal-store";
 import { useCartStore } from "@/store/cart-store";
 
@@ -74,8 +74,6 @@ const surchargeOrder = async () => {
         certificateCode: props.receivedCode
       }
     });
-
-    console.log(surchargeRes, "surchargeRes");
 
     const pageUrl = surchargeRes.pageUrl;
 
@@ -99,10 +97,6 @@ const props = defineProps({
     type: String,
     required: true
   }
-});
-
-onMounted(() => {
-  console.log(props);
 });
 </script>
 
