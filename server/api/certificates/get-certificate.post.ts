@@ -31,12 +31,10 @@ export default defineEventHandler(async (event) => {
       throw createError({
         statusCode: 405,
         data: {
-          message: "Сертифікат вже використано"
+          message: "Сертифікат не дійсний"
         }
       });
     }
-
-    console.log(certificate, "certificate");
 
     return {
       statusCode: 200,
@@ -48,9 +46,6 @@ export default defineEventHandler(async (event) => {
       }
     };
   } catch (error: any) {
-    // console.error("Error fetching certificate:", error);
-    // const message = error instanceof Error ? error.message : String(error);
-
     console.error("Error fetching certificate:", error);
 
     if (error?.statusCode) {

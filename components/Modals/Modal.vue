@@ -86,9 +86,10 @@ const closeModal = () => {
   modalStore.closeModal();
 };
 
-const openModal = (modalName, props = {}) => {
+const openModal = () => {
+  // modalName, props = {}
   document.body.style.overflow = "hidden";
-  console.log(modalName, props);
+  // console.log(modalName, props);
 };
 </script>
 

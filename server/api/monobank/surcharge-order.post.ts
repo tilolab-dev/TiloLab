@@ -85,8 +85,8 @@ export default defineEventHandler(async (event) => {
         webHookUrl: "https://dev.tilolab.com.ua/api/monobank/webhook",
 
         // TEST ENVIRONMENT
-        // redirectUrl: `https://6d11-178-151-189-47.ngrok-free.app/summary/${orderId}`,
-        // webHookUrl: "https://6d11-178-151-189-47.ngrok-free.app/api/monobank/webhook",
+        // redirectUrl: `https://e50d-91-232-241-248.ngrok-free.app/summary/${orderId}`,
+        // webHookUrl: "https://e50d-91-232-241-248.ngrok-free.app/api/monobank/webhook",
 
         validity: 3600,
         merchantPaymInfo: {

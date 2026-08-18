@@ -580,7 +580,6 @@ watch(activeTab, (newVal) => {
 // };
 
 const debounce = (string, fn) => {
-  // console.log(fetchedCity.value);
   return () => {
     clearTimeout(timerId);
     if (string === "") {
@@ -608,7 +607,6 @@ const getCitiesNp = debounce(senderCity.value, async () => {
 });
 
 const getPostomatsNp = debounce(postomatNumber.value, async () => {
-  console.log("fefwev");
   // if (!senderCity.value) {
   //   // tooltip({ status: "warning", message: "Введіть місто" });
   //   postomatNumber.value = "";
@@ -961,8 +959,6 @@ const changeStatus = async () => {
 
 onMounted(() => {
   selectValue.value = modalProps.order.status;
-
-  console.log(modalProps.order);
 });
 </script>
 

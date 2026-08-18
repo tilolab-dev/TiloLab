@@ -291,8 +291,6 @@ const addNewCategory = () => {
 
       //   });
 
-      console.log("UPLOAD NEW CAT", uploadNewCategory);
-
       if (uploadNewCategory.statusCode === 200) {
         alert("Категорія успішно додана");
         emit("tooltip", {

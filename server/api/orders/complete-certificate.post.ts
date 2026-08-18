@@ -4,9 +4,6 @@ import { prisma } from "@/prisma/prisma";
 export default defineEventHandler(async (event) => {
   const { orderId, certificateCode } = await readBody(event);
 
-  console.log(orderId, "orderId");
-  console.log(certificateCode, "certificateCode");
-
   if (!orderId || !certificateCode) {
     throw createError({
       statusCode: 400,

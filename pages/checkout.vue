@@ -746,11 +746,8 @@ const confirmOrderHandler = async () => {
   const hasCertificateCode = Boolean(certificateCode.value.trim());
 
   const isCertificateInCart = cartStore.cart.some((item) => {
-    console.log("item.product.isCertificate", item.product);
     return item.product.isCertificate;
   });
-
-  console.log("isCertificateInCart", isCertificateInCart, "hasCertificateCode", hasCertificateCode);
 
   if (hasCertificateCode && isCertificateInCart) {
     tooltip({
@@ -791,8 +788,6 @@ const confirmOrderHandler = async () => {
     if (hasCertificateCode) {
       const res = await validateCertificate(orderTotalPrice, orderId);
 
-      // console.log(res, "res from validate certificate");
-
       if (!res.success) {
         tooltip({ status: "warning", message: res.message });
         loaderState.value = false;
@@ -804,7 +799,6 @@ const confirmOrderHandler = async () => {
       }
 
       if (res.isNeedToSurcharge) {
-        console.log("RETURN TO BE SURCHARGED");
         modalStore.showModal("SurchargeCertificate", { orderId, receivedCode });
         return;
       } else {
@@ -814,7 +808,6 @@ const confirmOrderHandler = async () => {
 
     if (isCompleteOrderWithCertificate) {
       const proccessOrder = await proccessOrderByCertificate(orderId, receivedCode);
-      // console.log(proccessOrder, "ORDER CLOSED WITH CERTIFICATE");
 
       if (proccessOrder.statusCode !== 200) {
         tooltip({ status: "error", message: `${proccessOrder.message}` });
@@ -835,7 +828,7 @@ const confirmOrderHandler = async () => {
         window.location.href = `https://dev.tilolab.com.ua//summary/${proccessOrder.order.id}`;
 
         // TEST ENVIRONMENT
-        // window.location.href = `https://6d11-178-151-189-47.ngrok-free.app/summary/${proccessOrder.order.id}`;
+        // window.location.href = `https://e50d-91-232-241-248.ngrok-free.app/summary/${proccessOrder.order.id}`;
       }
 
       return;
@@ -846,8 +839,6 @@ const confirmOrderHandler = async () => {
 
       // CREATE PAYMENT
       const getPageUrl = await createPayment(orderId, orderTotalPrice);
-
-      console.log(getPageUrl, "getPageUrl");
 
       cartStore.clearCart();
 

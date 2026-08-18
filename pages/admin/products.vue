@@ -614,7 +614,6 @@ watch(activeProductCategory, (newValue) => {
   };
 
   newValue === "all" ? getAllProducts() : getProductsByCat(newValue);
-  console.log(newValue, "newValue");
 });
 
 watch(fetchedCategories, async () => {
@@ -717,7 +716,6 @@ const changeCategoryOrder = () => {
   const categoryHandler = () => {
     localCategories.value = JSON.parse(JSON.stringify(fetchedCategories.value));
 
-    console.log(localCategories.value, "categories");
     editOrderMode.value = true;
   };
 
