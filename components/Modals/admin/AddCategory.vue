@@ -1,8 +1,10 @@
 <template>
   <div class="add_category_content">
-    <div v-if="loaderState" class="loader_content">
-      <SharedLoader />
-    </div>
+    <Transition name="fade">
+      <div v-if="loaderState" class="loader_content">
+        <SharedLoader />
+      </div>
+    </Transition>
     <div class="add_category">
       <div class="top_row">
         <h2>Додати категорію</h2>
@@ -14,10 +16,20 @@
         <div class="add_icon">
           <span class="default_text"> Іконка категорії (не обов'язково) </span>
           <div class="icon_wrapper">
+            <div class="icon_preview" :class="{ icon_preview_filled: fileReady }">
+              <SvgIcon
+                v-if="!fileReady"
+                name="default-picture"
+                size="big"
+                fill="rgb(120, 120, 122)"
+              />
+              <img v-if="fileReady" :src="filePreview" alt="Preview" class="preview_img" />
+            </div>
+
             <div class="label_wrapper">
               <label for="file_out" class="icon-label">
+                <SvgIcon name="download-btn" size="micro" fill="currentColor" />
                 <span> Оберіть файл </span>
-                <SvgIcon name="download-btn" size="micro" fill="rgb(79, 79, 79)" />
               </label>
               <input
                 id="file_out"
@@ -26,32 +38,24 @@
                 class="icon-file"
                 @change="handleFileUpload"
               />
-            </div>
-            <div class="icon_preview">
-              <SvgIcon v-if="!fileReady" name="default-picture" size="big" fill="rgb(79, 79, 79)" />
-              <img
-                v-if="fileReady"
-                :src="filePreview"
-                alt="Preview"
-                class="h-10 w-10 object-cover"
-              />
-            </div>
 
-            <span v-if="!fileReady" class="file_note">
-              ( Файл повинен бути формату .svg .png )
-            </span>
-            <span v-if="fileReady" class="file_ready"> Файл готовий для завантаження </span>
+              <span v-if="!fileReady" class="file_note"> Формат .svg .png .webp </span>
+              <span v-if="fileReady" class="file_ready">
+                <span class="dot"></span>
+                Файл готовий для завантаження
+              </span>
+            </div>
           </div>
         </div>
         <div class="category-name-wrap">
           <div class="add-description">
-            <span class="default_text"> Назва категорії (українською) </span>
+            <span class="default_text"> Назва категорії (українською) </span>
 
             <input
               v-model="categoryNameUk"
               class=""
               type="text"
-              placeholder="Введіть назву категорії"
+              placeholder="Введіть назву категорії"
             />
           </div>
         </div>
@@ -68,10 +72,9 @@
         </div>
 
         <div class="checkbox_wrapper">
-          <span class="default_text"> Показувати групу на сайті? (опціонально) </span>
-
           <input id="categoryCheckbox" v-model="categoryVisible" type="checkbox" />
-          <label for="categoryCheckbox" class="checkbox-elem"> </label>
+          <label for="categoryCheckbox" class="checkbox-elem"></label>
+          <span class="default_text"> Показувати групу на сайті? (опціонально) </span>
         </div>
       </div>
       <div class="button-group">
@@ -171,19 +174,19 @@ const addNewCategory = () => {
   //   } else if (categoryNameUk.value.length < 1) {
   //     emit("tooltip", {
   //       status: "error",
-  //       message: "Заповніть назву категорії Українською",
+  //       message: "Заповніть назву категорії Українською",
   //     });
   //     return;
   //   } else if (categoryNameEn.value.length < 1) {
   //     emit("tooltip", {
   //       status: "error",
-  //       message: "Заповніть назву категорії Англійською",
+  //       message: "Заповніть назву категорії Англійською",
   //     });
   //     return;
   //   } else if (categoryNameRu.value.length < 1) {
   //     emit("tooltip", {
   //       status: "error",
-  //       message: "Заповніть назву категорії Російською",
+  //       message: "Заповніть назву категорії Російською",
   //     });
   //     return;
   //   } else if (!file.value) {
@@ -195,19 +198,19 @@ const addNewCategory = () => {
   //   } else if (categoryTextUk.value.length < 1) {
   //     emit("tooltip", {
   //       status: "error",
-  //       message: "Заповніть опис категорії Українською",
+  //       message: "Заповніть опис категорії Українською",
   //     });
   //     return;
   //   } else if (categoryTextEn.value.length < 1) {
   //     emit("tooltip", {
   //       status: "error",
-  //       message: "Заповніть опис категорії Англійською",
+  //       message: "Заповніть опис категорії Англійською",
   //     });
   //     return;
   //   } else if (categoryTextRu.value.length < 1) {
   //     emit("tooltip", {
   //       status: "error",
-  //       message: "Заповніть опис категорії Російською",
+  //       message: "Заповніть опис категорії Російською",
   //     });
   //     return;
   //   } else if (!file.value) {
@@ -288,8 +291,6 @@ const addNewCategory = () => {
 
       //   });
 
-      console.log("UPLOAD NEW CAT", uploadNewCategory);
-
       if (uploadNewCategory.statusCode === 200) {
         alert("Категорія успішно додана");
         emit("tooltip", {
@@ -317,25 +318,37 @@ const addNewCategory = () => {
 </script>
 
 <style scoped lang="scss">
+@use "@/style/mixins.scss" as mixins;
+
 .add_category_content {
   top: 30%;
   transform: translateY(-50%);
-  background: var(--bg-color);
+  background:
+    linear-gradient(180deg, rgba(255, 169, 214, 0.05) 0%, rgba(255, 169, 214, 0) 30%),
+    var(--bg-color);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 16px;
   overflow-x: hidden;
-  height: fit-content;
+  height: -webkit-fill-available;
+  min-height: 80dvh;
+  // height: fit-content;
   position: relative;
   overflow: hidden;
+  overflow-y: scroll;
+  box-shadow:
+    0 24px 60px -20px rgba(0, 0, 0, 0.65),
+    0 0 40px -12px rgba(255, 169, 214, 0.16);
+
   .loader_content {
     width: 100%;
     height: 100%;
     position: absolute;
+    inset: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10;
-    background: rgba(0, 0, 0, 0.35);
+    background: rgba(13, 12, 13, 0.55);
     backdrop-filter: blur(7px);
   }
 
@@ -348,122 +361,198 @@ const addNewCategory = () => {
     top: 0;
   }
 }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .top_row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   button {
     cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid transparent;
+    transition: all ease 0.25s;
   }
-  svg {
-    width: 20px;
-    height: 20px;
-    stroke: var(--accent-grey);
-    transition: all ease 0.3s;
 
-    @media screen and (min-width: 1024px) {
-      &:hover {
-        stroke: var(--accent-red);
-        transition: all ease 0.3s;
+  svg {
+    width: 15px;
+    height: 15px;
+    stroke: var(--dark-text);
+    transition: all ease 0.25s;
+  }
+
+  @media screen and (min-width: 1024px) {
+    button:hover {
+      background: rgba(255, 64, 128, 0.1);
+      border-color: var(--error-border);
+      svg {
+        stroke: var(--error-border);
       }
     }
-    @media screen and (max-width: 1024px) {
-      & {
-        stroke: var(--accent-red);
-      }
+  }
+  @media screen and (max-width: 1024px) {
+    svg {
+      stroke: var(--error-border);
     }
   }
 }
+
 .add_category {
   position: relative;
   width: 100%;
   height: auto;
-  padding: 20px;
+  padding: 28px 32px 24px;
 
   h2 {
-    font-size: 1.5rem;
-    line-height: 2rem;
-    color: var(--text-grey);
-    font-weight: 700;
+    @include mixins.titleText;
+    font-size: 1.375rem;
+    text-transform: none;
+    letter-spacing: normal;
   }
 
-  input {
-    border: 1px solid rgba(255, 169, 214, 0.3);
-    background: black;
+  input[type="text"] {
+    @include mixins.mainText;
+    font-size: 0.9375rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
     border-radius: 10px;
-    padding: 10px 5px;
+    padding: 12px 14px;
     width: 100%;
-    color: var(--text-grey);
+    color: var(--text-color);
     margin-top: 10px;
+    transition: border-color ease 0.25s;
+    outline: none;
+
+    &::placeholder {
+      color: var(--dark-text);
+    }
+
+    &:focus {
+      border-color: var(--border-color);
+    }
   }
 
   textarea {
-    border: 1px solid rgba(255, 169, 214, 0.3);
-    background: black;
+    @include mixins.mainText;
+    font-size: 0.9375rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
     resize: none;
-    border-radius: 8px;
-    color: var(--text-grey);
-    padding: 10px 5px;
-  }
+    border-radius: 10px;
+    color: var(--text-color);
+    padding: 12px 14px;
+    width: 100%;
+    outline: none;
+    transition: border-color ease 0.25s;
 
-  .top_row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    &::placeholder {
+      color: var(--dark-text);
+    }
+
+    &:focus {
+      border-color: var(--border-color);
+    }
   }
 
   .main_modal {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 22px;
+    margin-top: 24px;
   }
+
   .default_text {
-    font-size: 1rem;
-    line-height: 1.5rem;
-    color: var(--text-grey);
-    font-weight: 700;
+    @include mixins.mainText;
+    font-size: 0.875rem;
+    color: var(--dark-text);
+    font-weight: 500;
   }
+
   .icon_wrapper {
-    display: grid;
-    grid-template-columns: 4fr 1fr;
-    padding-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-top: 0.75rem;
+
     .icon_preview {
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px dashed rgba(255, 255, 255, 0.16);
+      transition: all ease 0.25s;
 
       svg {
-        fill: var(--accent-color);
+        fill: var(--dark-text);
       }
 
-      img {
-        width: 50px;
-        height: 50px;
+      .preview_img {
+        width: 100%;
+        height: 100%;
+        border-radius: 14px;
         object-fit: cover;
-        transform: translateY(-15px);
       }
     }
+
+    .icon_preview_filled {
+      border: 1px solid var(--border-color);
+      background: rgba(255, 169, 214, 0.06);
+    }
   }
+
   .label_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+
     .icon-label {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 5px;
-      height: 32px;
-      padding: 8px 20px 7px;
-      border-radius: 5px;
-      font-size: 0.75rem;
+      gap: 8px;
+      height: 34px;
+      padding: 0 18px;
+      border-radius: 8px;
+      font-size: 0.8125rem;
       font-weight: 600;
       text-align: center;
       background-color: var(--btn-color);
       border: 1px solid var(--border-color);
       color: var(--text-color);
       cursor: pointer;
+      transition: all ease 0.25s;
 
       svg {
         fill: var(--text-color);
+      }
+
+      @media screen and (min-width: 1024px) {
+        &:hover {
+          background-color: var(--btn-color-hover);
+        }
+      }
+      &:active {
+        background-color: var(--btn-color-active);
       }
     }
 
@@ -473,36 +562,66 @@ const addNewCategory = () => {
   }
 
   .file_note {
-    margin-top: 0.35rem;
-    font-weight: 300;
-    font-size: 0.8rem;
-    color: var(--text-grey);
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: var(--dark-text);
+  }
+
+  .file_ready {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    font-size: 0.75rem;
+    color: var(--success-text);
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success-border);
+      flex-shrink: 0;
+    }
   }
 
   .category_description {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 20px;
+  }
+
+  .category-name-wrap {
+    .add-description {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   .checkbox_wrapper {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 10px;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
 
     input {
       display: none;
     }
+
+    .default_text {
+      font-size: 0.875rem;
+    }
+
     .checkbox-elem {
       width: 18px;
       height: 18px;
       border: 2px solid var(--accent-color);
       border-radius: 50%;
       cursor: pointer;
+      transition: all ease 0.2s;
+      flex-shrink: 0;
     }
+
     input[type="checkbox"]:checked + label {
       border: 5px solid var(--accent-color);
     }
@@ -512,37 +631,60 @@ const addNewCategory = () => {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
+    margin-top: 28px;
 
     button {
-      margin: 20px 0 20px;
-      padding: 3px 6px;
-      font-size: clamp(0.6rem, 1vw, 1rem);
-      color: white;
-      font-weight: 500;
-      border-radius: 5px;
+      @include mixins.mainText;
+      padding: 11px 26px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all ease 0.25s;
 
       @media screen and (max-width: 768px) {
-        margin: 0;
         width: 100%;
-        font-size: 1.1rem;
-        padding: 8px 0;
+        font-size: 0.9375rem;
+        padding: 13px 0;
       }
     }
+
     .closeModal {
-      background: black;
-      border: 1px solid rgba(255, 169, 214, 0.3);
+      background: transparent;
+      border: 1px solid var(--dark-text);
+      color: var(--text-grey);
+
+      @media screen and (min-width: 1024px) {
+        &:hover {
+          background: rgba(255, 169, 214, 0.08);
+          border-color: var(--border-color);
+          color: var(--text-color);
+        }
+      }
     }
+
     .addItem {
       background: var(--btn-color);
       border: 1px solid var(--border-color);
+      color: var(--text-color);
+
+      @media screen and (min-width: 1024px) {
+        &:hover {
+          background: var(--btn-color-hover);
+        }
+      }
+      &:active {
+        background: var(--btn-color-active);
+      }
     }
 
     @media screen and (max-width: 768px) {
-      flex-direction: column;
-      padding: 50px 0 20px;
-      gap: 20px;
+      flex-direction: column-reverse;
+      padding: 30px 0 4px;
+      gap: 12px;
+      margin-top: 0;
     }
   }
 
@@ -551,8 +693,6 @@ const addNewCategory = () => {
     width: 100vw;
     height: 100vh;
     border-radius: 0;
-    // top: 0;
-    // left: 0;
   }
 }
 </style>

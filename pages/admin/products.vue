@@ -50,6 +50,13 @@
               <button
                 class="text-nowrap"
                 :class="editOrderMode ? 'avoid_click' : ''"
+                @click="modalStore.showModal('AddCertificate')"
+              >
+                Додати сертифікат
+              </button>
+              <button
+                class="text-nowrap"
+                :class="editOrderMode ? 'avoid_click' : ''"
                 @click="modalStore.showModal('AddCategory')"
               >
                 Додати категорію
@@ -607,7 +614,6 @@ watch(activeProductCategory, (newValue) => {
   };
 
   newValue === "all" ? getAllProducts() : getProductsByCat(newValue);
-  console.log(newValue, "newValue");
 });
 
 watch(fetchedCategories, async () => {
@@ -710,7 +716,6 @@ const changeCategoryOrder = () => {
   const categoryHandler = () => {
     localCategories.value = JSON.parse(JSON.stringify(fetchedCategories.value));
 
-    console.log(localCategories.value, "categories");
     editOrderMode.value = true;
   };
 

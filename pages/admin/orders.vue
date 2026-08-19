@@ -185,7 +185,7 @@
                           <div class="product_option">
                             <!-- <span v-if="product.visible">Активний</span>
                           <span v-else>Не активний</span> -->
-                            {{ order.status }}
+                            <span class="status_pill">{{ order.status }}</span>
                           </div>
                         </td>
                         <td>
@@ -199,6 +199,21 @@
                             <div v-else-if="order.paymentMethod === 'cod'" class="option cod">
                               Накладний <br />
                               платіж
+                            </div>
+                            <div
+                              v-else-if="order.paymentMethod === 'certificate'"
+                              class="option certificate"
+                            >
+                              <span v-if="order.payments?.type === 'CERTIFICATE_SURCHARGE'">
+                                Оплачений <br />
+                                сертифікатом <br />
+                                з доплатою
+                              </span>
+
+                              <span v-else>
+                                Оплачений <br />
+                                сертифікатом
+                              </span>
                             </div>
                           </div>
                         </td>
@@ -232,7 +247,7 @@
                     </tbody>
                     <tbody v-else>
                       <tr>
-                        <td class="no_order_items" colspan="7">Немає замовлень по цій категорії</td>
+                        <td class="no_order_items" colspan="7">Немає замовлень по цій категорії</td>
                       </tr>
                     </tbody>
                   </table>
@@ -278,7 +293,7 @@ const { ordersList } = storeToRefs(ordersStore);
 //   {
 //     id: 1,
 //     value: "NEW",
-//     name: "Новий"
+//     name: "Новий"
 //   },
 //   {
 //     id: 2,
@@ -394,6 +409,15 @@ definePageMeta({
 <style lang="scss" scoped>
 @use "@/style/mixins.scss" as mixins;
 
+.title_page {
+  h1 {
+    @include mixins.titleText;
+    font-size: 1.625rem;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+}
+
 .orders_section {
   height: 100vh;
   position: relative;
@@ -437,16 +461,18 @@ definePageMeta({
         margin-bottom: 1.5rem;
         overflow: hidden;
         word-break: break-word;
-        background: rgb(6, 5, 6);
+        background:
+          linear-gradient(180deg, rgba(255, 169, 214, 0.04) 0%, rgba(255, 169, 214, 0) 25%),
+          var(--bg-color);
         box-shadow:
-          0 20px 25px -5px rgba(0, 0, 0, 0.1),
-          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+          0 24px 60px -20px rgba(0, 0, 0, 0.65),
+          0 0 40px -14px rgba(255, 169, 214, 0.12);
         border-radius: 1rem;
         background-clip: border-box;
         .table_name {
           padding: 1.5rem;
           margin-bottom: 0;
-          border-bottom: 0px solid transparent;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
           border-top-left-radius: 1rem;
           border-top-right-radius: 1rem;
 
@@ -456,18 +482,34 @@ definePageMeta({
             display: flex;
             justify-content: flex-start;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
 
             button {
-              border: 1px solid var(--border-color);
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              background: rgba(255, 255, 255, 0.02);
+              color: var(--dark-text);
               cursor: pointer;
-              padding: 3px 7px;
-              border-radius: 5px;
+              padding: 7px 16px;
+              border-radius: 20px;
+              font-size: 0.8125rem;
+              font-weight: 500;
+              @include mixins.mainText;
+              font-size: 0.8125rem;
               transition: all ease 0.2s;
+
+              @media screen and (min-width: 1024px) {
+                &:hover {
+                  color: var(--text-color);
+                  border-color: var(--border-color);
+                }
+              }
             }
 
             .active_status_btn {
               background: var(--btn-color);
+              border-color: var(--border-color);
+              color: var(--text-color);
+              font-weight: 600;
               transition: all ease 0.2s;
             }
           }
@@ -477,8 +519,19 @@ definePageMeta({
           padding-left: 0;
           padding-right: 0;
           padding-top: 0;
-          overflow-y: scroll;
+          overflow-y: auto;
           padding-bottom: 0.5rem;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(255, 169, 214, 0.3) transparent;
+
+          &::-webkit-scrollbar {
+            width: 6px;
+          }
+          &::-webkit-scrollbar-thumb {
+            background: rgba(255, 169, 214, 0.28);
+            border-radius: 10px;
+          }
+
           .table_inner {
             padding: 0;
             overflow-x: auto;
@@ -492,10 +545,15 @@ definePageMeta({
               table-layout: auto;
               .t_head {
                 vertical-align: bottom;
+                position: sticky;
+                top: 0;
+                z-index: 2;
+                background: var(--bg-color);
                 &_cell {
                   padding-left: 1.5rem;
                   padding-right: 1.5rem;
                   padding-bottom: 0.75rem;
+                  padding-top: 0.5rem;
                   font-weight: 700;
                   text-align: left;
                   text-transform: uppercase;
@@ -503,23 +561,34 @@ definePageMeta({
                   background: transparent;
                   border-bottom-width: 1px;
                   border-bottom-style: solid;
+                  border-bottom-color: rgba(255, 255, 255, 0.08);
                   box-shadow: none;
                   color: var(--dark-text);
-                  font-size: 0.75rem;
-                  letter-spacing: normal;
+                  font-size: 0.6875rem;
+                  letter-spacing: 0.6px;
                   white-space: nowrap;
                   text-align: center;
-                  opacity: 0.7;
+                  opacity: 0.85;
                 }
               }
               .t_body {
-                border-top: 1px solid rgba(0, 0, 0, 0.1);
+                border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+                tr {
+                  transition: filter ease 0.2s;
+
+                  @media screen and (min-width: 1024px) {
+                    &:hover {
+                      filter: brightness(1.35);
+                    }
+                  }
+                }
 
                 .skeleton_content {
                   padding: 0.75rem 1.5rem;
                   vertical-align: middle;
                   background-color: transparent;
-                  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+                  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
                   .main_cell {
                     display: flex;
@@ -552,9 +621,9 @@ definePageMeta({
                   }
 
                   .skeleton_item {
-                    background-color: #d1d5db;
+                    background-color: rgba(255, 255, 255, 0.08);
 
-                    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+                    animation: pulse 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
                   }
 
                   @keyframes pulse {
@@ -563,7 +632,7 @@ definePageMeta({
                       opacity: 1;
                     }
                     50% {
-                      opacity: 0.5;
+                      opacity: 0.4;
                     }
                   }
                 }
@@ -608,7 +677,7 @@ definePageMeta({
                   padding: 12px 8px;
                   vertical-align: middle;
                   background: transparent;
-                  border-bottom: 1px solid rgba(63, 63, 63, 0.7);
+                  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
                   white-space: nowrap;
                   box-shadow: transparent;
                   .table_main {
@@ -624,7 +693,15 @@ definePageMeta({
                       align-items: flex-start;
                       color: white;
                       font-weight: 500;
-                      gap: 5px;
+                      gap: 3px;
+
+                      div:first-child {
+                        font-size: 0.75rem;
+                        color: var(--dark-text);
+                        font-weight: 500;
+                        text-transform: uppercase;
+                        letter-spacing: 0.3px;
+                      }
                     }
                   }
                   img {
@@ -635,18 +712,11 @@ definePageMeta({
                     font-size: 0.875rem;
                     color: #ffffff;
                     transition: all 0.2s ease-in-out;
-                    // border-radius: 50%;
-                    height: 3rem;
-                    width: 3rem;
-                    // background: rgb(245, 179, 179);
+                    height: 2.5rem;
+                    width: 2.5rem;
+                    border-radius: 50%;
+                    object-fit: cover;
                   }
-                  // .fallback_img {
-                  //   height: 3rem;
-                  //   width: 3rem;
-                  //   background: rgb(245, 179, 179);
-                  //   border-radius: 50%;
-                  //   margin-right: 10px;
-                  // }
                   h6 {
                     @include mixins.mainText;
                     font-size: 0.8rem;
@@ -660,7 +730,7 @@ definePageMeta({
                   padding: 0.5rem;
                   vertical-align: middle;
                   background: transparent;
-                  border-bottom: 1px solid rgba(63, 63, 63, 0.7);
+                  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
                   white-space: nowrap;
                   box-shadow: transparent;
                   p {
@@ -674,6 +744,12 @@ definePageMeta({
                     justify-content: center;
                     align-items: center;
                     gap: 5px;
+
+                    .price {
+                      @include mixins.subtitleText;
+                      font-size: 0.9375rem;
+                      color: var(--accent-color);
+                    }
                   }
                   .product_quantity {
                     width: 100%;
@@ -681,7 +757,9 @@ definePageMeta({
                     justify-content: center;
                     align-items: center;
                     @include mixins.mainText;
-                    font-size: 0.8rem;
+                    font-size: 0.75rem;
+                    color: var(--dark-text);
+                    text-align: center;
                   }
                   .product_option {
                     width: 100%;
@@ -692,20 +770,42 @@ definePageMeta({
                     @include mixins.mainText;
                     font-size: 0.8rem;
 
+                    .status_pill {
+                      padding: 5px 12px;
+                      border-radius: 20px;
+                      background: rgba(255, 255, 255, 0.08);
+                      border: 1px solid rgba(255, 255, 255, 0.14);
+                      font-size: 0.75rem;
+                      font-weight: 600;
+                      text-transform: uppercase;
+                      letter-spacing: 0.3px;
+                      white-space: nowrap;
+                    }
+
                     .option {
-                      padding: 3px 7px;
-                      border-radius: 5px;
+                      padding: 6px 10px;
+                      border-radius: 8px;
                       text-align: center;
+                      font-size: 0.75rem;
+                      line-height: 1.4;
                     }
 
                     .online {
                       background: var(--success-bg);
-                      border: 1px solid var(--success-btn);
+                      border: 1px solid var(--success-border);
+                      color: var(--success-text);
                     }
 
                     .cod {
                       background: var(--warning-bg);
-                      border: 1px solid var(--warning-btn);
+                      border: 1px solid var(--warning-border);
+                      color: var(--warning-text);
+                    }
+
+                    .certificate {
+                      background: rgba(255, 169, 214, 0.08);
+                      border: 1px solid var(--border-color);
+                      color: var(--accent-color);
                     }
                   }
                   button {
@@ -733,8 +833,9 @@ definePageMeta({
                   }
                   .edit_btn {
                     @include mixins.accentBtn;
-                    padding: 4px 10px;
-                    font-size: 0.7rem;
+                    padding: 6px 14px;
+                    font-size: 0.6875rem;
+                    letter-spacing: 0.2px;
                   }
                   .delete_btn {
                     width: 25px;
@@ -778,10 +879,11 @@ definePageMeta({
   }
 
   .no_order_items {
-    color: white;
+    color: var(--dark-text);
     text-align: center;
-    padding-block: 20px;
-    font-size: 1.3rem;
+    padding-block: 40px;
+    font-size: 1rem;
+    @include mixins.mainText;
   }
 }
 </style>

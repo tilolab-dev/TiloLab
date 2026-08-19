@@ -109,7 +109,8 @@
                       v-else
                       :style="{
                         textDecorationLine:
-                          productStore.selectedProducts.discountPercent != 0
+                          productStore.selectedProducts.discountPercent != 0 &&
+                          productStore.selectedProducts.discountPercent !== null
                             ? 'line-through'
                             : 'none'
                       }"
@@ -249,7 +250,10 @@
                 </div>
               </div>
 
-              <div class="product_id_info_characteristics">
+              <div
+                v-if="!productStore.selectedProducts.isCertificate"
+                class="product_id_info_characteristics"
+              >
                 <div class="head">
                   <h3>Характеристики</h3>
                 </div>
@@ -893,6 +897,8 @@ const addToCart = () => {
 
 onMounted(async () => {
   await fetchProductById();
+
+  // console.log(productStore.selectedProducts);
   // Force re-initialization of swipers when route changes
   swiperKey.value += 1;
 });

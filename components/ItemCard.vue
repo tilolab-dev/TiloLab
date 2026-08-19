@@ -3,17 +3,15 @@
     class="item_card"
     :class="{
       no_available_product: props.product.availableStock <= 0,
-      running_out_product: props.product.availableStock < 10 && props.product.availableStock > 0
+      running_out_product: props.product.availableStock <= 10 && props.product.availableStock > 0
     }"
   >
     <div v-if="hasDiscount" class="action_label">Акція</div>
 
     <NuxtLink v-if="props.link" :to="props.link" class="img_container">
-      <div v-if="props.product.availableStock <= 0" class="no_available_label">
-        Немає в наявності
-      </div>
+      <div v-if="props.product.stockValue <= 0" class="no_available_label">Немає в наявності</div>
       <div
-        v-if="props.product.availableStock < 10 && props.product.availableStock > 0"
+        v-if="props.product.stockValue <= 10 && props.product.stockValue > 0"
         class="running_out_label"
       >
         Товар закінчується
@@ -53,13 +51,6 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
-// import { useModalStore } from "@/store/modal-store";
-// import { useProductStore } from "@/store/product-store";
-
-// const productStore = useProductStore();
-// const modalStore = useModalStore();
-
 // let counter = ref(0);
 
 const props = defineProps({
@@ -123,10 +114,6 @@ function getValidImageSrc(imagePath) {
 //   event.preventDefault();
 //   modalStore.showModal("ProductToCart", props);
 // };
-
-onMounted(() => {
-  // console.log(props, "props in ItemCard onMounted");
-});
 </script>
 
 <style scoped lang="scss">

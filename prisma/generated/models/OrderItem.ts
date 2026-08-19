@@ -250,6 +250,7 @@ export type OrderItemWhereInput = {
   name?: Prisma.StringNullableFilter<"OrderItem"> | string | null
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
+  giftCertificate?: Prisma.GiftCertificateListRelationFilter
 }
 
 export type OrderItemOrderByWithRelationInput = {
@@ -262,6 +263,7 @@ export type OrderItemOrderByWithRelationInput = {
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.OrderOrderByWithRelationInput
   product?: Prisma.ProductOrderByWithRelationInput
+  giftCertificate?: Prisma.GiftCertificateOrderByRelationAggregateInput
 }
 
 export type OrderItemWhereUniqueInput = Prisma.AtLeast<{
@@ -277,6 +279,7 @@ export type OrderItemWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringNullableFilter<"OrderItem"> | string | null
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
+  giftCertificate?: Prisma.GiftCertificateListRelationFilter
 }, "id">
 
 export type OrderItemOrderByWithAggregationInput = {
@@ -314,6 +317,7 @@ export type OrderItemCreateInput = {
   name?: string | null
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
   product: Prisma.ProductCreateNestedOneWithoutOrderItemsInput
+  giftCertificate?: Prisma.GiftCertificateCreateNestedManyWithoutOrderItemInput
 }
 
 export type OrderItemUncheckedCreateInput = {
@@ -324,6 +328,7 @@ export type OrderItemUncheckedCreateInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  giftCertificate?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderItemInput
 }
 
 export type OrderItemUpdateInput = {
@@ -333,6 +338,7 @@ export type OrderItemUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
   product?: Prisma.ProductUpdateOneRequiredWithoutOrderItemsNestedInput
+  giftCertificate?: Prisma.GiftCertificateUpdateManyWithoutOrderItemNestedInput
 }
 
 export type OrderItemUncheckedUpdateInput = {
@@ -343,6 +349,7 @@ export type OrderItemUncheckedUpdateInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  giftCertificate?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderItemNestedInput
 }
 
 export type OrderItemCreateManyInput = {
@@ -380,6 +387,11 @@ export type OrderItemListRelationFilter = {
 
 export type OrderItemOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type OrderItemNullableScalarRelationFilter = {
+  is?: Prisma.OrderItemWhereInput | null
+  isNot?: Prisma.OrderItemWhereInput | null
 }
 
 export type OrderItemCountOrderByAggregateInput = {
@@ -470,6 +482,22 @@ export type OrderItemUncheckedUpdateManyWithoutProductNestedInput = {
   deleteMany?: Prisma.OrderItemScalarWhereInput | Prisma.OrderItemScalarWhereInput[]
 }
 
+export type OrderItemCreateNestedOneWithoutGiftCertificateInput = {
+  create?: Prisma.XOR<Prisma.OrderItemCreateWithoutGiftCertificateInput, Prisma.OrderItemUncheckedCreateWithoutGiftCertificateInput>
+  connectOrCreate?: Prisma.OrderItemCreateOrConnectWithoutGiftCertificateInput
+  connect?: Prisma.OrderItemWhereUniqueInput
+}
+
+export type OrderItemUpdateOneWithoutGiftCertificateNestedInput = {
+  create?: Prisma.XOR<Prisma.OrderItemCreateWithoutGiftCertificateInput, Prisma.OrderItemUncheckedCreateWithoutGiftCertificateInput>
+  connectOrCreate?: Prisma.OrderItemCreateOrConnectWithoutGiftCertificateInput
+  upsert?: Prisma.OrderItemUpsertWithoutGiftCertificateInput
+  disconnect?: Prisma.OrderItemWhereInput | boolean
+  delete?: Prisma.OrderItemWhereInput | boolean
+  connect?: Prisma.OrderItemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrderItemUpdateToOneWithWhereWithoutGiftCertificateInput, Prisma.OrderItemUpdateWithoutGiftCertificateInput>, Prisma.OrderItemUncheckedUpdateWithoutGiftCertificateInput>
+}
+
 export type OrderItemCreateNestedManyWithoutOrderInput = {
   create?: Prisma.XOR<Prisma.OrderItemCreateWithoutOrderInput, Prisma.OrderItemUncheckedCreateWithoutOrderInput> | Prisma.OrderItemCreateWithoutOrderInput[] | Prisma.OrderItemUncheckedCreateWithoutOrderInput[]
   connectOrCreate?: Prisma.OrderItemCreateOrConnectWithoutOrderInput | Prisma.OrderItemCreateOrConnectWithoutOrderInput[]
@@ -518,6 +546,7 @@ export type OrderItemCreateWithoutProductInput = {
   price?: number | null
   name?: string | null
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
+  giftCertificate?: Prisma.GiftCertificateCreateNestedManyWithoutOrderItemInput
 }
 
 export type OrderItemUncheckedCreateWithoutProductInput = {
@@ -527,6 +556,7 @@ export type OrderItemUncheckedCreateWithoutProductInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  giftCertificate?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderItemInput
 }
 
 export type OrderItemCreateOrConnectWithoutProductInput = {
@@ -568,12 +598,67 @@ export type OrderItemScalarWhereInput = {
   name?: Prisma.StringNullableFilter<"OrderItem"> | string | null
 }
 
+export type OrderItemCreateWithoutGiftCertificateInput = {
+  optionId?: number | null
+  quantity?: number
+  price?: number | null
+  name?: string | null
+  order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
+  product: Prisma.ProductCreateNestedOneWithoutOrderItemsInput
+}
+
+export type OrderItemUncheckedCreateWithoutGiftCertificateInput = {
+  id?: number
+  orderId: string
+  productId: number
+  optionId?: number | null
+  quantity?: number
+  price?: number | null
+  name?: string | null
+}
+
+export type OrderItemCreateOrConnectWithoutGiftCertificateInput = {
+  where: Prisma.OrderItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrderItemCreateWithoutGiftCertificateInput, Prisma.OrderItemUncheckedCreateWithoutGiftCertificateInput>
+}
+
+export type OrderItemUpsertWithoutGiftCertificateInput = {
+  update: Prisma.XOR<Prisma.OrderItemUpdateWithoutGiftCertificateInput, Prisma.OrderItemUncheckedUpdateWithoutGiftCertificateInput>
+  create: Prisma.XOR<Prisma.OrderItemCreateWithoutGiftCertificateInput, Prisma.OrderItemUncheckedCreateWithoutGiftCertificateInput>
+  where?: Prisma.OrderItemWhereInput
+}
+
+export type OrderItemUpdateToOneWithWhereWithoutGiftCertificateInput = {
+  where?: Prisma.OrderItemWhereInput
+  data: Prisma.XOR<Prisma.OrderItemUpdateWithoutGiftCertificateInput, Prisma.OrderItemUncheckedUpdateWithoutGiftCertificateInput>
+}
+
+export type OrderItemUpdateWithoutGiftCertificateInput = {
+  optionId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
+  product?: Prisma.ProductUpdateOneRequiredWithoutOrderItemsNestedInput
+}
+
+export type OrderItemUncheckedUpdateWithoutGiftCertificateInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  orderId?: Prisma.StringFieldUpdateOperationsInput | string
+  productId?: Prisma.IntFieldUpdateOperationsInput | number
+  optionId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
 export type OrderItemCreateWithoutOrderInput = {
   optionId?: number | null
   quantity?: number
   price?: number | null
   name?: string | null
   product: Prisma.ProductCreateNestedOneWithoutOrderItemsInput
+  giftCertificate?: Prisma.GiftCertificateCreateNestedManyWithoutOrderItemInput
 }
 
 export type OrderItemUncheckedCreateWithoutOrderInput = {
@@ -583,6 +668,7 @@ export type OrderItemUncheckedCreateWithoutOrderInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  giftCertificate?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderItemInput
 }
 
 export type OrderItemCreateOrConnectWithoutOrderInput = {
@@ -626,6 +712,7 @@ export type OrderItemUpdateWithoutProductInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
+  giftCertificate?: Prisma.GiftCertificateUpdateManyWithoutOrderItemNestedInput
 }
 
 export type OrderItemUncheckedUpdateWithoutProductInput = {
@@ -635,6 +722,7 @@ export type OrderItemUncheckedUpdateWithoutProductInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  giftCertificate?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderItemNestedInput
 }
 
 export type OrderItemUncheckedUpdateManyWithoutProductInput = {
@@ -661,6 +749,7 @@ export type OrderItemUpdateWithoutOrderInput = {
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product?: Prisma.ProductUpdateOneRequiredWithoutOrderItemsNestedInput
+  giftCertificate?: Prisma.GiftCertificateUpdateManyWithoutOrderItemNestedInput
 }
 
 export type OrderItemUncheckedUpdateWithoutOrderInput = {
@@ -670,6 +759,7 @@ export type OrderItemUncheckedUpdateWithoutOrderInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  giftCertificate?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderItemNestedInput
 }
 
 export type OrderItemUncheckedUpdateManyWithoutOrderInput = {
@@ -682,6 +772,35 @@ export type OrderItemUncheckedUpdateManyWithoutOrderInput = {
 }
 
 
+/**
+ * Count Type OrderItemCountOutputType
+ */
+
+export type OrderItemCountOutputType = {
+  giftCertificate: number
+}
+
+export type OrderItemCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  giftCertificate?: boolean | OrderItemCountOutputTypeCountGiftCertificateArgs
+}
+
+/**
+ * OrderItemCountOutputType without action
+ */
+export type OrderItemCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the OrderItemCountOutputType
+   */
+  select?: Prisma.OrderItemCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * OrderItemCountOutputType without action
+ */
+export type OrderItemCountOutputTypeCountGiftCertificateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.GiftCertificateWhereInput
+}
+
 
 export type OrderItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -693,6 +812,8 @@ export type OrderItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   name?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  giftCertificate?: boolean | Prisma.OrderItem$giftCertificateArgs<ExtArgs>
+  _count?: boolean | Prisma.OrderItemCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["orderItem"]>
 
 export type OrderItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -733,6 +854,8 @@ export type OrderItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type OrderItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
+  giftCertificate?: boolean | Prisma.OrderItem$giftCertificateArgs<ExtArgs>
+  _count?: boolean | Prisma.OrderItemCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OrderItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
@@ -748,6 +871,7 @@ export type $OrderItemPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   objects: {
     order: Prisma.$OrderPayload<ExtArgs>
     product: Prisma.$ProductPayload<ExtArgs>
+    giftCertificate: Prisma.$GiftCertificatePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1153,6 +1277,7 @@ export interface Prisma__OrderItemClient<T, Null = never, ExtArgs extends runtim
   readonly [Symbol.toStringTag]: "PrismaPromise"
   order<T extends Prisma.OrderDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderDefaultArgs<ExtArgs>>): Prisma.Prisma__OrderClient<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   product<T extends Prisma.ProductDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductClient<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  giftCertificate<T extends Prisma.OrderItem$giftCertificateArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrderItem$giftCertificateArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GiftCertificatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1582,6 +1707,30 @@ export type OrderItemDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many OrderItems to delete.
    */
   limit?: number
+}
+
+/**
+ * OrderItem.giftCertificate
+ */
+export type OrderItem$giftCertificateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GiftCertificate
+   */
+  select?: Prisma.GiftCertificateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GiftCertificate
+   */
+  omit?: Prisma.GiftCertificateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GiftCertificateInclude<ExtArgs> | null
+  where?: Prisma.GiftCertificateWhereInput
+  orderBy?: Prisma.GiftCertificateOrderByWithRelationInput | Prisma.GiftCertificateOrderByWithRelationInput[]
+  cursor?: Prisma.GiftCertificateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.GiftCertificateScalarFieldEnum | Prisma.GiftCertificateScalarFieldEnum[]
 }
 
 /**

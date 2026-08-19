@@ -74,6 +74,7 @@
                         (categoryOfWarehouse = el.CategoryOfWarehouse))
                       "
                     >
+                      {{ console.log(el, "el") }}
                       {{ el.Description }}
                     </li>
                   </ul>
@@ -160,8 +161,29 @@
                   </span>
                 </label>
 
+                <input
+                  id="payment3"
+                  v-model="paymentMethod"
+                  type="radio"
+                  name="payment"
+                  value="certificate"
+                />
+                <label for="payment3" class="radio-elem">
+                  <div class="radio-btn"></div>
+                  <span>У мене є сертифікат</span>
+                </label>
+
+                <div v-if="hasCertificate" class="certificate_wrapper">
+                  <div class="input_wrapper">
+                    <input
+                      v-model="certificateCode"
+                      type="text"
+                      placeholder="Введіть код сертифікату"
+                    />
+                  </div>
+                </div>
+
                 <div class="input_wrapper">
-                  <input v-model="orderPromoCode" type="text" placeholder="В мене є промокод" />
                   <input
                     v-model="orderComment"
                     type="text"
@@ -175,12 +197,20 @@
           <div class="summary_notification">
             <strong>Зверніть увагу!</strong>
 
-            <p class="delivery_description">
+            <p v-if="!hasCertificate" class="delivery_description">
               — Замовлення з оплатою при отриманні відправляються за умови передплати 200 грн.<br />
               — У разі неотримання замовлення передплата не повертається.<br />
               — Сума передплати враховується у загальній вартості замовлення. При отриманні ви
               сплачуєте лише залишок суми.<br />
               — Для замовлень на суму понад 2000 грн діє безкоштовна доставка.<br />
+            </p>
+            <p v-else class="delivery_description">
+              — Сертифікат можна використати лише один раз, після використання сертифікат стає
+              недійсним а залишок не повертається .<br />
+              — Якщо сума товарів у кошику перевищує номінал сертифікату, ви можете доплатити
+              різницю або обрати товари на суму еквівалентну номіналу подарункового сертифікату..<br />
+              — За допомогою сертифікату Ви можете придбати тільки товари, які є в наявності на
+              сайті. Сертифікат не можна придбати інший сертифікат.<br />
             </p>
           </div>
 
@@ -200,9 +230,6 @@
                   Вартість доставки за тарифами перевізника (оплачується окремо) <br />
                 </div>
               </li>
-              <!-- <li>
-                <p>Безкоштовна доставка на суму товарів від 2000 грн.</p>
-              </li> -->
             </ul>
           </div>
           <ClientOnly>
@@ -304,6 +331,7 @@
 
                 <span> {{ cartStore.totalPrice ?? 0 }} грн </span>
               </div>
+              <button class="test_data_btn" @click="fillTestDataHandler">FILL TEST DATA</button>
             </div>
           </ClientOnly>
         </div>
@@ -336,6 +364,9 @@ import { counterHandler } from "@/composables/counterHandler";
 import Tooltips from "@/components/shared/Tooltips.vue";
 import { useUserStore } from "@/store/user-store";
 import { useCartStore } from "@/store/cart-store";
+import { useModalStore } from "@/store/modal-store";
+
+const modalStore = useModalStore();
 
 const userStore = useUserStore();
 
@@ -356,25 +387,14 @@ const phone = ref(loggedInUser ? userStore.user?.phoneNumber : "+38 (0");
 const email = ref(loggedInUser ? userStore.user?.email : "");
 const deliveryMethod = ref("nova-post");
 const selectedDelivery = ref("");
-// const paymentMethod = ref("");
 
-// const contactInfoState = ref(false);
 const deliveryAddressState = ref(false);
 const courierDeliveryState = ref(false);
 
 const deliveryPrice = ref(0);
 const paymentMethod = ref("monobank");
-// const saveDeliveryAddress = ref(false);
-
-// const checkoutProducts = ref([]);
 
 const totalDeliveryPrice = computed(() => deliveryPrice.value + cartStore.totalPrice);
-
-// const checkout = ref({
-//   totalProducts: 0,
-//   discount: 0,
-//   totalPrice: 0
-// });
 
 let timerId = null;
 
@@ -386,6 +406,9 @@ let timerId = null;
 // const openHour = 9;
 // const closeHour = 18;
 
+// const getFormattedHours = (h) => (h < 10 ? "0" + h : h);
+// const getFormattedMonth = (m) => (m < 10 ? "0" + m : m);
+
 const postomatNumber = ref("");
 const postAddress = ref("");
 const currierAddress = ref("");
@@ -395,13 +418,10 @@ const preventReloadBox = ref(false);
 const isDeleting = ref(false);
 
 const orderComment = ref("");
-const orderPromoCode = ref("");
+const certificateCode = ref("");
+const hasCertificate = computed(() => paymentMethod.value === "certificate");
 
 const cartStore = useCartStore();
-// const authStore = useAuthStore();
-
-// const getFormattedHours = (h) => (h < 10 ? "0" + h : h);
-// const getFormattedMonth = (m) => (m < 10 ? "0" + m : m);
 
 const showTooltip = ref(false);
 const tooltipStatus = ref("");
@@ -423,8 +443,6 @@ const tooltip = (obj) => {
 const checkCyrillicSymbols = (value, message) => {
   const nameRegex = /^[а-яіїєґёА-ЯІЇЄҐЁ\s'-]+$/;
 
-  // console.log(value, nameRegex.test(value), "test value");
-
   if (!nameRegex.test(value)) {
     tooltip({ status: "warning", message: message });
   }
@@ -432,20 +450,18 @@ const checkCyrillicSymbols = (value, message) => {
   return nameRegex.test(value);
 };
 
-// const validateCertificate = () => {};
+const fillTestDataHandler = () => {
+  name.value = "Іван";
+  surname.value = "Іванович";
+  phone.value = "+380 (93) 000-00-00";
+  email.value = "fBnGK@example.com";
+  cityRef.value = "Харків";
+  postAddress.value = "Відділення №3: вул. Тюрінська (ран. Якіра), 124";
+  postAddressId.value = "7b422fbb-e1b8-11e3-8c4a-0050568002cf";
+  categoryOfWarehouse.value = "Branch";
+};
 
-const confirmOrderHandler = async () => {
-  if (!cartStore.cart.length) {
-    tooltip({ status: "warning", message: "Кошик порожній" });
-    return;
-  }
-
-  // const isCertificateValue = validateCertificate(orderPromoCode.value.trim());
-
-  // const isCertificateInCart = cartStore.cart.some(
-  //   (item) => item.product.certificate === isCertificateValue
-  // );
-
+const validateForm = async () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
   const validOperators = /^\+380(39|67|68|96|97|98|50|66|95|75|99|63|73|93)\d{7}$/;
@@ -472,47 +488,47 @@ const confirmOrderHandler = async () => {
 
   if (!name.value) {
     tooltip({ status: "warning", message: "Введіть Імʼя" });
-    return;
+    return false;
   }
   if (!checkCyrillicSymbols(name.value, "Введіть імʼя Українською")) {
-    return;
+    return false;
   }
   if (!surname.value) {
     tooltip({ status: "warning", message: "Введіть Фамілію" });
-    return;
+    return false;
   }
   if (!checkCyrillicSymbols(surname.value, "Введіть прізвище Українською")) {
-    return;
+    return false;
   }
 
   if (userNumber.length < 13 || !checkPhoneNumberUa) {
     tooltip({ status: "warning", message: "Перевірте номер телефону" });
-    return;
+    return false;
   }
 
   if (!validOperators.test(userNumber)) {
     tooltip({ status: "warning", message: "Перевірте правильність номеру" });
-    return;
+    return false;
   }
 
   if (!emailRegex.test(email.value)) {
     tooltip({ status: "warning", message: "Перевірте правильність email" });
-    return;
+    return false;
   }
 
   if (!cityRef.value) {
     tooltip({ status: "warning", message: "Перевірте місто" });
-    return;
+    return false;
   }
 
   if (selectedDelivery.value === "branch" && !postAddress.value) {
     tooltip({ status: "warning", message: "Оберіть відділення" });
-    return;
+    return false;
   }
 
   if (selectedDelivery.value === "postomat" && !postomatNumber.value) {
     tooltip({ status: "warning", message: "Оберіть поштомат" });
-    return;
+    return false;
   }
 
   if (paymentMethod.value === "cod" && totalDeliveryPrice.value < 200) {
@@ -520,21 +536,22 @@ const confirmOrderHandler = async () => {
       status: "warning",
       message: "При замовленні оплати при отриманні сумма товарів повинна бути не менше 200 грн"
     });
-    return;
+    return false;
   }
 
-  loaderState.value = true;
+  if (hasCertificate.value && !certificateCode.value.trim()) {
+    tooltip({ status: "warning", message: "Введіть код сертифіката" });
+    return false;
+  }
 
-  const getOrderItems = cartStore.cart.map((item) => {
-    return {
-      productId: item.product.id,
-      optionId: item.optionId,
-      quantity: item.quantity,
-      price: item.productPrice,
-      title: item.title
-    };
-  });
+  return {
+    success: true,
+    formattedPhone,
+    userNumber
+  };
+};
 
+const createRecipient = async (formattedPhone) => {
   const getRecipientId = await $fetch("/api/np/create-counterparty", {
     method: "POST",
     body: {
@@ -558,71 +575,283 @@ const confirmOrderHandler = async () => {
 
   const recipientContactId = getRecipientContactId.data[0].Ref;
 
-  try {
-    const getOrderId = await $fetch("/api/orders/newOrder", {
-      method: "POST",
-      body: {
-        userId: userStore.user?.id ?? null,
-        name: name.value.trim(),
-        surname: surname.value.trim(),
-        // totalPrice: totalDeliveryPrice.value,
-        paymentMethod: paymentMethod.value,
-        orderItems: getOrderItems,
-        email: email.value.trim(),
-        phoneNumber: userNumber.trim(),
-        promoCode: orderPromoCode.value.trim(),
-        orderComment: orderComment.value.trim(),
-        shippingInfo: {
-          recipient: name.value.trim() + " " + surname.value.trim(),
-          phoneNumber: phone.value.trim(),
-          deliveryMethod: "nova poshta",
-          postOffice: postAddress.value.trim(),
-          postomat: postomatNumber.value.trim(),
-          city: cityRef.value.trim(),
-          country: "Ukraine",
-          cityId: cityId.value.trim(),
-          warehouseType: categoryOfWarehouse.value,
-          postAddressId: postAddressId.value,
-          postomatId: postomatId.value,
-          recipientId: recipientId,
-          recipientContactId: recipientContactId
-        }
+  return {
+    success: true,
+    recipientId,
+    recipientContactId
+  };
+};
+
+const createOrder = async (userNumber, recipientId, recipientContactId) => {
+  const getOrderItems = cartStore.cart.map((item) => {
+    return {
+      productId: item.product.id,
+      optionId: item.optionId,
+      quantity: item.quantity,
+      price: item.productPrice,
+      title: item.title
+    };
+  });
+
+  const getOrderId = await $fetch("/api/orders/newOrder", {
+    method: "POST",
+    body: {
+      userId: userStore.user?.id ?? null,
+      name: name.value.trim(),
+      surname: surname.value.trim(),
+      // totalPrice: totalDeliveryPrice.value,
+      paymentMethod: paymentMethod.value,
+      orderItems: getOrderItems,
+      email: email.value.trim(),
+      phoneNumber: userNumber.trim(),
+      promoCode: certificateCode.value.trim(),
+      orderComment: orderComment.value.trim(),
+      shippingInfo: {
+        recipient: name.value.trim() + " " + surname.value.trim(),
+        phoneNumber: phone.value.trim(),
+        deliveryMethod: "nova poshta",
+        postOffice: postAddress.value.trim(),
+        postomat: postomatNumber.value.trim(),
+        city: cityRef.value.trim(),
+        country: "Ukraine",
+        cityId: cityId.value.trim(),
+        warehouseType: categoryOfWarehouse.value,
+        postAddressId: postAddressId.value,
+        postomatId: postomatId.value,
+        recipientId: recipientId,
+        recipientContactId: recipientContactId
       }
-    });
-
-    if (getOrderId.statusCode !== 200) {
-      tooltip({ status: "error", message: `${getOrderId.message}` });
-      loaderState.value = false;
-      return;
     }
+  });
 
-    const createPayment = await $fetch("/api/monobank/create", {
-      method: "POST",
-      body: {
-        orderId: getOrderId.data.id,
-        // amount: getOrderId.data.totalPrice
-        amount: paymentMethod.value === "monobank" ? getOrderId.data.totalPrice : 200
-      }
-    });
+  if (getOrderId.statusCode !== 200) {
+    tooltip({ status: "error", message: `${getOrderId.message}` });
+    loaderState.value = false;
+    return;
+  }
 
-    if (createPayment.statusCode !== 200) {
-      alert(`Щось пішло не так ${createPayment.statusMessage}`);
-      loaderState.value = false;
+  const orderId = getOrderId.data.id;
+  const orderTotalPrice = getOrderId.data.totalPrice;
 
-      return;
+  return {
+    success: true,
+    orderId,
+    orderTotalPrice
+  };
+};
+
+const createPayment = async (orderId, orderTotalPrice) => {
+  const createPayment = await $fetch("/api/monobank/create", {
+    method: "POST",
+    body: {
+      orderId: orderId,
+      amount: paymentMethod.value === "monobank" ? orderTotalPrice : 200
     }
+  });
 
-    cartStore.clearCart();
-
+  if (createPayment.statusCode !== 200) {
+    alert(`Щось пішло не так ${createPayment.statusMessage}`);
     loaderState.value = false;
 
-    setTimeout(() => {
-      tooltip({ status: "success", message: "Замовлення створене! Оплатіть будь ласка товар! " });
-    }, 5000);
+    return;
+  }
 
-    window.location.href = createPayment.pageUrl;
+  const invoiceId = createPayment.invoiceId;
+  const pageUrl = createPayment.pageUrl;
+
+  return {
+    success: true,
+    invoiceId,
+    pageUrl
+  };
+};
+
+const proccessOrderByCertificate = async (orderId, certificateCode) => {
+  try {
+    const proccessOrder = await $fetch("/api/orders/complete-certificate", {
+      method: "POST",
+      body: {
+        orderId,
+        certificateCode
+      }
+    });
+
+    if (proccessOrder.statusCode !== 200) {
+      tooltip({ status: "error", message: `${proccessOrder.message}` });
+      loaderState.value = false;
+      return;
+    }
+
+    if (proccessOrder.status === 200) {
+      setTimeout(() => {
+        tooltip({ status: "success", message: "Сертифікат успішно застосовано" });
+      }, 5500);
+    }
+
+    return proccessOrder;
   } catch (err) {
     console.log(err);
+    tooltip({ status: "error", message: "Помилка застосування сертифіката" });
+    return { success: false };
+  }
+};
+
+const validateCertificate = async (orderTotalPrice) => {
+  try {
+    // GET CERTIFICATE
+    const getCertificate = await $fetch("/api/certificates/get-certificate", {
+      method: "POST",
+      body: {
+        certificateCode: certificateCode.value.trim()
+      }
+    });
+
+    const receivedCertificate = getCertificate.data;
+
+    // CHECKING REMAINING PAYMENT AMOUNT
+
+    const isNeedToSurcharge = receivedCertificate.amount < orderTotalPrice;
+
+    return {
+      success: true,
+      isNeedToSurcharge,
+      certificate: receivedCertificate
+    };
+  } catch (err) {
+    return {
+      success: false,
+      statusCode: err?.statusCode,
+      message: err?.response?._data.data.message || "Щось пішло не так, спробуйте ще раз пізніше"
+    };
+  } finally {
+    loaderState.value = false;
+  }
+};
+
+const confirmOrderHandler = async () => {
+  // const DEBUG_STOP = true;
+  // CHECK CERTIFICATE FLOW
+
+  // 1. BUY CERTIFICATE
+  // 2. USE CERTIFICATE WITH SURCHARGE
+  // 3. USE CERTIFICATE WITHOUT SURCHARGE
+
+  let isCompleteOrderWithCertificate = false;
+
+  if (!cartStore.cart.length) {
+    tooltip({ status: "warning", message: "Кошик порожній" });
+    return;
+  }
+
+  const hasCertificateCode = Boolean(certificateCode.value.trim());
+
+  const isCertificateInCart = cartStore.cart.some((item) => {
+    return item.product.isCertificate;
+  });
+
+  if (hasCertificateCode && isCertificateInCart) {
+    tooltip({
+      status: "warning",
+      message: "Дія існуючого сертифікату не розповсюджується на придбання іншого сертифікату."
+    });
+    return;
+  }
+
+  const isFormValid = await validateForm();
+
+  if (!isFormValid.success) {
+    return;
+  }
+
+  const { formattedPhone, userNumber } = isFormValid;
+
+  loaderState.value = true;
+
+  const { recipientId, recipientContactId } = await createRecipient(formattedPhone);
+
+  // if (DEBUG_STOP) {
+  //   return;
+  // }
+
+  try {
+    // CREATE ORDER
+    const { orderId, orderTotalPrice } = await createOrder(
+      userNumber,
+      recipientId,
+      recipientContactId
+    );
+
+    // IS CERTIFICATE VALIDATION
+
+    let receivedCode;
+
+    if (hasCertificateCode) {
+      const res = await validateCertificate(orderTotalPrice, orderId);
+
+      if (!res.success) {
+        tooltip({ status: "warning", message: res.message });
+        loaderState.value = false;
+        return;
+      }
+
+      if (res) {
+        receivedCode = res.certificate.code;
+      }
+
+      if (res.isNeedToSurcharge) {
+        modalStore.showModal("SurchargeCertificate", { orderId, receivedCode });
+        return;
+      } else {
+        isCompleteOrderWithCertificate = true;
+      }
+    }
+
+    if (isCompleteOrderWithCertificate) {
+      const proccessOrder = await proccessOrderByCertificate(orderId, receivedCode);
+
+      if (proccessOrder.statusCode !== 200) {
+        tooltip({ status: "error", message: `${proccessOrder.message}` });
+        loaderState.value = false;
+        return;
+      } else if (proccessOrder.statusCode === 200) {
+        // NNED TO UPDATE SETTIMEOUT - DONT SHOWING TOOLTIP
+        setTimeout(() => {
+          tooltip({ status: "success", message: "Сертифікат успішно застосовано" });
+        }, 5500);
+
+        cartStore.clearCart();
+
+        // PRODUCTION ENVIRONMENT
+        // window.location.href = `https://www.tilolab.com.ua/summary/${proccessOrder.order.id}`;
+
+        // DEVELOPMENT ENVIRONMENT
+        window.location.href = `https://dev.tilolab.com.ua//summary/${proccessOrder.order.id}`;
+
+        // TEST ENVIRONMENT
+        // window.location.href = `https://e50d-91-232-241-248.ngrok-free.app/summary/${proccessOrder.order.id}`;
+      }
+
+      return;
+    } else {
+      // if (DEBUG_STOP) {
+      //   return;
+      // }
+
+      // CREATE PAYMENT
+      const getPageUrl = await createPayment(orderId, orderTotalPrice);
+
+      cartStore.clearCart();
+
+      // setTimeout(() => {
+      //   tooltip({ status: "success", message: "Замовлення створене! Оплатіть будь ласка товар! " });
+      // }, 5000);
+
+      window.location.href = getPageUrl.pageUrl;
+    }
+    loaderState.value = false;
+  } catch (err) {
+    console.log(err);
+    return;
   } finally {
     loaderState.value = false;
   }
@@ -685,6 +914,10 @@ const formatFromDigits = (digits) => {
 onMounted(() => {
   isMounted.value = true;
 
+  // setTimeout(() => {
+  //   modalStore.showModal("SurchargeCertificate");
+  // }, 5000);
+
   // if (authStore.user) {
   //   name.value = authStore.user.username;
   //   surname.value = authStore.user.userSurname;
@@ -709,23 +942,6 @@ onMounted(() => {
 //     return `Завтра з ${getFormattedHours(openHour)}`;
 //   }
 // });
-
-// const toggleContactInfo = () => {
-//   contactInfoState.value = !contactInfoState.value;
-//   if (!contactInfoState.value) {
-//     console.log(1);
-//     name.value = authStore.user.username;
-//     surname.value = authStore.user.userSurname;
-//     familyName.value = authStore.user.userFamily;
-//     phone.value = authStore.user.phoneNumber;
-//   } else {
-//     console.log(2);
-//     name.value = "";
-//     surname.value = "";
-//     familyName.value = "";
-//     phone.value = "";
-//   }
-// };
 
 watch(deliveryMethod, () => {
   if (deliveryMethod.value === "courier-delivery" || deliveryMethod.value === "express") {
@@ -1078,6 +1294,20 @@ useHead({
     input[type="radio"]:checked + label .radio-btn {
       border: 5px solid var(--accent-color);
     }
+
+    .certificate_wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      width: 100%;
+      height: auto;
+      gap: 16px;
+
+      @media screen and (max-width: 375px) {
+        gap: 12px;
+      }
+    }
   }
 
   .summary_info {
@@ -1135,6 +1365,9 @@ useHead({
 
   .summary_notification {
     @include mixins.mainText;
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 1px solid var(--accent-color);
+    padding: 16px;
     font-weight: 400;
     font-size: 1rem;
     margin-top: 52px;
@@ -1296,6 +1529,13 @@ useHead({
   padding-top: 25px;
 }
 
+.test_data_btn {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+  @include mixins.accentBtn;
+}
+
 .checkout {
   .cart_items {
     display: flex;
@@ -1349,6 +1589,7 @@ useHead({
       }
 
       .main_wrapper {
+        flex: 1;
         @media screen and (max-width: 1024px) {
           height: -webkit-fill-available;
           display: flex;

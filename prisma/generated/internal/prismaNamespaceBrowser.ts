@@ -57,6 +57,9 @@ export const ModelName = {
   Category: 'Category',
   CategoryTranslation: 'CategoryTranslation',
   Product: 'Product',
+  TagAnswers: 'TagAnswers',
+  AnswersArr: 'AnswersArr',
+  TagArr: 'TagArr',
   ProductOptions: 'ProductOptions',
   ProductImg: 'ProductImg',
   ProductTranslation: 'ProductTranslation',
@@ -183,10 +186,39 @@ export const ProductScalarFieldEnum = {
   productPrice: 'productPrice',
   stockReserved: 'stockReserved',
   isCertificate: 'isCertificate',
-  productType: 'productType'
+  productType: 'productType',
+  tagGender: 'tagGender'
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const TagAnswersScalarFieldEnum = {
+  id: 'id',
+  question: 'question',
+  isMultiply: 'isMultiply',
+  productId: 'productId'
+} as const
+
+export type TagAnswersScalarFieldEnum = (typeof TagAnswersScalarFieldEnum)[keyof typeof TagAnswersScalarFieldEnum]
+
+
+export const AnswersArrScalarFieldEnum = {
+  id: 'id',
+  answer: 'answer',
+  tagAnswersId: 'tagAnswersId'
+} as const
+
+export type AnswersArrScalarFieldEnum = (typeof AnswersArrScalarFieldEnum)[keyof typeof AnswersArrScalarFieldEnum]
+
+
+export const TagArrScalarFieldEnum = {
+  id: 'id',
+  tag: 'tag',
+  tagAnswersId: 'tagAnswersId'
+} as const
+
+export type TagArrScalarFieldEnum = (typeof TagArrScalarFieldEnum)[keyof typeof TagArrScalarFieldEnum]
 
 
 export const ProductOptionsScalarFieldEnum = {
@@ -260,7 +292,10 @@ export const GiftCertificateScalarFieldEnum = {
   status: 'status',
   createdAt: 'createdAt',
   usedAt: 'usedAt',
+  reservedAt: 'reservedAt',
+  reservedUntil: 'reservedUntil',
   orderId: 'orderId',
+  orderItemId: 'orderItemId',
   usedOrderId: 'usedOrderId'
 } as const
 
@@ -389,7 +424,9 @@ export const PaymentScalarFieldEnum = {
   payload: 'payload',
   createdAt: 'createdAt',
   refundedAmount: 'refundedAmount',
-  refundedAt: 'refundedAt'
+  refundedAt: 'refundedAt',
+  type: 'type',
+  certificateId: 'certificateId'
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
