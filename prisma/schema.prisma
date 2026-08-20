@@ -111,10 +111,18 @@ model Product {
   productType      ProductType          @default(PRODUCT)
   tagGender        TagGenderType        @default(UNDEFINED)
   tagAnswers       TagAnswers[]
-  tag              ProductTag[]
+  tag              TagItems[]
 
   @@index([categoryId])
   @@index([productSize])
+}
+
+model TagItems {
+  id           Int                  @id @default(autoincrement())
+  tagName      String
+  tagId        String               @unique
+  productId    Int?
+  product      Product?             @relation(fields :[productId], references: [id], onDelete: Cascade)
 }
 
 
@@ -490,8 +498,4 @@ enum ProductTag {
   HOME_COUPLE
   DISTANCE_COUPLE
   WALK_COUPLE
-  VIBRATING_COUPLES
-  REMOTE_COUPLES
-  DUAL_COUPLES
-
 }

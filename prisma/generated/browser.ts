@@ -48,6 +48,11 @@ export type CategoryTranslation = Prisma.CategoryTranslationModel
  */
 export type Product = Prisma.ProductModel
 /**
+ * Model TagItems
+ * 
+ */
+export type TagItems = Prisma.TagItemsModel
+/**
  * Model TagAnswers
  * 
  */

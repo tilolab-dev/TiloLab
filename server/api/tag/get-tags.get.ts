@@ -1,14 +1,11 @@
 import { defineEventHandler } from "h3";
-import { prisma } from "@/prisma/prisma";
+import { ProductTag } from "@/prisma/generated/enums";
 
 export default defineEventHandler(async () => {
   try {
-    const res = await prisma.tagArr.findMany({
-      // include: {
-      //   tag: true
-      // }
-    });
-    return res;
+    return {
+      tags: Object.values(ProductTag)
+    };
   } catch (error) {
     console.log(error);
   }

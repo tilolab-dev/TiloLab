@@ -1005,8 +1005,8 @@ onMounted(async () => {
 
       productCategory.value = modalProps.product.category.id;
       productTag.value = modalProps.product.tag;
-      console.log(productCategory.value, "value");
-      console.log(productTag.value, "tag value");
+      // console.log(productCategory.value, "value");
+      // console.log(productTag.value, "tag value");
     }
   } catch (error) {
     console.log(error.message, "error from getData");
@@ -1017,7 +1017,9 @@ onMounted(async () => {
       method: "GET"
     });
 
-    console.log(getTags, "getTags");
+    productTag.value = getTags.tags;
+
+    console.log(productTag.value, "getTags value");
 
     if (getTags.data.length > 0) {
       fetchedTags.value = getTags.data.map((item) => ({

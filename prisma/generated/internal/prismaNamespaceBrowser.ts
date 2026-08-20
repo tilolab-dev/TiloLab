@@ -57,6 +57,7 @@ export const ModelName = {
   Category: 'Category',
   CategoryTranslation: 'CategoryTranslation',
   Product: 'Product',
+  TagItems: 'TagItems',
   TagAnswers: 'TagAnswers',
   AnswersArr: 'AnswersArr',
   TagArr: 'TagArr',
@@ -187,11 +188,20 @@ export const ProductScalarFieldEnum = {
   stockReserved: 'stockReserved',
   isCertificate: 'isCertificate',
   productType: 'productType',
-  tagGender: 'tagGender',
-  tag: 'tag'
+  tagGender: 'tagGender'
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const TagItemsScalarFieldEnum = {
+  id: 'id',
+  tagName: 'tagName',
+  tagId: 'tagId',
+  productId: 'productId'
+} as const
+
+export type TagItemsScalarFieldEnum = (typeof TagItemsScalarFieldEnum)[keyof typeof TagItemsScalarFieldEnum]
 
 
 export const TagAnswersScalarFieldEnum = {
