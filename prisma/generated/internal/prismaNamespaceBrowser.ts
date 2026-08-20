@@ -187,7 +187,8 @@ export const ProductScalarFieldEnum = {
   stockReserved: 'stockReserved',
   isCertificate: 'isCertificate',
   productType: 'productType',
-  tagGender: 'tagGender'
+  tagGender: 'tagGender',
+  tag: 'tag'
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]

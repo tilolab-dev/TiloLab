@@ -110,7 +110,8 @@ model Product {
   promotedProducts PromotedProduct[]
   productType      ProductType          @default(PRODUCT)
   tagGender        TagGenderType        @default(UNDEFINED)
-  tagAnswers       TagAnswers[] 
+  tagAnswers       TagAnswers[]
+  tag              ProductTag[]
 
   @@index([categoryId])
   @@index([productSize])
@@ -228,7 +229,7 @@ model GiftCertificate {
 model User {
   id             Int            @id @default(autoincrement())
   fullName       String?        @unique
-  username       String?        
+  username       String?
   userSurname    String?
   userAvatar     String?
   userFamily     String?
@@ -492,5 +493,5 @@ enum ProductTag {
   VIBRATING_COUPLES
   REMOTE_COUPLES
   DUAL_COUPLES
- 
+
 }

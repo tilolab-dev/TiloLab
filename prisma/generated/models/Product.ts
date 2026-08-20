@@ -92,6 +92,7 @@ export type ProductCountAggregateOutputType = {
   isCertificate: number
   productType: number
   tagGender: number
+  tag: number
   _all: number
 }
 
@@ -162,6 +163,7 @@ export type ProductCountAggregateInputType = {
   isCertificate?: true
   productType?: true
   tagGender?: true
+  tag?: true
   _all?: true
 }
 
@@ -265,6 +267,7 @@ export type ProductGroupByOutputType = {
   isCertificate: boolean
   productType: $Enums.ProductType
   tagGender: $Enums.TagGenderType
+  tag: $Enums.ProductTag[]
   _count: ProductCountAggregateOutputType | null
   _avg: ProductAvgAggregateOutputType | null
   _sum: ProductSumAggregateOutputType | null
@@ -304,6 +307,7 @@ export type ProductWhereInput = {
   isCertificate?: Prisma.BoolFilter<"Product"> | boolean
   productType?: Prisma.EnumProductTypeFilter<"Product"> | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFilter<"Product"> | $Enums.TagGenderType
+  tag?: Prisma.EnumProductTagNullableListFilter<"Product">
   orderItems?: Prisma.OrderItemListRelationFilter
   popularProducts?: Prisma.PopularProductListRelationFilter
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
@@ -328,6 +332,7 @@ export type ProductOrderByWithRelationInput = {
   isCertificate?: Prisma.SortOrder
   productType?: Prisma.SortOrder
   tagGender?: Prisma.SortOrder
+  tag?: Prisma.SortOrder
   orderItems?: Prisma.OrderItemOrderByRelationAggregateInput
   popularProducts?: Prisma.PopularProductOrderByRelationAggregateInput
   category?: Prisma.CategoryOrderByWithRelationInput
@@ -355,6 +360,7 @@ export type ProductWhereUniqueInput = Prisma.AtLeast<{
   isCertificate?: Prisma.BoolFilter<"Product"> | boolean
   productType?: Prisma.EnumProductTypeFilter<"Product"> | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFilter<"Product"> | $Enums.TagGenderType
+  tag?: Prisma.EnumProductTagNullableListFilter<"Product">
   orderItems?: Prisma.OrderItemListRelationFilter
   popularProducts?: Prisma.PopularProductListRelationFilter
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
@@ -379,6 +385,7 @@ export type ProductOrderByWithAggregationInput = {
   isCertificate?: Prisma.SortOrder
   productType?: Prisma.SortOrder
   tagGender?: Prisma.SortOrder
+  tag?: Prisma.SortOrder
   _count?: Prisma.ProductCountOrderByAggregateInput
   _avg?: Prisma.ProductAvgOrderByAggregateInput
   _max?: Prisma.ProductMaxOrderByAggregateInput
@@ -403,6 +410,7 @@ export type ProductScalarWhereWithAggregatesInput = {
   isCertificate?: Prisma.BoolWithAggregatesFilter<"Product"> | boolean
   productType?: Prisma.EnumProductTypeWithAggregatesFilter<"Product"> | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeWithAggregatesFilter<"Product"> | $Enums.TagGenderType
+  tag?: Prisma.EnumProductTagNullableListFilter<"Product">
 }
 
 export type ProductCreateInput = {
@@ -417,6 +425,7 @@ export type ProductCreateInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
@@ -441,6 +450,7 @@ export type ProductUncheckedCreateInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
@@ -462,6 +472,7 @@ export type ProductUpdateInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
@@ -486,6 +497,7 @@ export type ProductUncheckedUpdateInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
@@ -509,6 +521,7 @@ export type ProductCreateManyInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
 }
 
 export type ProductUpdateManyMutationInput = {
@@ -523,6 +536,7 @@ export type ProductUpdateManyMutationInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
 }
 
 export type ProductUncheckedUpdateManyInput = {
@@ -539,6 +553,7 @@ export type ProductUncheckedUpdateManyInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
 }
 
 export type ProductListRelationFilter = {
@@ -549,6 +564,14 @@ export type ProductListRelationFilter = {
 
 export type ProductOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type EnumProductTagNullableListFilter<$PrismaModel = never> = {
+  equals?: $Enums.ProductTag[] | Prisma.ListEnumProductTagFieldRefInput<$PrismaModel> | null
+  has?: $Enums.ProductTag | Prisma.EnumProductTagFieldRefInput<$PrismaModel> | null
+  hasEvery?: $Enums.ProductTag[] | Prisma.ListEnumProductTagFieldRefInput<$PrismaModel>
+  hasSome?: $Enums.ProductTag[] | Prisma.ListEnumProductTagFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type ProductCountOrderByAggregateInput = {
@@ -565,6 +588,7 @@ export type ProductCountOrderByAggregateInput = {
   isCertificate?: Prisma.SortOrder
   productType?: Prisma.SortOrder
   tagGender?: Prisma.SortOrder
+  tag?: Prisma.SortOrder
 }
 
 export type ProductAvgOrderByAggregateInput = {
@@ -671,6 +695,10 @@ export type ProductUncheckedUpdateManyWithoutCategoryNestedInput = {
   deleteMany?: Prisma.ProductScalarWhereInput | Prisma.ProductScalarWhereInput[]
 }
 
+export type ProductCreatetagInput = {
+  set: $Enums.ProductTag[]
+}
+
 export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -685,6 +713,11 @@ export type EnumProductTypeFieldUpdateOperationsInput = {
 
 export type EnumTagGenderTypeFieldUpdateOperationsInput = {
   set?: $Enums.TagGenderType
+}
+
+export type ProductUpdatetagInput = {
+  set?: $Enums.ProductTag[]
+  push?: $Enums.ProductTag | $Enums.ProductTag[]
 }
 
 export type ProductCreateNestedOneWithoutTagAnswersInput = {
@@ -799,6 +832,7 @@ export type ProductCreateWithoutCategoryInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgCreateNestedManyWithoutProductInput
@@ -821,6 +855,7 @@ export type ProductUncheckedCreateWithoutCategoryInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
@@ -873,6 +908,7 @@ export type ProductScalarWhereInput = {
   isCertificate?: Prisma.BoolFilter<"Product"> | boolean
   productType?: Prisma.EnumProductTypeFilter<"Product"> | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFilter<"Product"> | $Enums.TagGenderType
+  tag?: Prisma.EnumProductTagNullableListFilter<"Product">
 }
 
 export type ProductCreateWithoutTagAnswersInput = {
@@ -887,6 +923,7 @@ export type ProductCreateWithoutTagAnswersInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
@@ -910,6 +947,7 @@ export type ProductUncheckedCreateWithoutTagAnswersInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
@@ -946,6 +984,7 @@ export type ProductUpdateWithoutTagAnswersInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
@@ -969,6 +1008,7 @@ export type ProductUncheckedUpdateWithoutTagAnswersInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
@@ -989,6 +1029,7 @@ export type ProductCreateWithoutOptionsInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
@@ -1012,6 +1053,7 @@ export type ProductUncheckedCreateWithoutOptionsInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
@@ -1048,6 +1090,7 @@ export type ProductUpdateWithoutOptionsInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
@@ -1071,6 +1114,7 @@ export type ProductUncheckedUpdateWithoutOptionsInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
@@ -1091,6 +1135,7 @@ export type ProductCreateWithoutImgInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
@@ -1114,6 +1159,7 @@ export type ProductUncheckedCreateWithoutImgInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   options?: Prisma.ProductOptionsUncheckedCreateNestedManyWithoutProductInput
@@ -1150,6 +1196,7 @@ export type ProductUpdateWithoutImgInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
@@ -1173,6 +1220,7 @@ export type ProductUncheckedUpdateWithoutImgInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   options?: Prisma.ProductOptionsUncheckedUpdateManyWithoutProductNestedInput
@@ -1193,6 +1241,7 @@ export type ProductCreateWithoutTranslationsInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
@@ -1216,6 +1265,7 @@ export type ProductUncheckedCreateWithoutTranslationsInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
@@ -1252,6 +1302,7 @@ export type ProductUpdateWithoutTranslationsInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
@@ -1275,6 +1326,7 @@ export type ProductUncheckedUpdateWithoutTranslationsInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
@@ -1295,6 +1347,7 @@ export type ProductCreateWithoutPopularProductsInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
   img?: Prisma.ProductImgCreateNestedManyWithoutProductInput
@@ -1318,6 +1371,7 @@ export type ProductUncheckedCreateWithoutPopularProductsInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
   options?: Prisma.ProductOptionsUncheckedCreateNestedManyWithoutProductInput
@@ -1354,6 +1408,7 @@ export type ProductUpdateWithoutPopularProductsInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
   img?: Prisma.ProductImgUpdateManyWithoutProductNestedInput
@@ -1377,6 +1432,7 @@ export type ProductUncheckedUpdateWithoutPopularProductsInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
   options?: Prisma.ProductOptionsUncheckedUpdateManyWithoutProductNestedInput
@@ -1397,6 +1453,7 @@ export type ProductCreateWithoutPromotedProductsInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
@@ -1420,6 +1477,7 @@ export type ProductUncheckedCreateWithoutPromotedProductsInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedCreateNestedManyWithoutProductInput
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
@@ -1456,6 +1514,7 @@ export type ProductUpdateWithoutPromotedProductsInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
@@ -1479,6 +1538,7 @@ export type ProductUncheckedUpdateWithoutPromotedProductsInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
@@ -1499,6 +1559,7 @@ export type ProductCreateWithoutOrderItemsInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   popularProducts?: Prisma.PopularProductCreateNestedManyWithoutProductInput
   category: Prisma.CategoryCreateNestedOneWithoutProductsInput
   img?: Prisma.ProductImgCreateNestedManyWithoutProductInput
@@ -1522,6 +1583,7 @@ export type ProductUncheckedCreateWithoutOrderItemsInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
   popularProducts?: Prisma.PopularProductUncheckedCreateNestedManyWithoutProductInput
   img?: Prisma.ProductImgUncheckedCreateNestedManyWithoutProductInput
   options?: Prisma.ProductOptionsUncheckedCreateNestedManyWithoutProductInput
@@ -1558,6 +1620,7 @@ export type ProductUpdateWithoutOrderItemsInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   category?: Prisma.CategoryUpdateOneRequiredWithoutProductsNestedInput
   img?: Prisma.ProductImgUpdateManyWithoutProductNestedInput
@@ -1581,6 +1644,7 @@ export type ProductUncheckedUpdateWithoutOrderItemsInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
   options?: Prisma.ProductOptionsUncheckedUpdateManyWithoutProductNestedInput
@@ -1602,6 +1666,7 @@ export type ProductCreateManyCategoryInput = {
   isCertificate?: boolean
   productType?: $Enums.ProductType
   tagGender?: $Enums.TagGenderType
+  tag?: Prisma.ProductCreatetagInput | $Enums.ProductTag[]
 }
 
 export type ProductUpdateWithoutCategoryInput = {
@@ -1616,6 +1681,7 @@ export type ProductUpdateWithoutCategoryInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUpdateManyWithoutProductNestedInput
@@ -1638,6 +1704,7 @@ export type ProductUncheckedUpdateWithoutCategoryInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
   orderItems?: Prisma.OrderItemUncheckedUpdateManyWithoutProductNestedInput
   popularProducts?: Prisma.PopularProductUncheckedUpdateManyWithoutProductNestedInput
   img?: Prisma.ProductImgUncheckedUpdateManyWithoutProductNestedInput
@@ -1660,6 +1727,7 @@ export type ProductUncheckedUpdateManyWithoutCategoryInput = {
   isCertificate?: Prisma.BoolFieldUpdateOperationsInput | boolean
   productType?: Prisma.EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
   tagGender?: Prisma.EnumTagGenderTypeFieldUpdateOperationsInput | $Enums.TagGenderType
+  tag?: Prisma.ProductUpdatetagInput | $Enums.ProductTag[]
 }
 
 
@@ -1761,6 +1829,7 @@ export type ProductSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   isCertificate?: boolean
   productType?: boolean
   tagGender?: boolean
+  tag?: boolean
   orderItems?: boolean | Prisma.Product$orderItemsArgs<ExtArgs>
   popularProducts?: boolean | Prisma.Product$popularProductsArgs<ExtArgs>
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -1786,6 +1855,7 @@ export type ProductSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   isCertificate?: boolean
   productType?: boolean
   tagGender?: boolean
+  tag?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["product"]>
 
@@ -1803,6 +1873,7 @@ export type ProductSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   isCertificate?: boolean
   productType?: boolean
   tagGender?: boolean
+  tag?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["product"]>
 
@@ -1820,9 +1891,10 @@ export type ProductSelectScalar = {
   isCertificate?: boolean
   productType?: boolean
   tagGender?: boolean
+  tag?: boolean
 }
 
-export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "categoryId" | "visible" | "stockState" | "listPosition" | "stockValue" | "discountPercent" | "productSize" | "productPrice" | "stockReserved" | "isCertificate" | "productType" | "tagGender", ExtArgs["result"]["product"]>
+export type ProductOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "categoryId" | "visible" | "stockState" | "listPosition" | "stockValue" | "discountPercent" | "productSize" | "productPrice" | "stockReserved" | "isCertificate" | "productType" | "tagGender" | "tag", ExtArgs["result"]["product"]>
 export type ProductInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orderItems?: boolean | Prisma.Product$orderItemsArgs<ExtArgs>
   popularProducts?: boolean | Prisma.Product$popularProductsArgs<ExtArgs>
@@ -1867,6 +1939,7 @@ export type $ProductPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     isCertificate: boolean
     productType: $Enums.ProductType
     tagGender: $Enums.TagGenderType
+    tag: $Enums.ProductTag[]
   }, ExtArgs["result"]["product"]>
   composites: {}
 }
@@ -2311,6 +2384,7 @@ export interface ProductFieldRefs {
   readonly isCertificate: Prisma.FieldRef<"Product", 'Boolean'>
   readonly productType: Prisma.FieldRef<"Product", 'ProductType'>
   readonly tagGender: Prisma.FieldRef<"Product", 'TagGenderType'>
+  readonly tag: Prisma.FieldRef<"Product", 'ProductTag[]'>
 }
     
 

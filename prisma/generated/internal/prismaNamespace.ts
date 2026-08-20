@@ -2410,7 +2410,8 @@ export const ProductScalarFieldEnum = {
   stockReserved: 'stockReserved',
   isCertificate: 'isCertificate',
   productType: 'productType',
-  tagGender: 'tagGender'
+  tagGender: 'tagGender',
+  tag: 'tag'
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
@@ -2805,16 +2806,16 @@ export type ListEnumTagGenderTypeFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
- * Reference to a field of type 'ProductTag'
+ * Reference to a field of type 'ProductTag[]'
  */
-export type EnumProductTagFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductTag'>
+export type ListEnumProductTagFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductTag[]'>
     
 
 
 /**
- * Reference to a field of type 'ProductTag[]'
+ * Reference to a field of type 'ProductTag'
  */
-export type ListEnumProductTagFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductTag[]'>
+export type EnumProductTagFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductTag'>
     
 
 

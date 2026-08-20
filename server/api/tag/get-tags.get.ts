@@ -3,7 +3,11 @@ import { prisma } from "@/prisma/prisma";
 
 export default defineEventHandler(async () => {
   try {
-    const res = await prisma.tagArr.findMany();
+    const res = await prisma.tagArr.findMany({
+      // include: {
+      //   tag: true
+      // }
+    });
     return res;
   } catch (error) {
     console.log(error);
