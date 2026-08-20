@@ -148,11 +148,20 @@
                 </div>
               </div>
               <div class="main_option_content">
+                <h4 class="default_text">Оберіть гендер тегу:</h4>
+                <select id="tagSelect" v-model="tagGender" name="tagSelect">
+                  <!-- <option selected value>-- {{ productTag }} --</option> -->
+                  <option v-for="(gender, index) in tagGender" :key="index" :value="gender">
+                    {{ gender }}
+                  </option>
+                </select>
+              </div>
+              <div class="main_option_content">
                 <h4 class="default_text">Оберіть тег:</h4>
                 <select id="tagSelect" v-model="productTag" name="tagSelect">
-                  <option selected value>-- {{ productTag }} --</option>
-                  <option v-for="(tag, index) in fetchedTags" :key="index" :value="tag.id">
-                    {{ tag.translations[0].title }}
+                  <!-- <option selected value>-- {{ productTag }} --</option> -->
+                  <option v-for="(tag, index) in productTag" :key="index" :value="tag.id">
+                    {{ tag.tagName }}
                   </option>
                 </select>
               </div>
@@ -535,6 +544,7 @@ const optionFileInput = ref(null);
 const productFileInput = ref(null);
 const productCategory = ref("");
 const productTag = ref("");
+const tagGender = ref(["Для нього", "Для неї", "Для пар"]);
 const productNameUk = ref("");
 const productManufacture = ref("");
 const productVisibility = ref(false); // Показывать товар на сайте
@@ -611,7 +621,7 @@ const saveChangedOption = (data) => {
 };
 
 const deleteImgDb = async (item, path, filetype) => {
-  console.log(item);
+  // console.log(item);
   loaderState.value = true;
 
   try {
@@ -1017,7 +1027,9 @@ onMounted(async () => {
       method: "GET"
     });
 
-    productTag.value = getTags.tags;
+    console.log(getTags.data, "getTags");
+
+    productTag.value = getTags.data;
 
     console.log(productTag.value, "getTags value");
 
@@ -1083,7 +1095,6 @@ onMounted(async () => {
     padding: 0.5rem 1.25rem;
     border-radius: 0.5rem;
     cursor: pointer;
-    // transition: all 0.3s ease;
   }
   .btn_transparent {
     width: fit-content;
@@ -1298,22 +1309,18 @@ onMounted(async () => {
     }
 
     h2 {
-      // @include mixins.cardText;
       text-align: center;
       margin-bottom: 15px;
     }
 
     span {
       text-align: center;
-      // @include mixins.descriptionText(400, var(--dark-color));
     }
     .icon_label {
       margin-top: 2rem;
     }
     .upload-btn {
       margin: 50px 0 20px;
-      // @include mixins.defaultShadow;
-      // @include mixins.descriptionText(500, var(--dark-color));
       padding: 10px 20px;
       cursor: pointer;
     }
@@ -1340,7 +1347,6 @@ onMounted(async () => {
     .default_text {
       @include mixins.mainText;
       color: var(--grey-color);
-      // white-space: nowrap;
     }
 
     .top_content {
@@ -1557,7 +1563,6 @@ onMounted(async () => {
       gap: 1.25rem;
       width: auto;
       height: auto;
-      // display: none;
 
       input {
         display: none;
@@ -1660,9 +1665,6 @@ onMounted(async () => {
       display: flex;
       flex: 1;
     }
-    // .label-wrapper {
-    //   @include mixins.labelFile
-    // }
     .price_option {
       display: flex;
       align-items: center;
@@ -1682,7 +1684,6 @@ onMounted(async () => {
         flex-wrap: wrap;
       }
       &_item {
-        // background: var(--bg-color);
         background: black;
         border-radius: 8px;
         width: fit-content;

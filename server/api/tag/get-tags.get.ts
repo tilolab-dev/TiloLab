@@ -1,12 +1,27 @@
 import { defineEventHandler } from "h3";
-import { ProductTag } from "@/prisma/generated/enums";
+import { prisma } from "@/prisma/prisma";
 
 export default defineEventHandler(async () => {
   try {
+    const getTags = await prisma.tagItems.findMany();
+
+    if (!getTags) {
+      return {
+        statusCode: 500,
+        message: "Some issue during fetching data"
+      };
+    }
+
     return {
-      tags: Object.values(ProductTag)
+      statusCode: 200,
+      message: "Success",
+      data: getTags
     };
   } catch (error) {
     console.log(error);
+    return {
+      statusCode: 400,
+      message: "Some issue during getting all tags"
+    };
   }
 });
