@@ -94,12 +94,6 @@
             </div>
           </div>
         </div>
-        <div class="settings_item">
-          <div class="item_head">
-            <strong>Керування блоком "ОПИТУВАННЯ":</strong>
-          </div>
-          <div class="item_body"></div>
-        </div>
       </div>
     </div>
   </div>
@@ -175,7 +169,6 @@ definePageMeta({
   &_item {
     background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(10px);
-    // min-height: 100px;
     width: 100%;
     height: auto;
     display: flex;
@@ -185,7 +178,6 @@ definePageMeta({
     position: relative;
     border: 1px solid rgba(255, 255, 255, 0.075);
     border-radius: 5px;
-    // overflow: hidden;
     flex: 1 1 auto;
 
     .item_head {

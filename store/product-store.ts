@@ -41,7 +41,7 @@ export const useProductStore = defineStore("product", () => {
           getMethod: "all"
         }
       });
-      const filteredProducts = resFetch.data.filter((p) => p.visible);
+      const filteredProducts = resFetch?.data?.filter((p) => p.visible);
       productList.value = filteredProducts || [];
       // console.log(!productList.value, "Products store fetchProducts productList is empty");
     } catch (err) {
@@ -106,7 +106,7 @@ export const useProductStore = defineStore("product", () => {
 
       // console.log(resFetch, "Products store fetchProductsByPage resFetch from store");
 
-      const filteredProducts = resFetch.data.filter((p) => p.visible);
+      const filteredProducts = resFetch?.data?.filter((p) => p.visible);
 
       const newItems = filteredProducts || [];
       // console.log(!newItems, "Products store fetchProductsByPage newItems is empty");

@@ -147,6 +147,15 @@
                   </div>
                 </div>
               </div>
+              <div class="main_option_content">
+                <h4 class="default_text">Оберіть тег:</h4>
+                <select id="tagSelect" v-model="productTag" name="tagSelect">
+                  <option selected value>-- {{ productTag }} --</option>
+                  <option v-for="(tag, index) in fetchedTags" :key="index" :value="tag.id">
+                    {{ tag.translations[0].title }}
+                  </option>
+                </select>
+              </div>
             </div>
 
             <div class="option description_option">
@@ -498,10 +507,12 @@ import CloseIcon from "~/assets/icons/close-icon.svg";
 import EditProductOption from "@/components/Modals/admin/EditProductOption.vue";
 import { useModalStore } from "@/store/modal-store";
 import { useCategoryStore } from "@/store/category-store";
+import { useTagStore } from "@/store/tag-store";
 import { useProductStore } from "@/store/product-store";
 
 const modalStore = useModalStore();
 const categoryStore = useCategoryStore();
+const tagStore = useTagStore();
 const productStore = useProductStore();
 
 const emit = defineEmits(["addNewItem", "tooltip"]);
@@ -511,6 +522,7 @@ import { useFileUpload } from "@/helpers/uploadFiles";
 const { handleFileUpload } = useFileUpload(emit);
 
 const fetchedCategories = ref([]);
+const fetchedTags = ref([]);
 
 const editOptionState = ref(false);
 const selectedOpton = ref(null);
@@ -522,6 +534,7 @@ const loaderState = ref(false);
 const optionFileInput = ref(null);
 const productFileInput = ref(null);
 const productCategory = ref("");
+const productTag = ref("");
 const productNameUk = ref("");
 const productManufacture = ref("");
 const productVisibility = ref(false); // Показывать товар на сайте
@@ -682,6 +695,7 @@ const closeModal = () => {
 
 const clearModal = () => {
   productCategory.value = "";
+  productTag.value = "";
   productVisibility.value = false;
   productFileState.productFiles.value = [];
   productFileState.productFilesPreview.value = [];
@@ -758,6 +772,13 @@ const updateProduct = async () => {
 
   if (!category) {
     console.warn("Category not found", productCategory.value);
+    return;
+  }
+
+  const productTag = fetchedTags.value.find((item) => item.id === productTag.value);
+
+  if (!productTag) {
+    console.warn("Product tag not found", productTag.value);
     return;
   }
 
@@ -855,6 +876,7 @@ const updateProduct = async () => {
 
     const res = await productStore.updateProduct(modalProps.product.id, {
       categoryId: productCategory.value,
+      productTag: productTag.value,
       visibility: productVisibility.value,
       img: finalImg,
       productPrice: productPrice.value,
@@ -939,6 +961,7 @@ onMounted(async () => {
   console.log(modalProps.product, "modalProps");
 
   fetchedCategories.value = categoryStore.categoryList;
+  fetchedTags.value = tagStore.tagList;
   currentProductFiles.value = modalProps.product.img;
   currentOptionFiles.value = modalProps.product.options;
   productNameUk.value = modalProps.product.translations[0].title;
@@ -981,10 +1004,29 @@ onMounted(async () => {
       // );
 
       productCategory.value = modalProps.product.category.id;
+      productTag.value = modalProps.product.tag;
       console.log(productCategory.value, "value");
+      console.log(productTag.value, "tag value");
     }
   } catch (error) {
     console.log(error.message, "error from getData");
+  }
+
+  try {
+    const getTags = await $fetch("/api/tag/get-tags", {
+      method: "GET"
+    });
+
+    console.log(getTags, "getTags");
+
+    if (getTags.data.length > 0) {
+      fetchedTags.value = getTags.data.map((item) => ({
+        ...item,
+        itemLanguage: item.translations.find((translation) => translation.language === "uk")
+      }));
+    }
+  } catch (error) {
+    console.log(error.message, "error from getTags");
   }
 
   loaderState.value = false;
