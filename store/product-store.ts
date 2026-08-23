@@ -49,6 +49,23 @@ export const useProductStore = defineStore("product", () => {
     }
   }
 
+  async function fetchProductsByTags(tags: string) {
+    try {
+      const resFetch = await $fetch<IProductResponse>("/api/products/get-products-by-tag", {
+        method: "POST",
+        body: {
+          tags: tags
+        }
+      });
+      const filteredProducts = resFetch?.data?.filter((p) => p.visible);
+      console.log(filteredProducts, "filteredProducts");
+      productList.value = filteredProducts || [];
+      // console.log(!productList.value, "Products store fetchProducts productList is empty");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   async function getAlsoBuyProducts() {
     try {
       // /api/admin/promoted/popular/get-list
@@ -239,6 +256,7 @@ export const useProductStore = defineStore("product", () => {
     priceRange,
     setSelectedProducts,
     fetchProducts,
+    fetchProductsByTags,
     fetchProductsByPage,
     loadMore,
     prefetchNextPage,

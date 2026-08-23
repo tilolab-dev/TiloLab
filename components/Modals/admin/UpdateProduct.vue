@@ -148,18 +148,10 @@
                 </div>
               </div>
               <div class="main_option_content">
-                <h4 class="default_text">Оберіть гендер тегу:</h4>
-                <select id="tagSelect" v-model="tagGender" name="tagSelect">
-                  <!-- <option selected value>-- {{ productTag }} --</option> -->
-                  <option v-for="(gender, index) in tagGender" :key="index" :value="gender">
-                    {{ gender }}
-                  </option>
-                </select>
-              </div>
-              <div class="main_option_content">
                 <h4 class="default_text">Оберіть тег:</h4>
                 <select id="tagSelect" v-model="productTag" name="tagSelect">
                   <!-- <option selected value>-- {{ productTag }} --</option> -->
+                  <option disabled>-- Для нього --</option>
                   <option v-for="(tag, index) in productTag" :key="index" :value="tag.id">
                     {{ tag.tagName }}
                   </option>
@@ -544,7 +536,6 @@ const optionFileInput = ref(null);
 const productFileInput = ref(null);
 const productCategory = ref("");
 const productTag = ref("");
-const tagGender = ref(["Для нього", "Для неї", "Для пар"]);
 const productNameUk = ref("");
 const productManufacture = ref("");
 const productVisibility = ref(false); // Показывать товар на сайте

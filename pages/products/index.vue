@@ -120,6 +120,7 @@ const productStore = useProductStore();
 const indexStore = useIndexStore();
 const toggleCategory = ref(false);
 const priceRangeData = ref(null);
+const DEBUG_MODE = ref(true);
 
 const handleRangeChange = (range) => {
   productStore.setPriceRange(range);
@@ -162,13 +163,34 @@ const groupedProducts = computed(() => {
   const map = {};
   productStore.productList.forEach((product) => {
     if (product.category && product.category.visible) {
+      console.log("LOG1");
       if (!map[product.categoryId]) map[product.categoryId] = [];
       map[product.categoryId].push(product);
     }
   });
 
+  console.log("map", map);
+
   return map;
 });
+
+const getProductsByTags = async (path) => {
+  console.log(path, "path");
+  console.log("DEBUG_MODE.value", DEBUG_MODE.value);
+
+  const tags = path.split("tags=")[1].replace("+path", "").trim();
+  console.log("tags", tags);
+
+  await productStore.fetchProductsByTags(tags);
+
+  console.log(productStore.productList, "getProductsWithTags");
+
+  // if (getProductsWithTags.) {
+  //   productStore.productList = getProductsWithTags;
+  // }
+
+  // await productStore.fetchProductsByTags(tags);
+};
 
 onMounted(async () => {
   loaderState.value = true;
@@ -179,15 +201,29 @@ onMounted(async () => {
   const routeCategory = route.query.category ?? null;
   const routePage = Number(route.query.page ?? 1);
 
-  const needReset =
-    productStore.category !== routeCategory ||
-    productStore.category === null ||
-    productStore.productList.length === 0;
+  const getFullPath = route.fullPath;
+  const isFullPathContainTags = getFullPath.includes("tags=");
 
-  if (needReset) {
-    productStore.category = routeCategory;
-    productStore.page = routePage;
-    await productStore.fetchProductsByPage({ reset: true });
+  // if (DEBUG_MODE.value) {
+  //   console.log("isFullPathContainTags", isFullPathContainTags);
+  //   console.log("checkPath", getFullPath);
+  //   console.log("returned");
+  //   return;
+  // }
+
+  if (isFullPathContainTags) {
+    await getProductsByTags(getFullPath);
+  } else {
+    const needReset =
+      productStore.category !== routeCategory ||
+      productStore.category === null ||
+      productStore.productList.length === 0;
+
+    if (needReset) {
+      productStore.category = routeCategory;
+      productStore.page = routePage;
+      await productStore.fetchProductsByPage({ reset: true });
+    }
   }
 
   loaderState.value = false;
@@ -268,10 +304,6 @@ definePageMeta({
         transform: rotate(180deg);
         fill: var(--accent-color);
       }
-
-      // @media screen and (max-width: 768px) {
-      //   flex: 1;
-      // }
 
       @media screen and (max-width: 480px) {
         width: 100%;

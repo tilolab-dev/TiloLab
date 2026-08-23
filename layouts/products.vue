@@ -176,13 +176,11 @@ onMounted(() => {
   // if (!ageVerified.value) {
   //   modalStore.showModal("VerifyAgeModal");
   // }
+  // http://localhost:3000/products?page=1&tags=petting_couple,first_toy_couple,she_couple,medium_power_couple,home_couple,vibrating_couples%20path
 });
 </script>
 
 <style lang="scss" scoped>
-// @use ".//styles/mixins.scss" as mixins;
-
-// @include mixins.mobileBar(1024px);
 .layout {
   display: flex;
   flex-direction: column;

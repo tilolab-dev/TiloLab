@@ -215,6 +215,8 @@ const goToProducts = () => {
   const allAnswers = Object.values(answers.value).flat();
   const tags = allAnswers.join(",");
 
+  console.log(`/products?page=1&tags=${tags}`, "path");
+
   // Navigate to products with tags
   navigateTo(`/products?page=1&tags=${tags}`);
   closeQuestionnaire();
