@@ -57,10 +57,11 @@ export const ModelName = {
   Category: 'Category',
   CategoryTranslation: 'CategoryTranslation',
   Product: 'Product',
-  TagItems: 'TagItems',
-  TagAnswers: 'TagAnswers',
-  AnswersArr: 'AnswersArr',
-  TagArr: 'TagArr',
+  Tag: 'Tag',
+  ProductTag: 'ProductTag',
+  QuizQuestion: 'QuizQuestion',
+  QuizAnswer: 'QuizAnswer',
+  QuizAnswerTag: 'QuizAnswerTag',
   ProductOptions: 'ProductOptions',
   ProductImg: 'ProductImg',
   ProductTranslation: 'ProductTranslation',
@@ -194,42 +195,48 @@ export const ProductScalarFieldEnum = {
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
 
 
-export const TagItemsScalarFieldEnum = {
+export const TagScalarFieldEnum = {
   id: 'id',
-  tagName: 'tagName',
   tagId: 'tagId',
-  productId: 'productId'
+  tagName: 'tagName',
+  tagGender: 'tagGender'
 } as const
 
-export type TagItemsScalarFieldEnum = (typeof TagItemsScalarFieldEnum)[keyof typeof TagItemsScalarFieldEnum]
+export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
 
 
-export const TagAnswersScalarFieldEnum = {
+export const ProductTagScalarFieldEnum = {
+  productId: 'productId',
+  tagId: 'tagId'
+} as const
+
+export type ProductTagScalarFieldEnum = (typeof ProductTagScalarFieldEnum)[keyof typeof ProductTagScalarFieldEnum]
+
+
+export const QuizQuestionScalarFieldEnum = {
   id: 'id',
   question: 'question',
-  isMultiply: 'isMultiply',
-  productId: 'productId'
+  isMultiply: 'isMultiply'
 } as const
 
-export type TagAnswersScalarFieldEnum = (typeof TagAnswersScalarFieldEnum)[keyof typeof TagAnswersScalarFieldEnum]
+export type QuizQuestionScalarFieldEnum = (typeof QuizQuestionScalarFieldEnum)[keyof typeof QuizQuestionScalarFieldEnum]
 
 
-export const AnswersArrScalarFieldEnum = {
+export const QuizAnswerScalarFieldEnum = {
   id: 'id',
   answer: 'answer',
-  tagAnswersId: 'tagAnswersId'
+  questionId: 'questionId'
 } as const
 
-export type AnswersArrScalarFieldEnum = (typeof AnswersArrScalarFieldEnum)[keyof typeof AnswersArrScalarFieldEnum]
+export type QuizAnswerScalarFieldEnum = (typeof QuizAnswerScalarFieldEnum)[keyof typeof QuizAnswerScalarFieldEnum]
 
 
-export const TagArrScalarFieldEnum = {
-  id: 'id',
-  tag: 'tag',
-  tagAnswersId: 'tagAnswersId'
+export const QuizAnswerTagScalarFieldEnum = {
+  answerId: 'answerId',
+  tagId: 'tagId'
 } as const
 
-export type TagArrScalarFieldEnum = (typeof TagArrScalarFieldEnum)[keyof typeof TagArrScalarFieldEnum]
+export type QuizAnswerTagScalarFieldEnum = (typeof QuizAnswerTagScalarFieldEnum)[keyof typeof QuizAnswerTagScalarFieldEnum]
 
 
 export const ProductOptionsScalarFieldEnum = {

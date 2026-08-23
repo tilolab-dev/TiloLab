@@ -48,25 +48,30 @@ export type CategoryTranslation = Prisma.CategoryTranslationModel
  */
 export type Product = Prisma.ProductModel
 /**
- * Model TagItems
+ * Model Tag
  * 
  */
-export type TagItems = Prisma.TagItemsModel
+export type Tag = Prisma.TagModel
 /**
- * Model TagAnswers
+ * Model ProductTag
  * 
  */
-export type TagAnswers = Prisma.TagAnswersModel
+export type ProductTag = Prisma.ProductTagModel
 /**
- * Model AnswersArr
+ * Model QuizQuestion
  * 
  */
-export type AnswersArr = Prisma.AnswersArrModel
+export type QuizQuestion = Prisma.QuizQuestionModel
 /**
- * Model TagArr
+ * Model QuizAnswer
  * 
  */
-export type TagArr = Prisma.TagArrModel
+export type QuizAnswer = Prisma.QuizAnswerModel
+/**
+ * Model QuizAnswerTag
+ * 
+ */
+export type QuizAnswerTag = Prisma.QuizAnswerTagModel
 /**
  * Model ProductOptions
  * 
