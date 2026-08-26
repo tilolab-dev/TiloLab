@@ -969,6 +969,12 @@ const debounce = (string, fn) => {
 
 // refresh input fields
 
+watch(paymentMethod, () => {
+  if (paymentMethod.value !== "certificate") {
+    certificateCode.value = "";
+  }
+});
+
 watch(selectedDelivery, () => {
   if (selectedDelivery.value === "branch") {
     postomatNumber.value = "";

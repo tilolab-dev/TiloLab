@@ -129,7 +129,7 @@
 
         <div v-if="modalProps.order.orderComment" class="user_comment">
           <div class="user_comment_description">Коментар користувача:</div>
-          <div class="user_comment_item">comment</div>
+          <div class="user_comment_item">{{ modalProps.order.orderComment }}</div>
         </div>
 
         <div class="items_info">
