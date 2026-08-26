@@ -147,15 +147,30 @@
                   </div>
                 </div>
               </div>
+
+              <div class="main_option_content">
+                <h4 class="default_text">Оберіть гендер тегу:</h4>
+                <select id="tagSelect" v-model="tagGender" name="tagSelect">
+                  <option v-for="(gender, index) in tagGender" :key="index" :value="gender">
+                    {{ gender }}
+                  </option>
+                </select>
+              </div>
               <div class="main_option_content">
                 <h4 class="default_text">Оберіть тег:</h4>
-                <select id="tagSelect" v-model="productTag" name="tagSelect">
-                  <!-- <option selected value>-- {{ productTag }} --</option> -->
-                  <option disabled>-- Для нього --</option>
+                <!-- <select id="tagSelect" v-model="productTag" name="tagSelect">
                   <option v-for="(tag, index) in productTag" :key="index" :value="tag.id">
                     {{ tag.tagName }}
                   </option>
-                </select>
+                </select> -->
+
+                {{ fetchedTags }}
+                {{ productTag }}
+                <MultiSelect
+                  v-model="productTag"
+                  :options="fetchedTags.map((tag) => ({ value: tag.id, label: tag.tagName }))"
+                  placeholder="Оберіть тег"
+                />
               </div>
             </div>
 
@@ -503,6 +518,7 @@
 <script setup>
 import { ref, onMounted, toRaw, reactive } from "vue";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
+import MultiSelect from "@/components/shared/MultiSelect.vue";
 import EditIcon from "~/assets/icons/edit-btn.svg";
 import CloseIcon from "~/assets/icons/close-icon.svg";
 import EditProductOption from "@/components/Modals/admin/EditProductOption.vue";
@@ -1435,6 +1451,7 @@ onMounted(async () => {
       grid-template-columns: 1fr 2fr;
       align-items: center;
       gap: 1rem;
+      z-index: 2;
 
       &_content {
         select {
