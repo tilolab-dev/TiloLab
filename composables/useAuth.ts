@@ -100,6 +100,7 @@ export const useAuth = () => {
         data: { last_name: lastName, full_name: name, phone_number: phoneNumber }
       }
     });
+    console.log("resSignUp", resSignUp);
     await syncUser();
 
     return resSignUp;
@@ -117,13 +118,53 @@ export const useAuth = () => {
     user.value = null;
   };
 
+  const resetPassword = async (email: string) => {
+    const normalizedEmail = email.trim();
+
+    if (!normalizedEmail) {
+      throw new Error("Введіть електронну пошту");
+    }
+
+    const { data, error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
+      redirectTo: `${window.location.origin}/auth/update-password`
+    });
+
+    console.log("reset password:", { data, error });
+
+    if (error) {
+      console.error("Помилка відновлення пароля:", error);
+      throw new Error(error.message);
+    }
+
+    return true;
+  };
+
+  const updatePassword = async (newPassword: string) => {
+    if (!newPassword) {
+      throw new Error("Введіть новий пароль");
+    }
+
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+
+    if (error) {
+      console.error("Помилка зміни пароля:", error);
+      throw new Error(error.message);
+    }
+
+    return data;
+  };
+
   return {
     supabaseUser,
+    resetPassword,
     user,
     syncUser,
     signInWithGoogle,
     signInWithEmail,
     signUpWithEmail,
+    updatePassword,
     signOut
   };
 };

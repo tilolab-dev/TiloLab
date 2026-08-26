@@ -420,7 +420,9 @@ onBeforeUnmount(() => {
   height: auto;
   padding: 0;
   margin-block: 1rem;
-  overflow-y: scroll;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding-right: 6px;
   -webkit-font-smoothing: antialiased;
   transition: transform 200ms;
   transform: translateX(-100%);
@@ -435,6 +437,8 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(10px);
   z-index: 990;
   border-radius: 1rem;
+
+  @include mixins.ScrollBar;
 
   &[aria-expanded="true"] {
     transform: translateX(0);
