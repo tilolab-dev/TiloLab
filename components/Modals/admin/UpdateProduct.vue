@@ -147,29 +147,15 @@
                   </div>
                 </div>
               </div>
-
-              <div class="main_option_content">
-                <h4 class="default_text">Оберіть гендер тегу:</h4>
-                <select id="tagSelect" v-model="tagGender" name="tagSelect">
-                  <option v-for="(gender, index) in tagGender" :key="index" :value="gender">
-                    {{ gender }}
-                  </option>
-                </select>
-              </div>
+            </div>
+            <div class="option tag_option">
               <div class="main_option_content">
                 <h4 class="default_text">Оберіть тег:</h4>
-                <!-- <select id="tagSelect" v-model="productTag" name="tagSelect">
-                  <option v-for="(tag, index) in productTag" :key="index" :value="tag.id">
-                    {{ tag.tagName }}
-                  </option>
-                </select> -->
-
-                {{ fetchedTags }}
-                {{ productTag }}
                 <MultiSelect
                   v-model="productTag"
-                  :options="fetchedTags.map((tag) => ({ value: tag.id, label: tag.tagName }))"
-                  placeholder="Оберіть тег"
+                  :options="fetchedTags"
+                  variant="dark"
+                  placeholder="Оберіть теги"
                 />
               </div>
             </div>
@@ -518,7 +504,7 @@
 <script setup>
 import { ref, onMounted, toRaw, reactive } from "vue";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
-import MultiSelect from "@/components/shared/MultiSelect.vue";
+import MultiSelect from "~/components/shared/MultiSelect.vue";
 import EditIcon from "~/assets/icons/edit-btn.svg";
 import CloseIcon from "~/assets/icons/close-icon.svg";
 import EditProductOption from "@/components/Modals/admin/EditProductOption.vue";
@@ -551,7 +537,7 @@ const loaderState = ref(false);
 const optionFileInput = ref(null);
 const productFileInput = ref(null);
 const productCategory = ref("");
-const productTag = ref("");
+const productTag = ref([]);
 const productNameUk = ref("");
 const productManufacture = ref("");
 const productVisibility = ref(false); // Показывать товар на сайте
@@ -712,7 +698,7 @@ const closeModal = () => {
 
 const clearModal = () => {
   productCategory.value = "";
-  productTag.value = "";
+  productTag.value = [];
   productVisibility.value = false;
   productFileState.productFiles.value = [];
   productFileState.productFilesPreview.value = [];
@@ -792,12 +778,7 @@ const updateProduct = async () => {
     return;
   }
 
-  const productTag = fetchedTags.value.find((item) => item.id === productTag.value);
-
-  if (!productTag) {
-    console.warn("Product tag not found", productTag.value);
-    return;
-  }
+  const selectedTags = fetchedTags.value.filter((item) => productTag.value.includes(item.id));
 
   const categoryName = category.group.trim().replaceAll(" ", "-").toLowerCase();
 
@@ -893,7 +874,7 @@ const updateProduct = async () => {
 
     const res = await productStore.updateProduct(modalProps.product.id, {
       categoryId: productCategory.value,
-      productTag: productTag.value,
+      tags: selectedTags.map((tag) => tag.id),
       visibility: productVisibility.value,
       img: finalImg,
       productPrice: productPrice.value,
@@ -1021,9 +1002,8 @@ onMounted(async () => {
       // );
 
       productCategory.value = modalProps.product.category.id;
-      productTag.value = modalProps.product.tag;
+      productTag.value = modalProps.product.tag.map((tag) => tag.id);
       // console.log(productCategory.value, "value");
-      // console.log(productTag.value, "tag value");
     }
   } catch (error) {
     console.log(error.message, "error from getData");
@@ -1034,17 +1014,9 @@ onMounted(async () => {
       method: "GET"
     });
 
-    console.log(getTags.data, "getTags");
-
-    productTag.value = getTags.data;
-
-    console.log(productTag.value, "getTags value");
-
-    if (getTags.data.length > 0) {
-      fetchedTags.value = getTags.data.map((item) => ({
-        ...item,
-        itemLanguage: item.translations.find((translation) => translation.language === "uk")
-      }));
+    if (Array.isArray(getTags.data) && getTags.data.length > 0) {
+      // /api/tag/get-tags returns plain Tag objects: { id, tagId, tagName, tagGender }
+      fetchedTags.value = getTags.data;
     }
   } catch (error) {
     console.log(error.message, "error from getTags");
@@ -1480,6 +1452,10 @@ onMounted(async () => {
         align-items: flex-start;
         justify-content: flex-start;
       }
+    }
+
+    .tag_option {
+      z-index: 2;
     }
 
     .add_new_option {
