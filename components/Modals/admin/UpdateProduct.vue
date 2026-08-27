@@ -154,6 +154,7 @@
                 <MultiSelect
                   v-model="productTag"
                   :options="fetchedTags"
+                  :checked-options="modalProps.product.tags?.map((tag) => tag.tagId) ?? []"
                   variant="dark"
                   placeholder="Оберіть теги"
                 />
@@ -510,12 +511,10 @@ import CloseIcon from "~/assets/icons/close-icon.svg";
 import EditProductOption from "@/components/Modals/admin/EditProductOption.vue";
 import { useModalStore } from "@/store/modal-store";
 import { useCategoryStore } from "@/store/category-store";
-import { useTagStore } from "@/store/tag-store";
 import { useProductStore } from "@/store/product-store";
 
 const modalStore = useModalStore();
 const categoryStore = useCategoryStore();
-const tagStore = useTagStore();
 const productStore = useProductStore();
 
 const emit = defineEmits(["addNewItem", "tooltip"]);
@@ -574,7 +573,6 @@ const errorState = reactive({
 });
 
 const errorHandler = (title, text1, text2, method, item) => {
-  // console.log(item);
   errorState.error = true;
   errorState.title = title;
   errorState.text1 = text1;
@@ -601,11 +599,8 @@ const cancelOptionChanges = () => {
 };
 
 const saveChangedOption = (data) => {
-  // console.log(data, "save changed option");
-
   const getOption = currentOptionFiles.value.find((option) => option.id === data.optionId);
 
-  // console.log(getOption, "getOption");
   getOption.translations[0].optionInfo = data.description;
   getOption.optionPrice = data.price;
   getOption.optionStock = data.stock;
@@ -614,7 +609,6 @@ const saveChangedOption = (data) => {
 };
 
 const deleteImgDb = async (item, path, filetype) => {
-  // console.log(item);
   loaderState.value = true;
 
   try {
@@ -632,7 +626,6 @@ const deleteImgDb = async (item, path, filetype) => {
     if (deleteRes.success) {
       alert(deleteRes.message);
       if (filetype === "productImg") {
-        console.log(filetype);
         currentProductFiles.value = currentProductFiles.value.filter((productImg) => {
           return productImg.id !== item.id;
         });
@@ -653,19 +646,15 @@ const confirmError = () => {
   // TYPES - productImg, optionsImg
   switch (errorState.method) {
     case "removeProductImgDB":
-      // console.log(errorState.item.path, "product");
       deleteImgDb(errorState.item, errorState.item.path, "productImg");
-      // console.log(errorState.method);
       break;
     case "removeOptionDB":
       //   removeOption(errorState.item);
-      // console.log(errorState.item.optionImg, "option");
-
       deleteImgDb(errorState.item, errorState.item.optionImg, "optionImg");
-      // console.log(errorState.method);
 
       break;
   }
+
   errorState.error = false;
   errorState.title = "";
   errorState.text1 = "";
@@ -949,21 +938,12 @@ const modalProps = defineProps({
 });
 
 onMounted(async () => {
-  // console.log(modalProps.product);
   loaderState.value = true;
-
   // await categoryStore.getCategories();
-
-  // console.log(categoryStore.categoryList);
-
-  console.log(modalProps.product, "modalProps");
-
   fetchedCategories.value = categoryStore.categoryList;
-  fetchedTags.value = tagStore.tagList;
   currentProductFiles.value = modalProps.product.img;
   currentOptionFiles.value = modalProps.product.options;
   productNameUk.value = modalProps.product.translations[0].title;
-  // productAvailability.value = modalProps.product.stockState;
   productDescriptionUk.value = modalProps.product.translations[0].productDescription;
   productStockState.value = modalProps.product.stockState;
   productStockValue.value = modalProps.product.stockValue;
@@ -982,10 +962,7 @@ onMounted(async () => {
   //   translations: option.translations[0].optionInfo
   // }));
 
-  // console.log(modalProps.product, "modal props log");
-
   // productCategory.value = modalProps.product.category.translations[0].title;
-  //   console.log(modalProps.product.category.translations[0].title);
 
   try {
     const getData = await $fetch("/api/category");
@@ -1003,7 +980,6 @@ onMounted(async () => {
 
       productCategory.value = modalProps.product.category.id;
       productTag.value = modalProps.product.tag.map((tag) => tag.id);
-      // console.log(productCategory.value, "value");
     }
   } catch (error) {
     console.log(error.message, "error from getData");
@@ -1015,7 +991,6 @@ onMounted(async () => {
     });
 
     if (Array.isArray(getTags.data) && getTags.data.length > 0) {
-      // /api/tag/get-tags returns plain Tag objects: { id, tagId, tagName, tagGender }
       fetchedTags.value = getTags.data;
     }
   } catch (error) {

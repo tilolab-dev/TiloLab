@@ -4,9 +4,6 @@ import { prisma } from "@/prisma/prisma";
 async function patchProduct(id: number, event: any) {
   const body = await readBody(event);
 
-  console.log(body, "body");
-  console.log(id, "id");
-
   if (!body) {
     return { statusCode: 400, message: "No data received" };
   }
@@ -69,6 +66,21 @@ async function patchProduct(id: number, event: any) {
         }
       }
     });
+
+    if (body.tags.length) {
+      console.log(Number(id));
+      const deletePrevTagRes = await prisma.productTag.deleteMany({
+        where: { productId: Number(id) }
+      });
+      const updateTagRes = await prisma.productTag.createMany({
+        data: body.tags.map((tagId: string) => ({
+          productId: Number(id),
+          tagId: Number(tagId)
+        }))
+      });
+      console.log(deletePrevTagRes);
+      console.log(updateTagRes);
+    }
 
     return {
       statusCode: 200,

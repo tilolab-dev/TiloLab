@@ -90,15 +90,19 @@ const props = defineProps({
     default: () => []
   },
 
+  checkedOptions: {
+    type: Array,
+    default: () => []
+  },
+
   placeholder: {
     type: String,
     default: "Select..."
   },
 
-  // UI theme to match parent components
   variant: {
     type: String,
-    default: "light" // 'light' | 'dark'
+    default: "light"
   }
 });
 
@@ -110,25 +114,11 @@ const isOpen = ref(false);
 
 const openedGroups = ref({});
 
-/*
- * Converts the actual tag objects from the parent
- * into the format used internally by the component.
- */
 const normalizedGroups = computed(() => {
   if (!props.options.length) {
     return [];
   }
 
-  /*
-   * Already grouped:
-   *
-   * [
-   *   {
-   *     label: "...",
-   *     options: [...]
-   *   }
-   * ]
-   */
   if (props.options[0] && Array.isArray(props.options[0].options)) {
     return props.options.map((group) => ({
       label: group.label,
@@ -136,21 +126,6 @@ const normalizedGroups = computed(() => {
     }));
   }
 
-  /*
-   * Flat tag list from parent.
-   *
-   * Example:
-   * [
-   *   {
-   *     id: 1,
-   *     tagId: "FIRST_TOY_WOMEN",
-   *     tagName: "Ніяк не можу наважитись",
-   *     tagGender: "WOMEN"
-   *   }
-   * ]
-   */
-
-  // If tags have tagGender – group by it.
   const hasTagGender = props.options.some(
     (opt) => opt && typeof opt === "object" && "tagGender" in opt
   );
@@ -192,7 +167,6 @@ const normalizedGroups = computed(() => {
       }));
   }
 
-  // Otherwise, put everything into one group.
   return [
     {
       label: "Tags",
@@ -203,7 +177,6 @@ const normalizedGroups = computed(() => {
 
 function normalizeOption(option) {
   return {
-    // Prefer numeric DB id if it exists (works well with product <-> tag relations)
     value: option.value ?? option.id ?? option.tagId,
 
     label:
@@ -215,8 +188,36 @@ function normalizeOption(option) {
 }
 
 const selected = computed(() => {
-  return new Set(props.modelValue);
+  const values = props.modelValue.length > 0 ? props.modelValue : props.checkedOptions;
+
+  return new Set(values);
 });
+
+function toggleOption(value) {
+  const next = new Set(selected.value);
+
+  if (next.has(value)) {
+    next.delete(value);
+  } else {
+    next.add(value);
+  }
+
+  emit("update:modelValue", [...next]);
+}
+
+function toggleGroup(group) {
+  const values = group.options.map((option) => option.value);
+  const allSelected = values.every((value) => selected.value.has(value));
+  const next = new Set(selected.value);
+
+  if (allSelected) {
+    values.forEach((value) => next.delete(value));
+  } else {
+    values.forEach((value) => next.add(value));
+  }
+
+  emit("update:modelValue", [...next]);
+}
 
 const filteredGroups = computed(() => {
   return normalizedGroups.value
@@ -236,38 +237,6 @@ const selectedOptions = computed(() => {
 
 function open() {
   isOpen.value = true;
-}
-
-function toggleGroup(group) {
-  const values = group.options.map((option) => option.value);
-
-  const allSelected = values.every((value) => selected.value.has(value));
-
-  const next = new Set(props.modelValue);
-
-  if (allSelected) {
-    values.forEach((value) => {
-      next.delete(value);
-    });
-  } else {
-    values.forEach((value) => {
-      next.add(value);
-    });
-  }
-
-  emit("update:modelValue", [...next]);
-}
-
-function toggleOption(value) {
-  const next = new Set(props.modelValue);
-
-  if (next.has(value)) {
-    next.delete(value);
-  } else {
-    next.add(value);
-  }
-
-  emit("update:modelValue", [...next]);
 }
 
 function isGroupChecked(group) {
@@ -429,8 +398,8 @@ onBeforeUnmount(() => {
 .grouped-select input[type="checkbox"]:checked + .checkbox-ui::after {
   content: "";
   position: absolute;
-  left: 5px;
-  top: 2px;
+  left: 4px;
+  top: 0px;
   width: 5px;
   height: 9px;
   border: solid #fff;

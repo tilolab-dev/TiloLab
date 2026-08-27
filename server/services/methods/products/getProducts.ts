@@ -50,7 +50,8 @@ async function getProducts() {
           include: {
             translations: true
           }
-        }
+        },
+        tags: true
       },
       orderBy: [{ listPosition: { sort: "asc", nulls: "last" } }, { id: "asc" }]
     });
