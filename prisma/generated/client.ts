@@ -70,20 +70,30 @@ export type CategoryTranslation = Prisma.CategoryTranslationModel
  */
 export type Product = Prisma.ProductModel
 /**
- * Model TagAnswers
+ * Model Tag
  * 
  */
-export type TagAnswers = Prisma.TagAnswersModel
+export type Tag = Prisma.TagModel
 /**
- * Model AnswersArr
+ * Model ProductTag
  * 
  */
-export type AnswersArr = Prisma.AnswersArrModel
+export type ProductTag = Prisma.ProductTagModel
 /**
- * Model TagArr
+ * Model QuizQuestion
  * 
  */
-export type TagArr = Prisma.TagArrModel
+export type QuizQuestion = Prisma.QuizQuestionModel
+/**
+ * Model QuizAnswer
+ * 
+ */
+export type QuizAnswer = Prisma.QuizAnswerModel
+/**
+ * Model QuizAnswerTag
+ * 
+ */
+export type QuizAnswerTag = Prisma.QuizAnswerTagModel
 /**
  * Model ProductOptions
  * 

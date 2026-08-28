@@ -113,6 +113,18 @@
               </div>
             </div>
 
+            <div class="option tag_option">
+              <div class="main_option_content">
+                <h4 class="default_text">Оберіть тег:</h4>
+                <MultiSelect
+                  v-model="productTag"
+                  :options="fetchedTags"
+                  variant="dark"
+                  placeholder="Оберіть теги"
+                />
+              </div>
+            </div>
+
             <div class="option description_option">
               <div class="description_option_content">
                 <h4 class="default_text">Опис товару: ( Українська )</h4>
@@ -412,6 +424,7 @@ import { ref, onMounted, toRaw } from "vue";
 // import bagImg from '@/public/img/bag.png';
 
 import SvgIcon from "@/components/shared/SvgIcon.vue";
+import MultiSelect from "~/components/shared/MultiSelect.vue";
 import { useModalStore } from "@/store/modal-store";
 import { useProductStore } from "@/store/product-store";
 
@@ -425,11 +438,13 @@ import { useFileUpload } from "@/helpers/uploadFiles";
 const { handleFileUpload } = useFileUpload(emit);
 
 const fetchedCategories = ref([]);
+const fetchedTags = ref([]);
 
 const loaderState = ref(false);
 const optionFileInput = ref(null);
 const productFileInput = ref(null);
 const productCategory = ref("");
+const productTag = ref([]);
 const productNameUk = ref("");
 const productManufacture = ref("");
 // const productNameEn = ref("");
@@ -506,6 +521,7 @@ const closeModal = () => {
 
 const clearModal = () => {
   productCategory.value = "";
+  productTag.value = [];
   productVisibility.value = false;
   productFileState.productFiles.value = [];
   productFileState.productFilesPreview.value = [];
@@ -657,6 +673,8 @@ const addNewProduct = async () => {
 
   const categoryData = fetchedCategories.value.filter((item) => item.id === productCategory.value);
 
+  const selectedTags = fetchedTags.value.filter((item) => productTag.value.includes(item.id));
+
   const categoryName = categoryData[0].group.trim().replaceAll(" ", "-").toLowerCase();
 
   const translitProductName = transliterate(productNameUk.value);
@@ -737,6 +755,7 @@ const addNewProduct = async () => {
 
     const newProduct = productStore.addProduct({
       categoryId: productCategory.value,
+      tags: selectedTags.map((tag) => tag.id),
       visibility: productVisibility.value,
       img: productImgPath,
       productPrice: productPrice.value,
@@ -809,6 +828,18 @@ onMounted(async () => {
     }
   } catch (error) {
     console.log(error.message, "error from getData");
+  }
+
+  try {
+    const getTags = await $fetch("/api/tag/get-tags", {
+      method: "GET"
+    });
+
+    if (Array.isArray(getTags.data) && getTags.data.length > 0) {
+      fetchedTags.value = getTags.data;
+    }
+  } catch (error) {
+    console.log(error.message, "error from getTags");
   }
 });
 </script>
@@ -1234,6 +1265,10 @@ onMounted(async () => {
         align-items: flex-start;
         justify-content: flex-start;
       }
+    }
+
+    .tag_option {
+      z-index: 2;
     }
 
     .add_new_option {

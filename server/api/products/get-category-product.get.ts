@@ -23,6 +23,7 @@ export default defineEventHandler(async (event) => {
             translations: true
           }
         },
+        tags: true,
         img: true
       }
     });

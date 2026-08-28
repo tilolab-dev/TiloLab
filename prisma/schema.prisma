@@ -110,35 +110,73 @@ model Product {
   promotedProducts PromotedProduct[]
   productType      ProductType          @default(PRODUCT)
   tagGender        TagGenderType        @default(UNDEFINED)
-  tagAnswers       TagAnswers[] 
+
+  tags ProductTag[]
 
   @@index([categoryId])
   @@index([productSize])
 }
 
+// model TagItems {
+//   id        Int     @id @default(autoincrement())
+//   tagName   String
+//   tagId     String  @unique
+//   tagGender String  @default("MEN")
+//   productId Int?
+//   // product   Product? ...
+// }
 
-model TagAnswers {
-  id            Int                  @id @default(autoincrement())
-  question      String               @default("-")
-  answer        AnswersArr[]
-  tag           TagArr[]
-  isMultiply    Boolean              @default(false)
-  productId     Int?
-  product       Product?             @relation(fields: [productId], references: [id], onDelete: Cascade)
+model Tag {
+  id        Int           @id @default(autoincrement())
+  tagId     String        @unique
+  tagName   String
+  tagGender TagGenderType @default(UNDEFINED)
+
+  products ProductTag[]
+  answers  QuizAnswerTag[]
 }
 
-model AnswersArr {
-  id            Int                   @id @default(autoincrement())
-  answer        String                @default("-")
-  tagAnswersId  Int?
-  tagAnswers    TagAnswers?           @relation(fields: [tagAnswersId], references: [id], onDelete: Cascade)
+model ProductTag {
+  productId Int
+  tagId     Int
+
+  product Product @relation( fields: [productId], references: [id], onDelete: Cascade)
+
+  tag Tag @relation( fields: [tagId], references: [id], onDelete: Cascade )
+
+  @@id([productId, tagId])
+  @@index([tagId])
 }
 
-model TagArr {
-  id            Int                   @id @default(autoincrement())
-  tag           ProductTag
-  tagAnswersId  Int?
-  tagAnswers    TagAnswers?           @relation(fields: [tagAnswersId], references: [id], onDelete: Cascade)
+
+model QuizQuestion {
+  id         Int          @id @default(autoincrement())
+  question   String
+  isMultiply Boolean      @default(false)
+
+  answers    QuizAnswer[]
+}
+
+model QuizAnswer {
+  id         Int    @id @default(autoincrement())
+  answer     String
+
+  questionId Int
+  question   QuizQuestion @relation( fields: [questionId], references: [id], onDelete: Cascade )
+
+  tags       QuizAnswerTag[]
+}
+
+model QuizAnswerTag {
+  answerId Int
+  tagId    Int
+
+  answer QuizAnswer @relation( fields: [answerId], references: [id], onDelete: Cascade )
+
+  tag Tag @relation( fields: [tagId], references: [id], onDelete: Cascade )
+
+  @@id([answerId, tagId])
+  @@index([tagId])
 }
 
 model ProductOptions {
@@ -228,7 +266,7 @@ model GiftCertificate {
 model User {
   id             Int            @id @default(autoincrement())
   fullName       String?        @unique
-  username       String?        
+  username       String?
   userSurname    String?
   userAvatar     String?
   userFamily     String?
@@ -439,58 +477,54 @@ enum PaymentType {
   CERTIFICATE_SURCHARGE
 }
 
-enum ProductTag {
+// enum ProductTag {
 
-  FIRST_TOY_WOMEN
-  INACTIVE_USER_WOMEN
-  PROFI_LEVEL_WOMEN
-  TOY_WOMEN
-  APP_WOMEN
-  REMOTE_CONTROL_WOMEN
-  LIGHT_MODE_WOMEN
-  MEDIUM_POWER_WOMEN
-  HIGH_INTENSITY_WOMEN
-  CLITORS_WOMEN
-  ANAL_WOMEN
-  VAGINA_WOMEN
-  VACUUM_WOMEN
-  VIBRO_WOMEN
-  MOTION_WOMEN
+//   FIRST_TOY_WOMEN
+//   INACTIVE_USER_WOMEN
+//   PROFI_LEVEL_WOMEN
+//   TOY_WOMEN
+//   APP_WOMEN
+//   REMOTE_CONTROL_WOMEN
+//   LIGHT_MODE_WOMEN
+//   MEDIUM_POWER_WOMEN
+//   HIGH_INTENSITY_WOMEN
+//   CLITORS_WOMEN
+//   ANAL_WOMEN
+//   VAGINA_WOMEN
+//   VACUUM_WOMEN
+//   VIBRO_WOMEN
+//   MOTION_WOMEN
 
-  FIRST_TOY_MEN
-  INACTIVE_USER_MEN
-  PROFI_LEVEL_MEN
-  TOY_MEN
-  APP_MEN
-  REMOTE_CONTROL_MEN
-  LIGHT_MODE_MEN
-  MEDIUM_POWER_MEN
-  HIGH_INTENSITY_MEN
-  DICK_MEN
-  PENIS_HEAD_MEN
-  BALLS_MEN
-  ANAL_MEN
-  MASTURBATOR_MEN
-  CONTINUATION_MEN
-  VIBRO_MEN
+//   FIRST_TOY_MEN
+//   INACTIVE_USER_MEN
+//   PROFI_LEVEL_MEN
+//   TOY_MEN
+//   APP_MEN
+//   REMOTE_CONTROL_MEN
+//   LIGHT_MODE_MEN
+//   MEDIUM_POWER_MEN
+//   HIGH_INTENSITY_MEN
+//   DICK_MEN
+//   PENIS_HEAD_MEN
+//   BALLS_MEN
+//   ANAL_MEN
+//   MASTURBATOR_MEN
+//   CONTINUATION_MEN
+//   VIBRO_MEN
 
-  PROFI_LEVEL_COUPLE
-  INACTIVE_USER_COUPLE
-  FIRST_TOY_COUPLE
-  HE_COUPLE
-  SHE_COUPLE
-  THEM_COUPLE
-  LIGHT_MODE_COUPLE
-  MEDIUM_POWER_COUPLE
-  HIGH_INTENSITY_COUPLE
-  TOYS_COUPLE
-  PETTING_COUPLE
-  BDSM_COUPLE
-  HOME_COUPLE
-  DISTANCE_COUPLE
-  WALK_COUPLE
-  VIBRATING_COUPLES
-  REMOTE_COUPLES
-  DUAL_COUPLES
- 
-}
+//   PROFI_LEVEL_COUPLE
+//   INACTIVE_USER_COUPLE
+//   FIRST_TOY_COUPLE
+//   HE_COUPLE
+//   SHE_COUPLE
+//   THEM_COUPLE
+//   LIGHT_MODE_COUPLE
+//   MEDIUM_POWER_COUPLE
+//   HIGH_INTENSITY_COUPLE
+//   TOYS_COUPLE
+//   PETTING_COUPLE
+//   BDSM_COUPLE
+//   HOME_COUPLE
+//   DISTANCE_COUPLE
+//   WALK_COUPLE
+// }

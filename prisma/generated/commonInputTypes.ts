@@ -238,23 +238,6 @@ export type EnumTagGenderTypeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumTagGenderTypeFilter<$PrismaModel>
 }
 
-export type EnumProductTagFilter<$PrismaModel = never> = {
-  equals?: $Enums.ProductTag | Prisma.EnumProductTagFieldRefInput<$PrismaModel>
-  in?: $Enums.ProductTag[] | Prisma.ListEnumProductTagFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ProductTag[] | Prisma.ListEnumProductTagFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumProductTagFilter<$PrismaModel> | $Enums.ProductTag
-}
-
-export type EnumProductTagWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ProductTag | Prisma.EnumProductTagFieldRefInput<$PrismaModel>
-  in?: $Enums.ProductTag[] | Prisma.ListEnumProductTagFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ProductTag[] | Prisma.ListEnumProductTagFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumProductTagWithAggregatesFilter<$PrismaModel> | $Enums.ProductTag
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumProductTagFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumProductTagFilter<$PrismaModel>
-}
-
 export type FloatNullableFilter<$PrismaModel = never> = {
   equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
   in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
@@ -684,23 +667,6 @@ export type NestedEnumTagGenderTypeWithAggregatesFilter<$PrismaModel = never> = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTagGenderTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTagGenderTypeFilter<$PrismaModel>
-}
-
-export type NestedEnumProductTagFilter<$PrismaModel = never> = {
-  equals?: $Enums.ProductTag | Prisma.EnumProductTagFieldRefInput<$PrismaModel>
-  in?: $Enums.ProductTag[] | Prisma.ListEnumProductTagFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ProductTag[] | Prisma.ListEnumProductTagFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumProductTagFilter<$PrismaModel> | $Enums.ProductTag
-}
-
-export type NestedEnumProductTagWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ProductTag | Prisma.EnumProductTagFieldRefInput<$PrismaModel>
-  in?: $Enums.ProductTag[] | Prisma.ListEnumProductTagFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ProductTag[] | Prisma.ListEnumProductTagFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumProductTagWithAggregatesFilter<$PrismaModel> | $Enums.ProductTag
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumProductTagFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumProductTagFilter<$PrismaModel>
 }
 
 export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {

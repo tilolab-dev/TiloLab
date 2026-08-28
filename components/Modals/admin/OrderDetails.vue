@@ -641,7 +641,7 @@ const getPostOfficeNp = debounce(postAddress.value, async () => {
     }
   });
 
-  const filteredOffice = getOfficeByNumber.data.filter(
+  const filteredOffice = getOfficeByNumber?.data?.filter(
     (item) => item.CategoryOfWarehouse === "Branch"
   );
 
@@ -662,7 +662,7 @@ const getPostOfficeNp = debounce(postAddress.value, async () => {
   // }
   // const postOfficeNp = await novaPost.fetchPostAddresses(cityName.value);
   // // console.log(postOfficeNp, 'postOfficeNp');
-  // const filteredOffice = postOfficeNp.data.filter((item) => item.CategoryOfWarehouse === "Branch");
+  // const filteredOffice = postOfficeNp?.data?.filter((item) => item.CategoryOfWarehouse === "Branch");
   // postAddressList.value = filteredOffice;
 });
 

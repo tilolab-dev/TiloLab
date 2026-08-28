@@ -41,7 +41,24 @@ export const useProductStore = defineStore("product", () => {
           getMethod: "all"
         }
       });
-      const filteredProducts = resFetch.data.filter((p) => p.visible);
+      const filteredProducts = resFetch?.data?.filter((p) => p.visible);
+      productList.value = filteredProducts || [];
+      // console.log(!productList.value, "Products store fetchProducts productList is empty");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function fetchProductsByTags(tags: string) {
+    try {
+      const resFetch = await $fetch<IProductResponse>("/api/products/get-products-by-tag", {
+        method: "POST",
+        body: {
+          tags: tags
+        }
+      });
+      const filteredProducts = resFetch?.data?.filter((p) => p.visible);
+      console.log(filteredProducts, "filteredProducts");
       productList.value = filteredProducts || [];
       // console.log(!productList.value, "Products store fetchProducts productList is empty");
     } catch (err) {
@@ -106,7 +123,7 @@ export const useProductStore = defineStore("product", () => {
 
       // console.log(resFetch, "Products store fetchProductsByPage resFetch from store");
 
-      const filteredProducts = resFetch.data.filter((p) => p.visible);
+      const filteredProducts = resFetch?.data?.filter((p) => p.visible);
 
       const newItems = filteredProducts || [];
       // console.log(!newItems, "Products store fetchProductsByPage newItems is empty");
@@ -239,6 +256,7 @@ export const useProductStore = defineStore("product", () => {
     priceRange,
     setSelectedProducts,
     fetchProducts,
+    fetchProductsByTags,
     fetchProductsByPage,
     loadMore,
     prefetchNextPage,

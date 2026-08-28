@@ -148,6 +148,18 @@
                 </div>
               </div>
             </div>
+            <div class="option tag_option">
+              <div class="main_option_content">
+                <h4 class="default_text">Оберіть тег:</h4>
+                <MultiSelect
+                  v-model="productTag"
+                  :options="fetchedTags"
+                  :checked-options="modalProps.product.tags?.map((tag) => tag.tagId) ?? []"
+                  variant="dark"
+                  placeholder="Оберіть теги"
+                />
+              </div>
+            </div>
 
             <div class="option description_option">
               <div class="description_option_content">
@@ -493,6 +505,7 @@
 <script setup>
 import { ref, onMounted, toRaw, reactive } from "vue";
 import SvgIcon from "@/components/shared/SvgIcon.vue";
+import MultiSelect from "~/components/shared/MultiSelect.vue";
 import EditIcon from "~/assets/icons/edit-btn.svg";
 import CloseIcon from "~/assets/icons/close-icon.svg";
 import EditProductOption from "@/components/Modals/admin/EditProductOption.vue";
@@ -511,6 +524,7 @@ import { useFileUpload } from "@/helpers/uploadFiles";
 const { handleFileUpload } = useFileUpload(emit);
 
 const fetchedCategories = ref([]);
+const fetchedTags = ref([]);
 
 const editOptionState = ref(false);
 const selectedOpton = ref(null);
@@ -522,6 +536,7 @@ const loaderState = ref(false);
 const optionFileInput = ref(null);
 const productFileInput = ref(null);
 const productCategory = ref("");
+const productTag = ref([]);
 const productNameUk = ref("");
 const productManufacture = ref("");
 const productVisibility = ref(false); // Показывать товар на сайте
@@ -558,7 +573,6 @@ const errorState = reactive({
 });
 
 const errorHandler = (title, text1, text2, method, item) => {
-  // console.log(item);
   errorState.error = true;
   errorState.title = title;
   errorState.text1 = text1;
@@ -585,11 +599,8 @@ const cancelOptionChanges = () => {
 };
 
 const saveChangedOption = (data) => {
-  // console.log(data, "save changed option");
-
   const getOption = currentOptionFiles.value.find((option) => option.id === data.optionId);
 
-  // console.log(getOption, "getOption");
   getOption.translations[0].optionInfo = data.description;
   getOption.optionPrice = data.price;
   getOption.optionStock = data.stock;
@@ -598,7 +609,6 @@ const saveChangedOption = (data) => {
 };
 
 const deleteImgDb = async (item, path, filetype) => {
-  console.log(item);
   loaderState.value = true;
 
   try {
@@ -616,7 +626,6 @@ const deleteImgDb = async (item, path, filetype) => {
     if (deleteRes.success) {
       alert(deleteRes.message);
       if (filetype === "productImg") {
-        console.log(filetype);
         currentProductFiles.value = currentProductFiles.value.filter((productImg) => {
           return productImg.id !== item.id;
         });
@@ -637,19 +646,15 @@ const confirmError = () => {
   // TYPES - productImg, optionsImg
   switch (errorState.method) {
     case "removeProductImgDB":
-      // console.log(errorState.item.path, "product");
       deleteImgDb(errorState.item, errorState.item.path, "productImg");
-      // console.log(errorState.method);
       break;
     case "removeOptionDB":
       //   removeOption(errorState.item);
-      // console.log(errorState.item.optionImg, "option");
-
       deleteImgDb(errorState.item, errorState.item.optionImg, "optionImg");
-      // console.log(errorState.method);
 
       break;
   }
+
   errorState.error = false;
   errorState.title = "";
   errorState.text1 = "";
@@ -682,6 +687,7 @@ const closeModal = () => {
 
 const clearModal = () => {
   productCategory.value = "";
+  productTag.value = [];
   productVisibility.value = false;
   productFileState.productFiles.value = [];
   productFileState.productFilesPreview.value = [];
@@ -760,6 +766,8 @@ const updateProduct = async () => {
     console.warn("Category not found", productCategory.value);
     return;
   }
+
+  const selectedTags = fetchedTags.value.filter((item) => productTag.value.includes(item.id));
 
   const categoryName = category.group.trim().replaceAll(" ", "-").toLowerCase();
 
@@ -855,6 +863,7 @@ const updateProduct = async () => {
 
     const res = await productStore.updateProduct(modalProps.product.id, {
       categoryId: productCategory.value,
+      tags: selectedTags.map((tag) => tag.id),
       visibility: productVisibility.value,
       img: finalImg,
       productPrice: productPrice.value,
@@ -929,20 +938,13 @@ const modalProps = defineProps({
 });
 
 onMounted(async () => {
-  // console.log(modalProps.product);
+  console.log("modalProps.product", modalProps.product);
   loaderState.value = true;
-
   // await categoryStore.getCategories();
-
-  // console.log(categoryStore.categoryList);
-
-  console.log(modalProps.product, "modalProps");
-
   fetchedCategories.value = categoryStore.categoryList;
   currentProductFiles.value = modalProps.product.img;
   currentOptionFiles.value = modalProps.product.options;
   productNameUk.value = modalProps.product.translations[0].title;
-  // productAvailability.value = modalProps.product.stockState;
   productDescriptionUk.value = modalProps.product.translations[0].productDescription;
   productStockState.value = modalProps.product.stockState;
   productStockValue.value = modalProps.product.stockValue;
@@ -961,10 +963,7 @@ onMounted(async () => {
   //   translations: option.translations[0].optionInfo
   // }));
 
-  // console.log(modalProps.product, "modal props log");
-
   // productCategory.value = modalProps.product.category.translations[0].title;
-  //   console.log(modalProps.product.category.translations[0].title);
 
   try {
     const getData = await $fetch("/api/category");
@@ -981,10 +980,22 @@ onMounted(async () => {
       // );
 
       productCategory.value = modalProps.product.category.id;
-      console.log(productCategory.value, "value");
+      productTag.value = modalProps.product.tag.map((tag) => tag.id);
     }
   } catch (error) {
     console.log(error.message, "error from getData");
+  }
+
+  try {
+    const getTags = await $fetch("/api/tag/get-tags", {
+      method: "GET"
+    });
+
+    if (Array.isArray(getTags.data) && getTags.data.length > 0) {
+      fetchedTags.value = getTags.data;
+    }
+  } catch (error) {
+    console.log(error.message, "error from getTags");
   }
 
   loaderState.value = false;
@@ -1039,7 +1050,6 @@ onMounted(async () => {
     padding: 0.5rem 1.25rem;
     border-radius: 0.5rem;
     cursor: pointer;
-    // transition: all 0.3s ease;
   }
   .btn_transparent {
     width: fit-content;
@@ -1254,22 +1264,18 @@ onMounted(async () => {
     }
 
     h2 {
-      // @include mixins.cardText;
       text-align: center;
       margin-bottom: 15px;
     }
 
     span {
       text-align: center;
-      // @include mixins.descriptionText(400, var(--dark-color));
     }
     .icon_label {
       margin-top: 2rem;
     }
     .upload-btn {
       margin: 50px 0 20px;
-      // @include mixins.defaultShadow;
-      // @include mixins.descriptionText(500, var(--dark-color));
       padding: 10px 20px;
       cursor: pointer;
     }
@@ -1296,7 +1302,6 @@ onMounted(async () => {
     .default_text {
       @include mixins.mainText;
       color: var(--grey-color);
-      // white-space: nowrap;
     }
 
     .top_content {
@@ -1394,6 +1399,7 @@ onMounted(async () => {
       grid-template-columns: 1fr 2fr;
       align-items: center;
       gap: 1rem;
+      z-index: 2;
 
       &_content {
         select {
@@ -1422,6 +1428,10 @@ onMounted(async () => {
         align-items: flex-start;
         justify-content: flex-start;
       }
+    }
+
+    .tag_option {
+      z-index: 2;
     }
 
     .add_new_option {
@@ -1513,7 +1523,6 @@ onMounted(async () => {
       gap: 1.25rem;
       width: auto;
       height: auto;
-      // display: none;
 
       input {
         display: none;
@@ -1616,9 +1625,6 @@ onMounted(async () => {
       display: flex;
       flex: 1;
     }
-    // .label-wrapper {
-    //   @include mixins.labelFile
-    // }
     .price_option {
       display: flex;
       align-items: center;
@@ -1638,7 +1644,6 @@ onMounted(async () => {
         flex-wrap: wrap;
       }
       &_item {
-        // background: var(--bg-color);
         background: black;
         border-radius: 8px;
         width: fit-content;
