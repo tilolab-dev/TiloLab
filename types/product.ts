@@ -1,3 +1,5 @@
+import type { Tag } from "@/prisma/generated/client";
+
 export interface ProductImg {
   id: number;
   imgId: number;
@@ -47,4 +49,5 @@ export interface IProduct {
   options: ProductOptions[];
   translations: ProductOptionTranslation[];
   category: Category;
+  tags: Tag;
 }

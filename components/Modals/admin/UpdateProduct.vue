@@ -938,6 +938,7 @@ const modalProps = defineProps({
 });
 
 onMounted(async () => {
+  console.log("modalProps.product", modalProps.product);
   loaderState.value = true;
   // await categoryStore.getCategories();
   fetchedCategories.value = categoryStore.categoryList;

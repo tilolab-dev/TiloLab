@@ -27,6 +27,7 @@ async function addProduct(event: any) {
     productSize: string;
     translations: any;
     options: IOptions[];
+    tags: any;
   }>(event);
 
   if (!body) {
@@ -35,6 +36,8 @@ async function addProduct(event: any) {
       message: "No data received!"
     };
   }
+
+  console.log(body);
 
   const { categoryId, productPrice, stockState, stockValue, translations } = body;
 
@@ -80,6 +83,7 @@ async function addProduct(event: any) {
         stockValue: Number(body.stockValue),
         discountPercent: Number(body.discountPercent),
         productSize: String(body.productSize),
+        tags: {},
 
         translations: {
           create: body.translations.map((t: any) => ({
@@ -116,6 +120,15 @@ async function addProduct(event: any) {
         }
       }
     });
+
+    if (body.tags?.length) {
+      await prisma.productTag.createMany({
+        data: body.tags.map((tag: string | number) => ({
+          productId: newProduct.id,
+          tagId: Number(tag)
+        }))
+      });
+    }
 
     return {
       statusCode: 200,

@@ -21,6 +21,7 @@ const getCategoryWithProducts = async (id: number) => {
             translations: true
           }
         },
+        tags: true,
         translations: true
       }
     });
