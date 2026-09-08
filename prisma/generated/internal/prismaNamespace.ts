@@ -2683,6 +2683,7 @@ export const GiftCertificateScalarFieldEnum = {
   usedAt: 'usedAt',
   reservedAt: 'reservedAt',
   reservedUntil: 'reservedUntil',
+  receiveByEmail: 'receiveByEmail',
   orderId: 'orderId',
   orderItemId: 'orderItemId',
   usedOrderId: 'usedOrderId'
