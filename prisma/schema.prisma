@@ -99,7 +99,7 @@ model Product {
   discountPercent  Int?
   productSize      String?
   productPrice     Float
-  stockReserved    Int?                 @default(0)
+  stockReserved    Int?                 @default(0)        
   isCertificate    Boolean              @default(false)
   orderItems       OrderItem[]
   popularProducts  PopularProduct[]
@@ -243,24 +243,25 @@ model PromotedProduct {
 }
 
 model GiftCertificate {
-  id            String @id @default(uuid())
-  code          String @unique
-  amount        Float
-  status        CertificateStatus @default(ACTIVE)
-  createdAt     DateTime @default(now())
+  id              String @id @default(uuid())
+  code            String @unique
+  amount          Float
+  status          CertificateStatus @default(ACTIVE)
+  createdAt       DateTime @default(now())
 
-  usedAt        DateTime?
-  reservedAt    DateTime?
-  reservedUntil DateTime?
+  usedAt          DateTime?
+  reservedAt      DateTime?
+  reservedUntil   DateTime?
+  receiveByEmail  Boolean?
 
-  orderId       String
-  order         Order @relation( "CertificateCreatedOrder", fields: [orderId], references: [id])
-  orderItemId   Int
-  orderItem     OrderItem? @relation(fields: [orderItemId], references: [id])
+  orderId         String
+  order           Order @relation( "CertificateCreatedOrder", fields: [orderId], references: [id])
+  orderItemId     Int
+  orderItem       OrderItem? @relation(fields: [orderItemId], references: [id])
 
-  usedOrderId   String?
-  usedOrder     Order? @relation( "CertificateUsedOrder", fields: [usedOrderId], references: [id])
-  payments      Payment[]
+  usedOrderId     String?
+  usedOrder       Order? @relation( "CertificateUsedOrder", fields: [usedOrderId], references: [id])
+  payments        Payment[]
 }
 
 model User {
