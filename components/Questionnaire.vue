@@ -61,6 +61,9 @@
               :value="answer.id"
               @change="handleAnswerChange($event, answer.id)"
             />
+            <div class="input-placeholder">
+              <CheckIcon />
+            </div>
             <span class="answer-text">{{ answer.text }}</span>
           </label>
         </div>
@@ -88,6 +91,7 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import CloseIcon from "@/assets/icons/close-icon.svg";
+import CheckIcon from "~/assets/icons/check.svg";
 import BackIcon from "@/assets/icons/angle-left.svg";
 import SuccessIcon from "@/assets/icons/success.svg";
 import AccentBtn from "~/components/shared/AccentBtn.vue";
@@ -381,6 +385,23 @@ watch(
   cursor: pointer;
   transition: all 0.3s ease;
 
+  .input-placeholder {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    background: #000;
+    transition: all 0.3s ease;
+
+    svg {
+      display: none;
+    }
+  }
+
   &:hover {
     border-color: var(--accent-color);
   }
@@ -388,22 +409,35 @@ watch(
   &.selected {
     border-color: var(--accent-color);
     background: rgba(255, 255, 255, 0.05);
+
+    .input-placeholder {
+      border: 5px solid var(--border-color);
+    }
   }
 
   &.multiple-select {
     input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      margin-right: 12px;
-      accent-color: var(--accent-color);
+      display: none; /* Hide the default checkbox */
+    }
+
+    .input-placeholder {
+      border-radius: 3px;
+    }
+
+    &.selected .input-placeholder {
+      border: 2px solid var(--border-color);
+
+      svg {
+        display: block;
+        width: 10px;
+        height: 7px;
+        color: var(--accent-color);
+      }
     }
   }
 
   input[type="radio"] {
-    width: 20px;
-    height: 20px;
-    margin-right: 12px;
-    accent-color: var(--accent-color);
+    display: none; /* Hide the default radio button */
   }
 }
 
