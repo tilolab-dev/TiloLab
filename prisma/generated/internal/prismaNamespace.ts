@@ -2683,7 +2683,6 @@ export const GiftCertificateScalarFieldEnum = {
   usedAt: 'usedAt',
   reservedAt: 'reservedAt',
   reservedUntil: 'reservedUntil',
-  receiveByEmail: 'receiveByEmail',
   orderId: 'orderId',
   orderItemId: 'orderItemId',
   usedOrderId: 'usedOrderId'
@@ -2764,7 +2763,8 @@ export const OrderItemScalarFieldEnum = {
   optionId: 'optionId',
   quantity: 'quantity',
   price: 'price',
-  name: 'name'
+  name: 'name',
+  certificateDelivery: 'certificateDelivery'
 } as const
 
 export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
@@ -3010,6 +3010,20 @@ export type EnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'OrderStatus[]'
  */
 export type ListEnumOrderStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OrderStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CertificateDeliveryType'
+ */
+export type EnumCertificateDeliveryTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CertificateDeliveryType'>
+    
+
+
+/**
+ * Reference to a field of type 'CertificateDeliveryType[]'
+ */
+export type ListEnumCertificateDeliveryTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CertificateDeliveryType[]'>
     
 
 

@@ -45,7 +45,6 @@ export type GiftCertificateMinAggregateOutputType = {
   usedAt: Date | null
   reservedAt: Date | null
   reservedUntil: Date | null
-  receiveByEmail: boolean | null
   orderId: string | null
   orderItemId: number | null
   usedOrderId: string | null
@@ -60,7 +59,6 @@ export type GiftCertificateMaxAggregateOutputType = {
   usedAt: Date | null
   reservedAt: Date | null
   reservedUntil: Date | null
-  receiveByEmail: boolean | null
   orderId: string | null
   orderItemId: number | null
   usedOrderId: string | null
@@ -75,7 +73,6 @@ export type GiftCertificateCountAggregateOutputType = {
   usedAt: number
   reservedAt: number
   reservedUntil: number
-  receiveByEmail: number
   orderId: number
   orderItemId: number
   usedOrderId: number
@@ -102,7 +99,6 @@ export type GiftCertificateMinAggregateInputType = {
   usedAt?: true
   reservedAt?: true
   reservedUntil?: true
-  receiveByEmail?: true
   orderId?: true
   orderItemId?: true
   usedOrderId?: true
@@ -117,7 +113,6 @@ export type GiftCertificateMaxAggregateInputType = {
   usedAt?: true
   reservedAt?: true
   reservedUntil?: true
-  receiveByEmail?: true
   orderId?: true
   orderItemId?: true
   usedOrderId?: true
@@ -132,7 +127,6 @@ export type GiftCertificateCountAggregateInputType = {
   usedAt?: true
   reservedAt?: true
   reservedUntil?: true
-  receiveByEmail?: true
   orderId?: true
   orderItemId?: true
   usedOrderId?: true
@@ -234,7 +228,6 @@ export type GiftCertificateGroupByOutputType = {
   usedAt: Date | null
   reservedAt: Date | null
   reservedUntil: Date | null
-  receiveByEmail: boolean | null
   orderId: string
   orderItemId: number
   usedOrderId: string | null
@@ -272,7 +265,6 @@ export type GiftCertificateWhereInput = {
   usedAt?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
   reservedAt?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
   reservedUntil?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
-  receiveByEmail?: Prisma.BoolNullableFilter<"GiftCertificate"> | boolean | null
   orderId?: Prisma.StringFilter<"GiftCertificate"> | string
   orderItemId?: Prisma.IntFilter<"GiftCertificate"> | number
   usedOrderId?: Prisma.StringNullableFilter<"GiftCertificate"> | string | null
@@ -291,7 +283,6 @@ export type GiftCertificateOrderByWithRelationInput = {
   usedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   reservedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   reservedUntil?: Prisma.SortOrderInput | Prisma.SortOrder
-  receiveByEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   orderId?: Prisma.SortOrder
   orderItemId?: Prisma.SortOrder
   usedOrderId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -313,7 +304,6 @@ export type GiftCertificateWhereUniqueInput = Prisma.AtLeast<{
   usedAt?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
   reservedAt?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
   reservedUntil?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
-  receiveByEmail?: Prisma.BoolNullableFilter<"GiftCertificate"> | boolean | null
   orderId?: Prisma.StringFilter<"GiftCertificate"> | string
   orderItemId?: Prisma.IntFilter<"GiftCertificate"> | number
   usedOrderId?: Prisma.StringNullableFilter<"GiftCertificate"> | string | null
@@ -332,7 +322,6 @@ export type GiftCertificateOrderByWithAggregationInput = {
   usedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   reservedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   reservedUntil?: Prisma.SortOrderInput | Prisma.SortOrder
-  receiveByEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   orderId?: Prisma.SortOrder
   orderItemId?: Prisma.SortOrder
   usedOrderId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -355,7 +344,6 @@ export type GiftCertificateScalarWhereWithAggregatesInput = {
   usedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"GiftCertificate"> | Date | string | null
   reservedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"GiftCertificate"> | Date | string | null
   reservedUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"GiftCertificate"> | Date | string | null
-  receiveByEmail?: Prisma.BoolNullableWithAggregatesFilter<"GiftCertificate"> | boolean | null
   orderId?: Prisma.StringWithAggregatesFilter<"GiftCertificate"> | string
   orderItemId?: Prisma.IntWithAggregatesFilter<"GiftCertificate"> | number
   usedOrderId?: Prisma.StringNullableWithAggregatesFilter<"GiftCertificate"> | string | null
@@ -370,7 +358,6 @@ export type GiftCertificateCreateInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   order: Prisma.OrderCreateNestedOneWithoutCreatedCertificatesInput
   orderItem?: Prisma.OrderItemCreateNestedOneWithoutGiftCertificateInput
   usedOrder?: Prisma.OrderCreateNestedOneWithoutUsedCertificatesInput
@@ -386,7 +373,6 @@ export type GiftCertificateUncheckedCreateInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   orderId: string
   orderItemId: number
   usedOrderId?: string | null
@@ -402,7 +388,6 @@ export type GiftCertificateUpdateInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   order?: Prisma.OrderUpdateOneRequiredWithoutCreatedCertificatesNestedInput
   orderItem?: Prisma.OrderItemUpdateOneWithoutGiftCertificateNestedInput
   usedOrder?: Prisma.OrderUpdateOneWithoutUsedCertificatesNestedInput
@@ -418,7 +403,6 @@ export type GiftCertificateUncheckedUpdateInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
   orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
   usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -434,7 +418,6 @@ export type GiftCertificateCreateManyInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   orderId: string
   orderItemId: number
   usedOrderId?: string | null
@@ -449,7 +432,6 @@ export type GiftCertificateUpdateManyMutationInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
 }
 
 export type GiftCertificateUncheckedUpdateManyInput = {
@@ -461,7 +443,6 @@ export type GiftCertificateUncheckedUpdateManyInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
   orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
   usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -476,7 +457,6 @@ export type GiftCertificateCountOrderByAggregateInput = {
   usedAt?: Prisma.SortOrder
   reservedAt?: Prisma.SortOrder
   reservedUntil?: Prisma.SortOrder
-  receiveByEmail?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
   orderItemId?: Prisma.SortOrder
   usedOrderId?: Prisma.SortOrder
@@ -496,7 +476,6 @@ export type GiftCertificateMaxOrderByAggregateInput = {
   usedAt?: Prisma.SortOrder
   reservedAt?: Prisma.SortOrder
   reservedUntil?: Prisma.SortOrder
-  receiveByEmail?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
   orderItemId?: Prisma.SortOrder
   usedOrderId?: Prisma.SortOrder
@@ -511,7 +490,6 @@ export type GiftCertificateMinOrderByAggregateInput = {
   usedAt?: Prisma.SortOrder
   reservedAt?: Prisma.SortOrder
   reservedUntil?: Prisma.SortOrder
-  receiveByEmail?: Prisma.SortOrder
   orderId?: Prisma.SortOrder
   orderItemId?: Prisma.SortOrder
   usedOrderId?: Prisma.SortOrder
@@ -543,10 +521,6 @@ export type EnumCertificateStatusFieldUpdateOperationsInput = {
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
-}
-
-export type NullableBoolFieldUpdateOperationsInput = {
-  set?: boolean | null
 }
 
 export type GiftCertificateCreateNestedManyWithoutOrderInput = {
@@ -700,7 +674,6 @@ export type GiftCertificateCreateWithoutOrderInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   orderItem?: Prisma.OrderItemCreateNestedOneWithoutGiftCertificateInput
   usedOrder?: Prisma.OrderCreateNestedOneWithoutUsedCertificatesInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCertificateInput
@@ -715,7 +688,6 @@ export type GiftCertificateUncheckedCreateWithoutOrderInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   orderItemId: number
   usedOrderId?: string | null
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCertificateInput
@@ -740,7 +712,6 @@ export type GiftCertificateCreateWithoutUsedOrderInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   order: Prisma.OrderCreateNestedOneWithoutCreatedCertificatesInput
   orderItem?: Prisma.OrderItemCreateNestedOneWithoutGiftCertificateInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCertificateInput
@@ -755,7 +726,6 @@ export type GiftCertificateUncheckedCreateWithoutUsedOrderInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   orderId: string
   orderItemId: number
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCertificateInput
@@ -799,7 +769,6 @@ export type GiftCertificateScalarWhereInput = {
   usedAt?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
   reservedAt?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
   reservedUntil?: Prisma.DateTimeNullableFilter<"GiftCertificate"> | Date | string | null
-  receiveByEmail?: Prisma.BoolNullableFilter<"GiftCertificate"> | boolean | null
   orderId?: Prisma.StringFilter<"GiftCertificate"> | string
   orderItemId?: Prisma.IntFilter<"GiftCertificate"> | number
   usedOrderId?: Prisma.StringNullableFilter<"GiftCertificate"> | string | null
@@ -830,7 +799,6 @@ export type GiftCertificateCreateWithoutOrderItemInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   order: Prisma.OrderCreateNestedOneWithoutCreatedCertificatesInput
   usedOrder?: Prisma.OrderCreateNestedOneWithoutUsedCertificatesInput
   payments?: Prisma.PaymentCreateNestedManyWithoutCertificateInput
@@ -845,7 +813,6 @@ export type GiftCertificateUncheckedCreateWithoutOrderItemInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   orderId: string
   usedOrderId?: string | null
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutCertificateInput
@@ -886,7 +853,6 @@ export type GiftCertificateCreateWithoutPaymentsInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   order: Prisma.OrderCreateNestedOneWithoutCreatedCertificatesInput
   orderItem?: Prisma.OrderItemCreateNestedOneWithoutGiftCertificateInput
   usedOrder?: Prisma.OrderCreateNestedOneWithoutUsedCertificatesInput
@@ -901,7 +867,6 @@ export type GiftCertificateUncheckedCreateWithoutPaymentsInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   orderId: string
   orderItemId: number
   usedOrderId?: string | null
@@ -932,7 +897,6 @@ export type GiftCertificateUpdateWithoutPaymentsInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   order?: Prisma.OrderUpdateOneRequiredWithoutCreatedCertificatesNestedInput
   orderItem?: Prisma.OrderItemUpdateOneWithoutGiftCertificateNestedInput
   usedOrder?: Prisma.OrderUpdateOneWithoutUsedCertificatesNestedInput
@@ -947,7 +911,6 @@ export type GiftCertificateUncheckedUpdateWithoutPaymentsInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
   orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
   usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -962,7 +925,6 @@ export type GiftCertificateCreateManyOrderInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   orderItemId: number
   usedOrderId?: string | null
 }
@@ -976,7 +938,6 @@ export type GiftCertificateCreateManyUsedOrderInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   orderId: string
   orderItemId: number
 }
@@ -990,7 +951,6 @@ export type GiftCertificateUpdateWithoutOrderInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   orderItem?: Prisma.OrderItemUpdateOneWithoutGiftCertificateNestedInput
   usedOrder?: Prisma.OrderUpdateOneWithoutUsedCertificatesNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCertificateNestedInput
@@ -1005,7 +965,6 @@ export type GiftCertificateUncheckedUpdateWithoutOrderInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
   usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCertificateNestedInput
@@ -1020,7 +979,6 @@ export type GiftCertificateUncheckedUpdateManyWithoutOrderInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
   usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1034,7 +992,6 @@ export type GiftCertificateUpdateWithoutUsedOrderInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   order?: Prisma.OrderUpdateOneRequiredWithoutCreatedCertificatesNestedInput
   orderItem?: Prisma.OrderItemUpdateOneWithoutGiftCertificateNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCertificateNestedInput
@@ -1049,7 +1006,6 @@ export type GiftCertificateUncheckedUpdateWithoutUsedOrderInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
   orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCertificateNestedInput
@@ -1064,7 +1020,6 @@ export type GiftCertificateUncheckedUpdateManyWithoutUsedOrderInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
   orderItemId?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -1078,7 +1033,6 @@ export type GiftCertificateCreateManyOrderItemInput = {
   usedAt?: Date | string | null
   reservedAt?: Date | string | null
   reservedUntil?: Date | string | null
-  receiveByEmail?: boolean | null
   orderId: string
   usedOrderId?: string | null
 }
@@ -1092,7 +1046,6 @@ export type GiftCertificateUpdateWithoutOrderItemInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   order?: Prisma.OrderUpdateOneRequiredWithoutCreatedCertificatesNestedInput
   usedOrder?: Prisma.OrderUpdateOneWithoutUsedCertificatesNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutCertificateNestedInput
@@ -1107,7 +1060,6 @@ export type GiftCertificateUncheckedUpdateWithoutOrderItemInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
   usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutCertificateNestedInput
@@ -1122,7 +1074,6 @@ export type GiftCertificateUncheckedUpdateManyWithoutOrderItemInput = {
   usedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   reservedUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  receiveByEmail?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   orderId?: Prisma.StringFieldUpdateOperationsInput | string
   usedOrderId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
@@ -1167,7 +1118,6 @@ export type GiftCertificateSelect<ExtArgs extends runtime.Types.Extensions.Inter
   usedAt?: boolean
   reservedAt?: boolean
   reservedUntil?: boolean
-  receiveByEmail?: boolean
   orderId?: boolean
   orderItemId?: boolean
   usedOrderId?: boolean
@@ -1187,7 +1137,6 @@ export type GiftCertificateSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   usedAt?: boolean
   reservedAt?: boolean
   reservedUntil?: boolean
-  receiveByEmail?: boolean
   orderId?: boolean
   orderItemId?: boolean
   usedOrderId?: boolean
@@ -1205,7 +1154,6 @@ export type GiftCertificateSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   usedAt?: boolean
   reservedAt?: boolean
   reservedUntil?: boolean
-  receiveByEmail?: boolean
   orderId?: boolean
   orderItemId?: boolean
   usedOrderId?: boolean
@@ -1223,13 +1171,12 @@ export type GiftCertificateSelectScalar = {
   usedAt?: boolean
   reservedAt?: boolean
   reservedUntil?: boolean
-  receiveByEmail?: boolean
   orderId?: boolean
   orderItemId?: boolean
   usedOrderId?: boolean
 }
 
-export type GiftCertificateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "amount" | "status" | "createdAt" | "usedAt" | "reservedAt" | "reservedUntil" | "receiveByEmail" | "orderId" | "orderItemId" | "usedOrderId", ExtArgs["result"]["giftCertificate"]>
+export type GiftCertificateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "amount" | "status" | "createdAt" | "usedAt" | "reservedAt" | "reservedUntil" | "orderId" | "orderItemId" | "usedOrderId", ExtArgs["result"]["giftCertificate"]>
 export type GiftCertificateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   orderItem?: boolean | Prisma.GiftCertificate$orderItemArgs<ExtArgs>
@@ -1265,7 +1212,6 @@ export type $GiftCertificatePayload<ExtArgs extends runtime.Types.Extensions.Int
     usedAt: Date | null
     reservedAt: Date | null
     reservedUntil: Date | null
-    receiveByEmail: boolean | null
     orderId: string
     orderItemId: number
     usedOrderId: string | null
@@ -1704,7 +1650,6 @@ export interface GiftCertificateFieldRefs {
   readonly usedAt: Prisma.FieldRef<"GiftCertificate", 'DateTime'>
   readonly reservedAt: Prisma.FieldRef<"GiftCertificate", 'DateTime'>
   readonly reservedUntil: Prisma.FieldRef<"GiftCertificate", 'DateTime'>
-  readonly receiveByEmail: Prisma.FieldRef<"GiftCertificate", 'Boolean'>
   readonly orderId: Prisma.FieldRef<"GiftCertificate", 'String'>
   readonly orderItemId: Prisma.FieldRef<"GiftCertificate", 'Int'>
   readonly usedOrderId: Prisma.FieldRef<"GiftCertificate", 'String'>

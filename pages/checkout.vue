@@ -38,7 +38,41 @@
                 </ul>
               </div>
             </div>
-            <div class="user_info_delivery">
+            <div v-if="hasCertificateInCart" class="user_info_certificate">
+              <div class="checkout_subtitle"><strong>Спосіб отримання сертифіката</strong></div>
+              <div class="radio_wrapper">
+                <input
+                  id="certDeliveryEmail"
+                  v-model="certificateDeliveryType"
+                  type="radio"
+                  name="certificateDelivery"
+                  value="EMAIL"
+                />
+                <label for="certDeliveryEmail" class="radio-elem">
+                  <div class="radio-btn"></div>
+                  <span>Електронний сертифікат (на email)</span>
+                </label>
+
+                <input
+                  id="certDeliveryPhysical"
+                  v-model="certificateDeliveryType"
+                  type="radio"
+                  name="certificateDelivery"
+                  value="PHYSICAL"
+                />
+                <label for="certDeliveryPhysical" class="radio-elem">
+                  <div class="radio-btn"></div>
+                  <span>Фізичний сертифікат (поштою)</span>
+                </label>
+              </div>
+            </div>
+            <div
+              v-if="
+                certificateDeliveryType !== 'EMAIL' ||
+                (certificateDeliveryType === 'EMAIL' && needsShipping)
+              "
+              class="user_info_delivery"
+            >
               <div class="checkout_subtitle">Доставка</div>
               <div class="radio_wrapper">
                 <input
@@ -47,7 +81,6 @@
                   type="radio"
                   name="accordeon"
                   value="branch"
-                  checked
                   @click="getPostOfficeNp(e, 'reload')"
                 />
                 <label for="menu1" class="radio-elem">
@@ -74,7 +107,6 @@
                         (categoryOfWarehouse = el.CategoryOfWarehouse))
                       "
                     >
-                      {{ console.log(el, "el") }}
                       {{ el.Description }}
                     </li>
                   </ul>
@@ -152,7 +184,14 @@
                   name="payment"
                   value="cod"
                 />
-                <label for="payment2" class="radio-elem">
+                <label
+                  v-if="
+                    certificateDeliveryType !== 'EMAIL' ||
+                    (certificateDeliveryType === 'EMAIL' && needsShipping)
+                  "
+                  for="payment2"
+                  class="radio-elem"
+                >
                   <div class="radio-btn"></div>
                   <span
                     >Оплата при отриманні (200 грн. передплата)
@@ -168,7 +207,7 @@
                   name="payment"
                   value="certificate"
                 />
-                <label for="payment3" class="radio-elem">
+                <label v-if="!hasCertificateInCart" for="payment3" class="radio-elem">
                   <div class="radio-btn"></div>
                   <span>У мене є сертифікат</span>
                 </label>
@@ -366,6 +405,8 @@ import { useUserStore } from "@/store/user-store";
 import { useCartStore } from "@/store/cart-store";
 import { useModalStore } from "@/store/modal-store";
 
+// const DEBUG_MODE = false;
+
 const modalStore = useModalStore();
 
 const userStore = useUserStore();
@@ -386,17 +427,37 @@ const surname = ref(loggedInUser ? userStore.user?.userSurname : "");
 const phone = ref(loggedInUser ? userStore.user?.phoneNumber : "+38 (0");
 const email = ref(loggedInUser ? userStore.user?.email : "");
 const deliveryMethod = ref("nova-post");
-const selectedDelivery = ref("");
+const selectedDelivery = ref("branch");
 
 const deliveryAddressState = ref(false);
 const courierDeliveryState = ref(false);
+const certificateDeliveryType = ref("UNDEFINED");
 
 const deliveryPrice = ref(0);
 const paymentMethod = ref("monobank");
+let timerId = null;
 
 const totalDeliveryPrice = computed(() => deliveryPrice.value + cartStore.totalPrice);
 
-let timerId = null;
+const hasCertificateInCart = computed(() => {
+  if (!isMounted.value) return;
+  return cartStore.cart.some((item) => item.product.isCertificate);
+});
+
+const hasProductInCart = computed(() => {
+  if (!isMounted.value) return;
+  return cartStore.cart.some((item) => !item.product.isCertificate);
+});
+
+const needsShipping = computed(() => {
+  if (hasProductInCart.value) return true;
+
+  if (hasCertificateInCart.value) {
+    return certificateDeliveryType.value === "PHYSICAL";
+  }
+
+  return true;
+});
 
 // const date = new Date();
 // const day = date.getDate();
@@ -516,19 +577,26 @@ const validateForm = async () => {
     return false;
   }
 
-  if (!cityRef.value) {
-    tooltip({ status: "warning", message: "Перевірте місто" });
+  if (hasCertificateInCart.value && certificateDeliveryType.value === "UNDEFINED") {
+    tooltip({ status: "warning", message: "Оберіть спосіб отримання сертифіката" });
     return false;
   }
 
-  if (selectedDelivery.value === "branch" && !postAddress.value) {
-    tooltip({ status: "warning", message: "Оберіть відділення" });
-    return false;
-  }
+  if (needsShipping.value) {
+    if (!cityRef.value) {
+      tooltip({ status: "warning", message: "Перевірте місто" });
+      return false;
+    }
 
-  if (selectedDelivery.value === "postomat" && !postomatNumber.value) {
-    tooltip({ status: "warning", message: "Оберіть поштомат" });
-    return false;
+    if (selectedDelivery.value === "branch" && !postAddress.value) {
+      tooltip({ status: "warning", message: "Оберіть відділення" });
+      return false;
+    }
+
+    if (selectedDelivery.value === "postomat" && !postomatNumber.value) {
+      tooltip({ status: "warning", message: "Оберіть поштомат" });
+      return false;
+    }
   }
 
   if (paymentMethod.value === "cod" && totalDeliveryPrice.value < 200) {
@@ -584,12 +652,30 @@ const createRecipient = async (formattedPhone) => {
 
 const createOrder = async (userNumber, recipientId, recipientContactId) => {
   const getOrderItems = cartStore.cart.map((item) => {
+    // const itemData = {
+    //   productId: item.product.id,
+    //   optionId: item.optionId,
+    //   quantity: item.quantity,
+    //   price: item.productPrice,
+    //   title: item.title
+    // };
+    // if (item.product.isCertificate) {
+    //   return {
+    //     ...itemData,
+    //     certificateDelivery: certificateDeliveryType.value
+    //   };
+    // } else {
+    //   return {
+    //     ...itemData
+    //   };
+    // }
     return {
       productId: item.product.id,
       optionId: item.optionId,
       quantity: item.quantity,
       price: item.productPrice,
-      title: item.title
+      title: item.title,
+      certificateDelivery: certificateDeliveryType.value
     };
   });
 
@@ -767,7 +853,16 @@ const confirmOrderHandler = async () => {
 
   loaderState.value = true;
 
-  const { recipientId, recipientContactId } = await createRecipient(formattedPhone);
+  let recipientId = null;
+  let recipientContactId = null;
+
+  if (needsShipping.value) {
+    const recipientData = await createRecipient(formattedPhone);
+    recipientId = recipientData.recipientId;
+    recipientContactId = recipientData.recipientContactId;
+  }
+
+  // const { recipientId, recipientContactId } = await createRecipient(formattedPhone);
 
   // if (DEBUG_STOP) {
   //   return;
@@ -825,10 +920,10 @@ const confirmOrderHandler = async () => {
         // window.location.href = `https://www.tilolab.com.ua/summary/${proccessOrder.order.id}`;
 
         // DEVELOPMENT ENVIRONMENT
-        window.location.href = `https://dev.tilolab.com.ua//summary/${proccessOrder.order.id}`;
+        // window.location.href = `https://dev.tilolab.com.ua//summary/${proccessOrder.order.id}`;
 
         // TEST ENVIRONMENT
-        // window.location.href = `https://e50d-91-232-241-248.ngrok-free.app/summary/${proccessOrder.order.id}`;
+        window.location.href = `https://8534-46-150-68-68.ngrok-free.app/summary/${proccessOrder.order.id}`;
       }
 
       return;

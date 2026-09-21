@@ -165,6 +165,7 @@ export default eventHandler(async (event: any) => {
             productId: item.productId,
             optionId: item.optionId,
             quantity: item.quantity,
+            certificateDelivery: item.certificateDelivery,
             price,
             name
           });
@@ -198,6 +199,7 @@ export default eventHandler(async (event: any) => {
             productId: item.productId,
             optionId: null,
             quantity: item.quantity,
+            certificateDelivery: item.certificateDelivery,
             price,
             name
           });

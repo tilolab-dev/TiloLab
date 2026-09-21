@@ -50,6 +50,7 @@ export type OrderItemMinAggregateOutputType = {
   quantity: number | null
   price: number | null
   name: string | null
+  certificateDelivery: $Enums.CertificateDeliveryType | null
 }
 
 export type OrderItemMaxAggregateOutputType = {
@@ -60,6 +61,7 @@ export type OrderItemMaxAggregateOutputType = {
   quantity: number | null
   price: number | null
   name: string | null
+  certificateDelivery: $Enums.CertificateDeliveryType | null
 }
 
 export type OrderItemCountAggregateOutputType = {
@@ -70,6 +72,7 @@ export type OrderItemCountAggregateOutputType = {
   quantity: number
   price: number
   name: number
+  certificateDelivery: number
   _all: number
 }
 
@@ -98,6 +101,7 @@ export type OrderItemMinAggregateInputType = {
   quantity?: true
   price?: true
   name?: true
+  certificateDelivery?: true
 }
 
 export type OrderItemMaxAggregateInputType = {
@@ -108,6 +112,7 @@ export type OrderItemMaxAggregateInputType = {
   quantity?: true
   price?: true
   name?: true
+  certificateDelivery?: true
 }
 
 export type OrderItemCountAggregateInputType = {
@@ -118,6 +123,7 @@ export type OrderItemCountAggregateInputType = {
   quantity?: true
   price?: true
   name?: true
+  certificateDelivery?: true
   _all?: true
 }
 
@@ -215,6 +221,7 @@ export type OrderItemGroupByOutputType = {
   quantity: number
   price: number | null
   name: string | null
+  certificateDelivery: $Enums.CertificateDeliveryType | null
   _count: OrderItemCountAggregateOutputType | null
   _avg: OrderItemAvgAggregateOutputType | null
   _sum: OrderItemSumAggregateOutputType | null
@@ -248,6 +255,7 @@ export type OrderItemWhereInput = {
   quantity?: Prisma.IntFilter<"OrderItem"> | number
   price?: Prisma.FloatNullableFilter<"OrderItem"> | number | null
   name?: Prisma.StringNullableFilter<"OrderItem"> | string | null
+  certificateDelivery?: Prisma.EnumCertificateDeliveryTypeNullableFilter<"OrderItem"> | $Enums.CertificateDeliveryType | null
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
   giftCertificate?: Prisma.GiftCertificateListRelationFilter
@@ -261,6 +269,7 @@ export type OrderItemOrderByWithRelationInput = {
   quantity?: Prisma.SortOrder
   price?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
+  certificateDelivery?: Prisma.SortOrderInput | Prisma.SortOrder
   order?: Prisma.OrderOrderByWithRelationInput
   product?: Prisma.ProductOrderByWithRelationInput
   giftCertificate?: Prisma.GiftCertificateOrderByRelationAggregateInput
@@ -277,6 +286,7 @@ export type OrderItemWhereUniqueInput = Prisma.AtLeast<{
   quantity?: Prisma.IntFilter<"OrderItem"> | number
   price?: Prisma.FloatNullableFilter<"OrderItem"> | number | null
   name?: Prisma.StringNullableFilter<"OrderItem"> | string | null
+  certificateDelivery?: Prisma.EnumCertificateDeliveryTypeNullableFilter<"OrderItem"> | $Enums.CertificateDeliveryType | null
   order?: Prisma.XOR<Prisma.OrderScalarRelationFilter, Prisma.OrderWhereInput>
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
   giftCertificate?: Prisma.GiftCertificateListRelationFilter
@@ -290,6 +300,7 @@ export type OrderItemOrderByWithAggregationInput = {
   quantity?: Prisma.SortOrder
   price?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
+  certificateDelivery?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.OrderItemCountOrderByAggregateInput
   _avg?: Prisma.OrderItemAvgOrderByAggregateInput
   _max?: Prisma.OrderItemMaxOrderByAggregateInput
@@ -308,6 +319,7 @@ export type OrderItemScalarWhereWithAggregatesInput = {
   quantity?: Prisma.IntWithAggregatesFilter<"OrderItem"> | number
   price?: Prisma.FloatNullableWithAggregatesFilter<"OrderItem"> | number | null
   name?: Prisma.StringNullableWithAggregatesFilter<"OrderItem"> | string | null
+  certificateDelivery?: Prisma.EnumCertificateDeliveryTypeNullableWithAggregatesFilter<"OrderItem"> | $Enums.CertificateDeliveryType | null
 }
 
 export type OrderItemCreateInput = {
@@ -315,6 +327,7 @@ export type OrderItemCreateInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  certificateDelivery?: $Enums.CertificateDeliveryType | null
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
   product: Prisma.ProductCreateNestedOneWithoutOrderItemsInput
   giftCertificate?: Prisma.GiftCertificateCreateNestedManyWithoutOrderItemInput
@@ -328,6 +341,7 @@ export type OrderItemUncheckedCreateInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  certificateDelivery?: $Enums.CertificateDeliveryType | null
   giftCertificate?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderItemInput
 }
 
@@ -336,6 +350,7 @@ export type OrderItemUpdateInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificateDelivery?: Prisma.NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput | $Enums.CertificateDeliveryType | null
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
   product?: Prisma.ProductUpdateOneRequiredWithoutOrderItemsNestedInput
   giftCertificate?: Prisma.GiftCertificateUpdateManyWithoutOrderItemNestedInput
@@ -349,6 +364,7 @@ export type OrderItemUncheckedUpdateInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificateDelivery?: Prisma.NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput | $Enums.CertificateDeliveryType | null
   giftCertificate?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderItemNestedInput
 }
 
@@ -360,6 +376,7 @@ export type OrderItemCreateManyInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  certificateDelivery?: $Enums.CertificateDeliveryType | null
 }
 
 export type OrderItemUpdateManyMutationInput = {
@@ -367,6 +384,7 @@ export type OrderItemUpdateManyMutationInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificateDelivery?: Prisma.NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput | $Enums.CertificateDeliveryType | null
 }
 
 export type OrderItemUncheckedUpdateManyInput = {
@@ -377,6 +395,7 @@ export type OrderItemUncheckedUpdateManyInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificateDelivery?: Prisma.NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput | $Enums.CertificateDeliveryType | null
 }
 
 export type OrderItemListRelationFilter = {
@@ -402,6 +421,7 @@ export type OrderItemCountOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  certificateDelivery?: Prisma.SortOrder
 }
 
 export type OrderItemAvgOrderByAggregateInput = {
@@ -420,6 +440,7 @@ export type OrderItemMaxOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  certificateDelivery?: Prisma.SortOrder
 }
 
 export type OrderItemMinOrderByAggregateInput = {
@@ -430,6 +451,7 @@ export type OrderItemMinOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
   price?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  certificateDelivery?: Prisma.SortOrder
 }
 
 export type OrderItemSumOrderByAggregateInput = {
@@ -540,11 +562,16 @@ export type OrderItemUncheckedUpdateManyWithoutOrderNestedInput = {
   deleteMany?: Prisma.OrderItemScalarWhereInput | Prisma.OrderItemScalarWhereInput[]
 }
 
+export type NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput = {
+  set?: $Enums.CertificateDeliveryType | null
+}
+
 export type OrderItemCreateWithoutProductInput = {
   optionId?: number | null
   quantity?: number
   price?: number | null
   name?: string | null
+  certificateDelivery?: $Enums.CertificateDeliveryType | null
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
   giftCertificate?: Prisma.GiftCertificateCreateNestedManyWithoutOrderItemInput
 }
@@ -556,6 +583,7 @@ export type OrderItemUncheckedCreateWithoutProductInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  certificateDelivery?: $Enums.CertificateDeliveryType | null
   giftCertificate?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderItemInput
 }
 
@@ -596,6 +624,7 @@ export type OrderItemScalarWhereInput = {
   quantity?: Prisma.IntFilter<"OrderItem"> | number
   price?: Prisma.FloatNullableFilter<"OrderItem"> | number | null
   name?: Prisma.StringNullableFilter<"OrderItem"> | string | null
+  certificateDelivery?: Prisma.EnumCertificateDeliveryTypeNullableFilter<"OrderItem"> | $Enums.CertificateDeliveryType | null
 }
 
 export type OrderItemCreateWithoutGiftCertificateInput = {
@@ -603,6 +632,7 @@ export type OrderItemCreateWithoutGiftCertificateInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  certificateDelivery?: $Enums.CertificateDeliveryType | null
   order: Prisma.OrderCreateNestedOneWithoutOrderItemsInput
   product: Prisma.ProductCreateNestedOneWithoutOrderItemsInput
 }
@@ -615,6 +645,7 @@ export type OrderItemUncheckedCreateWithoutGiftCertificateInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  certificateDelivery?: $Enums.CertificateDeliveryType | null
 }
 
 export type OrderItemCreateOrConnectWithoutGiftCertificateInput = {
@@ -638,6 +669,7 @@ export type OrderItemUpdateWithoutGiftCertificateInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificateDelivery?: Prisma.NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput | $Enums.CertificateDeliveryType | null
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
   product?: Prisma.ProductUpdateOneRequiredWithoutOrderItemsNestedInput
 }
@@ -650,6 +682,7 @@ export type OrderItemUncheckedUpdateWithoutGiftCertificateInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificateDelivery?: Prisma.NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput | $Enums.CertificateDeliveryType | null
 }
 
 export type OrderItemCreateWithoutOrderInput = {
@@ -657,6 +690,7 @@ export type OrderItemCreateWithoutOrderInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  certificateDelivery?: $Enums.CertificateDeliveryType | null
   product: Prisma.ProductCreateNestedOneWithoutOrderItemsInput
   giftCertificate?: Prisma.GiftCertificateCreateNestedManyWithoutOrderItemInput
 }
@@ -668,6 +702,7 @@ export type OrderItemUncheckedCreateWithoutOrderInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  certificateDelivery?: $Enums.CertificateDeliveryType | null
   giftCertificate?: Prisma.GiftCertificateUncheckedCreateNestedManyWithoutOrderItemInput
 }
 
@@ -704,6 +739,7 @@ export type OrderItemCreateManyProductInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  certificateDelivery?: $Enums.CertificateDeliveryType | null
 }
 
 export type OrderItemUpdateWithoutProductInput = {
@@ -711,6 +747,7 @@ export type OrderItemUpdateWithoutProductInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificateDelivery?: Prisma.NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput | $Enums.CertificateDeliveryType | null
   order?: Prisma.OrderUpdateOneRequiredWithoutOrderItemsNestedInput
   giftCertificate?: Prisma.GiftCertificateUpdateManyWithoutOrderItemNestedInput
 }
@@ -722,6 +759,7 @@ export type OrderItemUncheckedUpdateWithoutProductInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificateDelivery?: Prisma.NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput | $Enums.CertificateDeliveryType | null
   giftCertificate?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderItemNestedInput
 }
 
@@ -732,6 +770,7 @@ export type OrderItemUncheckedUpdateManyWithoutProductInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificateDelivery?: Prisma.NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput | $Enums.CertificateDeliveryType | null
 }
 
 export type OrderItemCreateManyOrderInput = {
@@ -741,6 +780,7 @@ export type OrderItemCreateManyOrderInput = {
   quantity?: number
   price?: number | null
   name?: string | null
+  certificateDelivery?: $Enums.CertificateDeliveryType | null
 }
 
 export type OrderItemUpdateWithoutOrderInput = {
@@ -748,6 +788,7 @@ export type OrderItemUpdateWithoutOrderInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificateDelivery?: Prisma.NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput | $Enums.CertificateDeliveryType | null
   product?: Prisma.ProductUpdateOneRequiredWithoutOrderItemsNestedInput
   giftCertificate?: Prisma.GiftCertificateUpdateManyWithoutOrderItemNestedInput
 }
@@ -759,6 +800,7 @@ export type OrderItemUncheckedUpdateWithoutOrderInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificateDelivery?: Prisma.NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput | $Enums.CertificateDeliveryType | null
   giftCertificate?: Prisma.GiftCertificateUncheckedUpdateManyWithoutOrderItemNestedInput
 }
 
@@ -769,6 +811,7 @@ export type OrderItemUncheckedUpdateManyWithoutOrderInput = {
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  certificateDelivery?: Prisma.NullableEnumCertificateDeliveryTypeFieldUpdateOperationsInput | $Enums.CertificateDeliveryType | null
 }
 
 
@@ -810,6 +853,7 @@ export type OrderItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   quantity?: boolean
   price?: boolean
   name?: boolean
+  certificateDelivery?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
   giftCertificate?: boolean | Prisma.OrderItem$giftCertificateArgs<ExtArgs>
@@ -824,6 +868,7 @@ export type OrderItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   quantity?: boolean
   price?: boolean
   name?: boolean
+  certificateDelivery?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["orderItem"]>
@@ -836,6 +881,7 @@ export type OrderItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   quantity?: boolean
   price?: boolean
   name?: boolean
+  certificateDelivery?: boolean
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["orderItem"]>
@@ -848,9 +894,10 @@ export type OrderItemSelectScalar = {
   quantity?: boolean
   price?: boolean
   name?: boolean
+  certificateDelivery?: boolean
 }
 
-export type OrderItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "productId" | "optionId" | "quantity" | "price" | "name", ExtArgs["result"]["orderItem"]>
+export type OrderItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "orderId" | "productId" | "optionId" | "quantity" | "price" | "name" | "certificateDelivery", ExtArgs["result"]["orderItem"]>
 export type OrderItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   order?: boolean | Prisma.OrderDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
@@ -881,6 +928,7 @@ export type $OrderItemPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     quantity: number
     price: number | null
     name: string | null
+    certificateDelivery: $Enums.CertificateDeliveryType | null
   }, ExtArgs["result"]["orderItem"]>
   composites: {}
 }
@@ -1314,6 +1362,7 @@ export interface OrderItemFieldRefs {
   readonly quantity: Prisma.FieldRef<"OrderItem", 'Int'>
   readonly price: Prisma.FieldRef<"OrderItem", 'Float'>
   readonly name: Prisma.FieldRef<"OrderItem", 'String'>
+  readonly certificateDelivery: Prisma.FieldRef<"OrderItem", 'CertificateDeliveryType'>
 }
     
 
