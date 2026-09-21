@@ -6,8 +6,6 @@ import { prisma } from "@/prisma/prisma";
 // }
 
 async function getProductById(event: string) {
-  // console.log(typeof event, 'event');
-
   const productId = parseInt(event);
 
   try {
@@ -26,8 +24,6 @@ async function getProductById(event: string) {
       }
     });
 
-    console.log("product value 1", getProduct?.stockValue);
-
     // const productsWithAvailable = getProduct?.map?((product: IProductQuantity) => ({
     //   ...product,
     //   availableStock: (product.stockValue || 0) - (product.stockReserved || 0)
@@ -37,8 +33,6 @@ async function getProductById(event: string) {
 
     const updatedProduct = { ...getProduct, availableProduct: availableProduct };
     // getProduct?.stockValue = availableProduct;
-
-    console.log("product value 2", updatedProduct.availableProduct);
 
     return {
       statusCode: 200,

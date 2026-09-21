@@ -4,20 +4,6 @@ import { createGiftCertificates } from "@/server/services/gift-certificates/crea
 // import { sendSms } from "@/composables/smsNotifications";
 
 export async function handleRegularPayment(payment: any) {
-  // найти payment + order + orderItems
-
-  // проверить order.status
-
-  // transaction:
-  //   списать товары
-  //   Order -> PAID
-  //   Payment -> SUCCESS
-  //   notification
-
-  // создать сертификаты если есть
-
-  // уведомления о низком остатке
-
   let isPaymentSuccess = false;
 
   const order = payment.order;
@@ -112,6 +98,8 @@ export async function handleRegularPayment(payment: any) {
   }
 
   const certificatesInOrder = order.orderItems.filter((item: any) => item.product.isCertificate);
+
+  console.log(certificatesInOrder, "certificatesInOrder");
 
   // const addCertificateCode = async () => {
 

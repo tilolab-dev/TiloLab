@@ -86,3 +86,12 @@ export const PaymentType = {
 } as const
 
 export type PaymentType = (typeof PaymentType)[keyof typeof PaymentType]
+
+
+export const CertificateDeliveryType = {
+  EMAIL: 'EMAIL',
+  PHYSICAL: 'PHYSICAL',
+  UNDEFINED: 'UNDEFINED'
+} as const
+
+export type CertificateDeliveryType = (typeof CertificateDeliveryType)[keyof typeof CertificateDeliveryType]

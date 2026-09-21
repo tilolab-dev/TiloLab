@@ -252,7 +252,6 @@ model GiftCertificate {
   usedAt          DateTime?
   reservedAt      DateTime?
   reservedUntil   DateTime?
-  receiveByEmail  Boolean?
 
   orderId         String
   order           Order @relation( "CertificateCreatedOrder", fields: [orderId], references: [id])
@@ -342,17 +341,19 @@ model Order {
 }
 
 model OrderItem {
-  id        Int     @id @default(autoincrement())
-  orderId   String
-  productId Int
-  optionId  Int?
-  quantity  Int     @default(1)
-  price     Float?
-  name      String?
-  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  id                  Int     @id @default(autoincrement())
+  orderId             String
+  productId           Int
+  optionId            Int?
+  quantity            Int     @default(1)
+  price               Float?
+  name                String?
+  order               Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product             Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  giftCertificate GiftCertificate[]
+  giftCertificate         GiftCertificate[]
+  certificateDelivery CertificateDeliveryType? @default(UNDEFINED)
+
 
   @@index([orderId])
   @@index([productId])
@@ -476,6 +477,12 @@ enum TagGenderType {
 enum PaymentType {
   ORDER
   CERTIFICATE_SURCHARGE
+}
+
+enum CertificateDeliveryType {
+  EMAIL
+  PHYSICAL
+  UNDEFINED
 }
 
 // enum ProductTag {

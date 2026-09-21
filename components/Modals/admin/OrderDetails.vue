@@ -169,7 +169,21 @@
               <div
                 v-if="modalProps.order.createdCertificates[0]?.code"
                 class="certificate_info_wrapper"
+                :style="{
+                  justifyContent:
+                    item.product?.isCertificate && item.certificateDelivery === 'EMAIL'
+                      ? 'space-between'
+                      : 'flex-end'
+                }"
               >
+                {{ console.log(item, "ITEM") }}
+                <button
+                  v-if="item.certificateDelivery === 'EMAIL' && item.product?.isCertificate"
+                  class="send_code_btn"
+                  @click="sendEmailHandler"
+                >
+                  <strong> Відправити на email </strong>
+                </button>
                 <div class="text_label">
                   <span> Код сертифіката: </span>
                   <strong>
@@ -606,6 +620,17 @@ const getCitiesNp = debounce(senderCity.value, async () => {
   }
 });
 
+const sendEmailHandler = async () => {
+  console.log("WILL CREATE FUNCTION TO SEND CERTIFICATE CODE");
+  try {
+    console.log(1);
+  } catch (err) {
+    console.log(err);
+  } finally {
+    console.log(3);
+  }
+};
+
 const getPostomatsNp = debounce(postomatNumber.value, async () => {
   // if (!senderCity.value) {
   //   // tooltip({ status: "warning", message: "Введіть місто" });
@@ -958,6 +983,7 @@ const changeStatus = async () => {
 };
 
 onMounted(() => {
+  console.log("modalProps.order", modalProps.order);
   selectValue.value = modalProps.order.status;
 });
 </script>
@@ -1580,7 +1606,8 @@ onMounted(() => {
         gap: 15px;
         border-top: 1px solid rgba(255, 255, 255, 0.06);
 
-        .text_label {
+        .text_label,
+        .send_code_btn {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -1597,6 +1624,20 @@ onMounted(() => {
           font-size: 0.7rem;
           text-transform: uppercase;
           color: inherit;
+        }
+
+        .send_code_btn {
+          cursor: pointer;
+          transition: all ease 0.25s;
+          background: var(--accent-color);
+          color: var(--bg-color);
+
+          @media screen and (min-width: 1024px) {
+            &:hover {
+              background: var(--btn-color-hover);
+              border: 1px solid var(--link-color-active);
+            }
+          }
         }
       }
     }
